@@ -10,7 +10,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Rise4Fun',
   tagline: 'Learn Z3 online!',
-  url: 'https://rise4fun.github.io',
+  url: 'https://microsoft.github.io/rise4fun',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

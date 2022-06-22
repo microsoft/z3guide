@@ -34,5 +34,11 @@
 	"features": {
 		"git": "os-provided",
 		"python": "latest"
-	}
+	},
+
+	"hostRequirements": {
+		"cpus": 32,
+		"memory": "64gb",
+		"storage": "32gb" 
+	 }
 }

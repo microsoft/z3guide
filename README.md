@@ -1,28 +1,89 @@
-# Project
+# RiSE4Fun Documentation
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+[RiSE4Fun](https://microsoft.github.io/rise4fun/) is a place for hosting instruction materials of a course, currently using a [Z3](https://z3prover.github.io/) tutorial as an example.
 
-As the maintainer of this project, please make a few updates:
+This repository contains sources of [RiSE4Fun](https://microsoft.github.io/rise4fun/).
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+The rest of this page is for developers contributing to the tutorial docs of Z3.
+## Developer setup (Microsoft)
 
-## Contributing
+### Codespaces
+-   Join the Microsoft github organization from [Microsoft Open Source](https://opensource.microsoft.com/) via the `Employee sign-in` at the bottom. 
+    - From there, go to the `GitHub for Open Source at Microsoft` tab and follow the instructions to join the organization via the management portal.
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+-   From [this repository](https://github.com/microsoft/rise4fun/), click on the green `<> Code` button, select the `Codespaces` tab and then `Create codespaces on main`. The setup might take a couple of minutes.
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+-   From there, a VSCode tab will open in your browser. You may now edit, test and commit to the repository just like on your local machine.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+    -   All command line instructions assume a bash-like terminal.
+
+-   Set up repo and start development following the steps in [Development](#development).
+
+
+### Local Setup (not using Codespaces)
+
+-   install node.js >= 16.14, as is required by Docusaurus.
+-   install yarn globally if needed
+
+```
+npm install -g yarn
+```
+
+-   Set up repo and start development following the steps in [Development](#development).
+
+#### Updating dependencies
+
+Use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to upgrade all dependencies expect blockly*, tfjs, mdx.
+
+
+## Development
+
+-   From the root directory, build docusaurus
+
+```
+./build.sh
+```
+If the build fails after pulling, try
+
+```
+cd website && yarn clean && cd ../
+```
+
+-   Launch the docs server
+
+```
+./run.sh
+```
+
+-   Click on the generated URL in the terminal output to see the website now running locally.
+
+-   Start adding / editing tutorial materials in `website/docs`.
+
+    -   You may find the Docusaurus documentation on [Docs](https://docusaurus.io/docs/docs-introduction) useful, especially for configuring the sidebar.
+
+    -   Note that Docusaurus does live reload, so that every change you make to `website/docs` will be immediately reflected in the locally running tab.
+
+    -   For all Z3 code snippets, please use the following Markdown Code blocks format:
+    ```
+        ```z3
+        (exec-this-command arg)
+        ```
+    ```
+
+
+
+## Microsoft Open Source Code of Conduct
+
+This project is hosted at https://github.com/microsoft/rise4fun/.
+This project has adopted the
+[Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+
+Resources:
+
+-   [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/)
+-   [Microsoft Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
+-   Contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with questions or concerns
+
 
 ## Trademarks
 

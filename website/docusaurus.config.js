@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 // where information such as course title, description etc. are configured
 const config = {
-  title: 'Rise4Fun',
+  title: 'RiSE4Fun',
   tagline: 'Learn Z3 online!',
   url: 'https://microsoft.github.io/',
   baseUrl: '/rise4fun/',
@@ -53,7 +53,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Rise4Fun',
+        title: 'RiSE4Fun',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',

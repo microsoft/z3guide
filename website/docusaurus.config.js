@@ -1,8 +1,11 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const renderCodeBlocks = import('./src/remark/render-code-blocks.mjs');
+const addImportComponents = import('./src/remark/add-import-components.mjs')
 
 /** @type {import('@docusaurus/types').Config} */
 
@@ -32,10 +35,11 @@ const config = {
 
   presets: [
     [
-      'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
+      '@docusaurus/preset-classic',
+      // /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          remarkPlugins: [addImportComponents, renderCodeBlocks],
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.

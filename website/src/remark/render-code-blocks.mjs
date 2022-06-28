@@ -1,28 +1,43 @@
-// @ts-nocheck
 
-const visit = import('unist-util-visit');
-
+// const visit = import('unist-util-visit');
+import visit from 'unist-util-visit';
 
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
 
-// TODO: it now compiles and runs, but does not make any change!
-export default function plugin (options) {
-    const transformer = async (root) => {
+export default function plugin(options) {
+    // console.log({ options });
+    const transformer = async (ast) => {
         /** @type {import("unified").Transformer} */
-        // TODO: "visit is not a function"
-        visit(root, 'code', (node, index, parent) => {
-            const lang = node.lang;
-            const value = node.value;
+
+        console.log({ ast });
+        visit(ast, 'root', (node) => {
+            node.children.unshift(
+                {
+                    type: 'import',
+                    value: "import Z3CodeBlock from '@site/src/components/TutorialComponents'"
+                }
+            )
+        });
+
+        visit(ast, 'code', (node, index, parent) => {
+            const { value, lang } = node;
+
+            if (lang !== 'z3') {
+                return;
+            }
+
+            // console.log({ node, index, parent });
+
             parent.children.splice(
                 index,
                 1,
                 {
                     type: 'jsx',
-                    value: `<MyCodeBlock
-                        code="${value}"
-                    />`
+                    // TODO: encode the source into jsx tree
+                    value: `<Z3CodeBlock
+                        code="${value}"/>`
                 }
             )
         });

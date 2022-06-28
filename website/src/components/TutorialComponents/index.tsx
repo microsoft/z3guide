@@ -11,7 +11,7 @@ const Output = ({ msg }) => {
   );
 };
 
-export default function MyCodeBlock ({ code }) {
+export default function Z3CodeBlock ({ code }) {
   const [count, setCount] = useState(0);
   const handleClick = () => {
     if (count > 0) {
@@ -26,7 +26,6 @@ export default function MyCodeBlock ({ code }) {
       <button onClick={handleClick}>{buttonTxt}</button>
       <CodeBlock
         language="lisp"
-        title="Z3 code example with lisp syntax highlighting"
         showLineNumbers
       >
         {code}

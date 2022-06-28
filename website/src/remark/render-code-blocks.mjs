@@ -35,9 +35,9 @@ export default function plugin(options) {
                 1,
                 {
                     type: 'jsx',
-                    // TODO: encode the source into jsx tree
-                    value: `<Z3CodeBlock
-                        code="${value}"/>`
+                    // TODO: encode the source into jsx tree to avoid XSS?
+                    value: `${`<Z3CodeBlock
+                        code={\`${value}\`}/>`}`
                 }
             )
         });

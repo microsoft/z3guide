@@ -12,7 +12,7 @@ async function createConfig() {
 
   let linkToCommit = '';
   if (repo && sha) {
-    linkToCommit = `<a href={https://github.com/${repo}/commit/${sha}} target="_blank" rel="noopener noreferrer">${sha.slice(0, 8)}</a> | `
+    linkToCommit = `<a href=https://github.com/${repo}/commit/${sha} target="_blank" rel="noopener noreferrer">${sha.slice(0, 8)}</a> | `
   }
 
   /** @type {import('@docusaurus/types').Config} */

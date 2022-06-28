@@ -1,7 +1,7 @@
 ## hi
 
 ```z3
-; some z3 code involving quotes
+;; some z3 code involving quotes
 (declare-const a String)
 (declare-const b String)
 (assert (= (str.++ b a) (str.++ "abc" b)))
@@ -12,4 +12,8 @@
 ```z3
 // test code for JS code injection (looks like it doesn't go thru?)
 <img src='' onerror='alert("hi")'></img>
+```
+
+```z3
+;; testing quote symbols ``''""
 ```

@@ -30,14 +30,14 @@ export default function plugin(options) {
 
             // console.log({ node, index, parent });
 
+            const val = JSON.stringify({code: value});
             parent.children.splice(
                 index,
                 1,
                 {
                     type: 'jsx',
                     // TODO: encode the source into jsx tree to avoid XSS?
-                    value: `${`<Z3CodeBlock
-                        code={\`${value}\`}/>`}`
+                    value: `<Z3CodeBlock input={${JSON.stringify({code: value})}} />`
                 }
             )
         });

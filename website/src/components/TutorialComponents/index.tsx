@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import CodeBlock from "@theme/CodeBlock";
 
 const Output = ({ msg }) => {
@@ -11,7 +11,7 @@ const Output = ({ msg }) => {
   );
 };
 
-export default function Z3CodeBlock ({ code }) {
+export default function Z3CodeBlock({ input }) {
   const [count, setCount] = useState(0);
   const handleClick = () => {
     if (count > 0) {
@@ -28,7 +28,7 @@ export default function Z3CodeBlock ({ code }) {
         language="lisp"
         showLineNumbers
       >
-        {code}
+        {input.code}
       </CodeBlock>
       {count > 0 ? <Output msg="Some output" /> : <div />}
     </div>

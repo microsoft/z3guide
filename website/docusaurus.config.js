@@ -14,7 +14,7 @@ async function createConfig() {
     tagline: 'Learn Z3 online!',
     url: 'https://microsoft.github.io/',
     baseUrl: '/rise4fun/',
-    onBrokenLinks: 'throw',
+    onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
 

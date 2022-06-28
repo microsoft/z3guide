@@ -11,7 +11,7 @@ export default function plugin(options) {
     const transformer = async (ast) => {
         /** @type {import("unified").Transformer} */
 
-        console.log({ ast });
+        // console.log({ ast });
         visit(ast, 'root', (node) => {
             node.children.unshift(
                 {

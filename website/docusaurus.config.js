@@ -6,8 +6,16 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 
 async function createConfig() {
-  /** @type {import('@docusaurus/types').Config} */
 
+  const repo = process.env.RISE4FUN_GITHUB_REPOSITORY;
+  const sha = process.env.RISE4FUN_GITHUB_SHA;
+
+  let linkToCommit = '';
+  if (repo && sha) {
+    linkToCommit = `<a href={https://github.com/${repo}/commit/${sha}} target="_blank" rel="noopener noreferrer">${sha.slice(0, 8)}</a> | `
+  }
+
+  /** @type {import('@docusaurus/types').Config} */
   // where information such as course title, description etc. are configured
   const config = {
     title: 'RiSE4Fun',
@@ -80,34 +88,58 @@ async function createConfig() {
           style: 'dark',
           links: [
             {
-              title: 'Docs',
+              title: 'Learn Z3',
               items: [
                 {
                   label: 'Tutorial',
                   to: '/docs/intro',
                 },
-              ],
-            },
-            {
-              title: 'Community',
-              items: [
                 {
-                  label: 'Twitter',
-                  href: 'https://twitter.com/RiSE_MSR',
+                  label: 'Programming Z3 in Python',
+                  href: 'https://theory.stanford.edu/~nikolaj/programmingz3.html',
                 },
+                {
+                  label: 'Z3 on GitHub',
+                  href: 'https://github.com/Z3Prover/z3'
+                }
               ],
             },
             {
-              title: 'More',
+              title: 'Stay Connected',
               items: [
                 {
                   label: 'GitHub',
                   href: 'https://github.com/microsoft/rise4fun',
                 },
+                {
+                  label: 'Twitter',
+                  href: 'https://twitter.com/RiSE_MSR',
+                },
+                {
+                  label: 'RiSE @ MSR',
+                  href: 'https://www.microsoft.com/en-us/research/group/research-software-engineering-rise/',
+                }
               ],
             },
+            {
+              title: 'Legal',
+              items: [
+                {
+                  label: 'Privacy & Cookies',
+                  href: 'https://go.microsoft.com/fwlink/?LinkId=521839',
+                },
+                {
+                  label: 'Terms of Use',
+                  href: 'https://www.microsoft.com/en-us/legal/intellectualproperty/copyright',
+                },
+                {
+                  label: 'Trademarks',
+                  href: 'https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general'
+                }
+              ]
+            }
           ],
-          copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+          copyright: `${linkToCommit}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
         },
         prism: {
           theme: lightCodeTheme,
@@ -118,6 +150,8 @@ async function createConfig() {
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
+
+
   return config;
 }
 

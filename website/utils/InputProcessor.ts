@@ -14,6 +14,8 @@ export default class InputProcessor {
     /**
      * Check if hash exists
      */
+
+    // TODO: this can be factored out
     public async process(input: string): Promise<{ [key: string]: any }> {
         // hash via sha1
         return this.getOutput(input);
@@ -44,12 +46,34 @@ export default class InputProcessor {
                 output = output.concat(await Z3.eval_smtlib2_string(ctx, item));
             }
 
+            // TODO: check no output / sat / unsat / timeout
+            switch (output) {
+                case "":
+                    {
+                        // no output nor error
+                    }
+
+                case "sat":
+                    {
+                        
+                    }
+
+                case "unsat":
+                    {
+
+                    }
+
+                default:
+                    break;
+            }
+
+
+
             const result = {
                 status: 0,
                 output: output
             };
 
-            // TODO: check sat / unsat / timeout
 
 
             // write to file

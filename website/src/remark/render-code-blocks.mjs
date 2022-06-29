@@ -44,6 +44,7 @@ async function getOutput(input) {
     }
     // code based on https://github.com/ViRb3/z3-wasm/blob/master/src/main.js
 
+    /*
     const Z3 = await initializeZ3();
 
     // done on every snippet
@@ -58,10 +59,12 @@ async function getOutput(input) {
         output = output.concat(await Z3.eval_smtlib2_string(ctx, item));
     }
 
+    */
 
     const result = {
         status: 0,
-        output: output
+        // output: output
+        output: hash
     };
 
 
@@ -104,12 +107,11 @@ export default function plugin(options) {
 
             promises.push(async () => {
                 console.log(`num promises: ${promises.length}; `);
-                const output = await getOutput(value);
-                console.log(output);
+                const result = await getOutput(value);
 
                 // console.log({ node, index, parent });
 
-                const val = JSON.stringify({ code: value });
+                const val = JSON.stringify({ code: value, result: result });
                 parent.children.splice(
                     index,
                     1,

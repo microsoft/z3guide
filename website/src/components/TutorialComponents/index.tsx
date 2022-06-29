@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import CodeBlock from "@theme/CodeBlock";
+import { getInputUtilityClass } from '@mui/material';
 
-const Output = ({ msg }) => {
+const Output = ({ result }) => {
+  const success = result.status === 0;
   return (
     <pre>
-      <b>Output: </b>
-      {msg}
+      <b>{success ? "Output: " : "Error: "}</b>
+      {success ? result.output : "Z3 failed" }
       {"\n"}
     </pre>
   );
@@ -13,6 +15,7 @@ const Output = ({ msg }) => {
 
 export default function Z3CodeBlock({ input }) {
   const [count, setCount] = useState(0);
+  const { code, result } = input;
   const handleClick = () => {
     if (count > 0) {
       setCount(count - 1);
@@ -28,9 +31,9 @@ export default function Z3CodeBlock({ input }) {
         language="lisp"
         showLineNumbers
       >
-        {input.code}
+        {code}
       </CodeBlock>
-      {count > 0 ? <Output msg="Some output" /> : <div />}
+      {count > 0 ? <Output result={result} /> : <div />}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import visit from 'unist-util-visit';
 import pkg from 'fs-extra';
 const { readJson, writeJson, ensureDir } = pkg;
 import { createHash } from 'crypto';
-import { init } from 'z3-solver/build/wrapper.js';
+import { init } from 'z3-solver/build/node-wrapper.js';
 import initZ3 from 'z3-solver/build/z3-built.js';
 // reference: https://github.com/ViRb3/z3-wasm/blob/master/src/main.js
 
@@ -14,14 +14,14 @@ import initZ3 from 'z3-solver/build/z3-built.js';
 let _initializeZ3Promise
 async function initializeZ3() {
     if (!_initializeZ3Promise)
-        _initializeZ3Promise = async () => {
+        _initializeZ3Promise = (async () => {
             const mod = await initZ3({
                 locateFile: (f) => f,
                 mainScriptUrlOrBlob: "z3-built.js",
             });
             const { Z3 } = await init(mod);
             return Z3
-        }
+        })();
     return _initializeZ3Promise;
 }
 
@@ -44,7 +44,7 @@ async function getOutput(input) {
     }
     // code based on https://github.com/ViRb3/z3-wasm/blob/master/src/main.js
 
-    const Z3 = await initializeZ3()
+    const Z3 = await initializeZ3();
 
     // done on every snippet
     const cfg = Z3.mk_config();
@@ -103,6 +103,7 @@ export default function plugin(options) {
             }
 
             promises.push(async () => {
+                console.log(`num promises: ${promises.length}; `);
                 const output = await getOutput(value);
                 console.log(output);
 
@@ -115,13 +116,15 @@ export default function plugin(options) {
                     {
                         type: 'jsx',
                         // TODO: encode the source into jsx tree to avoid XSS?
-                        value: `<Z3CodeBlock input={${JSON.stringify({ code: value })}} />`
+                        value: `<Z3CodeBlock input={${val}} />`
                     }
                 )
             })
 
         });
-        await Promise.all(promises);
+        console.log(`num promises: ${promises.length}`);
+
+        await Promise.all(promises.map(p => p()));
     };
     return transformer;
 }

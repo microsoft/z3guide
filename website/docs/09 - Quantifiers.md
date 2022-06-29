@@ -1,671 +1,7 @@
 ---
-sidebar_position: 1
+title: Quantifiers
+sidebar_position: 9
 ---
-
-# Tutorial Intro 
-
-Guide
-
-Getting Started with Z3 A Guide
-================================
-
-Be sure to follow along with the examples by clicking the edit link in the corner. See what the tool says, try your own formulas, and experiment!
-
-Introduction
-------------
-
-Z3 is a state-of-the art theorem prover from Microsoft Research. It can be used to check the satisfiability of logical formulas over one or more theories. Z3 offers a compelling match for software analysis and verification tools, since several common software constructs map directly into supported theories.
-
-The main objective of the tutorial is to introduce the reader on how to use Z3 effectively for logical modeling and solving. The tutorial provides some general background on logical modeling, but we have to defer a full introduction to first-order logic and decision procedures to text-books.
-
-Z3 is a low level tool. It is best used as a component in the context of other tools that require solving logical formulas. Consequently, Z3 exposes a number of API facilities to make it convenient for tools to map into Z3, but there are no stand-alone editors or user-centric facilities for interacting with Z3. The language syntax used in the front ends favor simplicity in contrast to linguistic convenience.
-
-Basic Commands
---------------
-
-The Z3 input format is an extension of the one defined by the [SMT-LIB 2.0 standard](httpwww.smtlib.org). A Z3 script is a sequence of commands. The help command displays a list of all available commands. The command echo displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command declare-const declares a constant of a given type (aka sort). The command declare-fun declares a function. In the following example, we declared a function that receives an integer and a boolean, and returns an integer.
-
-```
-(echo starting Z3...)
-(declare-const a Int)
-(declare-fun f (Int Bool) Int)
-```
-
-The command assert adds a formula into the Z3 internal stack. We say the set of formulas in the Z3 stack is satisfiable if there is an interpretation (for the user declared constants and functions) that makes all asserted formulas true.
-
-```
-(declare-const a Int)
-(declare-fun f (Int Bool) Int)
-(assert ( a 10))
-(assert ( (f a true) 100))
-(check-sat)
-```
-
-The first asserted formula states that the constant a must be greater than 10. The second one states that the function f applied to a and true must return a value less than 100. The command check-sat determines whether the current formulas on the Z3 stack are satisfiable or not. If the formulas are satisfiable, Z3 returns sat. If they are not satisfiable (i.e., they are unsatisfiable), Z3 returns unsat. Z3 may also return unknown when it can't determine whether a formula is satisfiable or not.
-
-When the command check-sat returns sat, the command get-model can be used to retrieve an interpretation that makes all formulas on the Z3 internal stack true.
-
-```
-(declare-const a Int)
-(declare-fun f (Int Bool) Int)
-(assert ( a 10))
-(assert ( (f a true) 100))
-(check-sat)
-(get-model)
-```
-
-The interpretation is provided using definitions. For example, the definition
-
->  define-fun a () Int [val])
-
-states that the value of a in the model is [val]. The definition
-
-> (define-fun f ((x!1 Int) (x!2 Bool)) Int
->    ...
-> )
-
-is very similar to a function definition used in programming languages. In this example, x1 and x2 are the arguments of the function interpretation created by Z3. For this simple example, the definition of f is based on ite's (aka if-then-elses or conditional expressions). For example, the expression
-
-> (ite (and (= x!1 11) (= x!2 false)) 21 0)
-
-
-evaluates (returns) 21 when x!1 is equal to 11, and x!2 is equal to false. Otherwise, it returns 0.
-
-### Using Scopes
-
-In some applications, we want to explore several similar problems that share several definitions and assertions. We can use the commands push and pop for doing that. Z3 maintains a global stack of declarations and assertions. The command push creates a new scope by saving the current stack size. The command pop removes any assertion or declaration performed between it and the matching push. The check-sat and get-assertions commands always operate on the content of the global stack.
-
-In the following example, the command (assert p) signs an error because the pop command removed the declaration for p. If the last pop command is removed, then the error is corrected.
-
-```
-(declare-const x Int)
-(declare-const y Int)
-(declare-const z Int)
-(push)
-(assert (= (+ x y) 10))
-(assert (= (+ x ( 2 y)) 20))
-(check-sat)
-(pop) ; remove the two assertions
-(push) 
-(assert (= (+ ( 3 x) y) 10))
-(assert (= (+ ( 2 x) ( 2 y)) 21))
-(check-sat)
-(declare-const p Bool)
-(pop)
-(assert p) ; error, since declaration of p was removed from the stack
-```
-The push and pop commands can optionally receive a numeral argument as specifed by the SMT 2 language.
-
-### Configuration
-
-The command set-option is used to configure Z3. Z3 has several options to control its behavior. Some of these options (e.g., produce-proofs) can only be set before any declaration or assertion. We use the reset command to erase all assertions and declarations. After the reset command, all configuration options can be set.
-
-```
-(set-option print-success true) 
-(set-option produce-unsat-cores true) ; enable generation of unsat cores
-(set-option produce-models true) ; enable model generation
-(set-option produce-proofs true) ; enable proof generation
-(declare-const x Int)
-(set-option produce-proofs false) ; error, cannot change this option after a declaration or assertion
-(echo before reset)
-(reset)
-(set-option produce-proofs false) ; ok
-```
-
-The option print-success true is particularly useful when Z3 is being controlled by another application using pipes. In this mode, commands, that otherwise would not print any output, will print success.
-
-### Additional commands
-
-The command (display t) just applies the Z3 pretty printer to the given expression. The command (simplify t) displays a possibly simpler expression equivalent to t. This command accepts many different options, (help simplify) will display all available options.
-
-```
-(declare-const a (Array Int Int))
-(declare-const x Int)
-(declare-const y Int)
-(display (+ x 2 x 1))
-(simplify (+ x 2 x 1))
-(simplify ( (+ x y) (+ x y)))
-(simplify ( (+ x y) (+ x y)) som true) ; put all expressions in sum-of-monomials form.
-(simplify (= x (+ y 2)) arith-lhs true)
-(simplify (= (store (store a 1 2) 4 3)
-             (store (store a 4 3) 1 2)))
-(simplify (= (store (store a 1 2) 4 3)
-             (store (store a 4 3) 1 2))
-          sort-store true)
-(help simplify)
-```
-
-The define-sort command defines a new sort symbol that is an abbreviation for a sort expression. The new sort symbol can be parameterized, in which case the names of the parameters are specified in the command and the sort expression uses the sort parameters. The form of the command is this
-
-> (define-sort [symbol] ([symbol]+) [sort])
-
-The following example defines several abbreviations for sort expressions.
-
-```
-(define-sort Set (T) (Array T Bool))
-(define-sort IList () (List Int))
-(define-sort List-Set (T) (Array (List T) Bool))
-(define-sort I () Int)
-
-(declare-const s1 (Set I))
-(declare-const s2 (List-Set Int))
-(declare-const a I)
-(declare-const l IList)
-
-(assert (= (select s1 a) true))
-(assert (= (select s2 l) false))
-(check-sat)
-(get-model)
-```
-
-
-Propositional Logic
--------------------
-
-The pre-defined sort Bool is the sort (type) of all Boolean propositional expressions. Z3 supports the usual Boolean operators and, or, xor, not, = (implication), ite (if-then-else). Bi-implications are represented using equatity =. The following example shows how to prove that if p implies q and q implies r, then p implies r. We accomplish that by showing that the negation is unsatisfiable. The command define-fun is used to define a macro (aka alias). In this example, conjecture is an alias for the conjecture we want to prove.
-
-```
-(declare-const p Bool)
-(declare-const q Bool)
-(declare-const r Bool)
-(define-fun conjecture () Bool
-	(= (and (= p q) (= q r))
-		(= p r)))
-(assert (not conjecture))
-(check-sat)
-``` 
-
-### Satisfiability and Validity
-
-A formula F is valid if F always evaluates to true for any assignment of appropriate values to its uninterpreted function and constant symbols. A formula F is satisfiable if there is some assignment of appropriate values to its uninterpreted function and constant symbols under which F evaluates to true. Validity is about finding a proof of a statement; satisfiability is about finding a solution to a set of constraints. Consider a formula F with some uninterpreted constants, say a and b. We can ask whether F is valid, that is whether it is always true for any combination of values for a and b. If F is always true, then not F is always false, and then not F will not have any satisfying assignment; that is, not F is unsatisfiable. That is, F is valid precisely when not F is not satisfiable (is unsatisfiable). Alternately, F is satisfiable if and only if not F is not valid (is invalid). Z3 finds satisfying assignments (or report that there are none). To determine whether a formula F is valid, we ask Z3 whether not F is satisfiable. Thus, to check the deMorgan's law is valid (i.e., to prove it), we show its negation to be unsatisfiable.
-
-```
-(declare-const a Bool)
-(declare-const b Bool)
-(define-fun demorgan () Bool
-    (= (and a b) (not (or (not a) (not b)))))
-(assert (not demorgan))
-(check-sat)
-```
-
-Uninterpreted functions and constants
--------------------------------------
-
-The basic building blocks of SMT formulas are constants and functions. Constants are just functions that take no arguments. So everything is really just a function.
-
-```
-(declare-fun f (Int) Int)
-(declare-fun a () Int) ; a is a constant
-(declare-const b Int) ; syntax sugar for (declare-fun b () Int)
-(assert ( a 20))
-(assert ( b a))
-(assert (= (f 10) 1))
-(check-sat)
-(get-model)
-```
-
-Unlike programming languages, where functions have side-effects, can throw exceptions, or never return, functions in classical first-order logic have no side-effects and are total. That is, they are defined on all input values. This includes functions, such as division.
-
-Function and constant symbols in pure first-order logic are _uninterpreted_ or _free_, which means that no a priori interpretation is attached. This is in contrast to functions belonging to the signature of theories, such as arithmetic where the function + has a fixed standard interpretation (it adds two numbers). Uninterpreted functions and constants are maximally flexible; they allow any interpretation that is consistent with the constraints over the function or constant.
-
-To illustrate uninterpreted functions and constants let us introduce an (uninterpreted) sort A, and the constants x, y ranging over A. Finally let f be an uninterpreted function that takes one argument of sort A and results in a value of sort A. The example illustrates how one can force an interpretation where f applied twice to x results in x again, but f applied once to x is different form x.
-
-```
-(declare-sort A)
-(declare-const x A)
-(declare-const y A)
-(declare-fun f (A) A)
-(assert (= (f (f x)) x))
-(assert (= (f x) y))
-(assert (not (= x y)))
-(check-sat)
-(get-model)
-```
-
-The resulting model introduces abstract values for the elements in A, because the sort A is uninterpreted. The interpretation for f in the model toggles between the two values for x and y, which are different.
-
-Arithmetic
-----------
-
-Z3 has builtin support for integer and real constants. This two types should not be confused with machine integers (32-bit or 64-bit) and floating point numbers. These two types (sorts) represent the mathematical integers and reals. The command declare-const is used to declare integer and real constants.
-
-```
-(declare-const a Int)
-(declare-const b Int)
-(declare-const c Int)
-(declare-const d Real)
-(declare-const e Real)
-```
-
-
-After constants are declared, the user can assert.smt formulas containing these constants. The formulas contain arithmetic operators such as +, -, , and so on. The command check-sat will instruct Z3 to try to find an interpretation for the declared constants that makes all formulas true. The interpretation is basically assigning a number to each constant. If such interpretation exists, we say it is a model for the asserted formulas. The command get-model displays the model built by Z3.
-
-```
-(declare-const a Int)
-(declare-const b Int)
-(declare-const c Int)
-(declare-const d Real)
-(declare-const e Real)
-(assert ( a (+ b 2)))
-(assert (= a (+ ( 2 c) 10)))
-(assert (= (+ c b) 1000))
-(assert (= d e))
-(check-sat)
-(get-model)
-```
-
-Real constants should contain a decimal point. Unlike most programming languages, Z3 will not convert automatically integers into reals and vice-versa. The function to-real can be used to convert an integer expression into a real one.
-
-```
-(declare-const a Int)
-(declare-const b Int)
-(declare-const c Int)
-(declare-const d Real)
-(declare-const e Real)
-(assert ( e (+ (to_real (+ a b)) 2.0)))
-(assert (= d (+ (to_real c) 0.5)))
-(assert ( a b))
-(check-sat)
-(get-model)
-```
-
-### Nonlinear arithmetic
-
-We say a formula is nonlinear if it contains expressions of the form ( t s) where t and s are not numbers. Nonlinear real arithmetic is very expensive, and Z3 is not complete for this kind of formula. The command check-sat may return unknown or loop. Nonlinear integer arithmetic is undecidable there is no procedure that is correct and terminates (for every input) with a sat or unsat answer. Yes, it is impossible to build such procedure. Note that, this does not prevent Z3 from returning an answer for many nonlinear problems. The real limit is that there will always be a nonlinear integer arithmetic formula that it will fail produce an answer.
-
-```
-(declare-const a Int)
-(assert ( ( a a) 3))
-(check-sat)
-(get-model)
-
-(echo Z3 does not always find solutions to non-linear problems)
-(declare-const b Real)
-(declare-const c Real)
-(assert (= (+ ( b b b) ( b c)) 3.0))
-(check-sat)
-
-(echo yet it can show unsatisfiabiltiy for some nontrivial nonlinear problems...)
-(declare-const x Real)
-(declare-const y Real)
-(declare-const z Real)
-(assert (= ( x x) (+ x 2.0)))
-(assert (= ( x y) x))
-(assert (= ( (- y 1.0) z) 1.0))
-(check-sat)
-
-(reset)
-(echo When presented only non-linear constraints over reals, Z3 uses a specialized complete solver)
-(declare-const b Real)
-(declare-const c Real)
-(assert (= (+ ( b b b) ( b c)) 3.0))
-(check-sat)
-(get-model)
-```
-
-### Division
-
-Z3 also has support for division, integer division, modulo and remainder operators. Internally, they are all mapped to multiplication.
-
-```
-(declare-const a Int)
-(declare-const r1 Int)
-(declare-const r2 Int)
-(declare-const r3 Int)
-(declare-const r4 Int)
-(declare-const r5 Int)
-(declare-const r6 Int)
-(assert (= a 10))
-(assert (= r1 (div a 4))) ; integer division
-(assert (= r2 (mod a 4))) ; mod
-(assert (= r3 (rem a 4))) ; remainder
-(assert (= r4 (div a (- 4)))) ; integer division
-(assert (= r5 (mod a (- 4)))) ; mod
-(assert (= r6 (rem a (- 4)))) ; remainder
-(declare-const b Real)
-(declare-const c Real)
-(assert (= b ( c 3.0)))
-(assert (= c 20.0))
-(check-sat)
-(get-model)
-```
-
-In Z3, division by zero is allowed, but the result is not specified. Division is not a partial function. Actually, in Z3 all functions are total, although the result may be underspecified in some cases like division by zero.
-
-```
-(declare-const a Real)
-; The following formula is satisfiable since division by zero is not specified.
-(assert (= ( a 0.0) 10.0)) 
-(check-sat)
-(get-model)
-
-; Although division by zero is not specified, division is still a function.
-; So, ( a 0.0) cannot evaluated to 10.0 and 2.0.
-(assert (= ( a 0.0) 2.0)) 
-(check-sat)
-```
-
-If you are not happy with this behavior, you may use ite (if-then-else) operator to guard every division, and assign whatever intepretation you like to the division by zero. This example uses define-fun constructor to create a new operator mydiv. This is essentially a macro, and Z3 will expand its definition for every application of mydiv.
-
-```
-; defining my own division operator where x0.0 == 0.0 for every x.
-(define-fun mydiv ((x Real) (y Real)) Real
-  (if (not (= y 0.0))
-      ( x y)
-      0.0))
-(declare-const a Real)
-(declare-const b Real)
-(assert (= (mydiv a b) 1.0))
-(assert (= b 0.0))
-(check-sat)
-```
-
-Bitvectors
-----------
-
-Modern CPUs and main-stream programming languages use arithmetic over fixed-size bit-vectors. The theory of bit-vectors allows modeling the precise semantics of unsigned and of signed two-complements arithmetic. There are a large number of supported functions and relations over bit-vectors. They are summarized on Z3's documentation link here! of the binary APIs and they are summarized on the SMT-LIB link here!  web-site. We will not try to give a comprehensive overview here, but touch on some of the main features.
-
-In contrast to programming languages, such as C, C++, C#, Java, there is no distinction between signed and unsigned bit-vectors as numbers. Instead, the theory of bit-vectors provides special signed versions of arithmetical operations where it makes a difference whether the bit-vector is treated as signed or unsigned.
-
-Z3 supports Bitvectors of arbitrary size. (_ BitVec n) is the sort of bitvectors whose length is n. Bitvector literals may be defined using binary, decimal and hexadecimal notation. In the binary and hexadecimal cases, the bitvector size is inferred from the number of characters. For example, the bitvector literal #b010 in binary format is a bitvector of size 3, and the bitvector literal #x0a0 in hexadecimal format is a bitvector of size 12. The size must be specified for bitvector literals in decimal format. For example, (_ bv10 32) is a bitvector of size 32 that representes the numeral 10. By default, Z3 display bitvectors in hexadecimal format if the bitvector size is a multiple of 4, and in binary otherwise. The command (set-option pp.bv-literals false) can be used to force Z3 to display bitvector literals in decimal format.
-
-```
-(display #b0100)
-(display (_ bv20 8))
-(display (_ bv20 7))
-(display #x0a) 
-(set-option pp.bv-literals false)
-(display #b0100)
-(display (_ bv20 8))
-(display (_ bv20 7))
-(display #x0a) 
-```
-
-### Basic Bitvector Arithmetic
-```
-(simplify (bvadd #x07 #x03)) ; addition
-(simplify (bvsub #x07 #x03)) ; subtraction
-(simplify (bvneg #x07)) ; unary minus
-(simplify (bvmul #x07 #x03)) ; multiplication
-(simplify (bvurem #x07 #x03)) ; unsigned remainder
-(simplify (bvsrem #x07 #x03)) ; signed remainder
-(simplify (bvsmod #x07 #x03)) ; signed modulo
-(simplify (bvshl #x07 #x03)) ; shift left
-(simplify (bvlshr #xf0 #x03)) ; unsigned (logical) shift right
-(simplify (bvashr #xf0 #x03)) ; signed (arithmetical) shift right
-```
-### Bitwise Operations
-
- ```
-(simplify (bvor #x6 #x3))   ; bitwise or
-(simplify (bvand #x6 #x3))  ; bitwise and
-(simplify (bvnot #x6)) ; bitwise not
-(simplify (bvnand #x6 #x3)) ; bitwise nand
-(simplify (bvnor #x6 #x3)) ; bitwise nor
-(simplify (bvxnor #x6 #x3)) ; bitwise xnor
-```
-We can prove a bitwise version of deMorgan's law
-```
-(declare-const x (_ BitVec 64))
-(declare-const y (_ BitVec 64))
-(assert (not (= (bvand (bvnot x) (bvnot y)) (bvnot (bvor x y)))))
-(check-sat)
-```
-
-Let us illustrate a simple property of bit-wise arithmetic. There is a fast way to check that fixed size numbers are powers of two. It turns out that a bit-vector x is a power of two or zero if and only if x & (x - 1) is zero, where & represents the bitwise and. We check this for four bits below.
-
-```
-(define-fun is-power-of-two ((x (_ BitVec 4))) Bool 
-  (= #x0 (bvand x (bvsub x #x1))))
-(declare-const a (_ BitVec 4))
-(assert 
- (not (= (is-power-of-two a) 
-         (or (= a #x0) 
-             (= a #x1) 
-             (= a #x2) 
-             (= a #x4) 
-             (= a #x8)))))
-(check-sat)
-```
-
-### Predicates over Bitvectors
-
-```
-(simplify (bvule #x0a #xf0))  ; unsigned less or equal
-(simplify (bvult #x0a #xf0))  ; unsigned less than
-(simplify (bvuge #x0a #xf0))  ; unsigned greater or equal
-(simplify (bvugt #x0a #xf0))  ; unsigned greater than
-(simplify (bvsle #x0a #xf0))  ; signed less or equal
-(simplify (bvslt #x0a #xf0))  ; signed less than
-(simplify (bvsge #x0a #xf0))  ; signed greater or equal
-(simplify (bvsgt #x0a #xf0))  ; signed greater than
-```
-
-Signed comparison, such as bvsle, takes the sign bit of bitvectors into account for comparison, while unsigned comparison treats the bitvector as unsigned (treats the bitvector as a natural number).
-
-```
-(declare-const a (_ BitVec 4))
-(declare-const b (_ BitVec 4))
-(assert (not (= (bvule a b) (bvsle a b))))
-(check-sat)
-(get-model)
-```
-
-Arrays
-------
-
-As part of formulating a programme of a mathematical theory of computation McCarthy proposed a _basic_ theory of arrays as characterized by the select-store axioms. The expression (select a i) returns the value stored at position i of the array a; and (store a i v) returns a new array identical to a, but on position i it contains the value v.
-
-Z3 contains a decision procedure for the basic theory of arrays. By default, Z3 assumes that arrays are extensional over select. In other words, Z3 also enforces that if two arrays agree on all reads, then the arrays are equal.
-
-It also contains various extensions for operations on arrays that remain decidable and amenable to efficient saturation procedures (here efficient means, with an NP-complete satisfiability complexity). We describe these extensions in the following using a collection of examples. Additional background on these extensions is available in the paper [Generalized and Efficient Array Decision Procedures](httpresearch.microsoft.comen-usumpeopleleonardofmcad09.pdf).
-
-### Select and Store
-
-Let us first check a basic property of arrays. Suppose a1 is an array of integers, then the constraint (and (= (select a1 x) x) (= (store a1 x y) a1)) is satisfiable for an array that contains an index x that maps to x, and when x = y (because the first equality forced the range of x to be x). We can check this constraint.
-
-```
-(declare-const x Int)
-(declare-const y Int)
-(declare-const z Int)
-(declare-const a1 (Array Int Int))
-(declare-const a2 (Array Int Int))
-(declare-const a3 (Array Int Int))
-(assert (= (select a1 x) x))
-(assert (= (store a1 x y) a1))
-(check-sat)
-(get-model)
-```
-
-On the other hand, the constraints become unsatisfiable when asserting (not (= x y)).
-
-```
-(declare-const x Int)
-(declare-const y Int)
-(declare-const z Int)
-(declare-const a1 (Array Int Int))
-(declare-const a2 (Array Int Int))
-(declare-const a3 (Array Int Int))
-(assert (= (select a1 x) x))
-(assert (= (store a1 x y) a1))
-(assert (not (= x y)))
-(check-sat)
-```
-
-### Constant Arrays
-
-The array that maps all indices to some fixed value can be specified in Z3 using the const construct. It takes one value from the range type of the array and creates an array. Z3 cannot infer what kind of array must be returned by the const construct by just inspecting the argument type. Thus, a qualified identifier (as const (Array T1 T2)) must be used. The following example defines a constant array containing only ones.
-
-```
-(declare-const all1 (Array Int Int))
-(declare-const a Int)
-(declare-const i Int)
-(assert (= all1 ((as const (Array Int Int)) 1)))
-(assert (= a (select all1 i)))
-(check-sat)
-(get-model)
-(assert (not (= a 1)))
-(check-sat)
-```
-
-### Array models
-
-Models provide interpretations of the uninterpreted (aka free) constants and functions that appear in the satisfiable formula. An interpretation for arrays is very similar to the interpretation of a function. Z3 uses the construct (_ as-array f) to give the interpretation for arrays. If the array a is equal to (_ as-array f), then for every index i, (select a i) is equal to (f i). In the previous example, Z3 creates the auxiliary function k!0 to assign an interpretation to the array constant all1.
-
-### Mapping Functions on Arrays
-
-In the following, we will simulate basic Boolean algebra (set theory) using the array theory extensions in Z3. Z3 provides a parametrized map function on arrays. It allows applying arbitrary functions to the range of arrays. The following example illustrates how to use the map function.
-
-```
-(define-sort Set (T) (Array T Bool))
-(declare-const a (Set Int))
-(declare-const b (Set Int))
-(declare-const c (Set Int))
-(declare-const x Int)
-(push)
-(assert (not (= ((_ map and) a b) ((_ map not) ((_ map or) ((_ map not) b) ((_ map not) a))))))
-(check-sat)
-(pop)
-(push) 
-(assert (and (select ((_ map and) a b) x) (not (select a x))))
-(check-sat)
-(pop)
-(push) 
-(assert (and (select ((_ map or) a b) x) (not (select a x))))
-(check-sat)
-(get-model)
-(assert (and (not (select b x))))
-(check-sat)
-```
-
-### Bags as Arrays
-
-We can use the parametrized map function to encode finite sets and finite bags. Finite bags can be modeled similarly to sets. A bag is here an array that maps elements to their multiplicity. Main bag operations include union, obtained by adding multiplicity, intersection, by taking the minimum multiplicity, and a dual join operation that takes the maximum multiplicity. In the following example, we define the bag-union using map. Notice that we need to specify the full signature of + since it is an overloaded operator.
-
-```
-(define-sort A () (Array Int Int Int))
-(define-fun bag-union ((x A) (y A)) A
-  ((_ map (+ (Int Int) Int)) x y))
-(declare-const s1 A)
-(declare-const s2 A)
-(declare-const s3 A)
-(assert (= s3 (bag-union s1 s2)))
-(assert (= (select s1 0 0) 5))
-(assert (= (select s2 0 0) 3))
-(assert (= (select s2 1 2) 4))
-(check-sat)
-(get-model)
-```
-
-Datatypes
----------
-
-Algebraic datatypes, known from programming languages such as ML, offer a convenient way for specifying common data structures. Records and tuples are special cases of algebraic datatypes, and so are scalars (enumeration types). But algebraic datatypes are more general. They can be used to specify finite lists, trees and other recursive structures.
-
-### Records
-
-A record is specified as a datatype with a single constructor and as many arguments as record elements. The number of arguments to a record are always the same. The type system does not allow to extend records and there is no record subtyping.
-
-The following example illustrates that two records are equal only if all the arguments are equal. It introduces the parametric type Pair, with constructor mk-pair and two arguments that can be accessed using the selector functions first and second.
-
-```
-(declare-datatypes (T1 T2) ((Pair (mk-pair (first T1) (second T2)))))
-(declare-const p1 (Pair Int Int))
-(declare-const p2 (Pair Int Int))
-(assert (= p1 p2))
-(assert ( (second p1) 20))
-(check-sat)
-(get-model)
-(assert (not (= (first p1) (first p2))))
-(check-sat)
-```
-
-### Scalars (enumeration types)
-
-A scalar sort is a finite domain sort. The elements of the finite domain are enumerated as distinct constants. For example, the sort S is a scalar type with three values A, B and C. It is possible for three constants of sort S to be distinct, but not for four constants.
-
-```
-(declare-datatypes () ((S A B C)))
-(declare-const x S)
-(declare-const y S)
-(declare-const z S)
-(declare-const u S)
-(assert (distinct x y z))
-(check-sat)
-(assert (distinct x y z u))
-(check-sat)
-```
-
-### Recursive datatypes
-
-A recursive datatype declaration includes itself directly (or indirectly) as a component. A standard example of a recursive data-type is the one of lists. A parametric list can be specified in Z3 as
-
-```
-(declare-datatypes (T) ((Lst nil (cons (hd T) (tl Lst)))))
-(declare-const l1 (Lst Int))
-(declare-const l2 (Lst Bool))
-```
-
-The List recursive datatype is builtin in Z3. The empty list is nil, and the constructor insert is used to build new lists. The accessors head and tail are defined as usual.
-
-```
-(declare-const l1 (List Int))
-(declare-const l2 (List Int))
-(declare-const l3 (List Int))
-(declare-const x Int)
-(assert (not (= l1 nil)))
-(assert (not (= l2 nil)))
-(assert (= (head l1) (head l2)))
-(assert (not (= l1 l2)))
-(assert (= l3 (insert x l2)))
-(assert ( x 100))
-(check-sat)
-(get-model)
-(assert (= (tail l1) (tail l2)))
-(check-sat)
-```
-
-In the example above, we also assert that l1 and l2 are not nil. This is because the interpretation of head and tail is underspecified on nil. So then head and tail would not be able to distinguish nil from (insert (head nil) (tail nil)).
-
-### Mutually recursive datatypes
-
-You can also specify mutually recursive datatypes for Z3. We list one example below.
-
-```
-; declare a mutually recursive parametric datatype
-(declare-datatypes (T) ((Tree leaf (node (value T) (children TreeList)))
-                        (TreeList nil (cons (car Tree) (cdr TreeList)))))
-(declare-const t1 (Tree Int))
-(declare-const t2 (Tree Bool))
-; we must use the 'as' construct to distinguish the leaf (Tree Int) from leaf (Tree Bool)
-(assert (not (= t1 (as leaf (Tree Int)))))
-(assert ( (value t1) 20))
-(assert (not (is-leaf t2)))
-(assert (not (value t2)))
-(check-sat)
-(get-model)
-```
-
-In the example above, we have a tree of Booleans and a tree of integers. The leaf constant must return a tree of a specific sort. To specify the result sort, we use the qualified identifier (as leaf (Tree Int)). Note that, we do not need to use a qualified identifer for value, since Z3 can infer the intended declaration using the sort of the argument.
-
-### Z3 will not prove inductive facts
-
-The ground decision procedures for recursive datatypes don't lift to establishing inductive facts. Z3 does not contain methods for producing proofs by induction. This may change in the future. In particular, consider the following example where the function p is true on all natural numbers, which can be proved by induction over Nat. Z3 enters a matching loop as it attempts instantiating the universally quantified implication.
-
-```
-(set-option timeout 2000)
-(declare-datatypes () ((Nat zero (succ (pred Nat)))))
-(declare-fun p (Nat) Bool)
-(assert (p zero))
-(assert (forall ((x Nat)) (implies (p (pred x)) (p x))))
-(assert (not (forall ((x Nat)) (p x))))
-(check-sat)
-(get-info all-statistics)
-```
-
-Quantifiers
------------
-
 Z3 is a _decision procedure_ for the combination of the previous quantifier-free theories. That is, it can answer whether a quantifier-free formula, modulo the theories referenced by the formula, is satisfiable or whether it is unsatisfiable. Z3 also accepts and can work with formulas that use quantifiers. It is no longer a decision procedure for such formulas in general (and for good reasons, as there can be no decision procedure for first-order logic).
 
 Nevertheless, Z3 is often able to handle formulas involving quantifiers. It uses several approaches to handle quantifiers. The most prolific approach is using _pattern-based_ quantifier instantiation. This approach allows instantiating quantified formulas with ground terms that appear in the current search context based on _pattern annotations_ on quantifiers. Another approach is based on _saturation theorem proving_ using a superposition calculus which is a modern method for applying resolution style rules with equalities. The pattern-based instantiation method is quite effective, even though it is inherently incomplete. The saturation based approach is complete for pure first-order formulas, but does not scale as nicely and is harder to predict.
@@ -676,7 +12,7 @@ Z3 also contains a model-based quantifier instantiation component that uses a mo
 
 Suppose we want to model an object oriented type system with single inheritance. We would need a predicate for sub-typing. Sub-typing should be a partial order, and respect single inheritance. For some built-in type constructors, such as for array-of, sub-typing should be monotone.
 
-```
+```z3
 (declare-sort Type)
 (declare-fun subtype (Type Type) Bool)
 (declare-fun array-of (Type) Type)
@@ -704,7 +40,7 @@ The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneere
 
 In the following example, the first two options make sure that Model-based quantifier instantiation and saturation engines are disabled. We also annotate the quantified formula with the pattern (f (g x)). Since there is no ground instance of this pattern, the quantifier is not instantiated, and Z3 fails to show that the formula is unsatisfiable.
 
-```
+```z3
 (set-option smt.auto-config false) ; disable automatic self configuration
 (set-option smt.mbqi false) ; disable model-based quantifier instantiation
 (declare-fun f (Int) Int)
@@ -723,7 +59,7 @@ In the following example, the first two options make sure that Model-based quant
 
 When the more permissive pattern (g x) is used. Z3 proves the formula to be unsatisfiable. More restrive patterns minimize the number of instantiations (and potentially improve performance), but they may also make Z3 less complete.
 
-```
+```z3
 (set-option smt.auto-config false) ; disable automatic self configuration
 (set-option smt.mbqi false) ; disable model-based quantifier instantiation
 (declare-fun f (Int) Int)
@@ -752,7 +88,7 @@ The axiom gets instantiated whenever there is some ground term of the form (subt
 
 Before elaborating on the subtleties, we should address an important first question. What defines the terms that are created during search In the context of most SMT solvers, and of the Simplify theorem prover, terms exist as part of the input formula, they are of course also created by instantiating quantifiers, but terms are also implicitly created when equalities are asserted. The last point means that terms are considered up to congruence and pattern matching takes place modulo ground equalities. We call the matching problem E-matching. For example, if we have the following equalities
 
-```
+```z3
 (set-option smt.auto-config false) ; disable automatic self configuration
 (set-option smt.mbqi false) ; disable model-based quantifier instantiation
 (declare-fun f (Int) Int)
@@ -777,7 +113,7 @@ While E-matching is an NP-complete problem, the main sources of overhead in larg
 
 In some cases, there is no pattern that contains all bound variables and does not contain interpreted symbols. In these cases, we use multi-patterns. In the following example, the quantified formula states that f is injective. This quantified formula is annotated with the multi-pattern (f x) (f y)
 
-```
+```z3
 (declare-sort A)
 (declare-sort B)
 (declare-fun f (A) B)
@@ -796,7 +132,7 @@ In some cases, there is no pattern that contains all bound variables and does no
 
 The quantified formula is instantiated for every pair of occurrences of f. A simple trick allows formulating injectivity of f in such a way that only a linear number of instantiations is required. The trick is to realize that f is injective if and only if it has a partial inverse.
 
-```
+```z3
 (declare-sort A)
 (declare-sort B)
 (declare-fun f (A) B)
@@ -822,7 +158,7 @@ The annotation no-pattern can be used to instrument Z3 not to use a certain sub-
 
 The model-based quantifier instantiation (MBQI) is essentially a counter-example based refinement loop, where candidate models are built and checked. When the model checking step fails, it creates new quantifier instantiations. The models are returned as simple functional programs. In the following example, the model provides an interpretation for function f and constants a and b. One can easily check that the returned model does indeed satisfy the quantifier.
 
-```
+```z3
 (set-option smt.mbqi true)
 (declare-fun f (Int Int) Int)
 (declare-const a Int)
@@ -849,7 +185,7 @@ The effectively propositional class of formulas (aka The Bernays-Schonfinkel cla
 
 Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if x and y are subtypes of z, then x is a subtype of y or y is a subtype of x. The option (set-option model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
 
-```
+```z3
 (set-option smt.mbqi true)
 (set-option model.compact true)
 
@@ -911,7 +247,7 @@ executes (evaluates) the given expression using the produced functional program 
 
 Constraints over sets (Boolean Algebras) can be encoded into this fragment by treating sets as unary predicates and lifting equalities between sets as formula equivalence.
 
-```
+```z3
 (set-option smt.mbqi true)
 (set-option model.compact true)
 
@@ -969,7 +305,7 @@ The array property fragment can encode properties about unidimensional, and is s
 (set-option smt.mbqi true)
 (set-option model.compact true)
 
-```
+```z3
 ;; A0, A1, A2, A3, A4 are arrays from Integers to Integers.
 (declare-fun A0 (Int) Int) (declare-fun A1 (Int) Int)
 (declare-fun A2 (Int) Int) (declare-fun A3 (Int) Int)
@@ -1019,7 +355,7 @@ The array property fragment can encode properties about unidimensional, and is s
 
 The list fragment can encode properties about data-structures such as lists. For each quantified axiom q in this fragment, there is an easy way to satisfy q. More information about this fragment can be found in the paper [Data Structure Specifications via Local Equality Axioms](httpwww.cs.berkeley.edu~neculaPapersverifier-cav05.pdf).
 
-```
+```z3
 (set-option smt.mbqi true)
 ;; Ptr is the pointer sort.
 (declare-sort Ptr)
@@ -1122,7 +458,7 @@ The list fragment can encode properties about data-structures such as lists. For
 
 The essentiallyalmost uninterpreted fragment subsumes the previous fragments, and uses a more relaxed notion of stratification. More information about this fragment can be found in the paper [Complete instantiation for quantified formulas in Satisfiabiliby Modulo Theories.](httpresearch.microsoft.comen-usumpeopleleonardoci.pdf) The model based quantifier instantiation approach used in Z3 is also described in this paper. Stratified data-structures (such as arrays of pointers) can be encoded in this fragment.
 
-```
+```z3
 (set-option smt.mbqi true)
 ;; Ptr is the pointer sort.
 (declare-sort Ptr)
@@ -1223,7 +559,7 @@ The essentiallyalmost uninterpreted fragment subsumes the previous fragments, an
 
 Shifts on streams (or arrays) can also be encoded.
 
-```
+```z3
 (set-option smt.mbqi true)
 ;; f an g are streams
 (declare-fun f (Int) Int)
@@ -1248,7 +584,7 @@ Shifts on streams (or arrays) can also be encoded.
 
 A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formula where the sort of every variable is a bit-vector sort. The QBVF satisfiability problem, is the problem of deciding whether a QBVF is satisfiable modulo the theory of bit-vectors. This problem is decidable because every universal (existental) quantifier can be expanded into a conjunction (disjunction) of potentially exponential, but finite size. A distinguishing feature in QBVF is the support for uninterpreted function and predicate symbols. More information about this fragment can be found in the paper [Efficiently Solving Quantified Bit-Vector Formulas](httpresearch.microsoft.comen-usumpeopleleonardofmcad10.pdf).
 
-```
+```z3
 (set-option smt.mbqi true)
 (define-sort Char () (_ BitVec 8))
 
@@ -1266,7 +602,7 @@ A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formul
 #### Conditional (and Pseudo) Macros
 
 Quantifiers defining macros are also automatically detected by the Model Finder. In the following example, the first three quantifiers are defining f by cases.
-```
+```z3
 (set-option smt.mbqi true)
 (declare-fun f (Int) Int)
 (declare-fun p (Int) Bool)
@@ -1290,7 +626,7 @@ Quantifiers defining macros are also automatically detected by the Model Finder.
 #### My formula is not in any of the fragments above
 
 Even if your formula is not in any of the fragments above. Z3 may still find a model for it. For example, The following simple example is not in the fragments described above.
-```
+```z3
 (set-option smt.mbqi true)
 (declare-fun n () Int)
 (declare-fun a_1 () Int)
@@ -1324,7 +660,7 @@ Even if your formula is not in any of the fragments above. Z3 may still find a m
 (check-sat)
 ```
 The Z3 preprocessor has many options that may improve the performace of the model finder. In the following example, macro-finder will expand quantifiers representing macros at preprocessing time.
-```
+```z3
 (set-option smt.mbqi true)
 (set-option smt.macro-finder true)
 
@@ -1678,7 +1014,7 @@ The Z3 model finder is more effective if the input formula does not contain nest
 
 The following challenge problem from the paper [SEM a system for enumerating models](httpacademic.research.microsoft.comPaper615910.aspx) is proved to be unsatisfiable in less than one second by Z3.
 
-```
+```z3
 (set-option smt.mbqi true)
 (declare-sort S)
 (declare-fun g (S S) S)
@@ -1697,7 +1033,3 @@ The following challenge problem from the paper [SEM a system for enumerating mod
 (assert (distinct (g a (f b a)) (f a (g b a))))
 (check-sat)
 ```
-Conclusion
-----------
-
-Z3 is an efficient theorem prover used in many software testing, analysis and verification applications. In this tutorial, we covered its main capabilities using the textual interface. However, most applications use the Z3 programmatic [API](httpsz3prover.github.ioapihtmlindex.html) to access these features.

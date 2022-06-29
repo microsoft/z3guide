@@ -1,11 +1,13 @@
 
-// const visit = import('unist-util-visit');
 import visit from 'unist-util-visit';
+import InputProcessor from '@site/utils/InputProcessor'; // fails at build
 
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
 
+// declare input processor here
+const inputProcessor = new InputProcessor();
 export default function plugin(options) {
     // console.log({ options });
     const transformer = async (ast) => {
@@ -21,12 +23,15 @@ export default function plugin(options) {
             )
         });
 
-        visit(ast, 'code', (node, index, parent) => {
+        visit(ast, 'code', async (node, index, parent) => {
             const { value, lang } = node;
 
             if (lang !== 'z3') {
                 return;
             }
+
+            const output = await inputProcessor.process(value);
+            console.log(output);
 
             // console.log({ node, index, parent });
 

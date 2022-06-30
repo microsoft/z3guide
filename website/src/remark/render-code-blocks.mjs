@@ -1,11 +1,11 @@
 
 import visit from 'unist-util-visit';
-import pkg from 'fs-extra';
-const { readJson, writeJson, ensureDir } = pkg;
+import fs_extra_pkg from 'fs-extra';
+const { readJson, writeJson, ensureDir } = fs_extra_pkg;
 import { createHash } from 'crypto';
 import { init } from 'z3-solver/build/node-wrapper.js';
 import initZ3 from 'z3-solver/build/z3-built.js';
-// reference: https://github.com/ViRb3/z3-wasm/blob/master/src/main.js
+import z3pkg from 'z3-solver/package.json' assert { type: 'json' };
 
 /**
  * Turns a "```z3" code block into a code block and an output area
@@ -27,11 +27,12 @@ async function initializeZ3() {
 
 
 async function getOutput(input) {
-    // TODO: hash z3 version + input and use as file name
-    // TODO: ${rise4fun engine version + z3 tool version + input}.json
     const hashObj = createHash('sha1');
+    console.log(z3pkg.version);
 
-    const hash = hashObj.update(input).digest('hex');
+    const hash = hashObj.update(input + z3pkg.version).digest('hex');
+    // ${rise4fun engine version + z3 tool version + input}.json
+    // TODO: add rise4fun engine version to the hash
     const path = `./build/solutions/${hash}.json`;
     console.log(hash);
     try {

@@ -1,21 +1,15 @@
+// TODO: factor into an npm package / independent plugin
 
 import visit from 'unist-util-visit';
 import fs_extra_pkg from 'fs-extra';
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
 import { createHash } from 'crypto';
-import { init } from 'z3-solver';
 import z3pkg from 'z3-solver/package.json' assert { type: 'json' };
+import { execSync } from 'child_process';
 
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
-
-let _initializeZ3Promise;
-async function initializeZ3() {
-    if (!_initializeZ3Promise)
-        _initializeZ3Promise = await init();
-    return _initializeZ3Promise;
-}
 
 
 async function getOutput(input) {
@@ -25,7 +19,7 @@ async function getOutput(input) {
     // ${rise4fun engine version + z3 tool version + input}.json
     // TODO: add rise4fun engine version to the hash
     const path = `./build/solutions/${hash}.json`;
-    console.log(hash);
+    // console.log(hash);
     try {
         const data = readJsonSync(path);
         if (data) {
@@ -38,57 +32,32 @@ async function getOutput(input) {
 
     }
 
-    const { em, Z3 } = await initializeZ3();
-
-    // done on every snippet
-    const cfg = Z3.mk_config();
-    const ctx = Z3.mk_context(cfg);
-    Z3.del_config(cfg);
-
     let output = "";
     let error = "";
     let status = 0; // default to be success
 
+    const inputObj = JSON.stringify({ arg: input });
+
+    const command = `node ./src/remark/run-z3.js ${inputObj}`;
+
     try {
-        output = await Z3.eval_smtlib2_string(ctx, input);
-        setTimeout(() => {
-            // TODO this error won't be caught by the `catch` block
-            throw new Error('z3 times out after 500ms');
-        }, 500);
+        output = execSync(command, { timeout: 5000 }).toString();
     } catch (e) {
-        // TODO still get errors of "you cannot run the eval async..."
         error = e.message;
         output = "";
 
-        // when z3 times out
-        if (e.message === 'z3 times out after 500ms') {
-            console.log(`${hash}: ${error}`);
-            status = 2;
-        }
-        // when the wasm-build fails
-        else status = 1;
-    } finally {
-        try {
-            Z3.del_context(ctx);
-            em.PThread.terminateAllThreads();
-        } catch (e) {
-            // supposedly it should not happen, b/c if it fails then there is an error with our code 
-            // however, we might terminate threads when something times out, in which an abort is expected
-            // TODO: way around this?
-            console.log(`z3 aborted`);
-        }
-
+        // TODO: status code for z3 timeout
+        status = 1;
     }
 
-    console.log(`z3 finished: ${hash}, ${status}`);
+    console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
 
     const result = {
-        status: status,
-        hash: hash,
         output: output,
-        error: error
-    };
-
+        error: error,
+        status: status,
+        hash: hash
+    }
 
 
     // write to file
@@ -150,7 +119,7 @@ export default function plugin(options) {
         for (const p of promises) {
             // need to run sync according to Kevin
             await p();
-            console.log(`num promises: ${promises.length}`);
+            // console.log(`num promises: ${promises.length}`);
         }
     };
     return transformer;

@@ -129,15 +129,15 @@ Let us start out with a summary of available string operations.
     <td>Retrieve string encoding of integer <tt>i</tt> (ground rewriting only).</td>
   </tr>
   <tr>
-    <td><tt>(str.< s1 s2)</tt></td>
-    <td>Lexicographic string less than</tt></td>
+    <td><tt>(str.&lt; s1 s2)</tt></td>
+    <td>Lexicographic string less than</td>
   </tr>
   <tr>
-    <td><tt>(str.<= s1 s2)</tt></td>
+    <td><tt>(str.&leq; s1 s2)</tt></td>
     <td>Lexicographic string less or equal to.</td>
   </tr>  
   <tr>
-  <td><tt>(_ char ch)</tt></dt>
+  <td><tt>(_ char ch)</tt></td>
   <td>Unit string from unicode character code.</td>
   </tr>
   <tr>

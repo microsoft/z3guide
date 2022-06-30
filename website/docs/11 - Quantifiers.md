@@ -1012,7 +1012,7 @@ The Z3 model finder is more effective if the input formula does not contain nest
 
 > (set-option smt.pull-nested-quantifiers true)
 
-The following challenge problem from the paper [SEM a system for enumerating models](httpacademic.research.microsoft.comPaper615910.aspx) is proved to be unsatisfiable in less than one second by Z3.
+The following challenge problem from the paper [SEM a system for enumerating models](https://www.ijcai.org/Proceedings/95-1/Papers/039.pdf) is proved to be unsatisfiable in less than one second by Z3.
 
 ```z3
 (set-option smt.mbqi true)

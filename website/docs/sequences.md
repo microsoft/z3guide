@@ -77,8 +77,6 @@ Note that other occurrences of the character <tt>\</tt> are treated as the charc
 The following example shows
 three ways to enter the newline character.
 
-</p>
-
 ```z3
 (define-const a String "\x0a")
 (define-const b String "

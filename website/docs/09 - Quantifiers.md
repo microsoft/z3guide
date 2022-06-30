@@ -1,6 +1,6 @@
 ---
 title: Quantifiers
-sidebar_position: 9
+sidebar_position: 10
 ---
 Z3 is a _decision procedure_ for the combination of the previous quantifier-free theories. That is, it can answer whether a quantifier-free formula, modulo the theories referenced by the formula, is satisfiable or whether it is unsatisfiable. Z3 also accepts and can work with formulas that use quantifiers. It is no longer a decision procedure for such formulas in general (and for good reasons, as there can be no decision procedure for first-order logic).
 

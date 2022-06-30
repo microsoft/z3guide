@@ -1,5 +1,6 @@
 --- 
 title: Strings, Sequences and Regular Expressions
+sidebar_position: 9
 ---
 
 ## Introduction

@@ -1,19 +1,10 @@
-<html>
-<head>
-<title>Strings and Sequences in Z3</title>
-<link rel=StyleSheet href="style.css" type="text/css">
-</head>
-<body>
+Strings and Sequences in Z3
 
 
-<h1>Strings and Sequences in Z3</h1>
-<p style="clear:both;">
-
-</p>
+# Strings and Sequences in Z3
 
 
-
-<h2>Introduction</h2>
+## Introduction
 This section describes Z3's handling of strings, sequences 
 and regular expressions. Z3 offers built-in support for 
 using string constants and dedicated solvers for checking
@@ -39,7 +30,7 @@ constraints over sequences of arbitrary types.
 
 
 
-<h2>Strings</h2>
+## Strings<
 
 <h3>Built-in types and constants</h3>
 The name <tt>String</tt> is a built-in name for the String sort. 
@@ -48,15 +39,15 @@ delimited by quotes. The following example asks whether there are
 strings <tt>a</tt> and <tt>b</tt> that concatenate to <tt>"abc"</tt> 
 followed by <tt>b</tt>.
 
-<pre pref="seq.1">
+```z3
 (declare-const a String)
 (declare-const b String)
 (assert (= (str.++ b a) (str.++ "abc" b)))
 (check-sat)
 (get-model)
-</pre>
+```
 
-<h4>String literals</h4> 
+### String literals
 Z3 follows the proposed SMT-LIB2.5 format for string 
 literals. Thus, strings are enclosed using double quotes. A sequence 
 of two adjacent double quotes within a string literal is used as the 
@@ -65,7 +56,6 @@ corresponds to the string <tt>quote "me" on this</tt>. Other
 characters are treated as part of the string. For example, a newline within a string 
 is treated as a new-line character. 
 
-<p>
 To represent non-ASCII characters Z3 
 treats the sequence <tt>\xHH</tt> where <tt>HH</tt> are two hexa-decimal 
 numerals (using one of the characters, 0-9, a-f, A-F) as an encoding 
@@ -83,7 +73,7 @@ three ways to enter the newline character.
 
 </p>
 
-<pre pref="seq.2">
+```z3
 (define-const a String "\x0a")
 (define-const b String "
 ")
@@ -91,9 +81,9 @@ three ways to enter the newline character.
 (simplify (= a b))
 (simplify (= a c))
 (simplify (str.++ a b c))
-</pre>
+```
 
-<h3>Operations</h3>
+## Operations
 Let us start out with a summary of available string operations.
 
 <table>
@@ -164,25 +154,25 @@ when the offset is outside the range of positions in <tt>s</tt> or <tt>length</t
 </p>
 
 
-<h3>Examples</h3>
+## Examples
 
 Basic string operations
-<pre pref="seq.11">
+```z3
 (simplify (str.++ (str.at "abc" 1) (str.at "abc" 0)))
 (simplify (str.indexof "abcabc" "a"))
 (simplify (str.indexof "abcabc" "a" 1))
 (simplify (str.substr "xxabcyy" 2 3))
-</pre>
+```
 
 A string cannot overlap with two different characters.
-<pre pref="seq.3">
+```z3
 (declare-const a String)
 (assert (= (str.++ a "b") (str.++ "a" a)))
 (check-sat)
-</pre>
+```
 
 Strings <tt>a, b, c</tt> can have a non-trivial overlap.
-<pre pref="seq.4">
+```z3
 (declare-const a String)
 (declare-const b String)
 (declare-const c String)
@@ -190,19 +180,21 @@ Strings <tt>a, b, c</tt> can have a non-trivial overlap.
 (assert (= (str.++ b c) "cdef"))
 (assert (not (= b "")))
 (check-sat)
-</pre>
+```
 
 There is a solution to <tt>a</tt> of length at most 2.
-<pre pref="seq.5">
+
+```z3
 (declare-const a String)
 (declare-const b String)
 (assert (= (str.++ "abc" a) (str.++ b "cef")))
 (assert (<= (str.len a) 2))
 (check-sat)
-</pre>
+```
 
 There is a solution to <tt>a</tt> that is not a sequence of "a"'s.
-<pre pref="seq.6">
+
+```z3
 (declare-const a String)
 (declare-const b String)
 (declare-const c String)
@@ -211,10 +203,11 @@ There is a solution to <tt>a</tt> that is not a sequence of "a"'s.
 (assert (not (= (str.++ a "a") (str.++ "a" a))))
 (check-sat)
 (get-model)
-</pre>
+```
 
 Contains is transitive.
-<pre pref="seq.7">
+
+```z3
 (declare-const a String)
 (declare-const b String)
 (declare-const c String)
@@ -222,10 +215,11 @@ Contains is transitive.
 (assert (str.contains b c))
 (assert (not (str.contains a c)))
 (check-sat)
-</pre>
+```
 
 But containment is not a linear order.
-<pre pref="seq.8">
+
+```z3
 (declare-const a String)
 (declare-const b String)
 (declare-const c String)
@@ -235,10 +229,11 @@ But containment is not a linear order.
 (assert (not (str.contains c b)))
 (check-sat)
 (get-model)
-</pre>
+```
 
 Any string is equal to the prefix and suffix that add up to a its length.
-<pre pref="seq.12">
+
+```z3
 (declare-const a String)
 (declare-const b String)
 (declare-const c String)
@@ -247,15 +242,15 @@ Any string is equal to the prefix and suffix that add up to a its length.
 (assert (= (str.len a) (+ (str.len b) (str.len c))))
 (assert (not (= a (str.++ b c))))
 (check-sat)
-</pre>
+```
 
-<h2>Sequences</h2>
+# Sequences
 
 The sort constructor <tt>Seq</tt> can be used to create sequences over any base sort.
 For example, a sequence of integers is <tt>(Seq Int)</tt>, and <tt>(Seq (_ BitVec 8))</tt>
 is the definition of <tt>String</tt>.
 
-<h3>Operations</h3>
+## Operations
 Most string operations have corresponding sequence variants. In addition, there are operations
 to create a unit sequence and the empty sequence over any base sort.
 
@@ -314,11 +309,11 @@ to create a unit sequence and the empty sequence over any base sort.
   </tr>
 </table>
 
-<h3>Examples</h3>
+## Examples
 
 When inserting <tt>b</tt> at or after position 8, but before the length of the string, which is at least 10,
 then the resulting string has the same length, and either character 8 or 9 are unchanged.
-<pre pref="seq.9">
+```z3
 (declare-const s (Seq Int))
 (declare-const t (Seq Int))
 (declare-const j Int)
@@ -341,14 +336,14 @@ then the resulting string has the same length, and either character 8 or 9 are u
 (assert (not (= (seq.at s 9) (seq.at t 9))))
 (check-sat)
 (pop)
-</pre>
+```
 
 
-<h2>Regular Expressions</h2>
+# Regular Expressions
 The sort constructor <tt>RegEx</tt> takes as argument a sequence type.
 The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
 
-<h3>Operations</h3>
+### Operations
 
 <table>
   <tr>
@@ -436,7 +431,7 @@ Z3 understands only the meaning of these terms when <tt>lo, hi</tt> are
 integer numerals.
 </p>
 
-<h3>What (not) to expect of regular expressions</h3>
+## What (not) to expect of regular expressions
 Z3 converts regular expressions into non-deterministic finite automata and 
 expands membership constraints over symbolic strings and sequences 
 when it tries to satisfy constraints. This approach works for many
@@ -451,10 +446,11 @@ regular expressions, but chances are that Z3 will not do anything
 profound with them. Therefore, for now, use regular expressions only in
 constraints of the form <tt>(str.in.re s r)</tt>.
 
-<h3>Examples</h3>
+## Examples
 
 The maximal length is 6 for a string of length 2 repeated at most 3 times.
-<pre pref="seq.10">
+
+```z3
 (declare-const a String)
 (push)
 (set-info :status sat)
@@ -470,41 +466,5 @@ The maximal length is 6 for a string of length 2 repeated at most 3 times.
 (assert (> (str.len a) 6))
 (check-sat)
 (pop)
-</pre>
+```
  
-</body>
-</html>
-
-
-<pre> 
-Other potential examples:
-
-(push)
-(set-info :status sat)
-(assert (str.prefixof a b))
-(assert (str.prefixof a c))
-(assert (not (str.prefixof b c)))
-(assert (not (str.prefixof c b)))
-(check-sat)
-(pop)
-
-
-; length
-(push)
-(set-info :status sat)
-(assert (= a "abcde"))
-(assert (<= (str.len a) 5))
-(check-sat)
-(pop)
-
-
-; replace
-
-
-(push)
-(set-info :status sat)
-(assert (= "ab" (str.replace a "ab" "")))
-(check-sat)
-(pop)
-
-</pre>

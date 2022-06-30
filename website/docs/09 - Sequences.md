@@ -33,11 +33,11 @@ and regular expressions over Unicode strings seeks to implement the
 ## Strings
 
 ### Built-in types and constants
-The name <tt>String</tt> is a built-in name for the String sort. 
+The name `String` is a built-in name for the String sort. 
 String literals can furthermore be entered directly as literals 
 delimited by quotes. The following example asks whether there are
-strings <tt>a</tt> and <tt>b</tt> that concatenate to <tt>"abc"</tt> 
-followed by <tt>b</tt>.
+strings `a` and `b` that concatenate to `"abc"` 
+followed by `b`.
 
 ```z3
 (declare-const a String)
@@ -51,28 +51,20 @@ followed by <tt>b</tt>.
 Z3 follows the proposed SMT-LIB2.5 format for string 
 literals. Thus, strings are enclosed using double quotes. A sequence 
 of two adjacent double quotes within a string literal is used as the 
-escape sequence for a quote. So for example <tt>"quote ""me"" on this"</tt> 
-corresponds to the string <tt>quote "me" on this</tt>. Other 
+escape sequence for a quote. So for example `"quote ""me"" on this"` 
+corresponds to the string `quote "me" on this`. Other 
 characters are treated as part of the string. For example, a newline within a string 
 is treated as a new-line character. 
 
-To represent non-ASCII characters Z3 
-treats the sequence <tt>\xHH</tt> where <tt>HH</tt> are two hexa-decimal 
-numerals (using one of the characters, 0-9, a-f, A-F) as an encoding 
-of an 8 bit character. 
-Furthermore, the following escape sequences correspond to their ASCII escape encodings.
-<table>
-  <tr>
-    <td>\a</td> <td>\b</td> <td>\f</td> <td>\n</td> <td>\r</td> <td>\t</td> <td>\v</td>
-  </tr>
-</table>
-Note that other occurrences of the character <tt>\</tt> are treated as the charcter <tt>\</tt>.
+To represent non-ASCII characters the SMTLIB2 standard uses unicode escape sequences.
+The escape sequences are of the form `\u{N}`, `\u{NN}`, `\u{NNN}`, `\u{NNNN}`, `\u{NNNNN}`, 
+where `N` is a hexidecimal digit.
 
 The following example shows
 three ways to enter the newline character.
 
 ```z3
-(define-const a String "\x0a")
+(define-const a String "\u{a}")
 (define-const b String "
 ")
 (define-const c String "\n")
@@ -130,23 +122,48 @@ Let us start out with a summary of available string operations.
     <td>Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt>.</td>
   </tr>
   <tr>
-    <td><tt>(str.to.int s)</tt></td>
+    <td><tt>(str.to_int s)</tt></td>
     <td>Retrieve integer encoded by string <tt>s</tt> (ground rewriting only).</td>
   </tr>
   <tr>
-    <td><tt>(int.to.str i)</tt></td>
+    <td><tt>(str.from_int i)</tt></td>
     <td>Retrieve string encoding of integer <tt>i</tt> (ground rewriting only).</td>
+  </tr>
+  <tr>
+    <td><tt>(str.< s1 s2)</tt></td>
+    <td>Lexicographic string less than</tt></td>
+  </tr>
+  <tr>
+    <td><tt>(str.<= s1 s2)</tt></td>
+    <td>Lexicographic string less or equal to.</td>
+  </tr>  
+  <tr>
+  <td><tt>(_ char ch)</tt></dt>
+  <td>Unit string from unicode character code.</td>
+  </tr>
+  <tr>
+  <td><tt>(str.is_digit s)</tt></td>
+  <td>A predicate whether string is a one of the digits 0 to 9.</td>
+  </tr>
+  <tr>
+  <td><tt>(str.to_code s)</tt></td>
+  <td>Convert string of length one to the character code (an integer). Produce -1 if the string is not of length 1</td>
+  </tr>
+    <tr>
+  <td><tt>(str.from_code i)</tt></td>
+  <td>Convert an integer in the range of valid unicodes to a string of length one</td>
   </tr>
 </table>
 
 
-Note that <tt>(str.indexof s offset)</tt> is shorthand for <tt>(str.indexof s offset 0)</tt>.
+
+Note that `(str.indexof s offset)` is shorthand for `(str.indexof s offset 0)`.
 
 Some operations have under-specified behavior on certain arguments.
-Namely, <tt>(str.at s i)</tt> is unconstrained for indices that are either negative or beyond
-<tt>(- (str.len s) 1)</tt>. Furthermore <tt>(str.substr s offset length)</tt> is under-specified
-when the offset is outside the range of positions in <tt>s</tt> or <tt>length</tt> is negative or 
-<tt>offset+length</tt> exceeds the length of <tt>s</tt>.
+Namely, `(str.at s i)` is unconstrained for indices that are either negative or beyond
+`(- (str.len s) 1)`. Furthermore `(str.substr s offset length)` is under-specified
+when the offset is outside the range of positions in `s` or `length` is negative or 
+`offset+length` exceeds the length of `s`.
 
 
 ## Examples
@@ -177,7 +194,7 @@ Strings <tt>a, b, c</tt> can have a non-trivial overlap.
 (check-sat)
 ```
 
-There is a solution to <tt>a</tt> of length at most 2.
+There is a solution to `a` of length at most 2.
 
 ```z3
 (declare-const a String)
@@ -187,7 +204,7 @@ There is a solution to <tt>a</tt> of length at most 2.
 (check-sat)
 ```
 
-There is a solution to <tt>a</tt> that is not a sequence of "a"'s.
+There is a solution to `a` that is not a sequence of "a"'s.
 
 ```z3
 (declare-const a String)
@@ -241,9 +258,9 @@ Any string is equal to the prefix and suffix that add up to a its length.
 
 # Sequences
 
-The sort constructor <tt>Seq</tt> can be used to create sequences over any base sort.
-For example, a sequence of integers is <tt>(Seq Int)</tt>, and <tt>(Seq (_ BitVec 8))</tt>
-is the definition of <tt>String</tt>.
+The sort constructor `Seq` can be used to create sequences over any base sort.
+For example, a sequence of integers is `(Seq Int)`, and `(Seq (_ BitVec 8))`
+is the definition of `String`.
 
 ## Operations
 Most string operations have corresponding sequence variants. In addition, there are operations
@@ -306,7 +323,7 @@ to create a unit sequence and the empty sequence over any base sort.
 
 ## Examples
 
-When inserting <tt>b</tt> at or after position 8, but before the length of the string, which is at least 10,
+When inserting `b` at or after position 8, but before the length of the string, which is at least 10,
 then the resulting string has the same length, and either character 8 or 9 are unchanged.
 ```z3
 (declare-const s (Seq Int))

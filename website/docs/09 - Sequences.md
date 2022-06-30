@@ -18,10 +18,8 @@ Z3 only solves string equalities using an incomplete
 heuristic solver
 and the full combination of lengths and sequences 
 (and regular expressions) is not decidable anyway.
-In Z3, strings are a special case of sequences, as set forth in 
-<a href="http://research.microsoft.com/en-us/people/nbjorner/smtlibstr.pdf">
-a now deprecated proposal on sequences in SMT-LIB</a>. 
-The format for strings and regular expressions seeks to implement the
+In Z3, strings are a special case of sequences, and for the case of Unicode strings,
+and regular expressions over Unicode strings seeks to implement the
 <a href="http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml"> SMTLIB2 standard</a>.
 
 

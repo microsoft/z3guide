@@ -6,7 +6,7 @@ const Output = ({ result }) => {
   const success = result.status === "z3-ran";
   return (
     <pre>
-      <b>{success ? "Output: " : "Error: "}</b>
+      <b>{success ? "Output: " : "Error: "}</b><br />
       {success ? result.output : result.error }
       {"\n"}
     </pre>

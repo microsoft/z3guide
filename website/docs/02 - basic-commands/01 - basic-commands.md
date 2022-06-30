@@ -28,8 +28,8 @@ When the command check-sat returns sat, the command get-model can be used to ret
 ```z3
 (declare-const a Int)
 (declare-fun f (Int Bool) Int)
-(assert ( a 10))
-(assert ( (f a true) 100))
+(assert (< a 10))
+(assert (< (f a true) 100))
 (check-sat)
 (get-model)
 ```

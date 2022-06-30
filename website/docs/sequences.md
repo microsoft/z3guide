@@ -1,5 +1,6 @@
-# Strings and Sequences in Z3
-
+--- 
+title: Strings, Sequences and Regular Expressions
+---
 
 ## Introduction
 
@@ -32,6 +33,7 @@ constraints over sequences of arbitrary types.
 * update documentation to use new names
 * add notes about regex capabilities (comparing regex)
 * update reference to z3str3
+* split Strings/Sequences from Regular Expressions?
 
 
 ## Strings

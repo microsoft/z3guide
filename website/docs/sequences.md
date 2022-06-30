@@ -145,17 +145,14 @@ Let us start out with a summary of available string operations.
   </tr>
 </table>
 
-<p>
-Note that <tt>(str.indexof s offset)</tt> is shorthand for <tt>(str.indexof s offset 0)</tt>.
-</p
 
-<p>
+Note that <tt>(str.indexof s offset)</tt> is shorthand for <tt>(str.indexof s offset 0)</tt>.
+
 Some operations have under-specified behavior on certain arguments.
 Namely, <tt>(str.at s i)</tt> is unconstrained for indices that are either negative or beyond
 <tt>(- (str.len s) 1)</tt>. Furthermore <tt>(str.substr s offset length)</tt> is under-specified
 when the offset is outside the range of positions in <tt>s</tt> or <tt>length</tt> is negative or 
 <tt>offset+length</tt> exceeds the length of <tt>s</tt>.
-</p>
 
 
 ## Examples
@@ -371,7 +368,7 @@ The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
     <td>The regular expression rejecting every string.</td>
   </tr>
   <tr> 
-    <td><tt>(re.range ch1 ch2)</td>
+    <td><tt>(re.range ch1 ch2)</tt></td>
     <td>The range of characters between <tt>ch1</tt> and <tt>ch2</tt>.</td>
   </tr>
   <tr> 
@@ -423,17 +420,15 @@ The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
 
 </table>
 
-<p>
 The <tt>re.range</tt> operator expects two strings each encoding a single character.
 For example <tt>(str.range "a" "\xff")</tt> is a valid range of characters, 
 while <tt>(str.range "aa" "")</tt> is not associated with any specified range. 
-</p>
 
-<p> For added compatibility with CVC4's format, 
+
+For added compatibility with CVC4's format, 
 Z3 also accepts expressions of the form <tt>(re.loop r lo hi)</tt>.
 Z3 understands only the meaning of these terms when <tt>lo, hi</tt> are 
 integer numerals.
-</p>
 
 ## What (not) to expect of regular expressions
 Z3 converts regular expressions into non-deterministic finite automata and 

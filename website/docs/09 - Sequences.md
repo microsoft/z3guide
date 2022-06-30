@@ -5,36 +5,31 @@ sidebar_position: 9
 
 ## Introduction
 
-This section describes Z3's handling of strings, sequences 
-and regular expressions. Z3 offers built-in support for 
+This section describes Z3's handling of strings and sequences.
+Strings are represented as a sequence of Characters. The default character sort is Unicode.
+You can reason about regular expressions of sequences. Regular expressions are described in the next secion.
+Z3 offers built-in support for 
 using string constants and dedicated solvers for checking
-satisfiability over constraints using strings, sequences 
-and regular expressions.
+satisfiability over constraints using strings and sequences.
 Note that the (current) specialized solver is able to establish
 satisfiability for a non-trivial class of formulas, but is far from 
-a decision procedure: Z3 only solves string equalities using an incomplete 
-heuristic solver (in spite of the existence of complete procedures)
+a decision procedure even for fragments of string equalities that can be decided: 
+Z3 only solves string equalities using an incomplete 
+heuristic solver
 and the full combination of lengths and sequences 
 (and regular expressions) is not decidable anyway.
 In Z3, strings are a special case of sequences, as set forth in 
 <a href="http://research.microsoft.com/en-us/people/nbjorner/smtlibstr.pdf">
 a now deprecated proposal on sequences in SMT-LIB</a>. 
-The format for strings and regular expressions is mostly compatible 
-with <a href="http://cvc4.cs.nyu.edu/wiki/Strings">CVC4's</a>.
-Note that <a href="https://sites.google.com/site/z3strsolver/download">
-Z3Str2</a> has been available since 2013 as a separate distribution.
-It contains algorithms that offer an effective search space pruning 
-for solving string equalities.
-Strings are sequences over 8 bit bit-vectors. In addition, Z3 allows
-constraints over sequences of arbitrary types.
+The format for strings and regular expressions seeks to implement the
+<a href="http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml"> SMTLIB2 standard</a>.
+
 
 *TBDs*
 
-* add updated link to SMTLIB2 definition of strings
 * update documentation to use new names
 * add notes about regex capabilities (comparing regex)
 * update reference to z3str3
-* split Strings/Sequences from Regular Expressions?
 
 
 ## Strings

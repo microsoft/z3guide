@@ -1,7 +1,7 @@
--------
+---
 title: Regular Expressions
 sidebar_position: 10
--------
+---
 
 The sort constructor <tt>RegEx</tt> takes as argument a sequence type.
 The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.

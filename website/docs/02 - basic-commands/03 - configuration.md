@@ -6,15 +6,15 @@ title: Configuration
 The command set-option is used to configure Z3. Z3 has several options to control its behavior. Some of these options (e.g., produce-proofs) can only be set before any declaration or assertion. We use the reset command to erase all assertions and declarations. After the reset command, all configuration options can be set.
 
 ```z3
-(set-option print-success true) 
-(set-option produce-unsat-cores true) ; enable generation of unsat cores
-(set-option produce-models true) ; enable model generation
-(set-option produce-proofs true) ; enable proof generation
+(set-option :print-success true) 
+(set-option :produce-unsat-cores true) ; enable generation of unsat cores
+(set-option :produce-models true) ; enable model generation
+(set-option :produce-proofs true) ; enable proof generation
 (declare-const x Int)
-(set-option produce-proofs false) ; error, cannot change this option after a declaration or assertion
+(set-option :produce-proofs false) ; error, cannot change this option after a declaration or assertion
 (echo before reset)
 (reset)
-(set-option produce-proofs false) ; ok
+(set-option :produce-proofs false) ; ok
 ```
 
 The option print-success true is particularly useful when Z3 is being controlled by another application using pipes. In this mode, commands, that otherwise would not print any output, will print success.
@@ -29,8 +29,8 @@ The command (display t) just applies the Z3 pretty printer to the given expressi
 (declare-const y Int)
 (display (+ x 2 x 1))
 (simplify (+ x 2 x 1))
-(simplify ( (+ x y) (+ x y)))
-(simplify ( (+ x y) (+ x y)) som true) ; put all expressions in sum-of-monomials form.
+(simplify (< (+ x y) (+ x y)))
+(simplify (< (+ x y) (+ x y)) som true) ; put all expressions in sum-of-monomials form.
 (simplify (= x (+ y 2)) arith-lhs true)
 (simplify (= (store (store a 1 2) 4 3)
              (store (store a 4 3) 1 2)))

@@ -13,15 +13,21 @@ import { execSync } from 'child_process';
 
 
 async function getOutput(input) {
+    const timeOut = 30000;
     const hashObj = createHash('sha1');
 
-    const hash = hashObj.update(input + z3pkg.version).digest('hex');
+    const hash = hashObj.update(input).update(z3pkg.version).update(timeOut);
+    
+    hash.digest('hex');
+
+    ensureDirSync(`./build/solutions/${hash}`);
     // ${rise4fun engine version + z3 tool version + input}.json
     // TODO: add rise4fun engine version to the hash
-    const path = `./build/solutions/${hash}.json`;
+    const pathIn = `./build/solutions/${hash}/input.json`;
+    const pathOut = `./build/solutions/${hash}/output.json`;
     // console.log(hash);
     try {
-        const data = readJsonSync(path);
+        const data = readJsonSync(pathOut);
         if (data) {
             console.log(`cache hit ${hash}`)
             return data;
@@ -34,20 +40,24 @@ async function getOutput(input) {
 
     let output = "";
     let error = "";
-    let status = 0; // default to be success
+    let status = "success"; // default to be success
 
-    const inputObj = JSON.stringify({ arg: input });
+    const inputObj = { input: input };
+    writeJsonSync(pathIn, inputObj);
 
-    const command = `node ./src/remark/run-z3.js ${inputObj}`;
+    const command = `node ./src/remark/run-z3.js ${pathIn}`;
 
     try {
-        output = execSync(command, { timeout: 5000 }).toString();
+        output = execSync(command, { timeout: 30000 });
+        // output = result.stdout ?? "";
+        // error = result.stderr ?? "";
+        // status = result.status;
     } catch (e) {
         error = e.message;
         output = "";
 
         // TODO: status code for z3 timeout
-        status = 1;
+        status = "error";
     }
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
@@ -61,7 +71,7 @@ async function getOutput(input) {
 
 
     // write to file
-    writeJsonSync(path, result);
+    writeJsonSync(pathOut, result);
 
     return result;
 }

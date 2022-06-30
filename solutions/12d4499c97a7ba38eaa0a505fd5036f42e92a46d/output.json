@@ -1,0 +1,1 @@
+{"output":"(error \"line 3 column 19: unknown constant a (Real) \ndeclared: (declare-fun a () Real) \")\nsat\n(\n  (define-fun a () Real\n    0.0)\n)\n(error \"line 9 column 19: unknown constant a (Real) \ndeclared: (declare-fun a () Real) \")\nsat\n","error":"","status":"z3-ran","hash":"12d4499c97a7ba38eaa0a505fd5036f42e92a46d"}

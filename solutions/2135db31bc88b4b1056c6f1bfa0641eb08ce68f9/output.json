@@ -1,0 +1,1 @@
+{"output":"(error \"line 3 column 14: unknown constant a (Int) \ndeclared: (declare-fun a () Int) \")\n(error \"line 4 column 11: invalid qualified/indexed identifier, '_' or 'as' expected\")\nsat\n","error":"","status":"z3-ran","hash":"2135db31bc88b4b1056c6f1bfa0641eb08ce68f9"}

@@ -1,0 +1,1 @@
+{"input":"(set-option smt.mbqi true)\n(define-sort Char () (_ BitVec 8))\n\n(declare-fun f  (Char) Char)\n(declare-fun f1 (Char) Char)\n(declare-const a Char)\n\n(assert (bvugt a #x00))\n(assert (= (f1 (bvadd a #x01)) #x00))\n(assert (forall ((x Char)) (or (= x (bvadd a #x01)) (= (f1 x) (f x)))))\n\n(check-sat)\n(get-model)"}

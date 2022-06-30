@@ -1,0 +1,1 @@
+{"output":"#x4\n#x14\n#b0010100\n#x0a\n(error \"line 5 column 12: invalid command argument, keyword expected\")\n#x4\n#x14\n#b0010100\n#x0a\n","error":"","status":"z3-ran","hash":"11a4affd184012d26b931a3df86d7a0533555d1b"}

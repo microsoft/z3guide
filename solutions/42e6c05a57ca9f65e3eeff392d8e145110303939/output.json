@@ -1,0 +1,1 @@
+{"output":"(error \"line 1 column 13: invalid command argument, keyword expected\")\nsat\n(\n  (define-fun a () (_ BitVec 8)\n    #xfd)\n  (define-fun f ((x!0 (_ BitVec 8))) (_ BitVec 8)\n    #xfd)\n  (define-fun f1 ((x!0 (_ BitVec 8))) (_ BitVec 8)\n    (ite (= x!0 #xfe) #x00\n      (f x!0)))\n)\n","error":"","status":"z3-ran","hash":"42e6c05a57ca9f65e3eeff392d8e145110303939"}

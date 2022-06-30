@@ -19,8 +19,7 @@ heuristic solver
 and the full combination of lengths and sequences 
 (and regular expressions) is not decidable anyway.
 In Z3, strings are a special case of sequences, and for the case of Unicode strings,
-and regular expressions over Unicode strings seeks to implement the
-<a href="http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml"> SMTLIB2 standard</a>.
+and regular expressions over Unicode strings seeks to implement the [SMTLIB2 standard](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml).
 
 
 *TBDs*

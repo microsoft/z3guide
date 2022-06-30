@@ -1,10 +1,8 @@
-Strings and Sequences in Z3
-
-
 # Strings and Sequences in Z3
 
 
 ## Introduction
+
 This section describes Z3's handling of strings, sequences 
 and regular expressions. Z3 offers built-in support for 
 using string constants and dedicated solvers for checking
@@ -28,11 +26,17 @@ for solving string equalities.
 Strings are sequences over 8 bit bit-vectors. In addition, Z3 allows
 constraints over sequences of arbitrary types.
 
+*TBDs*
+
+* add updated link to SMTLIB2 definition of strings
+* update documentation to use new names
+* add notes about regex capabilities (comparing regex)
+* update reference to z3str3
 
 
-## Strings<
+## Strings
 
-<h3>Built-in types and constants</h3>
+### Built-in types and constants
 The name <tt>String</tt> is a built-in name for the String sort. 
 String literals can furthermore be entered directly as literals 
 delimited by quotes. The following example asks whether there are

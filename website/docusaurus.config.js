@@ -24,7 +24,6 @@ async function createConfig() {
     baseUrl: '/rise4fun/',
     onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'warn',
-    favicon: 'img/favicon.ico',
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
@@ -65,10 +64,6 @@ async function createConfig() {
       ({
         navbar: {
           title: 'RiSE4Fun',
-          logo: {
-            alt: 'My Site Logo',
-            src: 'img/logo.svg',
-          },
           items: [
             {
               type: 'doc',

@@ -3,11 +3,11 @@ import CodeBlock from "@theme/CodeBlock";
 import { getInputUtilityClass } from '@mui/material';
 
 const Output = ({ result }) => {
-  const success = result.status === "success";
+  const success = result.status === "z3-ran";
   return (
     <pre>
       <b>{success ? "Output: " : "Error: "}</b>
-      {success ? result.output : "Z3 failed" }
+      {success ? result.output : result.error }
       {"\n"}
     </pre>
   );

@@ -5,7 +5,7 @@ import fs_extra_pkg from 'fs-extra';
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
 import { createHash } from 'crypto';
 import z3pkg from 'z3-solver/package.json' assert { type: 'json' };
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 
 /**
  * Turns a "```z3" code block into a code block and an output area
@@ -13,18 +13,16 @@ import { execSync } from 'child_process';
 
 
 async function getOutput(input) {
-    const timeOut = 30000;
+    const timeout = 30000;
     const hashObj = createHash('sha1');
 
-    const hash = hashObj.update(input).update(z3pkg.version).update(timeOut);
-    
-    hash.digest('hex');
-
-    ensureDirSync(`./build/solutions/${hash}`);
-    // ${rise4fun engine version + z3 tool version + input}.json
     // TODO: add rise4fun engine version to the hash
-    const pathIn = `./build/solutions/${hash}/input.json`;
-    const pathOut = `./build/solutions/${hash}/output.json`;
+
+    const hash = hashObj.update(input).update(z3pkg.version).update(String(timeout)).digest('hex');
+    const dir = `./build/solutions/${hash}`;
+    ensureDirSync(dir);
+    const pathIn = `${dir}/input.json`;
+    const pathOut = `${dir}/output.json`;
     // console.log(hash);
     try {
         const data = readJsonSync(pathOut);
@@ -35,7 +33,6 @@ async function getOutput(input) {
     } catch (err) {
         // proceed with running z3 and do nothing
         // TODO: factor this out
-
     }
 
     let output = "";
@@ -45,19 +42,19 @@ async function getOutput(input) {
     const inputObj = { input: input };
     writeJsonSync(pathIn, inputObj);
 
-    const command = `node ./src/remark/run-z3.js ${pathIn}`;
-
     try {
-        output = execSync(command, { timeout: 30000 });
-        // output = result.stdout ?? "";
-        // error = result.stderr ?? "";
-        // status = result.status;
+        let result = spawnSync('node', ['./src/remark/run-z3.js', pathIn], { timeout: timeout });
+        // TODO: runtime errors are also written to stdout, because z3 does not throw an error
+        output = result.stdout.length > 0 ? result.stdout.toString() : "";
+        // when running z3 does fail
+        error = result.stderr.length > 0 ? result.stderr.toString() : "";
+        status = error === "" ? "z3-ran" : "z3-failed";
     } catch (e) {
-        error = e.message;
+        error = `Z3 timed out after ${timeout}ms.`;
         output = "";
 
         // TODO: status code for z3 timeout
-        status = "error";
+        status = "z3-timed-out";
     }
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);

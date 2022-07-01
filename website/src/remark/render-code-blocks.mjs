@@ -48,6 +48,7 @@ async function getOutput(input, lang) {
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
         // when running z3 does fail
         error = result.stderr.length > 0 ? result.stderr.toString() : "";
+        // TODO: don't prepend everything with z3-, keep it generic
         status = error === "" ? "z3-ran" : "z3-failed";
     } catch (e) {
         error = `Z3 timed out after ${timeout}ms.`;

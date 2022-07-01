@@ -10,13 +10,13 @@ We say a formula is nonlinear if it contains expressions of the form ( t s) wher
 (check-sat)
 (get-model)
 
-(echo Z3 does not always find solutions to non-linear problems)
+(echo "Z3 does not always find solutions to non-linear problems")
 (declare-const b Real)
 (declare-const c Real)
 (assert (= (+ (* b b b) (* b c)) 3.0))
 (check-sat)
 
-(echo yet it can show unsatisfiabiltiy for some nontrivial nonlinear problems...)
+(echo "yet it can show unsatisfiabiltiy for some nontrivial nonlinear problems...")
 (declare-const x Real)
 (declare-const y Real)
 (declare-const z Real)
@@ -26,7 +26,7 @@ We say a formula is nonlinear if it contains expressions of the form ( t s) wher
 (check-sat)
 
 (reset)
-(echo When presented only non-linear constraints over reals, Z3 uses a specialized complete solver)
+(echo "When presented only non-linear constraints over reals, Z3 uses a specialized complete solver")
 (declare-const b Real)
 (declare-const c Real)
 (assert (= (+ (* b b b) (* b c)) 3.0))

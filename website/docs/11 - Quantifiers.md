@@ -183,7 +183,7 @@ MBQI is a decision procedure for several useful fragments. It may find models ev
 
 The effectively propositional class of formulas (aka The Bernays-Schonfinkel class) is a decidable fragment of first-order logic formulas. It corresponds to formulas which, when written in prenex normal form contain only constants, universal quantifiers, and functions that return boolean values (aka predicates).
 
-Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if x and y are subtypes of z, then x is a subtype of y or y is a subtype of x. The option (set-option model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
+Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if x and y are subtypes of z, then x is a subtype of y or y is a subtype of x. The option (set-option :model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
 
 ```z3
 (set-option :smt.mbqi true)
@@ -1010,7 +1010,7 @@ It is very effective in this benchmark since it contains many quantifiers of the
 
 The Z3 model finder is more effective if the input formula does not contain nested quantifiers. If that is not the case for your formula, you can use the option
 
-> (set-option smt.pull-nested-quantifiers true)
+> (set-option :smt.pull-nested-quantifiers true)
 
 The following challenge problem from the paper [SEM a system for enumerating models](https://www.ijcai.org/Proceedings/95-1/Papers/039.pdf) is proved to be unsatisfiable in less than one second by Z3.
 

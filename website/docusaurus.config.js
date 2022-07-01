@@ -76,7 +76,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'fixedpoints/intro',
               position: 'left',
-              label: 'Fixed Point',
+              label: 'Fixedpoints',
             },
 
             { 

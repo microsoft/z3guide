@@ -15,7 +15,7 @@ Z3 supports Bitvectors of arbitrary size. (\_ BitVec n) is the sort of bitvector
 (display (_ bv20 8))
 (display (_ bv20 7))
 (display #x0a) 
-(set-option pp.bv-literals false)
+(set-option :pp.bv-literals false)
 (display #b0100)
 (display (_ bv20 8))
 (display (_ bv20 7))

@@ -1,1 +1,0 @@
-{"output":"(error \"line 1 column 13: invalid command argument, keyword expected\")\n(error \"line 2 column 13: invalid command argument, keyword expected\")\n(error \"line 10 column 19: invalid attributed expression, keyword expected\")\nsat\n","error":"","status":"z3-ran","hash":"0a0bf5c0d4920e8d83a8272f52452ddd5241a4f6"}

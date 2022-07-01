@@ -1,1 +1,0 @@
-{"output":"(error \"line 4 column 11: select requires 0 arguments, but was provided with 2 arguments\")\n(error \"line 8 column 21: unknown constant mydiv (Real Real) \")\nsat\n","error":"","status":"z3-ran","hash":"b5c99c17fb871c804db9cc04c07bf185d4a09406"}

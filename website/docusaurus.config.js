@@ -67,9 +67,16 @@ async function createConfig() {
           items: [
             {
               type: 'doc',
-              docId: 'intro',
+              docId: 'guide/intro',
               position: 'left',
               label: 'Tutorial',
+            },
+
+            {
+              type: 'doc',
+              docId: 'fixedpoints/intro',
+              position: 'left',
+              label: 'Fixed Point',
             },
             // link to the github repo of this site
             {

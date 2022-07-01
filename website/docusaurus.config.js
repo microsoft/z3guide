@@ -113,7 +113,7 @@ async function createConfig() {
               items: [
                 {
                   label: 'Tutorial',
-                  to: '/docs/intro',
+                  to: '/docs/guide/intro',
                 },
                 {
                   label: 'Programming Z3 in Python',

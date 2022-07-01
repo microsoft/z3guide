@@ -1,1 +1,0 @@
-{"output":"(error \"line 5 column 11: invalid qualified/indexed identifier, '_' or 'as' expected\")\nsat\n(\n  (define-fun p2 () (Pair Int Int)\n    (mk-pair 0 0))\n  (define-fun p1 () (Pair Int Int)\n    (mk-pair 0 0))\n)\nunsat\n","error":"","status":"z3-ran","hash":"d62568d363ade16f57f5f654d21168dd598b5c60"}

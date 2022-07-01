@@ -12,7 +12,7 @@ import { spawnSync } from 'child_process';
  */
 
 
-async function getOutput(input) {
+async function getOutput(input, lang) {
     const timeout = 30000;
     const hashObj = createHash('sha1');
 

@@ -19,7 +19,7 @@ async function getOutput(input) {
     // TODO: add rise4fun engine version to the hash
 
     const hash = hashObj.update(input).update(z3pkg.version).update(String(timeout)).digest('hex');
-    const dir = `./build/solutions/${hash}`;
+    const dir = `./solutions/${lang}/${z3pkg.version}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
@@ -79,7 +79,7 @@ export default function plugin(options) {
     // console.log({ options });
     const transformer = async (ast) => {
 
-        ensureDirSync('./build/solutions');
+        ensureDirSync('./solutions');
 
         const promises = [];
 
@@ -105,7 +105,7 @@ export default function plugin(options) {
             // TODO: update `getOutput` according to Kevin's example
             promises.push(async () => {
                 // console.log(`num promises: ${promises.length}; `);
-                const result = await getOutput(value);
+                const result = await getOutput(value, lang);
 
                 // console.log({ node, index, parent });
 

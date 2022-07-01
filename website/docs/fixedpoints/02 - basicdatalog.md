@@ -25,30 +25,30 @@ The first example illustrates how to declare relations, rules and how to pose qu
 
 The example illustrates some of the basic constructs.
 
-```z3
+```
  (declare-rel a ())
 ```
 
 declares a 0-ary relation a.
 
-```z3
+```
   (rule (=> b a))
 ```
 Create the rule that a follows from b. In general you can create a rule with multiple premises and a name using the format
 
-```z3
+```
    (rule (=> (and b c) a) name)
 ```
 The name is optional. It is used for tracking the rule in derivation proofs. Continuing with the example, a is false unless b is established.
 
-```z3
+```
  (query r)
 ```
 
 Asks if relation a can be derived. The rules so far say that a follows if b is established and that b follows if c is established. But nothing establishes c and b is also not established, so a cannot be derived.
 
 
-```z3
+```
  (rule c)
 ```
 
@@ -89,7 +89,7 @@ Relations can take arguments. We illustrate relations with arguments using edges
 
 The example uses the declaration
 
-```z3
+```
  (declare-var a s)
 ```
 

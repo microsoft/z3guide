@@ -16,7 +16,7 @@ The following example illustrates that two records are equal only if all the arg
 (declare-const p1 (Pair Int Int))
 (declare-const p2 (Pair Int Int))
 (assert (= p1 p2))
-(assert ( (second p1) 20))
+(assert (< (second p1) 20))
 (check-sat)
 (get-model)
 (assert (not (= (first p1) (first p2))))

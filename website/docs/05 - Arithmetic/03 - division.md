@@ -22,7 +22,7 @@ Z3 also has support for division, integer division, modulo and remainder operato
 (assert (= r6 (rem a (- 4)))) ; remainder
 (declare-const b Real)
 (declare-const c Real)
-(assert (= b ( c 3.0)))
+(assert (= b (/ c 3.0)))
 (assert (= c 20.0))
 (check-sat)
 (get-model)

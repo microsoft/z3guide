@@ -1,1 +1,0 @@
-{"output":"(error \"line 6 column 18: invalid expression, '(' or symbol expected\")\nsat\n(error \"line 10 column 16: invalid expression, '(' or symbol expected\")\n(error \"line 11 column 16: invalid expression, '(' or symbol expected\")\nsat\n(error \"line 15 column 8: unknown constant p\")\n","error":"","status":"z3-ran","hash":"6cb3b43f2653f643b32956560d7b4d291aeb4fbc"}

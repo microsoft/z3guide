@@ -1,1 +1,0 @@
-{"input":"(define-const a String \"\\u{a}\")\n(define-const b String \"\n\")\n(define-const c String \"\\n\")\n(simplify (= a b))\n(simplify (= a c))\n(simplify (str.++ a b c))"}

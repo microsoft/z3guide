@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deployment
 
 on:
   push:
@@ -16,7 +16,7 @@ defaults:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deployment
     runs-on: ubuntu-latest
     env:
       RISE4FUN_GITHUB_REPOSITORY: ${{ github.repository }}

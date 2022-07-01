@@ -123,6 +123,7 @@ export default function plugin(options) {
                     {
                         type: 'jsx',
                         // TODO: encode the source into jsx tree to avoid XSS?
+                        // TODO: create a generic <CodeBlock and pass lang={lang} />
                         value: `<Z3CodeBlock input={${val}} />`
                     }
                 )

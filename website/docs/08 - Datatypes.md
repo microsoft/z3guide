@@ -82,7 +82,7 @@ You can also specify mutually recursive datatypes for Z3. We list one example be
 (declare-const t2 (Tree Bool))
 ; we must use the 'as' construct to distinguish the leaf (Tree Int) from leaf (Tree Bool)
 (assert (not (= t1 (as leaf (Tree Int)))))
-(assert ( (value t1) 20))
+(assert (< (value t1) 20))
 (assert (not (is-leaf t2)))
 (assert (not (value t2)))
 (check-sat)
@@ -96,12 +96,12 @@ In the example above, we have a tree of Booleans and a tree of integers. The lea
 The ground decision procedures for recursive datatypes don't lift to establishing inductive facts. Z3 does not contain methods for producing proofs by induction. This may change in the future. In particular, consider the following example where the function p is true on all natural numbers, which can be proved by induction over Nat. Z3 enters a matching loop as it attempts instantiating the universally quantified implication.
 
 ```z3
-(set-option timeout 2000)
+(set-option :timeout 2000)
 (declare-datatypes () ((Nat zero (succ (pred Nat)))))
 (declare-fun p (Nat) Bool)
 (assert (p zero))
 (assert (forall ((x Nat)) (implies (p (pred x)) (p x))))
 (assert (not (forall ((x Nat)) (p x))))
 (check-sat)
-(get-info all-statistics)
+(get-info :all-statistics)
 ```

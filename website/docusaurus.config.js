@@ -95,7 +95,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'playground/playground',
               position: 'left',
-              label: 'Strategies',
+              label: 'Playground',
             },
             // link to the github repo of this site
             {

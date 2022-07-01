@@ -1,1 +1,0 @@
-{"output":"(error \"line 7 column 18: invalid expression, '(' or symbol expected\")\nsat\n(\n  (define-fun b () Int\n    1)\n  (define-fun a () Int\n    2)\n  (define-fun e () Real\n    0.0)\n  (define-fun d () Real\n    0.0)\n  (define-fun c () Int\n    999)\n)\n","error":"","status":"z3-ran","hash":"f7796f03c7c30e4bee897d4c18e20e05a23845f1"}

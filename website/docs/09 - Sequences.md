@@ -56,8 +56,8 @@ characters are treated as part of the string. For example, a newline within a st
 is treated as a new-line character. 
 
 To represent non-ASCII characters the SMTLIB2 standard uses unicode escape sequences.
-The escape sequences are of the form `\u{N}`, `\u{NN}`, `\u{NNN}`, `\u{NNNN}`, `\u{NNNNN}`, 
-where `N` is a hexidecimal digit.
+The escape sequences are of the form `\u{d₀}`, `\u{d₁d₀}`, `\u{d₂d₁d₀}`, `\u{d₃d₂d₁d₀}`, `\u{d₄d₃d₂d₁d₀}`, `\ud₃d₂d₁d₀` 
+where `d` is a hexidecimal digit.
 
 The following example shows
 three ways to enter the newline character.
@@ -66,7 +66,7 @@ three ways to enter the newline character.
 (define-const a String "\u{a}")
 (define-const b String "
 ")
-(define-const c String "\n")
+(define-const c String "\n")   ; this is not a newline character but \ followed by n
 (simplify (= a b))
 (simplify (= a c))
 (simplify (str.++ a b c))
@@ -133,7 +133,7 @@ Let us start out with a summary of available string operations.
     <td>Lexicographic string less than</td>
   </tr>
   <tr>
-    <td><tt>(str.&leq; s1 s2)</tt></td>
+    <td><tt>(str.&lt;= s1 s2)</tt></td>
     <td>Lexicographic string less or equal to.</td>
   </tr>  
   <tr>

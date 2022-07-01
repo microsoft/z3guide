@@ -61,7 +61,7 @@ The List recursive datatype is builtin in Z3. The empty list is nil, and the con
 (assert (= (head l1) (head l2)))
 (assert (not (= l1 l2)))
 (assert (= l3 (insert x l2)))
-(assert ( x 100))
+(assert (< x 100))
 (check-sat)
 (get-model)
 (assert (= (tail l1) (tail l2)))

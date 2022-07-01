@@ -22,7 +22,7 @@ After constants are declared, the user can assert.smt formulas containing these 
 (declare-const d Real)
 (declare-const e Real)
 (assert (< a (+ b 2)))
-(assert (= a (+ ( 2 c) 10)))
+(assert (= a (+ (* 2 c) 10)))
 (assert (= (+ c b) 1000))
 (assert (= d e))
 (check-sat)

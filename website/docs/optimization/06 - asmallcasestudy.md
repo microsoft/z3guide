@@ -30,14 +30,11 @@ We start with a boolean encoding. Let xij denote that VM i is put into server j 
 (declare-const y2 Bool)
 (declare-const y3 Bool)
 
-(define-fun bool_to_int ((b Bool)) Int
-  (ite b 1 0)
-)
 
 ; We express that a virtual machine is on exactly one server by simply converting it to integer constraints.
-(assert (= (+ (bool_to_int x11) (bool_to_int x12) (bool_to_int x13)) 1))
-(assert (= (+ (bool_to_int x21) (bool_to_int x22) (bool_to_int x23)) 1))
-(assert (= (+ (bool_to_int x31) (bool_to_int x32) (bool_to_int x33)) 1))
+(assert (= (+ x11 x12 x13) 1))
+(assert (= (+ x21 x22 x23) 1))
+(assert (= (+ x31 x32 x33) 1))
 
 ; And an used server is implied by having a VM on it.
 
@@ -47,18 +44,18 @@ We start with a boolean encoding. Let xij denote that VM i is put into server j 
 
 ; Capability constraints are quite natural to add.
 
-(assert (<= (+ (* 100 (bool_to_int x11)) 
-               (* 50 (bool_to_int x21)) 
-               (* 15 (bool_to_int x31))) 
-            (* 100 (bool_to_int y1))))
-(assert (<= (+ (* 100 (bool_to_int x12)) 
-               (* 50 (bool_to_int x22)) 
-               (* 15 (bool_to_int x32))) 
-            (* 75 (bool_to_int y2))))             
-(assert (<= (+ (* 100 (bool_to_int x13)) 
-               (* 50 (bool_to_int x23)) 
-               (* 15 (bool_to_int x33))) 
-            (* 200 (bool_to_int y3))))
+(assert (<= (+ (* 100 x11) 
+               (* 50 x21) 
+               (* 15 x31)) 
+            (* 100 y1)))
+(assert (<= (+ (* 100 x12) 
+               (* 50 x22) 
+               (* 15 x32)) 
+            (* 75 y2)))
+(assert (<= (+ (* 100 x13) 
+               (* 50 x23) 
+               (* 15 x33)) 
+            (* 200 y3)))
 
 ; Optimization goals are expressed implicitly via assert-soft command.
 (assert-soft (not y1) :id num_servers)

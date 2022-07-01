@@ -43,7 +43,7 @@ The following commands are added to the SMT-LIB2 syntax:
 - `(set-predicate-representation [function-name] [symbol]+)` Specify the representation of a predicate.
 
 ## 3. Pure SMT-LIB2
-Many problems about program safety can be reduced to pure Horn clause satisfiability modulo theories (typically of arithmetic). These problems are expressible directly in SMT-LIB2. The repository Horn clause benchmarks in SMT-LIB2 contains more than 10,000 samples taken from different benchmarks and different encodings of the same benchmarks. An assertion is Horn if it is an implication; the head of the implication is either a formula using only interpreted functions, or it is an uninterpreted predicate; the body of the implication is a formula in negation normal form where the uninterpreted predicates occur positively.
+Many problems about program safety can be reduced to Constrained Horn clause satisfiability, where constraints are modulo theories (typically of arithmetic). These problems are expressible directly in SMT-LIB2. The repository of Horn clause benchmarks in SMT-LIB2 contains more than 10,000 samples taken from different benchmarks and different encodings of the same benchmarks. An assertion is Horn if it is an implication; the head of the implication is either a formula using only interpreted functions, or it is an uninterpreted predicate; the body of the implication is a formula in negation normal form where the uninterpreted predicates occur positively.
 
 ```z3
 (set-logic HORN)
@@ -63,6 +63,6 @@ Many problems about program safety can be reduced to pure Horn clause satisfiabi
 - There is no separate query. Instead, queries correspond to Horn clause that have no positive occurrence of any uninterpreted relation.
 
 ## Programmatic API
-You can interact with muZ over the programmatic API from Python, C, [C++](https://z3prover.github.io/api/html/classz3_1_1fixedpoint.html), OCaml, Java, and .NET. The APIs support adding rules and posing queries. 
+You can interact with muZ over the programmatic API from [Python](https://z3prover.github.io/api/html/classz3py_1_1_fixedpoint.html), [C](https://z3prover.github.io/api/html/z3__fixedpoint_8h.html), [C++](https://z3prover.github.io/api/html/classz3_1_1fixedpoint.html), OCaml, Java, and .NET. The APIs support adding rules and posing queries. 
 
 

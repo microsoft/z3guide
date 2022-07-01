@@ -45,7 +45,7 @@ The name is optional. It is used for tracking the rule in derivation proofs. Con
  (query r)
 ```
 
-Asks if relation a can be derived. The rules so far say that a follows if b is established and that b follows if c is established. But nothing establishes c and b is also not established, so a cannot be derived.
+Asks if relation `a` can be derived. The rules so far say that a follows if `b` is established and that `b` follows if `c` is established. But nothing establishes `c` and `b` is also not established, so `a` cannot be derived.
 
 
 ```

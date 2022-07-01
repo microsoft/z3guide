@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
@@ -29,15 +30,6 @@ jobs:
           node-version: 16.x
           cache: yarn
           cache-dependency-path: website/yarn.lock
-
-      - name: Cache code outputs
-        id: cache-code-outputs
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-code-outputs
-        with:
-          path: website/build/solutions
-          key: cache-z3-outputs # currently using a string as a key
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile

@@ -8,7 +8,7 @@ As part of formulating a programme of a mathematical theory of computation McCar
 
 Z3 contains a decision procedure for the basic theory of arrays. By default, Z3 assumes that arrays are extensional over select. In other words, Z3 also enforces that if two arrays agree on all reads, then the arrays are equal.
 
-It also contains various extensions for operations on arrays that remain decidable and amenable to efficient saturation procedures (here efficient means, with an NP-complete satisfiability complexity). We describe these extensions in the following using a collection of examples. Additional background on these extensions is available in the paper [Generalized and Efficient Array Decision Procedures](httpresearch.microsoft.comen-usumpeopleleonardofmcad09.pdf).
+It also contains various extensions for operations on arrays that remain decidable and amenable to efficient saturation procedures (here efficient means, with an NP-complete satisfiability complexity). We describe these extensions in the following using a collection of examples. Additional background on these extensions is available in the paper [Generalized and Efficient Array Decision Procedures](https://research.microsoft.com/en-us/um/people/leonardo/fmcad09.pdf).
 
 ### Select and Store
 
@@ -65,9 +65,9 @@ Models provide interpretations of the uninterpreted (aka free) constants and fun
 ### Mapping Functions on Arrays
 
 In the following, we will simulate basic Boolean algebra (set theory) using the array theory extensions in Z3. Z3 provides a parametrized map function on arrays. It allows applying arbitrary functions to the range of arrays. The following example illustrates how to use the map function.
+The type constructor `(Set T)` is a macro for `(Array T Bool)`.
 
 ```z3
-(define-sort Set (T) (Array T Bool))
 (declare-const a (Set Int))
 (declare-const b (Set Int))
 (declare-const c (Set Int))

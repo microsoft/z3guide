@@ -91,6 +91,12 @@ async function createConfig() {
               position: 'left',
               label: 'Strategies',
             },
+            { 
+              type: 'doc',
+              docId: 'playground/playground',
+              position: 'left',
+              label: 'Strategies',
+            },
             // link to the github repo of this site
             {
               href: 'https://github.com/microsoft/rise4fun',

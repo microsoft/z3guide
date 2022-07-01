@@ -11,7 +11,7 @@ Files with suffix .datalog are parsed using the BDDBDDB format. The format can b
 
 We use an artificial program to illustrate the basic Datalog format that complies to the format used by BDDBDDB.
 
-```z3
+```
 Z 64
 
 P0(x: Z) input
@@ -63,8 +63,6 @@ Many problems about program safety can be reduced to pure Horn clause satisfiabi
 - There is no separate query. Instead, queries correspond to Horn clause that have no positive occurrence of any uninterpreted relation.
 
 ## Programmatic API
-You can interact with muZ over the programmatic API from Python, C, OCaml, Java, and .NET. The APIs support adding rules and posing queries.
+You can interact with muZ over the programmatic API from Python, C, [C++](https://z3prover.github.io/api/html/classz3_1_1fixedpoint.html), OCaml, Java, and .NET. The APIs support adding rules and posing queries. 
 
-- To add a rule, call: [Z3_fixedpoint_add_rule] (http://research.microsoft.com/en-us/um/redmond/projects/z3/group__capi.html#ga5a103b212a663889a458a3b31efb91ed).
-- To query, use: [Z3_fixedpoint_query] (http://research.microsoft.com/en-us/um/redmond/projects/z3/group__capi.html#gac5d521e37bb0c8aa2843142c58c32749).
 

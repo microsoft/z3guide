@@ -1,0 +1,1 @@
+{"input":"   (rule (=> (and b c) a) name)"}

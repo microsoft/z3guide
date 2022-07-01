@@ -41,8 +41,8 @@ The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneere
 In the following example, the first two options make sure that Model-based quantifier instantiation and saturation engines are disabled. We also annotate the quantified formula with the pattern (f (g x)). Since there is no ground instance of this pattern, the quantifier is not instantiated, and Z3 fails to show that the formula is unsatisfiable.
 
 ```z3
-(set-option smt.auto-config false) ; disable automatic self configuration
-(set-option smt.mbqi false) ; disable model-based quantifier instantiation
+(set-option :smt.auto-config false) ; disable automatic self configuration
+(set-option :smt.mbqi false) ; disable model-based quantifier instantiation
 (declare-fun f (Int) Int)
 (declare-fun g (Int) Int)
 (declare-const a Int)
@@ -60,8 +60,8 @@ In the following example, the first two options make sure that Model-based quant
 When the more permissive pattern (g x) is used. Z3 proves the formula to be unsatisfiable. More restrive patterns minimize the number of instantiations (and potentially improve performance), but they may also make Z3 less complete.
 
 ```z3
-(set-option smt.auto-config false) ; disable automatic self configuration
-(set-option smt.mbqi false) ; disable model-based quantifier instantiation
+(set-option :smt.auto-config false) ; disable automatic self configuration
+(set-option :smt.mbqi false) ; disable model-based quantifier instantiation
 (declare-fun f (Int) Int)
 (declare-fun g (Int) Int)
 (declare-const a Int)
@@ -89,8 +89,8 @@ The axiom gets instantiated whenever there is some ground term of the form (subt
 Before elaborating on the subtleties, we should address an important first question. What defines the terms that are created during search In the context of most SMT solvers, and of the Simplify theorem prover, terms exist as part of the input formula, they are of course also created by instantiating quantifiers, but terms are also implicitly created when equalities are asserted. The last point means that terms are considered up to congruence and pattern matching takes place modulo ground equalities. We call the matching problem E-matching. For example, if we have the following equalities
 
 ```z3
-(set-option smt.auto-config false) ; disable automatic self configuration
-(set-option smt.mbqi false) ; disable model-based quantifier instantiation
+(set-option :smt.auto-config false) ; disable automatic self configuration
+(set-option :smt.mbqi false) ; disable model-based quantifier instantiation
 (declare-fun f (Int) Int)
 (declare-fun g (Int) Int)
 (declare-const a Int)
@@ -159,15 +159,15 @@ The annotation no-pattern can be used to instrument Z3 not to use a certain sub-
 The model-based quantifier instantiation (MBQI) is essentially a counter-example based refinement loop, where candidate models are built and checked. When the model checking step fails, it creates new quantifier instantiations. The models are returned as simple functional programs. In the following example, the model provides an interpretation for function f and constants a and b. One can easily check that the returned model does indeed satisfy the quantifier.
 
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 (declare-fun f (Int Int) Int)
 (declare-const a Int)
 (declare-const b Int)
 
 (assert (forall ((x Int)) (= (f x x) (+ x a))))
 
-(assert ( (f a b) a))
-(assert ( a 0))
+(assert (< (f a b) a))
+(assert (< a 0))
 (check-sat)
 (get-model)
 
@@ -186,8 +186,8 @@ The effectively propositional class of formulas (aka The Bernays-Schonfinkel cla
 Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if x and y are subtypes of z, then x is a subtype of y or y is a subtype of x. The option (set-option model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
 
 ```z3
-(set-option smt.mbqi true)
-(set-option model.compact true)
+(set-option :smt.mbqi true)
+(set-option :model.compact true)
 
 ;; T is an uninterpreted sort
 (declare-sort T) 
@@ -248,8 +248,8 @@ executes (evaluates) the given expression using the produced functional program 
 Constraints over sets (Boolean Algebras) can be encoded into this fragment by treating sets as unary predicates and lifting equalities between sets as formula equivalence.
 
 ```z3
-(set-option smt.mbqi true)
-(set-option model.compact true)
+(set-option :smt.mbqi true)
+(set-option :model.compact true)
 
 ;; A, B, C and D are sets of Int
 (declare-fun A (Int) Bool)
@@ -302,8 +302,8 @@ The statified sorts fragment is another decidable fragment of many sorted first-
 
 The array property fragment can encode properties about unidimensional, and is strong enough to say an array is sorted. More information about this fragment can be found in the paper [What's Decidable About Arrays](httpacademic.research.microsoft.comPaper1843442.aspx).
 
-(set-option smt.mbqi true)
-(set-option model.compact true)
+(set-option :smt.mbqi true)
+(set-option :model.compact true)
 
 ```z3
 ;; A0, A1, A2, A3, A4 are arrays from Integers to Integers.
@@ -356,7 +356,7 @@ The array property fragment can encode properties about unidimensional, and is s
 The list fragment can encode properties about data-structures such as lists. For each quantified axiom q in this fragment, there is an easy way to satisfy q. More information about this fragment can be found in the paper [Data Structure Specifications via Local Equality Axioms](httpwww.cs.berkeley.edu~neculaPapersverifier-cav05.pdf).
 
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 ;; Ptr is the pointer sort.
 (declare-sort Ptr)
 ;; (next p) represents p.next
@@ -434,8 +434,8 @@ The list fragment can encode properties about data-structures such as lists. For
 (check-sat)
 (get-model)
 (pop)
-(echo Why it is not valid)
-(echo Trying again using a fresh constant bad-ptr as an witness for the failure...)
+(echo "Why it is not valid")
+(echo "Trying again using a fresh constant bad-ptr as an witness for the failure...")
 (push)
 (declare-const bad-ptr Ptr)
 (assert (not (= (and (not (= bad-ptr null))
@@ -459,7 +459,7 @@ The list fragment can encode properties about data-structures such as lists. For
 The essentiallyalmost uninterpreted fragment subsumes the previous fragments, and uses a more relaxed notion of stratification. More information about this fragment can be found in the paper [Complete instantiation for quantified formulas in Satisfiabiliby Modulo Theories.](httpresearch.microsoft.comen-usumpeopleleonardoci.pdf) The model based quantifier instantiation approach used in Z3 is also described in this paper. Stratified data-structures (such as arrays of pointers) can be encoded in this fragment.
 
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 ;; Ptr is the pointer sort.
 (declare-sort Ptr)
 ;; (next p) represents p.next
@@ -560,7 +560,7 @@ The essentiallyalmost uninterpreted fragment subsumes the previous fragments, an
 Shifts on streams (or arrays) can also be encoded.
 
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 ;; f an g are streams
 (declare-fun f (Int) Int)
 (declare-fun g (Int) Int)
@@ -585,7 +585,7 @@ Shifts on streams (or arrays) can also be encoded.
 A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formula where the sort of every variable is a bit-vector sort. The QBVF satisfiability problem, is the problem of deciding whether a QBVF is satisfiable modulo the theory of bit-vectors. This problem is decidable because every universal (existental) quantifier can be expanded into a conjunction (disjunction) of potentially exponential, but finite size. A distinguishing feature in QBVF is the support for uninterpreted function and predicate symbols. More information about this fragment can be found in the paper [Efficiently Solving Quantified Bit-Vector Formulas](httpresearch.microsoft.comen-usumpeopleleonardofmcad10.pdf).
 
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 (define-sort Char () (_ BitVec 8))
 
 (declare-fun f  (Char) Char)
@@ -603,7 +603,7 @@ A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formul
 
 Quantifiers defining macros are also automatically detected by the Model Finder. In the following example, the first three quantifiers are defining f by cases.
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 (declare-fun f (Int) Int)
 (declare-fun p (Int) Bool)
 (declare-fun p2 (Int) Bool)
@@ -627,7 +627,7 @@ Quantifiers defining macros are also automatically detected by the Model Finder.
 
 Even if your formula is not in any of the fragments above. Z3 may still find a model for it. For example, The following simple example is not in the fragments described above.
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 (declare-fun n () Int)
 (declare-fun a_1 () Int)
 (declare-fun f (Int) Int)
@@ -655,14 +655,14 @@ Even if your formula is not in any of the fragments above. Z3 may still find a m
 (check-sat)
 (get-model)
 
-(echo Property does not hold for n  1)
-(assert ( n 1))
+(echo Property does not hold for n > 1)
+(assert (> n 1))
 (check-sat)
 ```
 The Z3 preprocessor has many options that may improve the performace of the model finder. In the following example, macro-finder will expand quantifiers representing macros at preprocessing time.
 ```z3
-(set-option smt.mbqi true)
-(set-option smt.macro-finder true)
+(set-option :smt.mbqi true)
+(set-option :smt.macro-finder true)
 
 (declare-sort Action)
 (declare-sort Role)
@@ -1000,7 +1000,7 @@ The Z3 preprocessor has many options that may improve the performace of the mode
  (not (and initial_wf_0 (and initial_pm_0 (t1_receive_0_1 id6))))
  )
 
-(set-info status sat)
+(set-info :status sat)
 (check-sat)
 (get-model)
 ```
@@ -1015,7 +1015,7 @@ The Z3 model finder is more effective if the input formula does not contain nest
 The following challenge problem from the paper [SEM a system for enumerating models](https://www.ijcai.org/Proceedings/95-1/Papers/039.pdf) is proved to be unsatisfiable in less than one second by Z3.
 
 ```z3
-(set-option smt.mbqi true)
+(set-option :smt.mbqi true)
 (declare-sort S)
 (declare-fun g (S S) S)
 (declare-fun f (S S) S)

@@ -34,8 +34,11 @@ jobs:
           cache-name: cache-code-outputs
         with:
           path: website/build/solutions
-          key: 1 # currently using a constant as a key
-
+          key: cache-z3-outputs # currently using a string as a key
+        
+      - if: ${{ steps.cache-outputs.cache-hit == 'false' }}
+        name: Cache fail # TODO
+        uses: andymckay/cancel-action@0.2
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile

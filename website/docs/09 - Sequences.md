@@ -157,12 +157,10 @@ Let us start out with a summary of available string operations.
 
 
 Note that `(str.indexof s offset)` is shorthand for `(str.indexof s offset 0)`.
-
-Some operations have under-specified behavior on certain arguments.
-Namely, `(str.at s i)` is unconstrained for indices that are either negative or beyond
-`(- (str.len s) 1)`. Furthermore `(str.substr s offset length)` is under-specified
+Also, note that  `(str.at s i)` is the empty string or sequence for indices that are either negative or beyond
+`(- (str.len s) 1)`. Furthermore `(str.substr s offset length)` is empty
 when the offset is outside the range of positions in `s` or `length` is negative or 
-`offset+length` exceeds the length of `s`.
+`offset+length` exceeds the length of `s`. 
 
 
 ## Examples
@@ -301,6 +299,10 @@ to create a unit sequence and the empty sequence over any base sort.
   <tr>
     <td><tt>(seq.at s offset)</tt></td>
     <td>Sub-sequence of length 1 at <tt>offset</tt> in <tt>s</tt>.</td>
+  </tr>
+    <tr>
+    <td><tt>(seq.nth s offset)</tt></td>
+    <td>Element at <tt>offset</tt> in <tt>s</tt>. If <tt>offset</tt> is out of bounds the result is under-specified. In other words, it is treated as a fresh variable.</td>
   </tr>
   <tr>
     <td><tt>(seq.contains s sub)</tt></td>

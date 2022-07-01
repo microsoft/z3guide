@@ -10,7 +10,7 @@ import { spawnSync } from 'child_process';
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
-
+const VERSION = 1
 
 async function getOutput(input, lang) {
     const timeout = 30000;
@@ -18,7 +18,13 @@ async function getOutput(input, lang) {
 
     // TODO: add rise4fun engine version to the hash
 
-    const hash = hashObj.update(input).update(z3pkg.version).update(String(timeout)).digest('hex');
+    const hash = hashObj
+        .input(VERSION)
+        .update(input)
+        .update(lang)
+        .update(z3pkg.version)
+        .update(String(timeout))
+        .digest('hex');
     const dir = `./solutions/${lang}/${z3pkg.version}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;

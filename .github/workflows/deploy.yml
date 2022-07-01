@@ -27,6 +27,16 @@ jobs:
           cache: yarn
           cache-dependency-path: website/yarn.lock
 
+      - name: Cache code outputs
+        id: cache-code-outputs
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-code-outputs
+        with:
+          path: website/build/solutions
+          key: 1 # currently using a constant as a key
+
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build website

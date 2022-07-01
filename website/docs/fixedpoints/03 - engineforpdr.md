@@ -8,7 +8,7 @@ A different underlying engine for fixed-points is based on an algorithm for Prop
 ## Procedure Calls
 McCarthy's 91 function illustrates a procedure that calls itself recursively twice. The Horn clauses below encode the recursive function:
 
-```z3
+```
   mc(x) = if x > 100 then x - 10 else mc(mc(x+11))
 ```
 The general scheme for encoding recursive procedures is by creating a predicate for each procedure and adding an additional output variable to the predicate. Nested calls to procedures within a body can be encoded as a conjunction of relations.

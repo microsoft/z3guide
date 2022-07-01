@@ -1,1 +1,0 @@
-{"input":"  mc(x) = if x > 100 then x - 10 else mc(mc(x+11))"}

@@ -71,6 +71,13 @@ async function createConfig() {
               position: 'left',
               label: 'Tutorial',
             },
+
+            {
+              type: 'doc',
+              docId: 'fixedpointinro',
+              position: 'left',
+              label: 'Fixed Point',
+            },
             // link to the github repo of this site
             {
               href: 'https://github.com/microsoft/rise4fun',

@@ -1,7 +1,6 @@
-name: Deployment
+name: Deployment2
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
@@ -30,15 +29,10 @@ jobs:
           node-version: 16.x
           cache: yarn
           cache-dependency-path: website/yarn.lock
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build website
         run: yarn build
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          file_pattern: solutions/*
-
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages

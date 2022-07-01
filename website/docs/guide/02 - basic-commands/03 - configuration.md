@@ -12,7 +12,7 @@ The command set-option is used to configure Z3. Z3 has several options to contro
 (set-option :produce-proofs true) ; enable proof generation
 (declare-const x Int)
 (set-option :produce-proofs false) ; error, cannot change this option after a declaration or assertion
-(echo before reset)
+(echo "before reset")
 (reset)
 (set-option :produce-proofs false) ; ok
 ```
@@ -47,7 +47,6 @@ The define-sort command defines a new sort symbol that is an abbreviation for a 
 The following example defines several abbreviations for sort expressions.
 
 ```z3
-(define-sort Set (T) (Array T Bool))
 (define-sort IList () (List Int))
 (define-sort List-Set (T) (Array (List T) Bool))
 (define-sort I () Int)

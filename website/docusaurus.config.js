@@ -67,14 +67,14 @@ async function createConfig() {
           items: [
             {
               type: 'doc',
-              docId: 'intro',
+              docId: 'guide/intro',
               position: 'left',
               label: 'Tutorial',
             },
 
             {
               type: 'doc',
-              docId: 'fixedpointinro',
+              docId: 'fixedpoints/intro',
               position: 'left',
               label: 'Fixed Point',
             },

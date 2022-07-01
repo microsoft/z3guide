@@ -6,7 +6,7 @@ title: Basic Commands
 The Z3 input format is an extension of the one defined by the [SMT-LIB 2.0 standard](httpwww.smtlib.org). A Z3 script is a sequence of commands. The help command displays a list of all available commands. The command echo displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command declare-const declares a constant of a given type (aka sort). The command declare-fun declares a function. In the following example, we declared a function that receives an integer and a boolean, and returns an integer.
 
 ```z3
-(echo starting Z3...)
+(echo "starting Z3...")
 (declare-const a Int)
 (declare-fun f (Int Bool) Int)
 ```
@@ -16,8 +16,8 @@ The command assert adds a formula into the Z3 internal stack. We say the set of 
 ```z3
 (declare-const a Int)
 (declare-fun f (Int Bool) Int)
-(assert ( a 10))
-(assert ( (f a true) 100))
+(assert (< a 10))
+(assert (< (f a true) 100))
 (check-sat)
 ```
 

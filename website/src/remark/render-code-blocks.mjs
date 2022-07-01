@@ -10,16 +10,22 @@ import { spawnSync } from 'child_process';
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
+const VERSION = "1"
 
-
-async function getOutput(input) {
+async function getOutput(input, lang) {
     const timeout = 30000;
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
 
-    const hash = hashObj.update(input).update(z3pkg.version).update(String(timeout)).digest('hex');
-    const dir = `./build/solutions/${hash}`;
+    const hash = hashObj
+        .update(VERSION)
+        .update(input)
+        .update(lang)
+        .update(z3pkg.version)
+        .update(String(timeout))
+        .digest('hex');
+    const dir = `./solutions/${lang}/${z3pkg.version}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
@@ -48,6 +54,7 @@ async function getOutput(input) {
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
         // when running z3 does fail
         error = result.stderr.length > 0 ? result.stderr.toString() : "";
+        // TODO: don't prepend everything with z3-, keep it generic
         status = error === "" ? "z3-ran" : "z3-failed";
     } catch (e) {
         error = `Z3 timed out after ${timeout}ms.`;
@@ -79,7 +86,7 @@ export default function plugin(options) {
     // console.log({ options });
     const transformer = async (ast) => {
 
-        ensureDirSync('./build/solutions');
+        ensureDirSync('./solutions');
 
         const promises = [];
 
@@ -105,7 +112,7 @@ export default function plugin(options) {
             // TODO: update `getOutput` according to Kevin's example
             promises.push(async () => {
                 // console.log(`num promises: ${promises.length}; `);
-                const result = await getOutput(value);
+                const result = await getOutput(value, lang);
 
                 // console.log({ node, index, parent });
 
@@ -116,6 +123,7 @@ export default function plugin(options) {
                     {
                         type: 'jsx',
                         // TODO: encode the source into jsx tree to avoid XSS?
+                        // TODO: create a generic <CodeBlock and pass lang={lang} />
                         value: `<Z3CodeBlock input={${val}} />`
                     }
                 )

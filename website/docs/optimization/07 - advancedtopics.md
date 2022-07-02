@@ -20,10 +20,18 @@ Z3 uses by default an implementation of dual Simplex to solve feasibility and pr
 ```
 
 ## Weighted Max-SAT solvers, a portfolio
-The default solver for unweighted MaxSAT problems (when all weights of the soft constraints are set to 1) is the Fu-Malik algorithm. The default solver used for weighted MaxSAT problems is called wmax. It uses a simple decision procedure that bounds weights. Several alternatives are available and they may scale better for your application. For weighted MaxSAT problems you can select the following engines wpm2 (use an implementation of the WPM2 algorithm by Ans�tegui et.al.), bcd2 (use an implementation of the bincd algorithm by Heras et.al.), pbmax (refine bounds iteratively based on Pseudo-Boolean inequalities), hsmax (use separation into solving hitting sets by Davies et.al.). To select the hsmax engine, set the option
+
+The default solver for MaxSAT problems is the MaxRes algorithm. Several other alternative solvers are available. The default solver
+is chosen based on benchmarking against MaxSAT competition benchmarks, but other solver combinations, such as wmax, may work well for some domains.
+When the objectives are weighted by weights such as 1, 2, 4, 8, 16, such that the sum of weights in every prefix is lower than the next weight, the solver
+uses a lexicographic optimization algorithm that attempts to first solve for the highest weight before continuing with lower weights.
+
+The other main MaxSAT algorithms avialable are
 
 ```z3
-  (set-option :opt.wmaxsat_engine hsmax)
+  (set-option :opt.maxsat_engine rc2)
+  (set-option :opt.maxsat_engine maxresbin)
+  (set-option :opt.maxsat_engine wmax)
 ```
 
 Note that our implementations of these engines do not (yet) perform as well as the default on most benchmarks we have tried. The option

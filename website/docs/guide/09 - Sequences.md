@@ -206,7 +206,7 @@ Every string is equal to the prefix and suffix that add up to a its length.
 
 ```z3
 (simplify (_ char 1000))
-(simplify (_ char 100000000)) ; out of bound
+(simplify (_ char 100000000)) ; out of bounds
 ```
 
 Note that after `(_ char 54)` is the same as `(simplify (str.from_code 54))`.

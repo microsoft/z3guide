@@ -180,7 +180,7 @@ Every string is equal to the prefix and suffix that add up to a its length.
 (simplify (str.to_int "-10")) ; results in -1 because -10 is not non-negative
 ```
 
-### `(str.< s t)` '(str.<= s t)` - lexicographic string comparison
+### `(str.< s t)` `(str.<= s t)` - lexicographic string comparison
 
 ```z3
 (simplify (str.< "alex" "andra"))

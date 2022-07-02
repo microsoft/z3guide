@@ -900,7 +900,7 @@ The Z3 preprocessor has many options that may improve the performace of the mode
 
 ;assumption 32
 (assert
-(forall ((U Role) (V Role)) (iff (role_le U V) ( (role_level U) (role_level V)))))
+(forall ((U Role) (V Role)) (iff (role_le U V) (<= (role_level U) (role_level V)))))
  
 
 ;assumption 33

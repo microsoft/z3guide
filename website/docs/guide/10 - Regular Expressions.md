@@ -3,10 +3,11 @@ title: Regular Expressions
 sidebar_position: 10
 ---
 
-The sort constructor <tt>RegEx</tt> takes as argument a sequence type.
-The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
+The sort constructor `RegEx` takes as argument a sequence type.
+The set of regular expressions over strings is thus `(RegEx String)`; 
+it is synomumous with the sort `RegLan` defined in the [SMTLIB2 format](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml).
 
-# Operations
+# Summary of Operations
 
 <table>
   <tr>
@@ -31,7 +32,7 @@ The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
   </tr>
   <tr> 
     <td><tt>(re.range ch1 ch2)</tt></td>
-    <td>The range of characters between <tt>ch1</tt> and <tt>ch2</tt>.</td>
+    <td>The range of characters (represented as strings) between <tt>ch1</tt> and <tt>ch2</tt>.</td>
   </tr>
   <tr> 
     <td><tt>(re.++ r1 r2 r3)</tt></td>
@@ -64,7 +65,7 @@ The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
 
   <tr> 
     <td><tt>(seq.to.re s)</tt></td>
-    <td>Convert sequenceto regular expression accepting <tt>s</tt>.</td>
+    <td>Convert sequence to regular expression accepting <tt>s</tt>.</td>
   </tr>
   <tr> 
     <td><tt>(seq.in.re s r)</tt></td>
@@ -82,30 +83,31 @@ The set of regular expressions over strings is thus <tt>(RegEx String)</tt>.
 
 </table>
 
-The <tt>re.range</tt> operator expects two strings each encoding a single character.
-For example <tt>(str.range "a" "\xff")</tt> is a valid range of characters, 
-while <tt>(str.range "aa" "")</tt> is not associated with any specified range. 
+The `re.range` operator expects two strings each encoding a single character.
+For example `(re.range "a" "\u{ff}")` is a valid range of characters, 
+while `(re.range "aa" "")` is the empty language. 
 
+```z3
+(simplify (re.range "a" "\u{ff}"))
+(simplify (re.range "aa" ""))
+```
 
-For added compatibility with CVC4's format, 
-Z3 also accepts expressions of the form <tt>(re.loop r lo hi)</tt>.
-Z3 understands only the meaning of these terms when <tt>lo, hi</tt> are 
+For  compatibility with the SMTLIB2 format 
+Z3 also accepts expressions of the form `(re.loop r lo hi)`.
+Z3 understands only the meaning of these terms when `lo, hi` are 
 integer numerals.
 
 # What (not) to expect of regular expressions
-Z3 converts regular expressions into non-deterministic finite automata and 
-expands membership constraints over symbolic strings and sequences 
-when it tries to satisfy constraints. This approach works for many
-membership and non-membership constraints, but is not a complete 
-procedure (and even less complete when there are other constraints 
-on the symbolic strings).
+The default solver for regular expressions unfolds membership relations of regular expressions lazily.
+It uses [symbolic derivatives](https://dl.acm.org/doi/abs/10.1145/3453483.3454066) .
+This approach works for many membership and non-membership constraints, but is not a complete 
+procedure when membership constraints are combined with constraints over strings.
+Note that the syntax allows forming _symbolic_ regular expressions that contain uninterpreted non-terminals.
 It also does not handle regular expressions symbolic sequences (it allows
 to express non-regular languages).
 Thus, the string <tt>s</tt> in <tt>(str.to.re s)</tt> should be 
 a string literal. You can write formulas with equalities over 
-regular expressions, but chances are that Z3 will not do anything 
-profound with them. Therefore, for now, use regular expressions only in
-constraints of the form <tt>(str.in.re s r)</tt>.
+regular expressions. Z3 is a decision procedure for equalities and disequalities between non-symbolic regular expressions.
 
 # Examples
 

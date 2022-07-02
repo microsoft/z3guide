@@ -31,13 +31,13 @@ In the following example, we build a simple tactic using `fail-if`. It also show
 
 Z3 also provides the combinator (tactical) `(if p t1 t2)` which is a shorthand for:
 
-```z3
+```
 (or-else (then (fail-if (not p)) t1) t2)
 ```
 
 The combinator `(when p t)` is a shorthand for:
 
-```z3
+```
 (if p t skip)
 ```
 

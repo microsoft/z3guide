@@ -3,7 +3,8 @@ title: Arithmetical Optimization
 sidebar_position: 3
 ---
 
-The [SMT-LIB 2.0](http://smtlib.cs.uiowa.edu/) standard is extended with three commands for expressing optimization objectives. The (maximize t) command instructs check-sat to produce a model that maximizes the value of term t. The type of t must be either Int, Real, or BitVec.
+The [SMT-LIB 2.0](http://smtlib.cs.uiowa.edu/) standard is extended with three commands for expressing optimization objectives. 
+The `(maximize t)` command instructs check-sat to produce a model that maximizes the value of term t. The type of `t` must be either `Int`, `Real`, or `BitVec`.
 
 ```z3
 (declare-const x Int)
@@ -15,7 +16,7 @@ The [SMT-LIB 2.0](http://smtlib.cs.uiowa.edu/) standard is extended with three c
 (get-objectives)
 ```
 
-The (minimize t) command instructs check-sat to produce a model that minimizes the value of term t.
+The `(minimize t)` command instructs check-sat to produce a model that minimizes the value of term `t`.
 
 ```z3
 (declare-const x Int)

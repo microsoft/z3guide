@@ -1,1 +1,0 @@
-{"input":"(declare-const a String)\n(declare-const b String)\n(declare-const c String)\n(assert (= (str.++ a b) \"abcd\"))\n(assert (= (str.++ b c) \"cdef\"))\n(assert (not (= b \"\")))\n(check-sat)"}

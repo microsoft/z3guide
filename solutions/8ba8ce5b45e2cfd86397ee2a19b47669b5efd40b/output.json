@@ -1,1 +1,0 @@
-{"output":"(error \"line 240 column 50: invalid qualified/indexed identifier, '_' or 'as' expected\")\nunsat\n(error \"line 341 column 10: check annotation that says sat\")\n(error \"line 342 column 10: model is not available\")\n","error":"","status":"z3-ran","hash":"8ba8ce5b45e2cfd86397ee2a19b47669b5efd40b"}

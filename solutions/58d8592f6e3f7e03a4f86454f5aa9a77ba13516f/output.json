@@ -1,1 +1,0 @@
-{"output":"num consts: 3\n(goals\n(goal\n  (> (+ x y z) 0.0)\n  :precision precise :depth 0)\n)\n(error \"tactic failed: fail-if tactic\")\ntrying again...\n(goals\n(goal\n  (> (+ x y) 0.0)\n  :precision precise :depth 0)\n)\n","error":"","status":"z3-ran","hash":"58d8592f6e3f7e03a4f86454f5aa9a77ba13516f"}

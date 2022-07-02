@@ -1,1 +1,0 @@
-{"input":"(declare-const a Bool)\n(declare-const b Bool)\n(define-fun demorgan () Bool\n    (= (and a b) (not (or (not a) (not b)))))\n(assert (not demorgan))\n(check-sat)"}

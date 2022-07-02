@@ -1,5 +1,5 @@
 ---
-title: Generalized Property Directed Reachability
+title: Generalized PDR
 sidebar_position: 3
 ---
 

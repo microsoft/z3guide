@@ -52,14 +52,3 @@ The Pseudo-Boolean solver is in some, often pathological, cases more efficient t
   (set-option :smt.pb.conflict_frequency 1)
 ```
 
-The Pseudo-Boolean solver contains a few tricks. It compiles cardinality constraints and other pseudo-Boolean inequalities with small coefficients into sorting circuits. It performs this compilation on-demand, after the inequalities have been used beyond a threshold. To disable compilation use:
-
-```z3
-  (set-option :smt.pb.enable_compilation false)
-```
-
-The Pseudo-Boolean theory solver also uses dual simplex to prune infeasible branches. For constraints with many equalities and inequalities this option can be quite helpful. The option is off by default as it often incurs more overhead than benefit. To enable this option use:
-
-```z3
-  (set-option :smt.pb.enable_simplex true)
-```

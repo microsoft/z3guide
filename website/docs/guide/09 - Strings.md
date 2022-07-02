@@ -241,6 +241,19 @@ There is a solution to `a` that is not a sequence of "a"'s.
 
 ## Summary of Operations
 
+|---------------------------|----------------------------|
+| Operation                 | Brief description          |
+|---------------------------|----------------------------|
+| `(str.++ a b c)`          | String concatenation of one or more strings |
+| `(str.len s)`             | String length. Returns an integer |
+| `(str.substr s offset length)` | Retrieves substring of <tt>s</tt> at <tt>offset</tt> |
+| `(str.indexof s sub)`          | Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences |
+| `(str.indexof s sub offset)`   | Retrieves first position of <tt>sub</tt> at or after <tt>offset</tt> in <tt>s</tt>, -1 if there are no occurrences |
+| `(str.at s offset)`            | Substring of length 1 at <tt>offset</tt> in <tt>s</tt> |
+| `` | |
+| `` | |
+|---------------------------|----------------------------|
+
 <table>
   <tr>
     <td>Operation</td>

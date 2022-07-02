@@ -4,7 +4,7 @@ sidebar_position: 10
 ---
 
 The sort constructor `Seq` can be used to create sequences over any base sort.
-For example, a sequence of integers is `(Seq Int)`, and `(Seq (_ BitVec 8))`
+For example, a sequence of integers is `(Seq Int)`, and `(Seq Unicode)`
 is the definition of `String`.
 
 ## Operations

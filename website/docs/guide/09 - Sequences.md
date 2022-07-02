@@ -47,17 +47,12 @@ followed by `b`.
 ```
 
 ### String literals
-Z3 follows the proposed SMT-LIB2.5 format for string 
-literals. Thus, strings are enclosed using double quotes. A sequence 
-of two adjacent double quotes within a string literal is used as the 
-escape sequence for a quote. So for example `"quote ""me"" on this"` 
-corresponds to the string `quote "me" on this`. Other 
-characters are treated as part of the string. For example, a newline within a string 
-is treated as a new-line character. 
 
 To represent non-ASCII characters the SMTLIB2 standard uses unicode escape sequences.
 The escape sequences are of the form `\u{d₀}`, `\u{d₁d₀}`, `\u{d₂d₁d₀}`, `\u{d₃d₂d₁d₀}`, `\u{d₄d₃d₂d₁d₀}`, `\ud₃d₂d₁d₀` 
-where `d` is a hexidecimal digit.
+where `d` is a hexidecimal digit. Other 
+characters are treated as part of the string. For example, a newline within a string 
+is treated as a new-line character. 
 
 The following example shows
 three ways to enter the newline character.
@@ -72,8 +67,175 @@ three ways to enter the newline character.
 (simplify (str.++ a b c))
 ```
 
-## Operations
-Let us start out with a summary of available string operations.
+## String Operations by example
+
+### `(str.++ a b c)` - String concatenation 
+
+A string cannot overlap with two different characters.
+```z3
+(declare-const a String)
+(assert (= (str.++ a "b") (str.++ "a" a)))
+(check-sat)
+```
+
+### `(str.len s)` - the lenght of string `s`
+
+There is a solution to `a` of length at most 2.
+
+```z3
+(declare-const a String)
+(declare-const b String)
+(assert (= (str.++ "abc" a) (str.++ b "cef")))
+(assert (<= (str.len a) 2))
+(check-sat)
+```
+
+### `(str.at s offset)` - character substring at offset
+
+The substring is of length 1 if `offset` is within the bounds of `s`, otherwise the result is the empty string.
+
+```z3
+(simplify (str.++ (str.at "abc" 1) (str.at "abc" 0)))
+(simplify (str.at "abcd" 4))
+```
+
+Note that `str.at` does not result in a character but a string of length one.
+You can use `(seq.nth "abc" 1)` to access the character at offset 1. 
+The function `seq.nth` is not part of the SMTLIB2 format for strings. 
+
+###  `(str.indexof s sub [offset])` - first position of substring
+
+The result is the first position of `sub` in `s`, -1 if there are no occurrence. 
+The offset argument is optional. No offset corresponds to the offset 0.
+
+```z3
+(simplify (str.indexof "abcabc" "a"))
+(simplify (str.indexof "abcabc" "a" 1))
+(simplify (str.indexof "abcabc" "a" 4))
+```
+
+### `(str.substr s offset length)` - substring at a given offset
+
+```z3
+(simplify (str.substr "xxabcyy" 2 3))
+(simplify (str.substr "xxabcyy" 2 10))  ; there are only 5 characters left to return
+(simplify (str.substr "xxabcyy" 10 2))  ; offset is out of bounds, so return the empty string
+```  
+
+### `(str.contains a b)` - string containment
+
+Contains is transitive.
+
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (str.contains a b))
+(assert (str.contains b c))
+(assert (not (str.contains a c)))
+(check-sat)
+```
+
+But containment is not a linear order.
+
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (str.contains a b))
+(assert (str.contains a c))
+(assert (not (str.contains b c)))
+(assert (not (str.contains c b)))
+(check-sat)
+(get-model)
+```
+
+### `(str.prefixof a b)` `(str.suffixof a b)` - prefix and suffix checks
+
+Every string is equal to the prefix and suffix that add up to a its length.
+
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (str.prefixof b a))
+(assert (str.suffixof c a))
+(assert (= (str.len a) (+ (str.len b) (str.len c))))
+(assert (not (= a (str.++ b c))))
+(check-sat)
+```
+
+### `(str.from_int i)` `(str.to_int s)` - convert to and from non-negative integers
+
+
+```z3
+(simplify (str.from_int 10))
+(simplify (str.from_int -1))  ; results in the empty string because -1 is not non-negative
+(simplify (str.to_int "10"))
+(simplify (str.to_int "010")) ; leading 0s are ignored
+(simplify (str.to_int "000"))
+(simplify (str.to_int "-10")) ; results in -1 because -10 is not non-negative
+```
+
+### `(str.< s t)` '(str.<= s t)` - lexicographic string comparison
+
+```z3
+(simplify (str.< "alex" "andra"))
+(simplify (str.<= "nate" "anthony"))
+```
+
+### `(str.is_digit s)` - test if string represents a digit
+
+```z3
+(simplify (str.is_digit "1"))   ; true
+(simplify (str.is_digit "10"))  ; false - it is not a single character
+(simplify (str.is_digit "a"))   ; false - there aren't even any digits
+```
+
+### `(str.to_code s)` `(str.from_code i)` - character codes
+
+```z3
+(simplify (str.to_code "a"))
+(simplify (str.from_code 1214))
+```
+
+### `(_ char n)` - string from a character code
+
+```z3
+(simplify (_ char 1000))
+(simplify (_ char 100000000)) ; out of bound
+```
+
+Note that after `(_ char 54)` is the same as `(simplify (str.from_code 54))`.
+
+## Other String Examples
+
+Strings <tt>a, b, c</tt> can have a non-trivial overlap.
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (= (str.++ a b) "abcd"))
+(assert (= (str.++ b c) "cdef"))
+(assert (not (= b "")))
+(check-sat)
+```
+
+There is a solution to `a` that is not a sequence of "a"'s.
+
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (= (str.++ a "ab" b) (str.++ b "ba" c)))
+(assert (= c (str.++ a b)))
+(assert (not (= (str.++ a "a") (str.++ "a" a))))
+(check-sat)
+(get-model)
+```
+
+
+## Summary of Operations
 
 <table>
   <tr>
@@ -163,95 +325,6 @@ when the offset is outside the range of positions in `s` or `length` is negative
 `offset+length` exceeds the length of `s`. 
 
 
-## Examples
-
-Basic string operations
-```z3
-(simplify (str.++ (str.at "abc" 1) (str.at "abc" 0)))
-(simplify (str.indexof "abcabc" "a"))
-(simplify (str.indexof "abcabc" "a" 1))
-(simplify (str.substr "xxabcyy" 2 3))
-```
-
-A string cannot overlap with two different characters.
-```z3
-(declare-const a String)
-(assert (= (str.++ a "b") (str.++ "a" a)))
-(check-sat)
-```
-
-Strings <tt>a, b, c</tt> can have a non-trivial overlap.
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (= (str.++ a b) "abcd"))
-(assert (= (str.++ b c) "cdef"))
-(assert (not (= b "")))
-(check-sat)
-```
-
-There is a solution to `a` of length at most 2.
-
-```z3
-(declare-const a String)
-(declare-const b String)
-(assert (= (str.++ "abc" a) (str.++ b "cef")))
-(assert (<= (str.len a) 2))
-(check-sat)
-```
-
-There is a solution to `a` that is not a sequence of "a"'s.
-
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (= (str.++ a "ab" b) (str.++ b "ba" c)))
-(assert (= c (str.++ a b)))
-(assert (not (= (str.++ a "a") (str.++ "a" a))))
-(check-sat)
-(get-model)
-```
-
-Contains is transitive.
-
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (str.contains a b))
-(assert (str.contains b c))
-(assert (not (str.contains a c)))
-(check-sat)
-```
-
-But containment is not a linear order.
-
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (str.contains a b))
-(assert (str.contains a c))
-(assert (not (str.contains b c)))
-(assert (not (str.contains c b)))
-(check-sat)
-(get-model)
-```
-
-Any string is equal to the prefix and suffix that add up to a its length.
-
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (str.prefixof b a))
-(assert (str.suffixof c a))
-(assert (= (str.len a) (+ (str.len b) (str.len c))))
-(assert (not (= a (str.++ b c))))
-(check-sat)
-```
 
 # Sequences
 
@@ -322,7 +395,7 @@ to create a unit sequence and the empty sequence over any base sort.
   </tr>
 </table>
 
-## Examples
+## Sequence Examples
 
 When inserting `b` at or after position 8, but before the length of the string, which is at least 10,
 then the resulting string has the same length, and either character 8 or 9 are unchanged.

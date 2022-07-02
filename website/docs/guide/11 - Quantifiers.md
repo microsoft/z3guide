@@ -561,21 +561,20 @@ Shifts on streams (or arrays) can also be encoded.
 
 ```z3
 (set-option :smt.mbqi true)
-;; f an g are streams
+;; f an g are "streams"
 (declare-fun f (Int) Int)
 (declare-fun g (Int) Int)
 
-;; the segment [a, n + a] of stream f is equal
-;; to the segment [0, n] of stream g.
+;; the segment [a, n + a] of stream f is equal to the segment [0, n] of stream g.
 (declare-const n Int)
 (declare-const a Int)
-(assert (forall ((x Int)) (= (and (= 0 x) (= x n))
+(assert (forall ((x Int)) (=> (and (<= 0 x) (<= x n))
                               (= (f (+ x a)) (g x)))))
 
 ;; adding some constraints to a
-(assert ( a 10))
-(assert (= (f a) 2))
-(assert (= (g 3) (- 10)))
+(assert (> a 10))
+(assert (>= (f a) 2))
+(assert (<= (g 3) (- 10)))
 
 (check-sat)
 (get-model)
@@ -586,15 +585,15 @@ A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formul
 
 ```z3
 (set-option :smt.mbqi true)
-(define-sort Char () (_ BitVec 8))
+(define-sort AsciiChar () (_ BitVec 8))
 
-(declare-fun f  (Char) Char)
-(declare-fun f1 (Char) Char)
-(declare-const a Char)
+(declare-fun f  (AsciiChar) AsciiChar)
+(declare-fun f1 (AsciiChar) AsciiChar)
+(declare-const a AsciiChar)
 
 (assert (bvugt a #x00))
 (assert (= (f1 (bvadd a #x01)) #x00))
-(assert (forall ((x Char)) (or (= x (bvadd a #x01)) (= (f1 x) (f x)))))
+(assert (forall ((x AsciiChar)) (or (= x (bvadd a #x01)) (= (f1 x) (f x)))))
 
 (check-sat)
 (get-model)
@@ -611,15 +610,15 @@ Quantifiers defining macros are also automatically detected by the Model Finder.
 (declare-const b Int)
 (declare-const c Int)
 (assert (forall ((x Int)) 
-                (= (not (p x)) (= (f x) (+ x 1)))))
+                (=> (not (p x)) (= (f x) (+ x 1)))))
 (assert (forall ((x Int)) 
-                (= (and (p x) (not (p2 x))) (= (f x) x))))
+                (=> (and (p x) (not (p2 x))) (= (f x) x))))
 (assert (forall ((x Int)) 
-                (= (p2 x) (= (f x) (- x 1)))))
+                (=> (p2 x) (= (f x) (- x 1)))))
 (assert (p b))
 (assert (p c))
 (assert (p2 a))
-(assert ( (f a) b))
+(assert (> (f a) b))
 (check-sat)
 (get-model)
 ```
@@ -632,30 +631,30 @@ Even if your formula is not in any of the fragments above. Z3 may still find a m
 (declare-fun a_1 () Int)
 (declare-fun f (Int) Int)
 (declare-fun g_1 (Int) Int)
-(assert ( n 0))
+(assert (> n 0))
 (assert (forall ((i Int))
-        (= (and (= 0 i) (= i n))
+        (=> (and (<= 0 i) (<= i n))
             (and (= (f 0) 0)
                  (= (f 2) 2)
-                 (= 0 (f i))
-                 (= (f i) 2)
-                 (= (= (f i) 2) (= i n))
-                 (= (= (f i) 0)
+                 (<= 0 (f i))
+                 (<= (f i) 2)
+                 (=> (= (f i) 2) (= i n))
+                 (=> (= (f i) 0)
                      (or (= (f (+ i 1)) 1) (= (f (+ i 1)) 2)))
-                 (= (= (f i) 1)
+                 (=> (= (f i) 1)
                      (or (= (f (+ i 1)) 1) (= (f (+ i 1)) 2)))
                  (= (g_1 0) 0)
-                 (= (= (f i) 0) (= (g_1 (+ i 1)) 0))
-                 (= (= (f i) 1) (= (g_1 (+ i 1)) (+ (g_1 i) 1)))
-                 (= (= (f i) 2)
+                 (=> (= (f i) 0) (= (g_1 (+ i 1)) 0))
+                 (=> (= (f i) 1) (= (g_1 (+ i 1)) (+ (g_1 i) 1)))
+                 (=> (= (f i) 2)
                      (= (g_1 (+ i 1)) (g_1 i)))
-                 (= (= (f i) 1) ( (g_1 i) a_1))
-                 (= (= (f i) 2) 
-                     (and (= (g_1 i) a_1) ( (g_1 i) 2)))))))
+                 (=> (= (f i) 1) (< (g_1 i) a_1))
+                 (=> (= (f i) 2) 
+                     (and (>= (g_1 i) a_1) (> (g_1 i) 2)))))))
 (check-sat)
 (get-model)
 
-(echo Property does not hold for n > 1)
+(echo "Property does not hold for n > 1")
 (assert (> n 1))
 (check-sat)
 ```

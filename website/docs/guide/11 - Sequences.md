@@ -1,6 +1,6 @@
 --- 
 title: Sequences
-sidebar_position: 10
+sidebar_position: 11
 ---
 
 The sort constructor `Seq` can be used to create sequences over any base sort.

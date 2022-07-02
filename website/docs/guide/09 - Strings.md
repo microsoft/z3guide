@@ -241,8 +241,7 @@ There is a solution to `a` that is not a sequence of "a"'s.
 
 ## Summary of Operations
 
-|---------------------------|----------------------------|
-| Operation                 | Brief description          |
+  Operation                 | Brief description          
 |---------------------------|----------------------------|
 | `(str.++ a b c)`          | String concatenation of one or more strings |
 | `(str.len s)`             | String length. Returns an integer |
@@ -250,88 +249,18 @@ There is a solution to `a` that is not a sequence of "a"'s.
 | `(str.indexof s sub)`          | Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences |
 | `(str.indexof s sub offset)`   | Retrieves first position of <tt>sub</tt> at or after <tt>offset</tt> in <tt>s</tt>, -1 if there are no occurrences |
 | `(str.at s offset)`            | Substring of length 1 at <tt>offset</tt> in <tt>s</tt> |
-| `` | |
-| `` | |
-|---------------------------|----------------------------|
-
-<table>
-  <tr>
-    <td>Operation</td>
-    <td>Brief description</td>
-  </tr>
-  <tr> 
-    <td><tt>(str.++ a b c)</tt></td>
-    <td>String concatenation of one or more strings</td>
-  </tr>
-  <tr> 
-    <td><tt>(str.len s)</tt></td>
-    <td>String length. Returns an integer.</td>
-  </tr>
-  <tr> 
-    <td><tt>(str.substr s offset length)</tt></td>
-    <td>Retrieves substring of <tt>s</tt> at <tt>offset</tt></td>
-  </tr>
-  <tr> 
-    <td><tt>(str.indexof s sub)</tt></td>
-    <td>Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences</td>
-  </tr>
-  <tr> 
-    <td><tt>(str.indexof s sub offset)</tt></td>
-    <td>Retrieves first position of <tt>sub</tt> at or after <tt>offset</tt> in <tt>s</tt>, -1 if there are no occurrences</td>
-  </tr>
-  <tr>
-    <td><tt>(str.at s offset)</tt></td>
-    <td>Substring of length 1 at <tt>offset</tt> in <tt>s</tt>.</td>
-  </tr>
-  <tr>
-    <td><tt>(str.contains s sub)</tt></td>
-    <td>Does <tt>s</tt> contain the substring <tt>sub</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(str.prefixof pre s)</tt></td>
-    <td>Is <tt>pre</tt> a prefix of <tt>s</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(str.suffixof suf s)</tt></td>
-    <td>Is <tt>suf</tt> a suffix of <tt>s</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(str.replace s src dst)</tt></td>
-    <td>Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt>.</td>
-  </tr>
-  <tr>
-    <td><tt>(str.to_int s)</tt></td>
-    <td>Retrieve integer encoded by string <tt>s</tt> (ground rewriting only).</td>
-  </tr>
-  <tr>
-    <td><tt>(str.from_int i)</tt></td>
-    <td>Retrieve string encoding of integer <tt>i</tt> (ground rewriting only).</td>
-  </tr>
-  <tr>
-    <td><tt>(str.&lt; s1 s2)</tt></td>
-    <td>Lexicographic string less than</td>
-  </tr>
-  <tr>
-    <td><tt>(str.&lt;= s1 s2)</tt></td>
-    <td>Lexicographic string less or equal to.</td>
-  </tr>  
-  <tr>
-  <td><tt>(_ char ch)</tt></td>
-  <td>Unit string from unicode character code.</td>
-  </tr>
-  <tr>
-  <td><tt>(str.is_digit s)</tt></td>
-  <td>A predicate whether string is a one of the digits 0 to 9.</td>
-  </tr>
-  <tr>
-  <td><tt>(str.to_code s)</tt></td>
-  <td>Convert string of length one to the character code (an integer). Produce -1 if the string is not of length 1</td>
-  </tr>
-    <tr>
-  <td><tt>(str.from_code i)</tt></td>
-  <td>Convert an integer in the range of valid unicodes to a string of length one</td>
-  </tr>
-</table>
+| `(str.contains s sub)`         | Does <tt>s</tt> contain the substring <tt>sub</tt>? |
+| `(str.prefixof pre s)`         | Is <tt>pre</tt> a prefix of <tt>s</tt>?|
+| `(str.suffixof suf s)`         | Is <tt>suf</tt> a suffix of <tt>s</tt>?|
+| `(str.replace s src dst)`      | Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt>|
+| `(str.to_int s)`               | Retrieve integer encoded by string <tt>s</tt> |
+| `(str.from_int i)`             | Retrieve string encoding of integer <tt>i</tt> |
+| `(str.< s1 s2)`                | Lexicographic string less than |
+| `(str.<= s1 s2)`               | Lexicographic string less or equal to |
+| `(_ char ch)`                  | Unit string from unicode character code |
+| `(str.is_digit s)`             | A predicate whether string is a one of the digits 0 to 9 |
+| `(str.to_code s)`              | Convert string of length one to the character code (an integer). Produce -1 if the string is not of length 1 |
+| `(str.from_code i)`            |Convert an integer in the range of valid unicodes to a string of length one |
 
 
 
@@ -341,103 +270,4 @@ Also, note that  `(str.at s i)` is the empty string or sequence for indices that
 when the offset is outside the range of positions in `s` or `length` is negative or 
 `offset+length` exceeds the length of `s`. 
 
-
-
-# Sequences
-
-The sort constructor `Seq` can be used to create sequences over any base sort.
-For example, a sequence of integers is `(Seq Int)`, and `(Seq (_ BitVec 8))`
-is the definition of `String`.
-
-## Operations
-Most string operations have corresponding sequence variants. In addition, there are operations
-to create a unit sequence and the empty sequence over any base sort.
-
-<table>
-  <tr>
-    <td>Operation</td>
-    <td>Brief description</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.unit elem)</tt></td>
-    <td>Sequence with a single element <tt>elem</tt>.</td>
-  </tr>
-  <tr> 
-    <td><tt>(as seq.empty (Seq Int))</tt></td>
-    <td>The empty sequence of integers.</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.++ a b c)</tt></td>
-    <td>Concatenation of one or more sequences.</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.len s)</tt></td>
-    <td>Sequence length. Returns an integer.</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.extract s offset length)</tt></td>
-    <td>Retrieves sub-sequence of <tt>s</tt> at <tt>offset</tt></td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.indexof s sub)</tt></td>
-    <td>Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.indexof s sub offset)</tt></td>
-    <td>Retrieves first position of <tt>sub</tt> at or after <tt>offset</tt> in <tt>s</tt>, -1 if there are no occurrences</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.at s offset)</tt></td>
-    <td>Sub-sequence of length 1 at <tt>offset</tt> in <tt>s</tt>.</td>
-  </tr>
-    <tr>
-    <td><tt>(seq.nth s offset)</tt></td>
-    <td>Element at <tt>offset</tt> in <tt>s</tt>. If <tt>offset</tt> is out of bounds the result is under-specified. In other words, it is treated as a fresh variable.</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.contains s sub)</tt></td>
-    <td>Does <tt>s</tt> contain the sub-sequence <tt>sub</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.prefixof pre s)</tt></td>
-    <td>Is <tt>pre</tt> a prefix of <tt>s</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.suffixof suf s)</tt></td>
-    <td>Is <tt>suf</tt> a suffix of <tt>s</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.replace s src dst)</tt></td>
-    <td>Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt>.</td>
-  </tr>
-</table>
-
-## Sequence Examples
-
-When inserting `b` at or after position 8, but before the length of the string, which is at least 10,
-then the resulting string has the same length, and either character 8 or 9 are unchanged.
-```z3
-(declare-const s (Seq Int))
-(declare-const t (Seq Int))
-(declare-const j Int)
-(declare-const b Int)
-
-(assert (<= 10 (seq.len s)))
-(assert (<= 8 j))
-(assert (< j (seq.len s)))
-(assert (= t (seq.++ (seq.extract s 0 j) (seq.unit b) (seq.extract s (+ j 1) (- (seq.len s) j 1)))))
-(push)
-(assert (not (= (seq.unit b) (seq.at t j))))
-(check-sat)
-(pop)
-(push)
-(assert (not (= (seq.len s) (seq.len t))))
-(check-sat)
-(pop)
-(push)
-(assert (not (= (seq.at s 8) (seq.at t 8))))
-(assert (not (= (seq.at s 9) (seq.at t 9))))
-(check-sat)
-(pop)
-```
 

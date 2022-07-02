@@ -11,64 +11,22 @@ is the definition of `String`.
 Most string operations have corresponding sequence variants. In addition, there are operations
 to create a unit sequence and the empty sequence over any base sort.
 
-<table>
-  <tr>
-    <td>Operation</td>
-    <td>Brief description</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.unit elem)</tt></td>
-    <td>Sequence with a single element <tt>elem</tt>.</td>
-  </tr>
-  <tr> 
-    <td><tt>(as seq.empty (Seq Int))</tt></td>
-    <td>The empty sequence of integers.</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.++ a b c)</tt></td>
-    <td>Concatenation of one or more sequences.</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.len s)</tt></td>
-    <td>Sequence length. Returns an integer.</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.extract s offset length)</tt></td>
-    <td>Retrieves sub-sequence of <tt>s</tt> at <tt>offset</tt></td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.indexof s sub)</tt></td>
-    <td>Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences</td>
-  </tr>
-  <tr> 
-    <td><tt>(seq.indexof s sub offset)</tt></td>
-    <td>Retrieves first position of <tt>sub</tt> at or after <tt>offset</tt> in <tt>s</tt>, -1 if there are no occurrences</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.at s offset)</tt></td>
-    <td>Sub-sequence of length 1 at <tt>offset</tt> in <tt>s</tt>.</td>
-  </tr>
-    <tr>
-    <td><tt>(seq.nth s offset)</tt></td>
-    <td>Element at <tt>offset</tt> in <tt>s</tt>. If <tt>offset</tt> is out of bounds the result is under-specified. In other words, it is treated as a fresh variable.</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.contains s sub)</tt></td>
-    <td>Does <tt>s</tt> contain the sub-sequence <tt>sub</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.prefixof pre s)</tt></td>
-    <td>Is <tt>pre</tt> a prefix of <tt>s</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.suffixof suf s)</tt></td>
-    <td>Is <tt>suf</tt> a suffix of <tt>s</tt>?</td>
-  </tr>
-  <tr>
-    <td><tt>(seq.replace s src dst)</tt></td>
-    <td>Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt>.</td>
-  </tr>
-</table>
+
+ Operation                        | Brief description
+|---------------------------------|---------------------------|
+| `(seq.unit elem)`               | Sequence with a single element <tt>elem</tt> |
+| `(as seq.empty (Seq Int))`      | The empty sequence of integers |
+| `(seq.++ a b c)`                | Concatenation of one or more sequences |
+| `(seq.len s)`                   | Sequence length. Returns an integer |
+| `(seq.extract s offset length)` | Retrieves sub-sequence of <tt>s</tt> at <tt>offset</tt> |
+| `(seq.indexof s sub [offset])`  | Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences |
+| `(seq.at s offset)`             | Sub-sequence of length 1 at <tt>offset</tt> in <tt>s</tt> |
+| `(seq.nth s offset)`            | Element at <tt>offset</tt> in <tt>s</tt>. If <tt>offset</tt> is out of bounds the result is under-specified. In other words, it is treated as a fresh variable |
+| `(seq.contains s sub)`          |  Does <tt>s</tt> contain the sub-sequence <tt>sub</tt>? |
+| `(seq.prefixof pre s)`          | Is <tt>pre</tt> a prefix of <tt>s</tt>? |
+| `(seq.suffixof suf s)`          | Is <tt>suf</tt> a suffix of <tt>s</tt>? |
+| `(seq.replace s src dst)`       | Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt> |
+
 
 ## Sequence Examples
 

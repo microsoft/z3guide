@@ -1,6 +1,6 @@
 ---
 title: Regular Expressions
-sidebar_position: 10
+sidebar_position: 11
 ---
 
 The sort constructor `RegEx` takes as argument a sequence type.

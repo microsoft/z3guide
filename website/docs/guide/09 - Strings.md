@@ -1,13 +1,14 @@
 --- 
-title: Strings and Sequences 
+title: Strings
 sidebar_position: 9
 ---
 
 ## Introduction
 
-This section describes Z3's handling of strings and sequences.
-Strings are represented as a sequence of Characters. The default character sort is Unicode.
-You can reason about regular expressions of sequences. Regular expressions are described in the next secion.
+This section describes Z3's handling of strings.
+Strings are represented as a sequence of Characters where the default character sort is Unicode.
+You can reason about regular expressions of sequences. 
+Sequences over elements other than Unicode characters and regular expressions are described in separate sections.
 Z3 offers built-in support for 
 using string constants and dedicated solvers for checking
 satisfiability over constraints using strings and sequences.
@@ -32,9 +33,9 @@ Extensions to sequences operations are not supported in z3str3.
 ```
 
 
-## Strings
+## Creating Strings
 
-### Built-in types and constants
+###  Built-in types and constants
 The name `String` is a built-in name for the String sort. 
 String literals can furthermore be entered directly as literals 
 delimited by quotes. The following example asks whether there are

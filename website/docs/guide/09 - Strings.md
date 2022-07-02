@@ -214,7 +214,7 @@ Note that after `(_ char 54)` is the same as `(simplify (str.from_code 54))`.
 
 ## Other String Examples
 
-Strings <tt>a, b, c</tt> can have a non-trivial overlap.
+Strings `a, b, c` can have a non-trivial overlap.
 ```z3
 (declare-const a String)
 (declare-const b String)
@@ -245,16 +245,16 @@ There is a solution to `a` that is not a sequence of "a"'s.
 |---------------------------|----------------------------|
 | `(str.++ a b c)`          | String concatenation of one or more strings |
 | `(str.len s)`             | String length. Returns an integer |
-| `(str.substr s offset length)` | Retrieves substring of <tt>s</tt> at <tt>offset</tt> |
-| `(str.indexof s sub)`          | Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences |
-| `(str.indexof s sub offset)`   | Retrieves first position of <tt>sub</tt> at or after <tt>offset</tt> in <tt>s</tt>, -1 if there are no occurrences |
-| `(str.at s offset)`            | Substring of length 1 at <tt>offset</tt> in <tt>s</tt> |
-| `(str.contains s sub)`         | Does <tt>s</tt> contain the substring <tt>sub</tt>? |
-| `(str.prefixof pre s)`         | Is <tt>pre</tt> a prefix of <tt>s</tt>?|
-| `(str.suffixof suf s)`         | Is <tt>suf</tt> a suffix of <tt>s</tt>?|
-| `(str.replace s src dst)`      | Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt>|
-| `(str.to_int s)`               | Retrieve integer encoded by string <tt>s</tt> |
-| `(str.from_int i)`             | Retrieve string encoding of integer <tt>i</tt> |
+| `(str.substr s offset length)` | Retrieves substring of `s` at `offset` |
+| `(str.indexof s sub)`          | Retrieves first position of `sub` in `s`, -1 if there are no occurrences |
+| `(str.indexof s sub offset)`   | Retrieves first position of `sub` at or after `offset` in `s`, -1 if there are no occurrences |
+| `(str.at s offset)`            | Substring of length 1 at `offset` in `s` |
+| `(str.contains s sub)`         | Does `s` contain the substring `sub`? |
+| `(str.prefixof pre s)`         | Is `pre` a prefix of `s`?|
+| `(str.suffixof suf s)`         | Is `suf` a suffix of `s`?|
+| `(str.replace s src dst)`      | Replace the first occurrence of `src` by `dst` in `s`|
+| `(str.to_int s)`               | Retrieve integer encoded by string `s` |
+| `(str.from_int i)`             | Retrieve string encoding of integer `i` |
 | `(str.< s1 s2)`                | Lexicographic string less than |
 | `(str.<= s1 s2)`               | Lexicographic string less or equal to |
 | `(_ char ch)`                  | Unit string from unicode character code |

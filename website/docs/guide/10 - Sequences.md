@@ -14,18 +14,18 @@ to create a unit sequence and the empty sequence over any base sort.
 
  Operation                        | Brief description
 |---------------------------------|---------------------------|
-| `(seq.unit elem)`               | Sequence with a single element <tt>elem</tt> |
+| `(seq.unit elem)`               | Sequence with a single element `elem` |
 | `(as seq.empty (Seq Int))`      | The empty sequence of integers |
 | `(seq.++ a b c)`                | Concatenation of one or more sequences |
 | `(seq.len s)`                   | Sequence length. Returns an integer |
-| `(seq.extract s offset length)` | Retrieves sub-sequence of <tt>s</tt> at <tt>offset</tt> |
-| `(seq.indexof s sub [offset])`  | Retrieves first position of <tt>sub</tt> in <tt>s</tt>, -1 if there are no occurrences |
-| `(seq.at s offset)`             | Sub-sequence of length 1 at <tt>offset</tt> in <tt>s</tt> |
-| `(seq.nth s offset)`            | Element at <tt>offset</tt> in <tt>s</tt>. If <tt>offset</tt> is out of bounds the result is under-specified. In other words, it is treated as a fresh variable |
-| `(seq.contains s sub)`          |  Does <tt>s</tt> contain the sub-sequence <tt>sub</tt>? |
-| `(seq.prefixof pre s)`          | Is <tt>pre</tt> a prefix of <tt>s</tt>? |
-| `(seq.suffixof suf s)`          | Is <tt>suf</tt> a suffix of <tt>s</tt>? |
-| `(seq.replace s src dst)`       | Replace the first occurrence of <tt>src</tt> by <tt>dst</tt> in <tt>s</tt> |
+| `(seq.extract s offset length)` | Retrieves sub-sequence of `s` at `offset` |
+| `(seq.indexof s sub [offset])`  | Retrieves first position of `sub` in `s`, -1 if there are no occurrences |
+| `(seq.at s offset)`             | Sub-sequence of length 1 at `offset` in `s` |
+| `(seq.nth s offset)`            | Element at `offset` in `s`. If `offset` is out of bounds the result is under-specified. In other words, it is treated as a fresh variable |
+| `(seq.contains s sub)`          |  Does `s` contain the sub-sequence `sub`? |
+| `(seq.prefixof pre s)`          | Is `pre` a prefix of `s`? |
+| `(seq.suffixof suf s)`          | Is `suf` a suffix of `s`? |
+| `(seq.replace s src dst)`       | Replace the first occurrence of `src` by `dst` in `s` |
 
 
 ## Sequence Examples

@@ -21,12 +21,15 @@ and the full combination of lengths and sequences
 In Z3, strings are a special case of sequences, and for the case of Unicode strings,
 and regular expressions over Unicode strings seeks to implement the [SMTLIB2 standard](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml).
 
+You can configure z3 to use one of two backends for solving strings.
+The default backend is called the `seq` solver. It solves constraints over both sequences and strings.
+The other backend is [z3str3](https://z3string.github.io/), which applies to strings and regular expressions over strings. 
+Extensions to sequences operations are not supported in z3str3.
 
-*TBDs*
-
-* update documentation to use new names
-* add notes about regex capabilities (comparing regex)
-* update reference to z3str3
+```z3
+(set-option :smt.string_solver z3str3) ; set the string solver to be the z3str3 solver
+(set-option :smt.string_solver seq)    ; set the string solver to be the seq solver (default)
+```
 
 
 ## Strings

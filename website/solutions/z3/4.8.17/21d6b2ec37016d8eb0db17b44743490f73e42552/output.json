@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun a () (_ BitVec 8)\n    #xfd)\n  (define-fun f ((x!0 (_ BitVec 8))) (_ BitVec 8)\n    #xfd)\n  (define-fun f1 ((x!0 (_ BitVec 8))) (_ BitVec 8)\n    (ite (= x!0 #xfe) #x00\n      (f x!0)))\n)\n","error":"","status":"z3-ran","hash":"21d6b2ec37016d8eb0db17b44743490f73e42552"}

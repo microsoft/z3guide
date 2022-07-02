@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun b () Int\n    18)\n  (define-fun a () Int\n    19)\n  (define-fun f ((x!0 Int)) Int\n    1)\n)\n","error":"","status":"z3-ran","hash":"10fd1d7c01d1f926f92754b5c0c242850d7db36d"}

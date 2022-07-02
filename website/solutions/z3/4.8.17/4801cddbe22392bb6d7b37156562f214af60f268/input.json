@@ -1,0 +1,1 @@
+{"input":"(declare-const a Real)\n; The following formula is satisfiable since division by zero is not specified.\n(assert (= (/ a 0.0) 10.0)) \n(check-sat)\n(get-model)\n\n; Although division by zero is not specified, division is still a function.\n; So, (/ a 0.0) cannot evaluated to 10.0 and 2.0.\n(assert (= (/ a 0.0) 2.0)) \n(check-sat)"}

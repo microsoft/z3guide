@@ -26,6 +26,10 @@ to create a unit sequence and the empty sequence over any base sort.
 | `(seq.prefixof pre s)`          | Is `pre` a prefix of `s`? |
 | `(seq.suffixof suf s)`          | Is `suf` a suffix of `s`? |
 | `(seq.replace s src dst)`       | Replace the first occurrence of `src` by `dst` in `s` |
+| `(seq.map fn s)`                | Map function (an expression of sort `(Array S T)`) on sequence `s` of sort `(Seq S)` |
+| `(seq.mapi fn s)`               | Map function (an expression of sort `(Array Int S T)`) on sequence `s` of sort `(Seq S)` |
+| `(seq.fold_left fn b s)`        | Fold function (an expression of sort `(Array T S T)`) on initial value `b` of sort `T` and sequence `s` of sort `(Seq S)` |
+| `(seq.fold_lefti fn o b s)`     | Fold function (an expression of sort `(Array Int T S T)`) on offset `o`, initial value `b` of sort `T` and sequence `s` of sort `(Seq S)` |
 
 
 ## Sequence Examples
@@ -56,4 +60,11 @@ then the resulting string has the same length, and either character 8 or 9 are u
 (check-sat)
 (pop)
 ```
+
+## Map and Fold
+
+The functions map and fold (left) are modeled after the functions found in ML languages.
+Our version of `fold_lefti`, where the current index of the sequence element is available is slightly different, it takes as an additional argument
+also an offset. The advantage of including the offset is that it is easier to formulate how the function decomposes over sequence concatenation.
+The decision procedure for map and fold behaves similar to recursive function unfolding. 
 

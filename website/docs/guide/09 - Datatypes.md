@@ -105,3 +105,33 @@ The ground decision procedures for recursive datatypes don't lift to establishin
 (check-sat)
 (get-info :all-statistics)
 ```
+
+### Nested datatypes with Arrays and Sequences
+
+In some applications it is convenient to have a sequence of types that are 
+recursively defined. For example an abstract syntax tree of a program is a sequence of 
+basic statements, and a basic statement can be an assignment or an if-then-else statement,
+where the then and else branches are statements. Similarly, it may be convenient to use
+a nesting of algebraic data-types and arrays. Z3 supports nesting ADTs over sequences and over
+ranges of arrays.
+
+```z3
+(declare-sort Expr)
+(declare-sort Var)
+(declare-datatypes ((Stmt 0)) 
+  (((Assignment (lval Var) (rval Expr)) 
+    (If (cond Expr) (th Stmt) (el Stmt)) 
+    (Seq (stmts (Seq Stmt))))))
+
+(declare-const s Stmt)
+(declare-const t Stmt)
+
+(assert ((_ is Seq) t))
+(assert ((_ is Seq) s))
+(assert (= s (seq.nth (stmts t) 2)))
+(assert (>= (seq.len (stmts s)) 5))
+(check-sat)
+(get-model)
+(assert (= s (Seq (seq.unit s))))
+(check-sat)
+```

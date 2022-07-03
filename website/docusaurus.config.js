@@ -117,7 +117,7 @@ async function createConfig() {
                 },
                 {
                   label: 'Programming Z3 in Python',
-                  href: 'https://theory.stanford.edu/~nikolaj/programmingz3.html',
+                  href: 'https://z3prover.github.io/papers/programmingz3.html',
                 },
                 {
                   label: 'Z3 on GitHub',

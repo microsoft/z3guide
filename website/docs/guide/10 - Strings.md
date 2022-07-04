@@ -3,6 +3,8 @@ title: Strings
 sidebar_position: 10
 ---
 
+> **SMTLIB2 standard [The theory of strings](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml)
+
 ## Introduction
 
 This section describes Z3's handling of strings.

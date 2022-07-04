@@ -3,7 +3,10 @@ title: IEEE Floats
 sidebar_position: 7
 ---
 
-Z3 supports IEEE floating point semantics defined in [SMTLIB2](http://smtlib.cs.uiowa.edu/theories-FloatingPoint.shtml).
+
+> **SMTLIB2 standard** [IEEE Floating Point Numbers](http://smtlib.cs.uiowa.edu/theories-FloatingPoint.shtml)
+
+
 
 ```z3
 (declare-fun X () (_ FloatingPoint 11 53))

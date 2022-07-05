@@ -16,9 +16,9 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     env:
-      RISE4FUN_GITHUB_REPOSITORY: ${{ github.repository }}
-      RISE4FUN_GITHUB_REF: ${{ github.ref }}
-      RISE4FUN_GITHUB_SHA: ${{ github.sha }}
+      Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
+      Z3GUIDE_GITHUB_REF: ${{ github.ref }}
+      Z3GUIDE_GITHUB_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

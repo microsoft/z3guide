@@ -1,17 +1,14 @@
-# RiSE4Fun Documentation
-
-[RiSE4Fun](https://microsoft.github.io/rise4fun/) is a place for hosting instruction materials of a course, currently using a [Z3](https://z3prover.github.io/) tutorial as an example.
-
-This repository contains sources of [RiSE4Fun](https://microsoft.github.io/rise4fun/).
+# Z3Guide Documentation
+This repository contains sources of [Z3Guide](https://microsoft.github.io/z3guide/), an online tutorial for [Z3](https://z3prover.github.io/) powered by [RiSE at Microsoft Research](https://www.microsoft.com/en-us/research/group/research-software-engineering-rise/).
 
 The rest of this page is for developers contributing to the tutorial docs of Z3.
-## Developer setup (Microsoft)
+## Developer setup
 
-### Codespaces
+### Codespaces (Microsoft Internal ONLY)
 -   Join the Microsoft github organization from [Microsoft Open Source](https://opensource.microsoft.com/) via the `Employee sign-in` at the bottom. 
     - From there, go to the `GitHub for Open Source at Microsoft` tab and follow the instructions to join the organization via the management portal.
 
--   From [this repository](https://github.com/microsoft/rise4fun/), click on the green `<> Code` button, select the `Codespaces` tab and then `Create codespaces on main`. The setup might take a couple of minutes.
+-   From [this repository](https://github.com/microsoft/z3guide/), click on the green `<> Code` button, select the `Codespaces` tab and then `Create codespaces on main`. The setup might take a couple of minutes.
 
 -   From there, a VSCode tab will open in your browser. You may now edit, test and commit to the repository just like on your local machine.
 
@@ -74,7 +71,7 @@ cd website && yarn clean && cd ../
 
 ## Microsoft Open Source Code of Conduct
 
-This project is hosted at https://github.com/microsoft/rise4fun/.
+This project is hosted at https://github.com/microsoft/z3guide/.
 This project has adopted the
 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 

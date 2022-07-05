@@ -7,8 +7,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 async function createConfig() {
 
-  const repo = process.env.RISE4FUN_GITHUB_REPOSITORY;
-  const sha = process.env.RISE4FUN_GITHUB_SHA;
+  const repo = process.env.Z3GUIDE_GITHUB_REPOSITORY;
+  const sha = process.env.Z3GUIDE_GITHUB_SHA;
 
   let linkToCommit = '';
   if (repo && sha) {
@@ -21,14 +21,14 @@ async function createConfig() {
     title: 'Z3',
     tagline: 'Learn Z3 online!',
     url: 'https://microsoft.github.io/',
-    baseUrl: '/rise4fun/',
+    baseUrl: '/z3guide/',
     onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'warn',
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'microsoft', // Usually your GitHub org/user name.
-    projectName: 'rise4fun', // Usually your repo name.
+    projectName: 'z3guide', // Usually your repo name.
     deploymentBranch: 'gh-pages', // name of the deployment branch
 
     // Even if you don't use internalization, you can use this field to set useful
@@ -50,7 +50,7 @@ async function createConfig() {
             // Please change this to your repo.
             // Remove this to remove the "edit this page" links.
             editUrl:
-              'https://github.com/microsoft/rise4fun/tree/main/website',
+              'https://github.com/microsoft/z3guide/tree/main/website',
           },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
@@ -99,7 +99,7 @@ async function createConfig() {
             },
             // link to the github repo of this site
             {
-              href: 'https://github.com/microsoft/rise4fun',
+              href: 'https://github.com/microsoft/z3guide',
               label: 'GitHub',
               position: 'right',
             },
@@ -130,7 +130,7 @@ async function createConfig() {
               items: [
                 {
                   label: 'GitHub',
-                  href: 'https://github.com/microsoft/rise4fun',
+                  href: 'https://github.com/microsoft/z3guide',
                 },
                 {
                   label: 'Twitter',

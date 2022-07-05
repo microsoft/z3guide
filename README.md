@@ -22,7 +22,7 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
 
 ### Local Setup (not using Codespaces)
 
--   install node.js >= 16.14, as is required by Docusaurus.
+-   install node.js >= 16.15.1
 -   install yarn globally if needed
 
 ```

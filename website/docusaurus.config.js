@@ -63,7 +63,7 @@ async function createConfig() {
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         navbar: {
-          title: 'RiSE4Fun',
+          title: 'Z3',
           items: [
             { 
               type: 'doc',

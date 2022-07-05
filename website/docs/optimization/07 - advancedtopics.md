@@ -34,21 +34,34 @@ The other main MaxSAT algorithms avialable are
   (set-option :opt.maxsat_engine wmax)
 ```
 
-Note that our implementations of these engines do not (yet) perform as well as the default on most benchmarks we have tried. The option
+Pre-processing within the optimization solver will attempt to eliminate bounded arithmetical variables.
+For example, the constraints
+```z3
+(declare-fun x () Int)
+(assert (<= x 1))
+(assert (>= x 0))
+(minimize x)
+(check-sat)
+```
+
+get rewritten internally to a problem of the form
 
 ```z3
-  (set-option :opt.enable_sat true)
+(declare-const x Bool)
+(assert-soft (not x))
+(check-sat)
 ```
-is made available for the pbmax solver. It causes Pseudo-Boolean constraints to be compiled into propositional logic. It uses a more efficient SAT solver if the input can be compiled directly to SAT. If not, pbmax uses a custom Pseudo-Boolean theory solver. In fact, the default behavior of the optimization engine is to detect 0-1 variables from bounds constraints and use a Pseudo-Boolean solver for these. Maximization objectives over 0-1 variables are also translated to MaxSAT form such that one of the MaxSAT engines can be used. To disable this translation use
+You can disable this transformation by setting
 
 ```z3 
   (set-option :opt.elim_01 false)
 ```
 
-The Pseudo-Boolean solver is in some, often pathological, cases more efficient than using a SAT solver. For example, it handles pidgeon hole problems well. Since cutting planes are expensive, they are applied infrequently. To set their frequency use:
+For problems that are either already bit-vector or Boolean or can be rewritten to this form, the engine uses a core solver based on a tuned SAT solver.
+You can turn off the use of the SAT solver by setting:
 
-
-```z3 
-  (set-option :smt.pb.conflict_frequency 1)
+```z3
+  (set-option :opt.enable_sat false)
 ```
+
 

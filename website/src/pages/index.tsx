@@ -18,7 +18,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/guide/intro">
-            Z3 Tutorial (content TBD)
+            Z3 Tutorial (WIP)
           </Link>
         </div>
       </div>

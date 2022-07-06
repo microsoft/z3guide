@@ -7874,7 +7874,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-z3-solver@latest:
+z3-solver@4.8.17:
   version "4.8.17"
   resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.8.17.tgz#be1ae6746faa9ecd638748e393ab73be4820b4c5"
   integrity sha512-FIy+tn/jUEKBO9PPZKfwZpc3UGGM3/f+gmXJOV7hfLpwteuqofleLFUWiugF/07kLNGHn4EZXCLaIpH3kp8V2Q==

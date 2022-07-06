@@ -5,7 +5,7 @@ sidebar_position: 4
 
 Probes (aka formula measures) are evaluated over goals. Boolean expressions over them can be built using relational operators and Boolean connectives. The tactic `(fail-if cond)` fails if the given goal does not satisfy the condition `cond`. Many numeric and Boolean measures are available in Z3. The command `(help-tactic)` provides the list of all built-in probes.
 
-```z3
+```z3 no-build
 (help-tactic)
 ```
 

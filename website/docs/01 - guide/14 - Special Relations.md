@@ -78,6 +78,7 @@ Use instead
 
 The transitive closure of a relation is not first-order axiomatizable. However, the decision problem for ground formulas is decidable
 because for every binary relation `R` over a finite domain, the transitive closure of it is defined over the finite graph of `R`.
+The small model property contrasts non-ground first-order formulas using transtive closure that are not first-order axiomatizable.
 
 ```z3
 (declare-sort A 0)
@@ -90,3 +91,4 @@ because for every binary relation `R` over a finite domain, the transitive closu
 (assert (not ((_ transitive-closure R) a c)))
 (check-sat)
 ```
+

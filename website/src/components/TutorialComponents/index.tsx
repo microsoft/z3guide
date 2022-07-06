@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import CodeBlock from "@theme/CodeBlock";
-import { getInputUtilityClass } from '@mui/material';
 
 const Output = ({ result }) => {
   const success = result.status === "z3-ran";
   return (
     <pre>
-      <b>{success ? "Output: " : "Error: "}</b><br />
-      {success ? result.output : result.error }
-      {"\n"}
+      {success ? "" : <span style={{ color: "red" }}><b>Error: </b><br /></span>}
+      {success ? result.output : result.error}
     </pre>
   );
 };

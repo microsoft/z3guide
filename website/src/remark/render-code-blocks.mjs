@@ -10,10 +10,36 @@ import { spawnSync } from 'child_process';
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
-const VERSION = "1"
+const VERSION = "1" // TODO move this into config
 
-async function getOutput(input, lang) {
-    const timeout = 30000;
+
+function checkZ3(input, output, hash, errRegex, skipErr) {
+    if (skipErr) {
+        return output;
+    }
+
+    const hasError = output.match(errRegex);
+    if (hasError !== null) {
+        throw new Error(
+`\n******************************************
+Z3 (version ${z3pkg.version}) Runtime Error
+
+- Snippet: 
+${input}
+
+- Error Msg: 
+${output}
+
+- Hash: 
+${hash}
+******************************************\n`);
+    }
+
+    return "";
+}
+
+async function getOutput(input, lang, skipErr) {
+    const timeout = 30000; // TODO move this into config
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -30,16 +56,20 @@ async function getOutput(input, lang) {
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
     // console.log(hash);
-    try {
-        const data = readJsonSync(pathOut);
-        if (data) {
-            console.log(`cache hit ${hash}`)
-            return data;
+
+    const errRegex = new RegExp(/(\(error)|(unsupported)/g);
+    const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
+    if (data !== null) {
+        console.log(`cache hit ${hash}`)
+        const errorToReport = checkZ3(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
+            data.error = errorToReport;
+            data.status = "z3-runtime-error";
+            writeJsonSync(pathOut, data); // update old cache
         }
-    } catch (err) {
-        // proceed with running z3 and do nothing
-        // TODO: factor this out
+        return data;
     }
+
 
     let output = "";
     let error = "";
@@ -65,6 +95,14 @@ async function getOutput(input, lang) {
     }
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
+
+
+    const errorToReport = checkZ3(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+
+    if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
+        error = errorToReport;
+        status = "z3-runtime-error";
+    }
 
     const result = {
         output: output,
@@ -103,7 +141,10 @@ export default function plugin(options) {
         });
 
         visit(ast, 'code', (node, index, parent) => {
-            const { value, lang } = node;
+            const { value, lang, meta } = node;
+
+            const skipRegex = new RegExp(/(no-build)|(ignore-errors)/g);
+            const skipErr = meta && meta.match(skipRegex) !== null;
 
             if (lang !== 'z3') {
                 return;
@@ -112,7 +153,7 @@ export default function plugin(options) {
             // TODO: update `getOutput` according to Kevin's example
             promises.push(async () => {
                 // console.log(`num promises: ${promises.length}; `);
-                const result = await getOutput(value, lang);
+                const result = await getOutput(value, lang, skipErr);
 
                 // console.log({ node, index, parent });
 

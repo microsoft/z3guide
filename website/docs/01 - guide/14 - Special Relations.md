@@ -87,5 +87,4 @@ because for every binary relation `R` over a finite domain, the transitive closu
 (assert (R b c))
 (assert (not ((_ transitive-closure R) a c)))
 (check-sat)
-unsat
 ```

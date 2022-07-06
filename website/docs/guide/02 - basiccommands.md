@@ -56,7 +56,7 @@ In some applications, we want to explore several similar problems that share sev
 
 In the following example, the command (assert p) signs an error because the pop command removed the declaration for p. If the last pop command is removed, then the error is corrected.
 
-```z3
+```z3 ignore-errors
 (declare-const x Int)
 (declare-const y Int)
 (declare-const z Int)
@@ -78,7 +78,7 @@ The push and pop commands can optionally receive a numeral argument as specifed 
 ## Configuration 
 The command set-option is used to configure Z3. Z3 has several options to control its behavior. Some of these options (e.g., produce-proofs) can only be set before any declaration or assertion. We use the reset command to erase all assertions and declarations. After the reset command, all configuration options can be set.
 
-```z3
+```z3 no-build
 (set-option :print-success true)
 (set-option :produce-unsat-cores true) ; enable generation of unsat cores
 (set-option :produce-models true) ; enable model generation
@@ -120,7 +120,7 @@ The define-sort command defines a new sort symbol that is an abbreviation for a 
 
 The following example defines several abbreviations for sort expressions.
 
-```z3
+```z2 no-build
 (define-sort IList () (List Int))
 (define-sort List-Set (T) (Array (List T) Bool))
 (define-sort I () Int)

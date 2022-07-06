@@ -13,7 +13,11 @@ import { spawnSync } from 'child_process';
 const VERSION = "1" // TODO move this into config
 
 
-function checkZ3(input, output, hash, errRegex) {
+function checkZ3(input, output, hash, errRegex, skipErr) {
+    if (skipErr) {
+        return;
+    }
+
     const hasError = output.match(errRegex);
     if (hasError !== null) {
         throw new Error(
@@ -32,7 +36,7 @@ ${hash}
     }
 }
 
-async function getOutput(input, lang) {
+async function getOutput(input, lang, skipErr) {
     const timeout = 30000; // TODO move this into config
     const hashObj = createHash('sha1');
 
@@ -52,10 +56,10 @@ async function getOutput(input, lang) {
     // console.log(hash);
 
     const errRegex = new RegExp(/\(error/g);
-    const data = readJsonSync(pathOut, { throw: false }); // don't throw an error if file not exist
+    const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)
-        checkZ3(input, data.output, hash, errRegex); // if this call fails an error will be thrown
+        checkZ3(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         return data;
     }
 
@@ -85,7 +89,7 @@ async function getOutput(input, lang) {
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
 
-    checkZ3(input, output, hash, errRegex); // if this call fails an error will be thrown
+    checkZ3(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
 
     const result = {
         output: output,
@@ -126,7 +130,8 @@ export default function plugin(options) {
         visit(ast, 'code', (node, index, parent) => {
             const { value, lang, meta } = node;
 
-            // const ignoreZ3Err = meta 
+            const skipRegex = new RegExp(/(no-build)|(ignore-errors)/g);
+            const skipErr = meta && meta.match(skipRegex) !== null;
 
             if (lang !== 'z3') {
                 return;
@@ -135,7 +140,7 @@ export default function plugin(options) {
             // TODO: update `getOutput` according to Kevin's example
             promises.push(async () => {
                 // console.log(`num promises: ${promises.length}; `);
-                const result = await getOutput(value, lang);
+                const result = await getOutput(value, lang, skipErr);
 
                 // console.log({ node, index, parent });
 

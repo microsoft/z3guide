@@ -71,14 +71,12 @@ async function createConfig() {
               position: 'left',
               label: 'Guide',
             },
-
             { 
               type: 'doc',
-              docId: 'fixedpoints/intro',
+              docId: 'strategies/intro',
               position: 'left',
-              label: 'Fixedpoints',
+              label: 'Strategies',
             },
-
             { 
               type: 'doc',
               docId: 'optimization/intro',
@@ -87,9 +85,9 @@ async function createConfig() {
             },
             { 
               type: 'doc',
-              docId: 'strategies/intro',
+              docId: 'fixedpoints/intro',
               position: 'left',
-              label: 'Strategies',
+              label: 'Fixedpoints',
             },
             { 
               type: 'doc',

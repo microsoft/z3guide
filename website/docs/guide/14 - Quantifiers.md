@@ -356,7 +356,7 @@ The array property fragment can encode properties about unidimensional, and is s
 
 #### List Fragment
 
-The list fragment can encode properties about data-structures such as lists. For each quantified axiom q in this fragment, there is an easy way to satisfy q. More information about this fragment can be found in the paper [Data Structure Specifications via Local Equality Axioms](httpwww.cs.berkeley.edu~neculaPapersverifier-cav05.pdf).
+The list fragment can encode properties about data-structures such as lists. For each quantified axiom q in this fragment, there is an easy way to satisfy q. More information about this fragment can be found in the paper [Data Structure Specifications via Local Equality Axioms](httpw://ww.cs.berkeley.edu/~necula/Papers/verifier-cav05.pdf).
 
 ```z3
 (set-option :smt.mbqi true)

@@ -51,7 +51,7 @@ A recursive datatype declaration includes itself directly (or indirectly) as a c
 
 The List recursive datatype is builtin in Z3. The empty list is nil, and the constructor insert is used to build new lists. The accessors head and tail are defined as usual.
 
-```z3
+```z3 no-build
 (declare-const l1 (List Int))
 (declare-const l2 (List Int))
 (declare-const l3 (List Int))

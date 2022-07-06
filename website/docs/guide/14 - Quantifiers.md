@@ -171,7 +171,7 @@ The model-based quantifier instantiation (MBQI) is essentially a counter-example
 (check-sat)
 (get-model)
 
-(echo evaluating (f (+ a 10) 20)...)
+(echo "evaluating (f (+ a 10) 20)...")
 (eval (f (+ a 10) 20))
 ```
 

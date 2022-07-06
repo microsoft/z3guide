@@ -24,6 +24,8 @@ Use instead
 ```
 (define-fun R ((x A) (y A)) Bool ((_ partial-order 0) x y))
 ```
+We are using the index 0 to identify the partial order relation `R`. To create a different relation that is also a partial order use 
+a different index, such as `(_ partial-order 1)`.
 
 ## Linear Order
 ```z3

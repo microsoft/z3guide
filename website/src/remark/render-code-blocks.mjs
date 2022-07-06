@@ -15,7 +15,7 @@ const VERSION = "1" // TODO move this into config
 
 function checkZ3(input, output, hash, errRegex, skipErr) {
     if (skipErr) {
-        return;
+        return output;
     }
 
     const hasError = output.match(errRegex);
@@ -34,6 +34,8 @@ ${output}
 ${hash}
 ******************************************\n`);
     }
+
+    return "";
 }
 
 async function getOutput(input, lang, skipErr) {
@@ -59,7 +61,12 @@ async function getOutput(input, lang, skipErr) {
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)
-        checkZ3(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        const errorToReport = checkZ3(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
+            data.error = errorToReport;
+            data.status = "z3-runtime-error";
+            writeJsonSync(pathOut, data); // update old cache
+        }
         return data;
     }
 
@@ -89,7 +96,13 @@ async function getOutput(input, lang, skipErr) {
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
 
-    checkZ3(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+
+    const errorToReport = checkZ3(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+
+    if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
+        error = errorToReport;
+        status = "z3-runtime-error";
+    }
 
     const result = {
         output: output,

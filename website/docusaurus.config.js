@@ -65,38 +65,38 @@ async function createConfig() {
         navbar: {
           title: 'Z3',
           items: [
-            // { 
-            //   type: 'doc',
-            //   docId: 'guide/intro',
-            //   position: 'left',
-            //   label: 'Tutorial',
-            // },
+            { 
+              type: 'doc',
+              docId: 'guide/intro',
+              position: 'left',
+              label: 'Tutorial',
+            },
 
-            // { 
-            //   type: 'doc',
-            //   docId: 'fixedpoints/intro',
-            //   position: 'left',
-            //   label: 'Fixedpoints',
-            // },
+            { 
+              type: 'doc',
+              docId: 'fixedpoints/intro',
+              position: 'left',
+              label: 'Fixedpoints',
+            },
 
-            // { 
-            //   type: 'doc',
-            //   docId: 'optimization/intro',
-            //   position: 'left',
-            //   label: 'Optimization',
-            // },
-            // { 
-            //   type: 'doc',
-            //   docId: 'strategies/intro',
-            //   position: 'left',
-            //   label: 'Strategies',
-            // },
-            // { 
-            //   type: 'doc',
-            //   docId: 'playground/playground',
-            //   position: 'left',
-            //   label: 'Playground',
-            // },
+            { 
+              type: 'doc',
+              docId: 'optimization/intro',
+              position: 'left',
+              label: 'Optimization',
+            },
+            { 
+              type: 'doc',
+              docId: 'strategies/intro',
+              position: 'left',
+              label: 'Strategies',
+            },
+            { 
+              type: 'doc',
+              docId: 'playground/playground',
+              position: 'left',
+              label: 'Playground',
+            },
             // link to the github repo of this site
             {
               href: 'https://github.com/microsoft/z3guide',

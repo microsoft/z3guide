@@ -128,6 +128,7 @@ Now, we show how to implement a solver for integer arithmetic using SAT. The sol
 (get-info :reason-unknown)
 ```
 
+<!---
 The next example demonstrates how to run different strategies in parallel using the combinator `par-or`. It also shows how to run different instances of the `smt` tactic using different random seeds.
 
 ```z3
@@ -161,7 +162,7 @@ The next example demonstrates how to run different strategies in parallel using 
 
 (get-model)
 ```
-
+--->
 
 
 

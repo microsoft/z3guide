@@ -11,7 +11,7 @@ Probes (aka formula measures) are evaluated over goals. Boolean expressions over
 
 In the following example, we build a simple tactic using `fail-if`. It also shows that `echo` can be used to display the value returned by a probe. The `echo` tactic is mainly used for debugging purposes.
 
-```z3
+```z3 ignore-errors
 (declare-const x Real)
 (declare-const y Real)
 (declare-const z Real)

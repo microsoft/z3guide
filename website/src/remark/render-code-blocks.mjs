@@ -55,7 +55,7 @@ async function getOutput(input, lang, skipErr) {
     const pathOut = `${dir}/output.json`;
     // console.log(hash);
 
-    const errRegex = new RegExp(/\(error/g);
+    const errRegex = new RegExp(/(\(error)|(unsupported)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)

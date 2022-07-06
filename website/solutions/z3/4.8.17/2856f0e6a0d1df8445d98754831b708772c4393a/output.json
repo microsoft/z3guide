@@ -1,1 +1,1 @@
-{"output":"(error \"line 1 column 13: parallel tactic is disabled in single threaded mode\")\n","error":"","status":"z3-ran","hash":"2856f0e6a0d1df8445d98754831b708772c4393a"}
+{"output":"(error \"line 1 column 13: parallel tactic is disabled in single threaded mode\")\n","error":"(error \"line 1 column 13: parallel tactic is disabled in single threaded mode\")\n","status":"z3-runtime-error","hash":"2856f0e6a0d1df8445d98754831b708772c4393a"}

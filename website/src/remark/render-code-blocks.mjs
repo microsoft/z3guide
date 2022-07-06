@@ -10,10 +10,30 @@ import { spawnSync } from 'child_process';
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
-const VERSION = "1"
+const VERSION = "1" // TODO move this into config
+
+
+function checkZ3(input, output, hash, errRegex) {
+    const hasError = output.match(errRegex);
+    if (hasError !== null) {
+        throw new Error(
+`\n******************************************
+Z3 (version ${z3pkg.version}) Runtime Error
+
+- Snippet: 
+${input}
+
+- Error Msg: 
+${output}
+
+- Hash: 
+${hash}
+******************************************\n`);
+    }
+}
 
 async function getOutput(input, lang) {
-    const timeout = 30000;
+    const timeout = 30000; // TODO move this into config
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -30,16 +50,15 @@ async function getOutput(input, lang) {
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
     // console.log(hash);
-    try {
-        const data = readJsonSync(pathOut);
-        if (data) {
-            console.log(`cache hit ${hash}`)
-            return data;
-        }
-    } catch (err) {
-        // proceed with running z3 and do nothing
-        // TODO: factor this out
+
+    const errRegex = new RegExp(/\(error/g);
+    const data = readJsonSync(pathOut, { throw: false }); // don't throw an error if file not exist
+    if (data !== null) {
+        console.log(`cache hit ${hash}`)
+        checkZ3(input, data.output, hash, errRegex); // if this call fails an error will be thrown
+        return data;
     }
+
 
     let output = "";
     let error = "";
@@ -65,6 +84,8 @@ async function getOutput(input, lang) {
     }
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
+
+    checkZ3(input, output, hash, errRegex); // if this call fails an error will be thrown
 
     const result = {
         output: output,
@@ -103,7 +124,9 @@ export default function plugin(options) {
         });
 
         visit(ast, 'code', (node, index, parent) => {
-            const { value, lang } = node;
+            const { value, lang, meta } = node;
+
+            // const ignoreZ3Err = meta 
 
             if (lang !== 'z3') {
                 return;

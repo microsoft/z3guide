@@ -3,6 +3,14 @@ title: Special Relations
 sidebar_position: 14
 ---
 
+# Decision Procedures for Binary Relation Axioms
+Binary relations that are partial orders, linear orders, tree orders, and piecewise linear orders 
+can be axiomatized using first order quantifiers. However, reasoning with these quantified axioms involves
+non-linear overhead, up to a quadratic number of quantifier instantiations.
+The decision procedures for partial, linear, tree and piecewise linear orders in z3 
+use variants of Ford-Fulkerson push relabeling graphs.
+
+
 ## Partial Order
 ```z3
 (declare-sort A 0)
@@ -14,7 +22,7 @@ sidebar_position: 14
 
 Use instead
 ```
-((_ partial-order 0) x y)
+(define-fun R ((x A) (y A)) Bool ((_ partial-order 0) x y))
 ```
 
 ## Linear Order
@@ -29,7 +37,7 @@ Use instead
 
 Use instead
 ```
-((_ linear-order 0) x y)
+(define-fun R ((x A) (y A)) Bool ((_ linear-order 0) x y))
 ```
 
 
@@ -45,7 +53,7 @@ Use instead
 
 Use instead
 ```
-((_ tree-order 0) x y)
+(define-fun R ((x A) (y A)) Bool ((_ tree-order 0) x y))
 ```
 
 ## Piecewise Linear Order
@@ -61,12 +69,15 @@ Use instead
 
 Use instead
 ```
-((_ piecewise-linear-order 0) x y)
+(define-fun R ((x A) (y A)) Bool ((_ piecewise-linear-order 0) x y))
 ```
 
-## Transitive Closure
-```z3
+# Transitive Closures
 
+The transitive closure of a relation is not first-order axiomatizable. However, the decision problem for ground formulas is decidable
+because for every binary relation `R` over a finite domain, the transitive closure of it is defined over the finite graph of `R`.
+
+```z3
 (declare-sort A 0)
 (declare-fun R (A A) Bool)
 (declare-fun b () A)

@@ -124,6 +124,23 @@ async function createConfig() {
               ],
             },
             {
+              title: 'Z3 Material',
+              items: [
+                {
+                  label: 'API',
+                  to: 'https://z3prover.github.io/api/html/index.html',
+                },
+                {
+                  label: 'Slides',
+                  href: 'https://z3prover.github.io/slides'
+                },                
+                {
+                  label: 'Wiki',
+                  href: 'https://github.com/z3prover/z3/wiki',
+                }
+              ],
+            },            
+            {
               title: 'Stay Connected',
               items: [
                 {

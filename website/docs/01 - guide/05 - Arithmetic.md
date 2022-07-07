@@ -3,7 +3,7 @@ title: Arithmetic
 sidebar_position: 5
 ---
 
-# Basics
+## Basics
 
 Z3 has builtin support for integer and real constants. This two types should not be confused with machine integers (32-bit or 64-bit) and floating point numbers. These two types (sorts) represent the mathematical integers and reals. The command declare-const is used to declare integer and real constants.
 
@@ -47,7 +47,7 @@ Real constants should contain a decimal point. Unlike most programming languages
 (get-model)
 ```
 
-# Non-linear arithmetic
+## Non-linear arithmetic
 
 
 We say a formula is nonlinear if it contains expressions of the form ( t s) where t and s are not numbers. Nonlinear real arithmetic is very expensive, and Z3 is not complete for this kind of formula. The command check-sat may return unknown or loop. Nonlinear integer arithmetic is undecidable there is no procedure that is correct and terminates (for every input) with a sat or unsat answer. Yes, it is impossible to build such procedure. Note that, this does not prevent Z3 from returning an answer for many nonlinear problems. The real limit is that there will always be a nonlinear integer arithmetic formula that it will fail produce an answer.
@@ -82,7 +82,7 @@ We say a formula is nonlinear if it contains expressions of the form ( t s) wher
 (get-model)
 ```
 
-# Division
+## Division
 
 
 Z3 also has support for division, integer division, modulo and remainder operators. Internally, they are all mapped to multiplication.

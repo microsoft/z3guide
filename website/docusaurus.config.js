@@ -75,7 +75,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'theories/Arithmetic',
               position: 'left',
-              label: 'Logic',
+              label: 'Theories',
             },
             { 
               type: 'doc',

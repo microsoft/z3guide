@@ -3,7 +3,7 @@ title: Special Relations
 sidebar_position: 14
 ---
 
-# Decision Procedures for Special Binary Relations
+# Special Binary Relations
 Binary relations that are partial orders, linear orders, tree orders, and piecewise linear orders 
 can be axiomatized using first order quantifiers. However, reasoning with these quantified axioms involves
 non-linear overhead, up to a quadratic number of quantifier instantiations.

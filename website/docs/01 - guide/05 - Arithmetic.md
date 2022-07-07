@@ -5,7 +5,9 @@ sidebar_position: 5
 
 
 >  **SMTLIB2** standard [Integers](http://smtlib.cs.uiowa.edu/theories-Ints.shtml)
+
 >  **SMTLIB2** standard [Reals](http://smtlib.cs.uiowa.edu/theories-Reals.shtml)
+
 >  **SMTLIB2** standard [Mixed Int Reals](http://smtlib.cs.uiowa.edu/theories-Reals_Ints.shtml)
 
 ## Basics

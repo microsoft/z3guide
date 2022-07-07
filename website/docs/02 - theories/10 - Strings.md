@@ -207,7 +207,7 @@ Every string is equal to the prefix and suffix that add up to a its length.
 
 ### `(_ char n)` - string from a character code
 
-```z3
+```z3 ignore-errors
 (simplify (_ char 1000))
 (simplify (_ char 100000000)) ; out of bounds
 ```

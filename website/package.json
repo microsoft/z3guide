@@ -28,7 +28,7 @@
     "prism-react-renderer": "^1.3.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "z3-solver": "4.8.17"
+    "z3-solver": "^4.9.1"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^2.0.0-beta.21",

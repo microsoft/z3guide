@@ -1,0 +1,1 @@
+{"input":"(declare-sort A)\n(declare-sort B)\n(declare-fun f (A) B)\n(assert (forall ((x A) (y A))\n                (! (= (= (f x) (f y)) (= x y))\n                   :pattern ((f x) (f y))\n                   )))\n(declare-const a1 A)\n(declare-const a2 A)\n(declare-const b B)\n(assert (not (= a1 a2)))\n(assert (= (f a1) b))\n(assert (= (f a2) b))\n(check-sat)"}

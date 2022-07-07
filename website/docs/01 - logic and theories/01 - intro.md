@@ -1,5 +1,5 @@
 ---
-title: Introduction to SMTLIB Logic and Theories
+title: Introduction
 sidebar_position: 1
 ---
 

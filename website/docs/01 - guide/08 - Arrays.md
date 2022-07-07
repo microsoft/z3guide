@@ -3,6 +3,8 @@ title: Arrays
 sidebar_position: 8
 ---
 
+> **SMTLIB2 standard** [Arrays](http://smtlib.cs.uiowa.edu/theories-ArraysEx.shtml)
+
 
 As part of formulating a programme of a mathematical theory of computation McCarthy proposed a _basic_ theory of arrays as characterized by the select-store axioms. The expression (select a i) returns the value stored at position i of the array a; and (store a i v) returns a new array identical to a, but on position i it contains the value v.
 
@@ -106,3 +108,24 @@ We can use the parametrized map function to encode finite sets and finite bags. 
 (check-sat)
 (get-model)
 ```
+
+### Beyond Arrays
+
+Z3 arrays are identified with function spaces. This choice means that z3's arrays are not literally corresponding to
+a first-order models of `select/store` axioms.
+There is a construct 
+
+```
+(_ as-array f)
+```
+
+that for a function `f` creates a corresponding constant with array sort.
+For example, if `f` has declaration:
+
+```
+(declare-fun f (Int Bool) Real)
+```
+
+Then `(as-array f)` has the sort `(Array Int Bool Real)`, an array that takes an Integer, a Boolean and maps to a Real.
+Admitting the `as-array` function (and later on admitting `Lambda`) means that the universe of interpretations for the Array
+sort includes all definable function spaces. If the theory of arrays only has functions `select, store, const` the universe of itnerpretations for Array is wider (more formulas are satisfiable).

@@ -3,10 +3,13 @@ import CodeBlock from "@theme/CodeBlock";
 
 const Output = ({ result }) => {
   const success = result.status === "z3-ran";
+  const emptyOutput = result.output === "";
   return (
     <pre>
       {success ? "" : <span style={{ color: "red" }}><b>Error: </b><br /></span>}
-      {success ? result.output : result.error}
+      {success ?
+        emptyOutput ? "--Output is empty--" : result.output
+        : result.error}
     </pre>
   );
 };
@@ -24,7 +27,8 @@ export default function Z3CodeBlock({ input }) {
   const buttonTxt = (count > 0) ? "Click to Hide Output" : "Click to Render Output";
   return (
     <div>
-      <button onClick={handleClick}>{buttonTxt}</button>
+      <button className="button button--primary" onClick={handleClick}>{buttonTxt}</button>
+      <br />
       <CodeBlock
         language="lisp"
         showLineNumbers

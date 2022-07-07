@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 16))\n(declare-const y (_ BitVec 16))\n\n(assert (= (bvor x y) (_ bv13 16)))\n(assert (bvslt x y))\n\n(check-sat-using (then simplify solve-eqs bit-blast sat))\n(get-model)"}

@@ -1,5 +1,5 @@
 ---
-title: Z3 Guide Introduction
+title: Introduction to SMTLIB Logic and Theories
 sidebar_position: 1
 ---
 

@@ -1,5 +1,6 @@
 --- 
 title: Arithmetic
+sidebar_position: 5
 ---
 
 # Basics

@@ -67,7 +67,13 @@ async function createConfig() {
           items: [
             { 
               type: 'doc',
-              docId: 'logic\ and\ theories/intro',
+              docId: 'logic/intro',
+              position: 'left',
+              label: 'Logic',
+            },
+            { 
+              type: 'doc',
+              docId: 'theories/05 Arithmetic',
               position: 'left',
               label: 'Logic',
             },

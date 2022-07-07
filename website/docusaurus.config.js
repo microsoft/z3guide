@@ -73,7 +73,7 @@ async function createConfig() {
             },
             { 
               type: 'doc',
-              docId: 'theories/05 Arithmetic',
+              docId: 'theories/Arithmetic',
               position: 'left',
               label: 'Logic',
             },

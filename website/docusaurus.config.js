@@ -67,7 +67,7 @@ async function createConfig() {
           items: [
             { 
               type: 'doc',
-              docId: 'guide/intro',
+              docId: 'logic\ and\ theories/intro',
               position: 'left',
               label: 'Guide',
             },

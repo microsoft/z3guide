@@ -3,6 +3,11 @@ title: Arithmetic
 sidebar_position: 5
 ---
 
+
+>  **SMTLIB2** standard [Integers](http://smtlib.cs.uiowa.edu/theories-Ints.shtml)
+>  **SMTLIB2** standard [Reals](http://smtlib.cs.uiowa.edu/theories-Reals.shtml)
+>  **SMTLIB2** standard [Mixed Int Reals](http://smtlib.cs.uiowa.edu/theories-Reals_Ints.shtml)
+
 ## Basics
 
 Z3 has builtin support for integer and real constants. This two types should not be confused with machine integers (32-bit or 64-bit) and floating point numbers. These two types (sorts) represent the mathematical integers and reals. The command declare-const is used to declare integer and real constants.

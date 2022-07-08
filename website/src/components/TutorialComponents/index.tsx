@@ -74,11 +74,13 @@ export default function Z3CodeBlock({ input }) {
 
   return (
     <div>
-      <OutputToggle rendered={outputRendered} onClick={onDidClickOutputToggle}/>
+      {/* <OutputToggle rendered={outputRendered} onClick={onDidClickOutputToggle}/> */}
       <RunButton onClick={onDidClickRun} isDisabled={!isEdited}/>
       <br />
       <Z3Editor input={currCode.current} onChange={updateCode} onEdited={setIsEdited}/>
-      {outputRendered ? <Output result={result} /> : <div/>}
+      <b>Output:</b>
+      <br />
+      <Output result={result} />
     </div>
   );
 }

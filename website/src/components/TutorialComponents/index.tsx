@@ -2,18 +2,22 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Position, useEditable } from 'use-editable';
 import CodeBlock from "@theme/CodeBlock";
 
-const Output = ({ result }) => {
+function Output({ result }) {
   const success = result.status === "z3-ran";
   const emptyOutput = result.output === "";
   return (
-    <pre>
-      {success ? "" : <span style={{ color: "red" }}><b>Error: </b><br /></span>}
-      {success ?
-        emptyOutput ? "--Output is empty--" : result.output
-        : result.error}
-    </pre>
+    <div>
+      <b>Output:</b>
+      <br />
+      <pre>
+        {success ? "" : <span style={{ color: "red" }}><b>Error: </b><br /></span>}
+        {success ?
+          emptyOutput ? "--Output is empty--" : result.output
+          : result.error}
+      </pre>
+    </div>
   );
-};
+}
 
 function Z3Editor({ inputRef, editable, onChange }) {
 
@@ -52,8 +56,6 @@ function RunButton({ onClick }) {
   );
 }
 
-
-
 export default function Z3CodeBlock({ input }) {
   const { code, result } = input;
   const [newCode, updateCode] = useState(code);
@@ -69,10 +71,10 @@ export default function Z3CodeBlock({ input }) {
 
   const onDidClickRun = () => {
     window.getSelection().removeAllRanges(); // deselect editor because cursor position gets weird
-    
+
     // currently only updating the output error with the new input;
     // next goal: run z3
-    const newResult = {...result};
+    const newResult = { ...result };
     let newOutput = `new code is: \n${newCode}`;
     newResult.output = newOutput;
     setOutput(newResult);
@@ -86,8 +88,6 @@ export default function Z3CodeBlock({ input }) {
       {outputRendered ? <div /> : <OutputToggle onClick={onDidClickOutputToggle} />}
       {outputRendered ? <RunButton onClick={onDidClickRun} /> : <div />}
       <Z3Editor inputRef={currCode.current} editable={outputRendered} onChange={updateCode} />
-      <b>Output:</b>
-      <br />
       {outputRendered ? <Output result={output} /> : <div />}
     </div>
   );

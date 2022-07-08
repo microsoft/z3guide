@@ -15,41 +15,23 @@ const Output = ({ result }) => {
   );
 };
 
-function Z3Editor({ input, onChanged, onEdited }) {
-  // const [code, setCode] = useState(input);
-  // const editorRef = useRef(null);
-  // const codeArr = code.split("\n");
-
-  // const onEditableChange = useCallback((text: String, pos: Position) => {
-  //   const newCode = pos.content;
-  //   const line = pos.line;
-  //   codeArr[line] = newCode;
-  //   setCode(codeArr.join("\n"));
-  // }, []);
-
-  // const edit = useEditable(editorRef, onEditableChange, {
-  //   disabled: false,
-  //   indentation: 2
-  // });
+function Z3Editor({ input, newCode, onChanged, onEdited }) {
 
   const updateInput = (e) => {
     onChanged(e.target.innerText);
     onEdited(true);
-    // run.props = {disabled: false, ...run.props};
   };
 
-  // run.props = { onclick: () => console.log(code), ...run.props };
-  // console.log(edit.getState());
 
   const codeBlock = (<CodeBlock
     language="lisp"
     showLineNumbers
   >
-    {input}
+    {newCode}
   </CodeBlock>);
 
   return (
-    <div contentEditable={true} onKeyUp={updateInput}>
+    <div contentEditable={true} onInput={updateInput}>
       {codeBlock}
     </div>
   );
@@ -94,7 +76,7 @@ export default function Z3CodeBlock({ input }) {
       <OutputToggle rendered={outputRendered} onClick={onDidClickOutputToggle}/>
       <RunButton onClick={onDidClickRun} isDisabled={!isEdited}/>
       <br />
-      <Z3Editor input={code} onChanged={updateCode} onEdited={setIsEdited}/>
+      <Z3Editor input={code} newCode={newCode} onChanged={updateCode} onEdited={setIsEdited}/>
       {outputRendered ? <Output result={result} /> : <div/>}
     </div>
   );

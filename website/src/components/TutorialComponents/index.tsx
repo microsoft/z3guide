@@ -15,72 +15,80 @@ const Output = ({ result }) => {
   );
 };
 
-function Z3Editor({ input, onChange, onEdited }) {
+function Z3Editor({ inputRef, editable, onChange }) {
 
   const updateInput = (e) => {
     onChange(e.target.innerText);
-    onEdited(true);
   };
 
   const codeBlock = (<CodeBlock
     language="lisp"
     showLineNumbers
   >
-    {input}
+    {inputRef}
   </CodeBlock>);
 
   return (
-    <div contentEditable={true} onInput={updateInput}>
+    <div contentEditable={editable} onInput={updateInput}>
       {codeBlock}
     </div>
   );
 }
 
-function OutputToggle({rendered, onClick}) {
-
-  const buttonTxt = rendered ? "Click to Hide Output" : "Click to Render Output";
+function OutputToggle({ onClick }) {
 
   return (
     <button className="button button--primary" onClick={onClick}>
-      {buttonTxt}
-    </button>
-  );
-}
-
-function RunButton({ onClick, isDisabled }) {
-  return (
-    <button className="button button--primary" disabled={isDisabled} onClick={onClick}>
       Run
     </button>
   );
 }
 
+function RunButton({ onClick }) {
+  return (
+    <button className="button button--primary" onClick={onClick}>
+      Run (with edit)
+    </button>
+  );
+}
+
+
 
 export default function Z3CodeBlock({ input }) {
-  const {code, result} = input;
+  const { code, result } = input;
   const [newCode, updateCode] = useState(code);
   const currCode = useRef(newCode);
 
   const [outputRendered, setOutputRendered] = useState(false);
-  const [isEdited, setIsEdited] = useState(false);
- 
+
+  const [output, setOutput] = useState(result);
+
   const onDidClickOutputToggle = () => {
     setOutputRendered(!outputRendered);
   };
 
   const onDidClickRun = () => {
-    console.log(`new code is: ${newCode}`);
+    window.getSelection().removeAllRanges(); // deselect editor because cursor position gets weird
+    
+    // currently only updating the output error with the new input;
+    // next goal: run z3
+    const newResult = {...result};
+    let newOutput = `new code is: \n${newCode}`;
+    newResult.output = newOutput;
+    setOutput(newResult);
+
+    // update the data behind the editor so that CopyButton works properly after clicking Run
+    currCode.current = newCode;
   }
 
   return (
     <div>
-      {/* <OutputToggle rendered={outputRendered} onClick={onDidClickOutputToggle}/> */}
-      <RunButton onClick={onDidClickRun} isDisabled={!isEdited}/>
-      <br />
-      <Z3Editor input={currCode.current} onChange={updateCode} onEdited={setIsEdited}/>
+      {outputRendered ? <div /> : <OutputToggle onClick={onDidClickOutputToggle} />}
+      {outputRendered ? <RunButton onClick={onDidClickRun} /> : <div />}
+      <Z3Editor inputRef={currCode.current} editable={outputRendered} onChange={updateCode} />
       <b>Output:</b>
       <br />
-      <Output result={result} />
+      {outputRendered ? <Output result={output} /> : <div />}
     </div>
   );
 }

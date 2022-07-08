@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useEditable } from 'use-editable';
 import CodeBlock from "@theme/CodeBlock";
 
 const Output = ({ result }) => {
@@ -29,13 +30,27 @@ export default function Z3CodeBlock({ input }) {
     <div>
       <button className="button button--primary" onClick={handleClick}>{buttonTxt}</button>
       <br />
-      <CodeBlock
-        language="lisp"
-        showLineNumbers
-      >
-        {code}
-      </CodeBlock>
+      <Z3Editor input={code} />
       {count > 0 ? <Output result={result} /> : <div />}
     </div>
   );
 }
+
+function Z3Editor({ input }) {
+  const [code, setCode] = useState(input);
+  const editorRef = useRef(null);
+
+  useEditable(editorRef, setCode);
+
+  return (
+    <div ref={editorRef}>
+    <CodeBlock
+      language="lisp"
+      showLineNumbers
+    >
+      {code}
+    </CodeBlock>
+    </div>
+  );
+}
+

@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useEditable } from 'use-editable';
+import React, { useState, useRef, useCallback } from 'react';
+import { Position, useEditable } from 'use-editable';
 import CodeBlock from "@theme/CodeBlock";
 
 const Output = ({ result }) => {
@@ -30,7 +30,7 @@ export default function Z3CodeBlock({ input }) {
     <div>
       <button className="button button--primary" onClick={handleClick}>{buttonTxt}</button>
       <br />
-      <Z3Editor input={code} />
+      <Z3Editor input={String(code)} />
       {count > 0 ? <Output result={result} /> : <div />}
     </div>
   );
@@ -39,8 +39,21 @@ export default function Z3CodeBlock({ input }) {
 function Z3Editor({ input }) {
   const [code, setCode] = useState(input);
   const editorRef = useRef(null);
+  const codeArr = code.split("\n");
 
-  useEditable(editorRef, setCode);
+  const onEditableChange = useCallback((text: String, pos: Position) => {
+    const newCode = pos.content;
+    const line = pos.line;
+    codeArr[line] = newCode;
+    setCode(codeArr.join("\n"));
+  }, []);
+
+  const edit = useEditable(editorRef, onEditableChange, {
+    disabled: false,
+    indentation: 2
+  });
+
+  // console.log(edit.getState());
 
   return (
     <div ref={editorRef}>

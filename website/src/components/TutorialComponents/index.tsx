@@ -15,7 +15,7 @@ const Output = ({ result }) => {
   );
 };
 
-function Z3Editor({ input, run }) {
+function Z3Editor({ input }) {
   const [code, setCode] = useState(input);
   const editorRef = useRef(null);
   const codeArr = code.split("\n");
@@ -34,9 +34,7 @@ function Z3Editor({ input, run }) {
 
   const updateInput = (e) => {
     setCode(e.target.innerText);
-    console.log(code);
     // run.props = {disabled: false, ...run.props};
-    // setCode(e.target.value);
   };
 
   // run.props = { onclick: () => console.log(code), ...run.props };
@@ -56,28 +54,41 @@ function Z3Editor({ input, run }) {
   );
 }
 
+function OutputToggle({rendered, handleClick}) {
+
+  const buttonTxt = rendered ? "Click to Hide Output" : "Click to Render Output";
+
+  return (
+    <button className="button button--primary" onClick={handleClick}>
+      {buttonTxt}
+    </button>
+  );
+}
+
+function RunButton({ onClick, isDisabled }) {
+  return (
+    <button className="button button--primary" disabled={isDisabled} onClick={onClick}>
+      Run
+    </button>
+  );
+}
+
 
 export default function Z3CodeBlock({ input }) {
-  const [count, setCount] = useState(0);
   const { code, result } = input;
+
+  const [rendered, setRendered] = useState(false);
   const handleClick = () => {
-    if (count > 0) {
-      setCount(count - 1);
-    } else {
-      setCount(count + 1);
-    }
+    setRendered(!rendered);
   };
-  const buttonTxt = (count > 0) ? "Click to Hide Output" : "Click to Render Output";
-  const btnRenderOuput = <button className="button button--primary" onClick={handleClick}>{buttonTxt}</button>;
-  const btnRun = <button className="button button--primary" disabled={true}>Run</button>
 
   return (
     <div>
-      {btnRenderOuput}
-      {btnRun}
+      <OutputToggle rendered={rendered} handleClick={handleClick}/>
+      <RunButton onClick={()=>{}} isDisabled={true}/>
       <br />
-      <Z3Editor input={String(code)} run={btnRun} />
-      {count > 0 ? <Output result={result} /> : <div />}
+      <Z3Editor input={String(code)} />
+      {rendered ? <Output result={result} /> : <div/>}
     </div>
   );
 }

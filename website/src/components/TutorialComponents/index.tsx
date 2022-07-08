@@ -15,19 +15,18 @@ const Output = ({ result }) => {
   );
 };
 
-function Z3Editor({ input, newCode, onChanged, onEdited }) {
+function Z3Editor({ input, onChange, onEdited }) {
 
   const updateInput = (e) => {
-    onChanged(e.target.innerText);
+    onChange(e.target.innerText);
     onEdited(true);
   };
-
 
   const codeBlock = (<CodeBlock
     language="lisp"
     showLineNumbers
   >
-    {newCode}
+    {input}
   </CodeBlock>);
 
   return (
@@ -60,6 +59,8 @@ function RunButton({ onClick, isDisabled }) {
 export default function Z3CodeBlock({ input }) {
   const {code, result} = input;
   const [newCode, updateCode] = useState(code);
+  const currCode = useRef(newCode);
+
   const [outputRendered, setOutputRendered] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
  
@@ -76,7 +77,7 @@ export default function Z3CodeBlock({ input }) {
       <OutputToggle rendered={outputRendered} onClick={onDidClickOutputToggle}/>
       <RunButton onClick={onDidClickRun} isDisabled={!isEdited}/>
       <br />
-      <Z3Editor input={code} newCode={newCode} onChanged={updateCode} onEdited={setIsEdited}/>
+      <Z3Editor input={currCode.current} onChange={updateCode} onEdited={setIsEdited}/>
       {outputRendered ? <Output result={result} /> : <div/>}
     </div>
   );

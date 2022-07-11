@@ -78,7 +78,7 @@ The push and pop commands can optionally receive a numeral argument as specifed 
 ## Configuration 
 The command set-option is used to configure Z3. Z3 has several options to control its behavior. Some of these options (e.g., produce-proofs) can only be set before any declaration or assertion. We use the reset command to erase all assertions and declarations. After the reset command, all configuration options can be set.
 
-```z3 no-build
+```z3 ignore-errors
 (set-option :print-success true)
 (set-option :produce-unsat-cores true) ; enable generation of unsat cores
 (set-option :produce-models true) ; enable model generation

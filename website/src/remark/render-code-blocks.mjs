@@ -21,7 +21,7 @@ function checkZ3(input, output, hash, errRegex, skipErr) {
     const hasError = output.match(errRegex);
     if (hasError !== null) {
         throw new Error(
-`\n******************************************
+            `\n******************************************
 Z3 (version ${z3pkg.version}) Runtime Error
 
 - Snippet: 
@@ -130,7 +130,15 @@ export default function plugin(options) {
 
         /** @type {import("unified").Transformer} */
         visit(ast, 'root', (node) => {
-            // ensureDirSync('./build');
+            ensureDirSync('./build');
+            // only do the copy once
+            try {
+                copySync('./node_modules/coi-serviceworker/coi-serviceworker.js',
+                    './build/coi-serviceworker.js',
+                    { overwrite: false, errorOnExist: true });
+            } catch (e) {
+                // file already exists, do nothing
+            }
 
 
             node.children.unshift(

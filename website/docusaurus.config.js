@@ -39,7 +39,7 @@ async function createConfig() {
       locales: ['en'],
     },
 
-    plugins: ['./plugins/add-coi-serviceworker'],
+    // plugins: ['./plugins/add-coi-serviceworker'],
 
     presets: [
       [

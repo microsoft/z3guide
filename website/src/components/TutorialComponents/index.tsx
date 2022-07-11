@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { Position, useEditable } from 'use-editable';
+import React, { useState, useRef } from 'react';
 import CodeBlock from "@theme/CodeBlock";
+import { runZ3Web } from '../../remark/run-z3';
 
 function Output({ result }) {
   const success = result.status === "z3-ran";
@@ -75,12 +75,28 @@ export default function Z3CodeBlock({ input }) {
     // currently only updating the output error with the new input;
     // next goal: run z3
     const newResult = { ...result };
-    let newOutput = `new code is: \n${newCode}`;
-    newResult.output = newOutput;
-    setOutput(newResult);
+    runZ3Web(newCode).then((res) => {
+      const result = JSON.parse(res);
+      if (result.output) {
+        newResult.output = result.output;
+        newResult.status = 'z3-ran';
+      } else if (result.error) {
+        newResult.error = result.error;
+        newResult.status = 'z3-failed';
+      } else {
+        // both output and error are empty, which means we have a bug
+        throw new Error(`runZ3Web returned no output or error with input:\n${newCode}`);
+      }
+    }).catch((error) => {
+      // runZ3web fails
+      throw new Error(`runZ3Web failed with input:\n${newCode}\n\nerror:\n${error}`);
+    }).finally(() => {
+      setOutput(newResult);
 
-    // update the data behind the editor so that CopyButton works properly after clicking Run
-    currCode.current = newCode;
+      // update the data behind the editor so that CopyButton works properly after clicking Run
+      currCode.current = newCode;
+    });
+
   }
 
   return (

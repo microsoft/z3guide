@@ -134,12 +134,11 @@ export default function plugin(options) {
             // only do the copy once
             try {
                 copySync('./node_modules/coi-serviceworker/coi-serviceworker.js',
-                    './build/coi-serviceworker.js',
+                    './build/assets/js/coi-serviceworker.js',
                     { overwrite: false, errorOnExist: true });
             } catch (e) {
                 // file already exists, do nothing
             }
-
 
             node.children.unshift(
                 {

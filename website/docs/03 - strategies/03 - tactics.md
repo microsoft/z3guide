@@ -5,7 +5,7 @@ sidebar_position: 3
 
 Z3 comes equipped with many built-in tactics. The command (help-tactic) provides a short description of all built-in tactics.
 
-```z3 no-build
+```z3
 (help-tactic)
 ```
 

@@ -111,6 +111,7 @@ export default function Z3CodeBlock({ input }) {
 
 
 async function runZ3Web(input: string): Promise<string> {
+  // problem with importing initZ3
   const { em, Z3 } = await init();
   // done on every snippet
   const cfg = Z3.mk_config();

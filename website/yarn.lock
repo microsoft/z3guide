@@ -3136,6 +3136,11 @@ clsx@^1.1.1:
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
+coi-serviceworker@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/coi-serviceworker/-/coi-serviceworker-0.1.6.tgz#c84b9ba54fe7bb013118e1eea201b8a22f434ca8"
+  integrity sha512-STWJBMdxuKvvzbd3G1+sFrV5Ia+UDv5lP2CVCx+kEfqghOSb8nzcG/ttpSV2k/haTUn5OsfTAlkK+uFkKBqBqw==
+
 collapse-white-space@^1.0.2:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/collapse-white-space/-/collapse-white-space-1.0.6.tgz#e63629c0016665792060dbbeb79c42239d2c5287"

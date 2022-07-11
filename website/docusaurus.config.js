@@ -39,6 +39,8 @@ async function createConfig() {
       locales: ['en'],
     },
 
+    plugins: ['./plugins/add-coi-serviceworker'],
+
     presets: [
       [
         '@docusaurus/preset-classic',
@@ -188,7 +190,6 @@ async function createConfig() {
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
-
 
   return config;
 }

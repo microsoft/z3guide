@@ -39,9 +39,9 @@ async function createConfig() {
       locales: ['en'],
     },
 
-    // plugins: [
-    //   './plugins/add-coi-serviceworker-html'
-    // ],
+    plugins: [
+      './plugins/add-coi-serviceworker',
+    ],
 
     presets: [
       [
@@ -194,7 +194,11 @@ async function createConfig() {
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
-  config.scripts.push(`${config.baseUrl}assets/js/coi-serviceworker.js`);
+  config.scripts.push({
+    src: `${config.baseUrl}coi-serviceworker.js`,
+    type: 'text/javascript',
+    defer: true,
+  });
 
   return config;
 }

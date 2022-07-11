@@ -130,15 +130,15 @@ export default function plugin(options) {
 
         /** @type {import("unified").Transformer} */
         visit(ast, 'root', (node) => {
-            ensureDirSync('./build');
-            // only do the copy once
-            try {
-                copySync('./node_modules/coi-serviceworker/coi-serviceworker.js',
-                    './build/assets/js/coi-serviceworker.js',
-                    { overwrite: false, errorOnExist: true });
-            } catch (e) {
-                // file already exists, do nothing
-            }
+            // ensureDirSync('./build');
+            // // only do the copy once
+            // try {
+            //     copySync('./node_modules/coi-serviceworker/coi-serviceworker.js',
+            //         './build/assets/js/coi-serviceworker.js',
+            //         { overwrite: false, errorOnExist: true });
+            // } catch (e) {
+            //     // file already exists, do nothing
+            // }
 
             node.children.unshift(
                 {

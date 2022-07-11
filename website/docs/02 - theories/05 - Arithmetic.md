@@ -23,7 +23,7 @@ Z3 has builtin support for integer and real constants. This two types should not
 ```
 
 
-After constants are declared, the user can assert.smt formulas containing these constants. The formulas contain arithmetic operators such as +, -, , and so on. The command check-sat will instruct Z3 to try to find an interpretation for the declared constants that makes all formulas true. The interpretation is basically assigning a number to each constant. If such interpretation exists, we say it is a model for the asserted formulas. The command get-model displays the model built by Z3.
+After constants are declared, the user can assert.smt formulas containing these constants. The formulas contain arithmetic operators such as +, -, *, and so on. The command check-sat will instruct Z3 to try to find an interpretation for the declared constants that makes all formulas true. The interpretation is basically assigning a number to each constant. If such interpretation exists, we say it is a model for the asserted formulas. The command get-model displays the model built by Z3.
 
 ```z3
 (declare-const a Int)

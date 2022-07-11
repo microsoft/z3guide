@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import CodeBlock from "@theme/CodeBlock";
-import { init } from 'z3-solver';
+// import { init } from 'z3-solver';
 
 function Output({ result }) {
   const success = result.status === "z3-ran";
@@ -74,6 +74,7 @@ export default function Z3CodeBlock({ input }) {
 
     // currently only updating the output error with the new input;
     // next goal: run z3
+/*
     const newResult = { ...result };
     runZ3Web(newCode).then((res) => {
       const result = JSON.parse(res);
@@ -96,7 +97,7 @@ export default function Z3CodeBlock({ input }) {
       // update the data behind the editor so that CopyButton works properly after clicking Run
       currCode.current = newCode;
     });
-
+    */
   }
 
   return (
@@ -110,28 +111,28 @@ export default function Z3CodeBlock({ input }) {
 }
 
 
-async function runZ3Web(input: string): Promise<string> {
-  // problem with importing initZ3
-  const { em, Z3 } = await init();
-  // done on every snippet
-  const cfg = Z3.mk_config();
-  const ctx = Z3.mk_context(cfg);
-  Z3.del_config(cfg);
+// async function runZ3Web(input: string): Promise<string> {
+//   // problem with importing initZ3
+//   const { em, Z3 } = await init();
+//   // done on every snippet
+//   const cfg = Z3.mk_config();
+//   const ctx = Z3.mk_context(cfg);
+//   Z3.del_config(cfg);
 
-  let output, error = undefined;
+//   let output, error = undefined;
 
-  try {
-      output = await Z3.eval_smtlib2_string(ctx, input);
-  } catch (e) {
-      // just let it blow up
-      error = e.message;
-  } finally {
-      // try {
-      Z3.del_context(ctx);
-      em.PThread.terminateAllThreads();
-  }
+//   try {
+//       output = await Z3.eval_smtlib2_string(ctx, input);
+//   } catch (e) {
+//       // just let it blow up
+//       error = e.message;
+//   } finally {
+//       // try {
+//       Z3.del_context(ctx);
+//       em.PThread.terminateAllThreads();
+//   }
 
-  return JSON.stringify({ output: output, error: error });
-}
+//   return JSON.stringify({ output: output, error: error });
+// }
 
 

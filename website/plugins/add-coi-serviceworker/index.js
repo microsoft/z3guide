@@ -7,7 +7,7 @@ async function addCoiServiceWorker(context, options) {
             fs.ensureDir('./static');
             await fs.copy('./node_modules/coi-serviceworker/coi-serviceworker.js',
                 './static/coi-serviceworker.js',
-                { overwrite: false, errorOnExist: true },
+                { overwrite: true },
                 err => {
                     if (err) throw err;
                     console.log('copy success!');

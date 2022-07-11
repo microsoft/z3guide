@@ -39,6 +39,10 @@ async function createConfig() {
       locales: ['en'],
     },
 
+    plugins: [
+      './plugins/add-coi-serviceworker-html'
+    ],
+
     presets: [
       [
         '@docusaurus/preset-classic',

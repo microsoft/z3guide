@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import CodeBlock from "@theme/CodeBlock";
-import { runZ3Web } from '../../remark/run-z3';
+import { init } from 'z3-solver';
 
 function Output({ result }) {
   const success = result.status === "z3-ran";
@@ -107,6 +107,30 @@ export default function Z3CodeBlock({ input }) {
       {outputRendered ? <Output result={output} /> : <div />}
     </div>
   );
+}
+
+
+async function runZ3Web(input: string): Promise<string> {
+  const { em, Z3 } = await init();
+  // done on every snippet
+  const cfg = Z3.mk_config();
+  const ctx = Z3.mk_context(cfg);
+  Z3.del_config(cfg);
+
+  let output, error = undefined;
+
+  try {
+      output = await Z3.eval_smtlib2_string(ctx, input);
+  } catch (e) {
+      // just let it blow up
+      error = e.message;
+  } finally {
+      // try {
+      Z3.del_context(ctx);
+      em.PThread.terminateAllThreads();
+  }
+
+  return JSON.stringify({ output: output, error: error });
 }
 
 

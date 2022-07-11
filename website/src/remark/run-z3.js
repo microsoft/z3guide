@@ -3,30 +3,6 @@ const { stdout, stderr } = require('node:process');
 const { init } = require('z3-solver');
 const { readJsonSync } = require('fs-extra');
 
-
-export async function runZ3Web(input) {
-    const { em, Z3 } = await init();
-    // done on every snippet
-    const cfg = Z3.mk_config();
-    const ctx = Z3.mk_context(cfg);
-    Z3.del_config(cfg);
-
-    let output, error = undefined;
-
-    try {
-        output = await Z3.eval_smtlib2_string(ctx, input);
-    } catch (e) {
-        // just let it blow up
-        error = e.message;
-    } finally {
-        // try {
-        Z3.del_context(ctx);
-        em.PThread.terminateAllThreads();
-    }
-
-    return JSON.stringify({ output: output, error: error });
-}
-
 async function runZ3File(inputFile) {
 
     // if the following fails then there is a bug in our program

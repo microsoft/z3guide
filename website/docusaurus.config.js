@@ -39,9 +39,9 @@ async function createConfig() {
       locales: ['en'],
     },
 
-    plugins: [
-      './plugins/add-coi-serviceworker-html'
-    ],
+    // plugins: [
+    //   './plugins/add-coi-serviceworker-html'
+    // ],
 
     presets: [
       [
@@ -62,6 +62,8 @@ async function createConfig() {
         }),
       ],
     ],
+
+    scripts: [],
 
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -192,6 +194,7 @@ async function createConfig() {
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
+  config.scripts.push(`${config.baseUrl}assets/js/coi-serviceworker.js`);
 
   return config;
 }

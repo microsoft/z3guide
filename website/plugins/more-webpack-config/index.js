@@ -1,37 +1,36 @@
+const webpack = require('webpack');
+
 function customWebpackConfig(context, options) {
     return {
         name: 'custom-webpack-config',
         configureWebpack(config, isServer, utils) {
             return {
+
                 module: {
+
                     rules: [
-                        // ideally we should not get webpack to handle wasm
-                        // but without the following rule we are unable to build
                         {
-                            test: /z3-built\.wasm$/,
+                            test: /\.wasm$/,
                             type: `javascript/auto`,
-                            loader: `file-loader`,
-                            options: {
-                                publicPath: `static/`,
-                            },
+                            loader: `ignore-loader`,
                         },
                         {
                             test: /\.tsx?$/,
                             use: [
-                              {
-                                loader: 'ts-loader',
-                                options: {
-                                  transpileOnly: true,
-                                  compilerOptions: {
-                                    noEmit: false,
-                                  },
+                                {
+                                    loader: 'ts-loader',
+                                    options: {
+                                        transpileOnly: true,
+                                        compilerOptions: {
+                                            noEmit: false,
+                                        },
+                                    },
                                 },
-                              },
                             ],
                             exclude: [
                                 /node_modules/,
                             ]
-                          },
+                        },
                     ]
                 },
                 resolve: {

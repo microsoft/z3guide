@@ -42,7 +42,7 @@ It is also possible to declare multiple classes of soft assertions. To do this, 
 
 ## Pareto Fronts
 
-To override lexicographic priorities, set the option opt.priority to pareto.
+To override lexicographic priorities, set the option opt.priority to Pareto.
 
 ```z3
 (declare-const x Int)

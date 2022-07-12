@@ -14,10 +14,10 @@ Z3 comes equipped with the following tactic combinators (aka tacticals):
 - `(then t s)` applies /t to the input goal and /s to every subgoal produced by /t.
 - `(par-then t s)` applies /t to the input goal and /s to every subgoal produced by /t in parallel.
 - `(or-else t s)` first applies /t to the given goal, if it fails then returns the result of /s applied to the given goal.
-- `(par-or t s)` applies /t and /s in parallel until one of them succeed. The tractic fails if /t and /s fails.
+- `(par-or t s)` applies /t and /s in parallel until one of them succeed. The tactic fails if /t and /s fails.
 - `(repeat t)` Keep applying the given tactic until no subgoal is modified by it.
 - `(repeat t n)` Keep applying the given tactic until no subgoal is modified by it, or the number of iterations is greater than /n.
-- `(try-for t ms)` Apply tactic /t to the input goal, if it does not return in /ms millisenconds, it fails.
+- `(try-for t ms)` Apply tactic /t to the input goal, if it does not return in /ms milliseconds, it fails.
 (using-params t params) Apply the given tactic using the given parameters. `(! t params)` is a shorthand for `(using-params t params)`.
 
 The combinators `then`, `par-then`, `or-else` and `par-or` accept arbitrary number of arguments. The following example demonstrate how to use these combinators.

@@ -26,7 +26,7 @@ is chosen based on benchmarking against MaxSAT competition benchmarks, but other
 When the objectives are weighted by weights such as 1, 2, 4, 8, 16, such that the sum of weights in every prefix is lower than the next weight, the solver
 uses a lexicographic optimization algorithm that attempts to first solve for the highest weight before continuing with lower weights.
 
-The other main MaxSAT algorithms avialable are
+The other main MaxSAT algorithms available are
 
 ```z3
   (set-option :opt.maxsat_engine rc2)

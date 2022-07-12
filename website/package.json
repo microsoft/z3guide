@@ -36,6 +36,7 @@
     "@docusaurus/eslint-plugin": "^2.0.0-beta.21",
     "@docusaurus/module-type-aliases": "^2.0.0-beta.21",
     "@tsconfig/docusaurus": "^1.0.6",
+    "exports-loader": "^4.0.0",
     "typescript": "^4.7.4"
   },
   "browserslist": {

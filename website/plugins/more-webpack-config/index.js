@@ -3,13 +3,9 @@ function customWebpackConfig(context, options) {
         name: 'custom-webpack-config',
         configureWebpack(config, isServer, utils) {
             return {
-                module: {
-                    rules: [
-                      {
-                        test: /\.wasm$/,
-                        type: 'webassembly/async',
-                      },
-                    ]
+                experiments: {
+                    asyncWebAssembly: true,
+                    syncWebAssembly: true,
                 },
                 resolve: {
                     fallback: {

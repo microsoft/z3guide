@@ -7,7 +7,7 @@ declare global {
 }
 
 if (ExecutionEnvironment.canUseDOM) {
-  const z3 = require('z3-solver/build/z3-built.worker.js');
+  const z3 = require('z3-solver');
   window.z3Promise = z3.init();
 }
 

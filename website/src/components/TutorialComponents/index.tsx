@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import CodeBlock from "@theme/CodeBlock";
 import { init } from 'z3-solver/build/browser';
-import {initZ3 }from 'z3-solver/build/z3-built.js';
+import { initZ3 } from 'z3-solver/build/z3-built.js';
 
 
 function Output({ result }) {

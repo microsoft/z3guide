@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import CodeBlock from "@theme/CodeBlock";
-import { init } from 'z3-solver';
+import { init } from 'z3-solver/build/browser';
+import initZ3 from 'z3-solver/build/z3-built.js';
+
 
 function Output({ result }) {
   const success = result.status === "z3-ran";
@@ -97,7 +99,7 @@ export default function Z3CodeBlock({ input }) {
       // update the data behind the editor so that CopyButton works properly after clicking Run
       currCode.current = newCode;
     });
-    
+
   }
 
   return (
@@ -113,6 +115,10 @@ export default function Z3CodeBlock({ input }) {
 
 async function runZ3Web(input: string): Promise<string> {
   // problem with importing initZ3
+  await initZ3({
+    locateFile: (f) => f,
+    mainScriptUrlOrBlob: "z3-built.js",
+  });
   const { em, Z3 } = await init();
   // done on every snippet
   const cfg = Z3.mk_config();
@@ -122,14 +128,14 @@ async function runZ3Web(input: string): Promise<string> {
   let output, error = undefined;
 
   try {
-      output = await Z3.eval_smtlib2_string(ctx, input);
+    output = await Z3.eval_smtlib2_string(ctx, input);
   } catch (e) {
-      // just let it blow up
-      error = e.message;
+    // just let it blow up
+    error = e.message;
   } finally {
-      // try {
-      Z3.del_context(ctx);
-      em.PThread.terminateAllThreads();
+    // try {
+    Z3.del_context(ctx);
+    em.PThread.terminateAllThreads();
   }
 
   return JSON.stringify({ output: output, error: error });

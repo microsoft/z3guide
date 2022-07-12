@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import CodeBlock from "@theme/CodeBlock";
-import * as z3 from 'z3-solver/build/browser';
 
 declare global {
-  interface Window { z3Promise: ReturnType<typeof z3.init>; }
+  interface Window { z3Promise: any } // use any to escape typechecking
 }
 
 if (ExecutionEnvironment.canUseDOM) {
+  const z3 = require('z3-solver/build/z3-built.worker.js');
   window.z3Promise = z3.init();
 }
 
@@ -87,6 +87,7 @@ export default function Z3CodeBlock({ input }) {
       // TODO: only load z3 when needed
 
       const newResult = { ...result };
+      // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
       runZ3Web(newCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {

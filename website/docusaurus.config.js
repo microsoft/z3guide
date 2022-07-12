@@ -41,6 +41,7 @@ async function createConfig() {
 
     plugins: [
       './plugins/add-coi-serviceworker',
+      './plugins/more-webpack-config',
     ],
 
     presets: [

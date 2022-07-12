@@ -12,7 +12,7 @@ async function addCoiServiceWorker(context, options) {
                     if (err) throw err;
                     console.log('copy success!');
                 });
-        },
+        },   
     };
 }
 

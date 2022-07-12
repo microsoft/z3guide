@@ -10,7 +10,7 @@ As part of formulating a programme of a mathematical theory of computation McCar
 
 Z3 contains a decision procedure for the basic theory of arrays. By default, Z3 assumes that arrays are extensional over select. In other words, Z3 also enforces that if two arrays agree on all reads, then the arrays are equal.
 
-It also contains various extensions for operations on arrays that remain decidable and amenable to efficient saturation procedures (here efficient means, with an NP-complete satisfiability complexity). We describe these extensions in the following using a collection of examples. Additional background on these extensions is available in the paper [Generalized and Efficient Array Decision Procedures](https://research.microsoft.com/en-us/um/people/leonardo/fmcad09.pdf).
+It also contains various extensions for operations on arrays that remain decidable and amenable to efficient saturation procedures (here efficient means, with an NP-complete satisfiability complexity). We describe these extensions in the following using a collection of examples. Additional background on these extensions is available in the paper [Generalized and Efficient Array Decision Procedures](https://www.microsoft.com/en-us/research/publication/generalized-efficient-array-decision-procedures/).
 
 ### Select and Store
 

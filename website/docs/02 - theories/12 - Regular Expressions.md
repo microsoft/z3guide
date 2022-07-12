@@ -9,7 +9,7 @@ sidebar_position: 12
 
 The sort constructor `RegEx` takes as argument a sequence type.
 The set of regular expressions over strings is thus `(RegEx String)`; 
-it is synomumous with the sort `RegLan` defined in the [SMTLIB2 format](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml).
+it is synonymous with the sort `RegLan` defined in the [SMTLIB2 format](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml).
 
 # Summary of Operations
 
@@ -32,7 +32,7 @@ it is synomumous with the sort `RegLan` defined in the [SMTLIB2 format](http://s
 `(as re.all R)`          | The regular expression of sort `R` accepting every sequence
 `(as re.empty R)`        | The regular expression of sort `R` rejecting every sequence
 `(re.replace_re s r dst)`  | Currently not supported: replace left-most smallest occurrence matching `r` in `s` by `dst`  |
-`(re.replace_re_all s r dst)`  | Currently not supported: replace, traversing left-to-right, smallest matches, all ocurrences matching `r` in `s` by `dst`  |
+`(re.replace_re_all s r dst)`  | Currently not supported: replace, traversing left-to-right, smallest matches, all occurrences matching `r` in `s` by `dst`  |
 
 The `re.range` operator expects two strings each encoding a single character.
 For example `(re.range "a" "\u{ff}")` is a valid range of characters, 

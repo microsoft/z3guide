@@ -66,7 +66,7 @@ Models provide interpretations of the uninterpreted (aka free) constants and fun
 
 ### Mapping Functions on Arrays
 
-In the following, we will simulate basic Boolean algebra (set theory) using the array theory extensions in Z3. Z3 provides a parametrized map function on arrays. It allows applying arbitrary functions to the range of arrays. The following example illustrates how to use the map function.
+In the following, we will simulate basic Boolean algebra (set theory) using the array theory extensions in Z3. Z3 provides a parameterized map function on arrays. It allows applying arbitrary functions to the range of arrays. The following example illustrates how to use the map function.
 The type constructor `(Set T)` is a macro for `(Array T Bool)`.
 
 ```z3
@@ -92,7 +92,7 @@ The type constructor `(Set T)` is a macro for `(Array T Bool)`.
 
 ### Bags as Arrays
 
-We can use the parametrized map function to encode finite sets and finite bags. Finite bags can be modeled similarly to sets. A bag is here an array that maps elements to their multiplicity. Main bag operations include union, obtained by adding multiplicity, intersection, by taking the minimum multiplicity, and a dual join operation that takes the maximum multiplicity. In the following example, we define the bag-union using map. Notice that we need to specify the full signature of + since it is an overloaded operator.
+We can use the parameterized map function to encode finite sets and finite bags. Finite bags can be modeled similarly to sets. A bag is here an array that maps elements to their multiplicity. Main bag operations include union, obtained by adding multiplicity, intersection, by taking the minimum multiplicity, and a dual join operation that takes the maximum multiplicity. In the following example, we define the bag-union using map. Notice that we need to specify the full signature of + since it is an overloaded operator.
 
 ```z3
 (define-sort A () (Array Int Int Int))
@@ -128,4 +128,4 @@ For example, if `f` has declaration:
 
 Then `(as-array f)` has the sort `(Array Int Bool Real)`, an array that takes an Integer, a Boolean and maps to a Real.
 Admitting the `as-array` function (and later on admitting `Lambda`) means that the universe of interpretations for the Array
-sort includes all definable function spaces. If the theory of arrays only has functions `select, store, const` the universe of itnerpretations for Array is wider (more formulas are satisfiable).
+sort includes all definable function spaces. If the theory of arrays only has functions `select, store, const` the universe of interpretations for Array is wider (more formulas are satisfiable).

@@ -117,7 +117,7 @@ Z3 also has support for division, integer division, modulo and remainder operato
 (get-model)
 ```
 
-In Z3, division by zero is allowed, but the result is not specified. Division is not a partial function. Actually, in Z3 all functions are total, although the result may be underspecified in some cases like division by zero.
+In Z3, division by zero is allowed, but the result is not specified. Division is not a partial function. Actually, in Z3 all functions are total, although the result may be under-specified in some cases like division by zero.
 
 ```z3
 (declare-const a Real)
@@ -132,7 +132,7 @@ In Z3, division by zero is allowed, but the result is not specified. Division is
 (check-sat)
 ```
 
-If you are not happy with this behavior, you may use ite (if-then-else) operator to guard every division, and assign whatever intepretation you like to the division by zero. This example uses define-fun constructor to create a new operator mydiv. This is essentially a macro, and Z3 will expand its definition for every application of mydiv.
+If you are not happy with this behavior, you may use ite (if-then-else) operator to guard every division, and assign whatever interpretation you like to the division by zero. This example uses define-fun constructor to create a new operator mydiv. This is essentially a macro, and Z3 will expand its definition for every application of mydiv.
 
 ```z3
 ; defining my own division operator where x0.0 == 0.0 for every x.

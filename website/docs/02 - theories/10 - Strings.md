@@ -56,7 +56,7 @@ followed by `b`.
 
 To represent non-ASCII characters the SMTLIB2 standard uses unicode escape sequences.
 The escape sequences are of the form `\u{d₀}`, `\u{d₁d₀}`, `\u{d₂d₁d₀}`, `\u{d₃d₂d₁d₀}`, `\u{d₄d₃d₂d₁d₀}`, `\ud₃d₂d₁d₀` 
-where `d` is a hexidecimal digit. Other 
+where `d` is a hexadecimal digit. Other 
 characters are treated as part of the string. For example, a newline within a string 
 is treated as a new-line character. 
 
@@ -84,7 +84,7 @@ A string cannot overlap with two different characters.
 (check-sat)
 ```
 
-### `(str.len s)` - the lenght of string `s`
+### `(str.len s)` - the length of string `s`
 
 There is a solution to `a` of length at most 2.
 
@@ -262,7 +262,7 @@ There is a solution to `a` that is not a sequence of "a"'s.
 | `(_ char ch)`                  | Unit string from unicode character code |
 | `(str.is_digit s)`             | A predicate whether string is a one of the digits 0 to 9 |
 | `(str.to_code s)`              | Convert string of length one to the character code (an integer). Produce -1 if the string is not of length 1 |
-| `(str.from_code i)`            | Convert an integer in the range of valid unicodes to a string of length one |
+| `(str.from_code i)`            | Convert an integer in the range of valid Unicode to a string of length one |
 | `(str.replace_all s src dst)'  | Currently not supported: replace all occurrences of `s` in `src` by `dst`  |
 
 

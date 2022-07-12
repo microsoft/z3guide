@@ -3,7 +3,7 @@ title: Basic Commands
 sidebar_position: 2
 ---
 
-The Z3 input format is an extension of the one defined by the [SMT-LIB format](http://www.smtlib.org). A Z3 script is a sequence of commands. The help command displays a list of all available commands. The command echo displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command declare-const declares a constant of a given type (aka sort). The command declare-fun declares a function. In the following example, we declared a function that receives an integer and a boolean and returns an integer.
+The Z3 input format is an extension of the one defined by the [SMT-LIB format](http://www.smtlib.org). A Z3 script is a sequence of commands. The help command displays a list of all available commands. The command echo displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command declare-const declares a constant of a given type (aka sort). The command declare-fun declares a function. In the following example, we declared a function that receives an integer and a Boolean and returns an integer.
 
 ```z3
 (echo "starting Z3...")
@@ -73,7 +73,7 @@ In the following example, the command (assert p) signs an error because the pop 
 (pop)
 (assert p) ; error, since declaration of p was removed from the stack
 ```
-The push and pop commands can optionally receive a numeral argument as specifed by the SMT 2 language.
+The push and pop commands can optionally receive a numeral argument as specified by the SMT 2 language.
 
 ## Configuration 
 The command set-option is used to configure Z3. Z3 has several options to control its behavior. Some of these options (e.g., produce-proofs) can only be set before any declaration or assertion. We use the reset command to erase all assertions and declarations. After the reset command, all configuration options can be set.

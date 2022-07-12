@@ -113,12 +113,8 @@ async function createConfig() {
           style: 'dark',
           links: [
             {
-              title: 'Learn Z3',
+              title: 'More Z3',
               items: [
-                {
-                  label: 'Tutorial',
-                  to: '/docs/logic/intro',
-                },
                 {
                   label: 'Programming Z3 in Python',
                   href: 'https://z3prover.github.io/papers/programmingz3.html',

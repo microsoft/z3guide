@@ -1,8 +1,15 @@
 import React, { useState, useRef } from 'react';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import CodeBlock from "@theme/CodeBlock";
-import { init } from 'z3-solver/build/browser';
-import { initZ3 } from 'z3-solver/build/z3-built.js';
+import * as z3 from 'z3-solver/build/browser';
 
+declare global {
+  interface Window { z3Promise: ReturnType<typeof z3.init>; }
+}
+
+if (ExecutionEnvironment.canUseDOM) {
+  window.z3Promise = z3.init();
+}
 
 function Output({ result }) {
   const success = result.status === "z3-ran";
@@ -71,36 +78,38 @@ export default function Z3CodeBlock({ input }) {
     setOutputRendered(!outputRendered);
   };
 
-  const onDidClickRun = () => {
-    window.getSelection().removeAllRanges(); // deselect editor because cursor position gets weird
+  const onDidClickRun =
+    (ExecutionEnvironment.canUseDOM) ? () => {
+      window.getSelection().removeAllRanges(); // deselect editor because cursor position gets weird
 
-    // currently only updating the output error with the new input;
-    // next goal: run z3
+      // currently only updating the output error with the new input;
+      // next goal: run z3
+      // TODO: only load z3 when needed
 
-    const newResult = { ...result };
-    runZ3Web(newCode).then((res) => {
-      const result = JSON.parse(res);
-      if (result.output) {
-        newResult.output = result.output;
-        newResult.status = 'z3-ran';
-      } else if (result.error) {
-        newResult.error = result.error;
-        newResult.status = 'z3-failed';
-      } else {
-        // both output and error are empty, which means we have a bug
-        throw new Error(`runZ3Web returned no output or error with input:\n${newCode}`);
-      }
-    }).catch((error) => {
-      // runZ3web fails
-      throw new Error(`runZ3Web failed with input:\n${newCode}\n\nerror:\n${error}`);
-    }).finally(() => {
-      setOutput(newResult);
+      const newResult = { ...result };
+      runZ3Web(newCode).then((res) => {
+        const result = JSON.parse(res);
+        if (result.output) {
+          newResult.output = result.output;
+          newResult.status = 'z3-ran';
+        } else if (result.error) {
+          newResult.error = result.error;
+          newResult.status = 'z3-failed';
+        } else {
+          // both output and error are empty, which means we have a bug
+          throw new Error(`runZ3Web returned no output or error with input:\n${newCode}`);
+        }
+      }).catch((error) => {
+        // runZ3web fails
+        throw new Error(`runZ3Web failed with input:\n${newCode}\n\nerror:\n${error}`);
+      }).finally(() => {
+        setOutput(newResult);
 
-      // update the data behind the editor so that CopyButton works properly after clicking Run
-      currCode.current = newCode;
-    });
+        // update the data behind the editor so that CopyButton works properly after clicking Run
+        currCode.current = newCode;
+      });
 
-  }
+    } : () => { };
 
   return (
     <div>
@@ -114,12 +123,9 @@ export default function Z3CodeBlock({ input }) {
 
 
 async function runZ3Web(input: string): Promise<string> {
-  // problem with importing initZ3
-  await initZ3({
-    locateFile: (f) => f,
-    mainScriptUrlOrBlob: "z3-built.js",
-  });
-  const { em, Z3 } = await init();
+
+  let { Z3 } = await window.z3Promise;
+
   // done on every snippet
   const cfg = Z3.mk_config();
   const ctx = Z3.mk_context(cfg);
@@ -130,12 +136,10 @@ async function runZ3Web(input: string): Promise<string> {
   try {
     output = await Z3.eval_smtlib2_string(ctx, input);
   } catch (e) {
-    // just let it blow up
+    // error with running z3
     error = e.message;
   } finally {
-    // try {
     Z3.del_context(ctx);
-    em.PThread.terminateAllThreads();
   }
 
   return JSON.stringify({ output: output, error: error });

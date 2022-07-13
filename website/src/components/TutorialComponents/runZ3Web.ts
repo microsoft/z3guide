@@ -3,6 +3,8 @@ declare global {
     interface Window { z3Promise: any } // use any to escape typechecking
 }
 
+// code commented out for now for loading z3 on demand
+
 // function loadZ3(callback: () => void) {
 
 //     // }

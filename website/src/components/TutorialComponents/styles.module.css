@@ -1,0 +1,11 @@
+@import '../../css/custom.css';
+
+.editable {
+    border-color: var(--ifm-color-primary-light);
+    border-width: 2px;
+    border-style: solid;
+}
+
+.outdated {
+    color: grey;
+}

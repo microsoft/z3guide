@@ -40,7 +40,7 @@ async function createConfig() {
     },
 
     plugins: [
-      './plugins/add-coi-serviceworker',
+      './plugins/add-z3-files',
       './plugins/more-webpack-config',
     ],
 
@@ -66,43 +66,47 @@ async function createConfig() {
 
     scripts: [],
 
+    themes: [
+      '@docusaurus/theme-live-codeblock',
+    ],
+
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         navbar: {
           title: 'Z3 Documentation',
           items: [
-            { 
+            {
               type: 'doc',
               docId: 'logic/intro',
               position: 'left',
               label: 'Logic',
             },
-            { 
+            {
               type: 'doc',
               docId: 'theories/Arithmetic',
               position: 'left',
               label: 'Theories',
             },
-            { 
+            {
               type: 'doc',
               docId: 'strategies/intro',
               position: 'left',
               label: 'Strategies',
             },
-            { 
+            {
               type: 'doc',
               docId: 'optimization/intro',
               position: 'left',
               label: 'Optimization',
             },
-            { 
+            {
               type: 'doc',
               docId: 'fixedpoints/intro',
               position: 'left',
               label: 'Fixedpoints',
             },
-            { 
+            {
               type: 'doc',
               docId: 'playground/playground',
               position: 'left',
@@ -142,13 +146,13 @@ async function createConfig() {
                 {
                   label: 'Slides',
                   href: 'https://z3prover.github.io/slides'
-                },                
+                },
                 {
                   label: 'Wiki',
                   href: 'https://github.com/z3prover/z3/wiki',
                 }
               ],
-            },            
+            },
             {
               title: 'Stay Connected',
               items: [
@@ -189,6 +193,7 @@ async function createConfig() {
         prism: {
           theme: lightCodeTheme,
           darkTheme: darkCodeTheme,
+          additionalLanguages: ['lisp'],
         },
       }),
   };

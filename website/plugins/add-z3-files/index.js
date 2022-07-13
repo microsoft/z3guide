@@ -1,8 +1,8 @@
 const fs = require('fs-extra');
 
-async function addCoiServiceWorker(context, options) {
+async function addZ3Files(context, options) {
     return {
-        name: 'add-coi-serviceworker',
+        name: 'add-z3-files',
         async contentLoaded({ content, actions }) {
 
             const inFiles = [
@@ -36,5 +36,5 @@ async function addCoiServiceWorker(context, options) {
     };
 }
 
-module.exports = addCoiServiceWorker;
+module.exports = addZ3Files;
 

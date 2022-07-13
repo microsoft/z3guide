@@ -6,7 +6,8 @@ import { usePrismTheme } from '@docusaurus/theme-common';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import runZ3Web from './runZ3Web';
 import { Language } from 'prism-react-renderer';
-import styles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
+import liveCodeBlockStyles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
+import styles from './styles.module.css';
 
 interface MyProps extends Props {
   readonly id: string;
@@ -28,7 +29,7 @@ function OutputToggle({ onClick }) {
 function RunButton({ onClick }) {
   return (
     <button className="button button--primary" onClick={onClick}>
-      Run (with edit)
+      Edit and Run
     </button>
   );
 }
@@ -58,23 +59,24 @@ function Z3Editor(props: MyProps) {
   const prismTheme = usePrismTheme();
   const isBrowser = useIsBrowser();
 
-  const component = (<div className={styles.playgroundContainer}>
-    <LiveProvider
-      code={input}
-      theme={prismTheme}
-      id={id}
-    >
-      <>
-        <LiveEditor
-          disabled={!editable}
-          key={String(isBrowser)}
-          className={styles.playgroundEditor}
-          onChange={onChange}
-          language={language}
-        />
-      </>
-    </LiveProvider>
-  </div>);
+  const component = (
+    <div className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ''}`}>
+      <LiveProvider
+        code={input}
+        theme={prismTheme}
+        id={id}
+      >
+        <>
+          <LiveEditor
+            disabled={!editable}
+            key={String(isBrowser)}
+            className={liveCodeBlockStyles.playgroundEditor}
+            onChange={onChange}
+            language={language}
+          />
+        </>
+      </LiveProvider>
+    </div>);
 
   return (
     <>

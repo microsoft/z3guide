@@ -3,8 +3,7 @@ const { stdout, stderr } = require('node:process');
 const { init } = require('z3-solver');
 const { readJsonSync } = require('fs-extra');
 
-
-async function runZ3(inputFile) {
+async function runZ3File(inputFile) {
 
     // if the following fails then there is a bug in our program
     const input = readJsonSync(inputFile).input;
@@ -16,7 +15,7 @@ async function runZ3(inputFile) {
     Z3.del_config(cfg);
 
     try {
-        output = await Z3.eval_smtlib2_string(ctx, input);
+        const output = await Z3.eval_smtlib2_string(ctx, input);
         stdout.write(output);
     } catch (e) {
         // just let it blow up
@@ -36,4 +35,4 @@ if (!inputFile) {
     throw new Error('Usage: node run-z3.js <input_file>');
 }
 
-(async () => await runZ3(inputFile))();
+(async () => await runZ3File(inputFile))();

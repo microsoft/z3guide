@@ -5,7 +5,7 @@ sidebar_position: 5
 
 Three different text-based input formats are accepted.
 
-## 1. Basic datalog
+## Basic datalog
 
 Files with suffix .datalog are parsed using the BDDBDDB format. The format can be used for comparing benchmarks with the BDDBDDB tool.
 
@@ -33,7 +33,7 @@ Gt0("d1","d").
 P0("a1").
 ```
 
-## 2. SMT-LIB2 extension
+## SMT-LIB2 extension
 The following commands are added to the SMT-LIB2 syntax:
 
 - `(declare-var [var] [sort])` Declare a variable that is universally quantified in Horn clauses.
@@ -42,7 +42,7 @@ The following commands are added to the SMT-LIB2 syntax:
 - `(query [relation-name])` Pose a query. Is the relation non-empty.
 - `(set-predicate-representation [function-name] [symbol]+)` Specify the representation of a predicate.
 
-## 3. Pure SMT-LIB2
+## Pure SMT-LIB2
 Many problems about program safety can be reduced to Constrained Horn clause satisfiability, where constraints are modulo theories (typically of arithmetic). These problems are expressible directly in SMT-LIB2. The repository of Horn clause benchmarks in SMT-LIB2 contains more than 10,000 samples taken from different benchmarks and different encodings of the same benchmarks. An assertion is Horn if it is an implication; the head of the implication is either a formula using only interpreted functions, or it is an uninterpreted predicate; the body of the implication is a formula in negation normal form where the uninterpreted predicates occur positively.
 
 ```z3

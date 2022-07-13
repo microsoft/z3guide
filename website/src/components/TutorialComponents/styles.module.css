@@ -5,3 +5,7 @@
     border-width: 2px;
     border-style: solid;
 }
+
+.outdated {
+    color: grey;
+}

@@ -35,14 +35,14 @@ function RunButton({ onClick }) {
 }
 
 
-function Output({ result }) {
+function Output({ result, codeChanged }) {
   const success = result.status === "z3-ran";
   const emptyOutput = result.output === "";
   return (
     <div>
-      <b>Output:</b>
+      <b>Output{codeChanged ? ' (outdated)' : ''}:</b>
       <br />
-      <pre>
+      <pre className={codeChanged ? styles.outdated : ''}>
         {success ? "" : <span style={{ color: "red" }}><b>Error: </b><br /></span>}
         {success ?
           emptyOutput ? "--Output is empty--" : result.output
@@ -92,6 +92,8 @@ export default function Z3CodeBlock({ input }) {
 
   const [currCode, setCurrCode] = useState(code);
 
+  const [codeChanged, setCodeChanged] = useState(false);
+
   const [outputRendered, setOutputRendered] = useState(false);
 
   const [output, setOutput] = useState(result);
@@ -125,10 +127,15 @@ export default function Z3CodeBlock({ input }) {
         throw new Error(`runZ3Web failed with input:\n${currCode}\n\nerror:\n${error}`);
       }).finally(() => {
         setOutput(newResult);
+        setCodeChanged(false);
       });
 
     } : () => { };
 
+  const onDidChangeCode = (code: string) => {
+    setCurrCode(code);
+    if (outputRendered) setCodeChanged(true);
+  };
   const inputNode = <>{code}</>
 
   return (
@@ -140,11 +147,11 @@ export default function Z3CodeBlock({ input }) {
         input={code}
         id={result.hash}
         showLineNumbers={true}
-        onChange={setCurrCode}
+        onChange={onDidChangeCode}
         editable={outputRendered}
         language={"lisp" as Language}
       />
-      {outputRendered ? <Output result={output} /> : <div />}
+      {outputRendered ? <Output codeChanged={codeChanged} result={output} /> : <div />}
     </div>
   );
 }

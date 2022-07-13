@@ -4,10 +4,10 @@ sidebar_position: 14
 ---
 
 ## Special Binary Relations
-Binary relations that are partial orders, linear orders, tree orders, and piecewise linear orders 
+Binary relations that are partial orders, linear orders, tree orders, and piece-wise linear orders 
 can be axiomatized using first order quantifiers. However, reasoning with these quantified axioms involves
 non-linear overhead, up to a quadratic number of quantifier instantiations.
-The decision procedures for partial, linear, tree and piecewise linear orders in z3 
+The decision procedures for partial, linear, tree and piece-wise linear orders in z3 
 use variants of Ford-Fulkerson push relabeling graphs.
 
 
@@ -58,7 +58,7 @@ Use instead
 (define-fun R ((x A) (y A)) Bool ((_ tree-order 0) x y))
 ```
 
-### Piecewise Linear Order
+### Piece-wise Linear Order
 ```z3
 (declare-sort A 0)
 (declare-fun R (A A) Bool)
@@ -78,7 +78,7 @@ Use instead
 
 The transitive closure of a relation is not first-order axiomatizable. However, the decision problem for ground formulas is decidable
 because for every binary relation `R` over a finite domain, the transitive closure of it is defined over the finite graph of `R`.
-The small model property contrasts non-ground first-order formulas using transtive closure that are not first-order axiomatizable.
+The small model property contrasts non-ground first-order formulas using transitive closure that are not first-order axiomatizable.
 
 ```z3
 (declare-sort A 0)

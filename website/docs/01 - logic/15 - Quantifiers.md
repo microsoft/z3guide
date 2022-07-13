@@ -57,7 +57,7 @@ In the following example, the first two options make sure that Model-based quant
 (check-sat)
 ```
 
-When the more permissive pattern (g x) is used. Z3 proves the formula to be unsatisfiable. More restrive patterns minimize the number of instantiations (and potentially improve performance), but they may also make Z3 less complete.
+When the more permissive pattern (g x) is used. Z3 proves the formula to be unsatisfiable. More restrictive patterns minimize the number of instantiations (and potentially improve performance), but they may also make Z3 less complete.
 
 ```z3
 (set-option :smt.auto-config false) ; disable automatic self configuration
@@ -181,7 +181,7 @@ MBQI is a decision procedure for several useful fragments. It may find models ev
 
 #### Effectively Propositional
 
-The effectively propositional class of formulas (aka The Bernays-Schonfinkel class) is a decidable fragment of first-order logic formulas. It corresponds to formulas which, when written in prenex normal form contain only constants, universal quantifiers, and functions that return boolean values (aka predicates).
+The effectively propositional class of formulas (aka The Bernays-Schonfinkel class) is a decidable fragment of first-order logic formulas. It corresponds to formulas which, when written in prenex normal form contain only constants, universal quantifiers, and functions that return Boolean values (aka predicates).
 
 Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if x and y are subtypes of z, then x is a subtype of y or y is a subtype of x. The option (set-option :model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
 
@@ -292,7 +292,7 @@ Constraints over sets (Boolean Algebras) can be encoded into this fragment by tr
 
 #### Stratified Sorts Fragment
 
-The statified sorts fragment is another decidable fragment of many sorted first-order logic formulas. It corresponds to formulas which, when written in prenex normal form, there is a function level from sorts to naturals, and for every function
+The stratified sorts fragment is another decidable fragment of many sorted first-order logic formulas. It corresponds to formulas which, when written in prenex normal form, there is a function level from sorts to naturals, and for every function
 
 > declare-fun f (S_1 ... S_n) R)
 >
@@ -300,7 +300,7 @@ The statified sorts fragment is another decidable fragment of many sorted first-
 
 #### Array Property Fragment
 
-The array property fragment can encode properties about unidimensional, and is strong enough to say an array is sorted. More information about this fragment can be found in the paper [What's Decidable About Arrays](httpacademic.research.microsoft.comPaper1843442.aspx).
+The array property fragment can encode properties about uni-dimensional, and is strong enough to say an array is sorted. More information about this fragment can be found in the paper [What's Decidable About Arrays](httpacademic.research.microsoft.comPaper1843442.aspx).
 
 (set-option :smt.mbqi true)
 (set-option :model.compact true)
@@ -459,7 +459,7 @@ The list fragment can encode properties about data-structures such as lists. For
 
 #### Essentially (Almost) Uninterpreted Fragment
 
-The essentiallyalmost uninterpreted fragment subsumes the previous fragments, and uses a more relaxed notion of stratification. More information about this fragment can be found in the paper [Complete instantiation for quantified formulas in Satisfiabiliby Modulo Theories.](httpresearch.microsoft.comen-usumpeopleleonardoci.pdf) The model based quantifier instantiation approach used in Z3 is also described in this paper. Stratified data-structures (such as arrays of pointers) can be encoded in this fragment.
+The essentially almost uninterpreted fragment subsumes the previous fragments, and uses a more relaxed notion of stratification. More information about this fragment can be found in the paper [Complete instantiation for quantified formulas in Satisfiabiliby Modulo Theories.](httpresearch.microsoft.comen-usumpeopleleonardoci.pdf) The model based quantifier instantiation approach used in Z3 is also described in this paper. Stratified data-structures (such as arrays of pointers) can be encoded in this fragment.
 
 ```z3
 (set-option :smt.mbqi true)
@@ -585,7 +585,7 @@ Shifts on streams (or arrays) can also be encoded.
 ```
 #### Quantified Bit-Vector Formulas
 
-A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formula where the sort of every variable is a bit-vector sort. The QBVF satisfiability problem, is the problem of deciding whether a QBVF is satisfiable modulo the theory of bit-vectors. This problem is decidable because every universal (existental) quantifier can be expanded into a conjunction (disjunction) of potentially exponential, but finite size. A distinguishing feature in QBVF is the support for uninterpreted function and predicate symbols. More information about this fragment can be found in the paper [Efficiently Solving Quantified Bit-Vector Formulas](httpresearch.microsoft.comen-usumpeopleleonardofmcad10.pdf).
+A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formula where the sort of every variable is a bit-vector sort. The QBVF satisfiability problem, is the problem of deciding whether a QBVF is satisfiable modulo the theory of bit-vectors. This problem is decidable because every universal (existential) quantifier can be expanded into a conjunction (disjunction) of potentially exponential, but finite size. A distinguishing feature in QBVF is the support for uninterpreted function and predicate symbols. More information about this fragment can be found in the paper [Efficiently Solving Quantified Bit-Vector Formulas](httpresearch.microsoft.comen-usumpeopleleonardofmcad10.pdf).
 
 ```z3
 (set-option :smt.mbqi true)
@@ -662,7 +662,7 @@ Even if your formula is not in any of the fragments above. Z3 may still find a m
 (assert (> n 1))
 (check-sat)
 ```
-The Z3 preprocessor has many options that may improve the performace of the model finder. In the following example, macro-finder will expand quantifiers representing macros at preprocessing time.
+The Z3 preprocessor has many options that may improve the performance of the model finder. In the following example, macro-finder will expand quantifiers representing macros at preprocessing time.
 ```z3
 (set-option :smt.mbqi true)
 (set-option :smt.macro-finder true)

@@ -68,7 +68,7 @@ The List recursive datatype is builtin in Z3. The empty list is nil, and the con
 (check-sat)
 ```
 
-In the example above, we also assert that l1 and l2 are not nil. This is because the interpretation of head and tail is underspecified on nil. So then head and tail would not be able to distinguish nil from (insert (head nil) (tail nil)).
+In the example above, we also assert that l1 and l2 are not nil. This is because the interpretation of head and tail is under-specified on nil. So then head and tail would not be able to distinguish nil from (insert (head nil) (tail nil)).
 
 ### Mutually recursive datatypes
 
@@ -89,7 +89,7 @@ You can also specify mutually recursive datatypes for Z3. We list one example be
 (get-model)
 ```
 
-In the example above, we have a tree of Booleans and a tree of integers. The leaf constant must return a tree of a specific sort. To specify the result sort, we use the qualified identifier (as leaf (Tree Int)). Note that, we do not need to use a qualified identifer for value, since Z3 can infer the intended declaration using the sort of the argument.
+In the example above, we have a tree of Booleans and a tree of integers. The leaf constant must return a tree of a specific sort. To specify the result sort, we use the qualified identifier (as leaf (Tree Int)). Note that, we do not need to use a qualified identifier for value, since Z3 can infer the intended declaration using the sort of the argument.
 
 ### Z3 will not prove inductive facts
 

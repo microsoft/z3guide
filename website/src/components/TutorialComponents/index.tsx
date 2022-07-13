@@ -33,6 +33,7 @@ function RunButton({ onClick }) {
   );
 }
 
+
 function Output({ result }) {
   const success = result.status === "z3-ran";
   const emptyOutput = result.output === "";
@@ -72,7 +73,6 @@ function Z3Editor(props: MyProps) {
           language={language}
         />
       </>
-
     </LiveProvider>
   </div>);
 
@@ -93,6 +93,14 @@ export default function Z3CodeBlock({ input }) {
   const [outputRendered, setOutputRendered] = useState(false);
 
   const [output, setOutput] = useState(result);
+
+  const [editorState, setEditorState] = useState({
+    newValue: code,
+    caretPosition: {
+      start: 0,
+      end: 0
+    }
+  });
 
   const onDidClickOutputToggle = () => {
     setOutputRendered(!outputRendered);

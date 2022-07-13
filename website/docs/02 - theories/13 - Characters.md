@@ -17,7 +17,7 @@ A few operations are supported over characters.
 (simplify (char.is_digit (_ Char 49))) ; it is the digit 1
 ```
 
-While Unicode is the default you can set the encoding of characters to Ascii (8 bit) or Bmp (16 bit).
+While Unicode is the default you can set the encoding of characters to ASCII (8 bit) or Bmp (16 bit).
 
 ```
 (set-option :encoding unicode)

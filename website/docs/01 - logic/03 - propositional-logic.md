@@ -3,14 +3,14 @@ title: Propositional Logic
 sidebar_position: 3
 ---
 
-The pre-defined sort Bool is the sort (type) of all Boolean propositional expressions. Z3 supports the usual Boolean operators and, or, xor, not, = (implication), ite (if-then-else). Bi-implications are represented using equatity =. The following example shows how to prove that if p implies q and q implies r, then p implies r. We accomplish that by showing that the negation is unsatisfiable. The command define-fun is used to define a macro (aka alias). In this example, conjecture is an alias for the conjecture we want to prove.
+The pre-defined sort Bool is the sort (type) of all Boolean propositional expressions. Z3 supports the usual Boolean operators and, or, xor, not, => (implication), ite (if-then-else). Bi-implications are represented using equality =. The following example shows how to prove that if p implies q and q implies r, then p implies r. We accomplish that by showing that the negation is unsatisfiable. The command define-fun is used to define a macro (aka alias). In this example, conjecture is an alias for the conjecture we want to prove.
 
 ```z3
 (declare-const p Bool)
 (declare-const q Bool)
 (declare-const r Bool)
 (define-fun conjecture () Bool
-	(= (and (= p q) (= q r))
+	(=> (and (= p q) (= q r))
 		(= p r)))
 (assert (not conjecture))
 (check-sat)

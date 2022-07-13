@@ -13,7 +13,7 @@ Use the problem of virtual machine placement as an example. Assume that we have 
 
 ### Boolean encoding
 
-We start with a boolean encoding. Let xij denote that VM i is put into server j and yj denote that server j is in use.
+We start with a Boolean encoding. Let xij denote that VM i is put into server j and yj denote that server j is in use.
 
 ```z3 
 (declare-const x11 Bool)
@@ -71,12 +71,12 @@ We start with a boolean encoding. Let xij denote that VM i is put into server j 
 (get-objectives)
 ```
 
-The assert-soft command represents MaxSMT which tries to maximize the weighted sum of boolean expressions belonged to the same id. Since we are doing minimization, negation is needed to take advantage of MaxSMT support.
+The assert-soft command represents MaxSMT which tries to maximize the weighted sum of Boolean expressions belonged to the same id. Since we are doing minimization, negation is needed to take advantage of MaxSMT support.
 
 
 ### Integer encoding
 
-In this example, the boolean encoding is not really natural. Most of the constraints is of arithmetic form, it makes more sense to express them using integer arithmetic. Here is a similar encoding using integer arithmetic.
+In this example, the Boolean encoding is not really natural. Most of the constraints is of arithmetic form, it makes more sense to express them using integer arithmetic. Here is a similar encoding using integer arithmetic.
 
 ```z3
 (declare-const x11 Int)
@@ -120,5 +120,5 @@ In this example, the boolean encoding is not really natural. Most of the constra
 (get-objectives)
 ```
 
-The capability constraints and goals are easier to express than those of boolean encoding. However, we need to add extra constraints to ensure that only 0-1 integers are allowed in the model. It is also interesting to see different results by choosing various ways of combining objectives. You can uncomment the set-option command and take a look at results.
+The capability constraints and goals are easier to express than those of Boolean encoding. However, we need to add extra constraints to ensure that only 0-1 integers are allowed in the model. It is also interesting to see different results by choosing various ways of combining objectives. You can uncomment the set-option command and take a look at results.
 

@@ -5,10 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "cwd": "${workspaceFolder}/website",
+            "command": "nvm use 16 && yarn start",
+            "name": "Run",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+        {
             "type": "pwa-node",
             "runtimeVersion": "16.15.1",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Build",
             "skipFiles": [
                 "<node_internals>/**"
             ],

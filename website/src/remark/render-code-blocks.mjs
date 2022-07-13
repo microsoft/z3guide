@@ -2,7 +2,7 @@
 
 import visit from 'unist-util-visit';
 import fs_extra_pkg from 'fs-extra';
-const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
+const { readJsonSync, writeJsonSync, ensureDirSync, copySync } = fs_extra_pkg;
 import { createHash } from 'crypto';
 import z3pkg from 'z3-solver/package.json' assert { type: 'json' };
 import { spawnSync } from 'child_process';
@@ -21,7 +21,7 @@ function checkZ3(input, output, hash, errRegex, skipErr) {
     const hasError = output.match(errRegex);
     if (hasError !== null) {
         throw new Error(
-`\n******************************************
+            `\n******************************************
 Z3 (version ${z3pkg.version}) Runtime Error
 
 - Snippet: 
@@ -129,9 +129,8 @@ export default function plugin(options) {
         const promises = [];
 
         /** @type {import("unified").Transformer} */
-
-        // console.log({ ast });
         visit(ast, 'root', (node) => {
+
             node.children.unshift(
                 {
                     type: 'import',

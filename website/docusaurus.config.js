@@ -39,6 +39,11 @@ async function createConfig() {
       locales: ['en'],
     },
 
+    plugins: [
+      './plugins/add-coi-serviceworker',
+      './plugins/more-webpack-config',
+    ],
+
     presets: [
       [
         '@docusaurus/preset-classic',
@@ -58,6 +63,8 @@ async function createConfig() {
         }),
       ],
     ],
+
+    scripts: [],
 
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -188,6 +195,17 @@ async function createConfig() {
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
+  config.scripts.push({
+    src: `${config.baseUrl}coi-serviceworker.js`,
+    type: 'text/javascript',
+    defer: true,
+  });
+
+  config.scripts.push({
+    src: `${config.baseUrl}z3-built.js`,
+    type: 'text/javascript',
+    defer: true,
+  });
 
 
   return config;

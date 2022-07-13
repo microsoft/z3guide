@@ -26,10 +26,10 @@ function OutputToggle({ onClick }) {
   );
 }
 
-function RunButton({ onClick }) {
+function RunButton({ onClick, runFinished }) {
   return (
     <button className="button button--primary" onClick={onClick}>
-      Edit and Run
+      {runFinished ? "Edit and Run" : "Running..."}
     </button>
   );
 }
@@ -96,6 +96,8 @@ export default function Z3CodeBlock({ input }) {
 
   const [outputRendered, setOutputRendered] = useState(false);
 
+  const [runFinished, setRunFinished] = useState(true);
+
   const [output, setOutput] = useState(result);
 
   const onDidClickOutputToggle = () => {
@@ -106,28 +108,39 @@ export default function Z3CodeBlock({ input }) {
   const onDidClickRun =
     (ExecutionEnvironment.canUseDOM) ? () => {
 
-      console.log(`currCode: ${currCode}`);
+      setRunFinished(false);
       // TODO: only load z3 when needed
       const newResult = { ...result };
+      let errorMsg;
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
       runZ3Web(currCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
-          newResult.output = result.output;
-          newResult.status = 'z3-ran';
+          const errRegex = new RegExp(/(\(error)|(unsupported)/g);
+          const hasError = result.output.match(errRegex);
+          newResult.output = hasError ? '' : result.output;
+          newResult.error = hasError ? result.output : '';
+          newResult.status = hasError ? 'z3-runtime-error' : 'z3-ran';
         } else if (result.error) {
           newResult.error = result.error;
           newResult.status = 'z3-failed';
         } else {
           // both output and error are empty, which means we have a bug
-          throw new Error(`runZ3Web returned no output or error with input:\n${currCode}`);
+          errorMsg = `runZ3Web returned no output or error with input:\n${currCode}`
+          newResult.error = errorMsg
+          newResult.status = 'buggy-code';
+          throw new Error(errorMsg);
         }
       }).catch((error) => {
         // runZ3web fails
-        throw new Error(`runZ3Web failed with input:\n${currCode}\n\nerror:\n${error}`);
+        errorMsg = `runZ3Web failed with input:\n${currCode}\n\nerror:\n${error}`;
+        newResult.error = errorMsg;
+        newResult.status = 'runZ3Web-failed';
+        throw new Error(errorMsg);
       }).finally(() => {
         setOutput(newResult);
         setCodeChanged(false);
+        setRunFinished(true);
       });
 
     } : () => { };
@@ -141,7 +154,7 @@ export default function Z3CodeBlock({ input }) {
   return (
     <div>
       {outputRendered ? <div /> : <OutputToggle onClick={onDidClickOutputToggle} />}
-      {outputRendered ? <RunButton onClick={onDidClickRun} /> : <div />}
+      {outputRendered ? <RunButton onClick={onDidClickRun} runFinished={runFinished}/> : <div />}
       <Z3Editor
         children={inputNode}
         input={code}

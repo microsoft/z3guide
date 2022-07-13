@@ -94,14 +94,6 @@ export default function Z3CodeBlock({ input }) {
 
   const [output, setOutput] = useState(result);
 
-  const [editorState, setEditorState] = useState({
-    newValue: code,
-    caretPosition: {
-      start: 0,
-      end: 0
-    }
-  });
-
   const onDidClickOutputToggle = () => {
     setOutputRendered(!outputRendered);
   };

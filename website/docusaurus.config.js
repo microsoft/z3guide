@@ -40,7 +40,7 @@ async function createConfig() {
     },
 
     plugins: [
-      './plugins/add-coi-serviceworker',
+      './plugins/add-z3-files',
       './plugins/more-webpack-config',
     ],
 

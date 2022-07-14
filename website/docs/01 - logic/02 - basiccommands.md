@@ -3,7 +3,11 @@ title: Basic Commands
 sidebar_position: 2
 ---
 
-The Z3 input format is an extension of the one defined by the [SMT-LIB format](http://www.smtlib.org). A Z3 script is a sequence of commands. The help command displays a list of all available commands. The command echo displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command declare-const declares a constant of a given type (aka sort). The command declare-fun declares a function. In the following example, we declared a function that receives an integer and a Boolean and returns an integer.
+:::info 
+The Z3 input format is an extension of the one defined by the [SMT-LIB format](http://www.smtlib.org). >> Explain in more detail what the smt lib format is. 
+::: 
+
+A Z3 script is a sequence of commands. As an extension of the SMT-LIB format, this means that Z3 is not technically a programming language in the same way that Java, Python, or Javascript are - meaning that without the API (link) there are no loops or variables as they are commonly understood on the whole. The help command displays a list of all available commands to understand this in full (rephrase). The command echo displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command declare-const declares a constant of a given type (aka sort). The command declare-fun declares a function. In the following example, we declared a function that receives an integer and a Boolean and returns an integer.
 
 ```z3
 (echo "starting Z3...")

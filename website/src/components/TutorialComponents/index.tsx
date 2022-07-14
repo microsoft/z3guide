@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, MutableRefObject } from 'react';
 import { LiveProvider, LiveEditor, LiveContext } from 'react-live';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { type Props } from "@theme/CodeBlock";
@@ -11,7 +11,7 @@ import styles from './styles.module.css';
 
 interface MyProps extends Props {
   readonly id: string;
-  readonly input: { code: string };
+  readonly inputRef: MutableRefObject<String>;
   readonly language?: Language;
   readonly editable?: boolean;
   readonly onChange?: (code: string) => void;
@@ -59,24 +59,18 @@ function Output({ result, codeChanged }) {
   );
 }
 
+
 function Z3Editor(props: MyProps) {
 
-  const { child, id, input, language, showLineNumbers, editable, onChange } = props;
+  const { id, inputRef, language, showLineNumbers, editable, onChange } = props;
 
   const prismTheme = usePrismTheme();
   const isBrowser = useIsBrowser();
 
-  const liveProviderProps = { child: child, code: input.code, language: language, theme: prismTheme, id: id }
+  const newContext = { code: String(inputRef.current), language: language, theme: prismTheme, disabled: !editable, onChange: onChange };
 
-  const component = (
-    <div
-      className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ''}`}
-    >
-      <LiveProvider
-        {...liveProviderProps}
-      >
-        <>
-          <LiveEditor
+  /*
+   <LiveEditor
             code={input.code}
             disabled={!editable}
             key={String(isBrowser)}
@@ -84,6 +78,26 @@ function Z3Editor(props: MyProps) {
             onChange={onChange}
             language={language}
           />
+          */
+  const component = (
+    <div
+      className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ''}`}
+    >
+      <LiveProvider
+        code={String(inputRef.current)}
+        language={language}
+        theme={prismTheme}
+        id={id}
+      >
+        <>
+          {/* <LiveContext.Provider value={newContext}> */}
+            <LiveEditor
+              key={String(isBrowser)}
+              className={liveCodeBlockStyles.playgroundEditor}
+              code={String(inputRef.current)}
+              {...newContext}
+            />
+          {/* </LiveContext.Provider> */}
         </>
       </LiveProvider>
     </div>);
@@ -160,12 +174,13 @@ export default function Z3CodeBlock({ input }) {
     if (outputRendered) setCodeChanged(true);
   };
 
+  const codeRef = useRef(currCode.code);
+
   const onDidClickReset = () => {
-    ;
-    let newCode = { ...currCode, code: code };
-    setCurrCode(newCode);
+    setCurrCode({code: code});
     setOutput(result);
     setCodeChanged(false);
+    codeRef.current = currCode.code;
   }
 
 
@@ -178,7 +193,7 @@ export default function Z3CodeBlock({ input }) {
       {outputRendered ? <ResetButton onClick={onDidClickReset} /> : <></>}
       <Z3Editor
         child={inputNode}
-        input={currCode}
+        inputRef={codeRef}
         id={result.hash}
         showLineNumbers={true}
         onChange={onDidChangeCode}

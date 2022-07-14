@@ -14,6 +14,8 @@ Z3 is a state-of-the art theorem prover from Microsoft Research. It can be used 
  
  > For an overview of Satisfiability modulo theories (SMT) and Boolean satisfiability problem (SAT) solvers, examples of their theoretical application, and questions to work through, refer to [SAT/SMT
 by Example by Dennis Yurichev](https://sat-smt.codes/SAT_SMT_by_example.pdf) 
+
+> This tutorial uses Z3's frontend for the [SMTLIB format](http://smtlib.cs.uiowa.edu/).
 :::
 
 Z3 is a low level tool. It is best used as a component in the context of other tools that require solving logical formulas. Consequently, Z3 exposes a number of API facilities to make it convenient for tools to map into Z3, but there are no stand-alone editors or user-centric facilities for interacting with Z3. The language syntax used in the front ends favor simplicity in contrast to linguistic convenience.

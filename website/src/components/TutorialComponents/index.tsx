@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LiveProvider, LiveEditor, withLive, LiveError, LivePreview, LiveContext } from 'react-live';
+import { LiveProvider, LiveEditor, LiveContext } from 'react-live';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { type Props } from "@theme/CodeBlock";
 import { usePrismTheme } from '@docusaurus/theme-common';
@@ -11,14 +11,13 @@ import styles from './styles.module.css';
 
 interface MyProps extends Props {
   readonly id: string;
-  readonly input: string;
+  readonly input: { code: string };
   readonly language?: Language;
   readonly editable?: boolean;
   readonly onChange?: (code: string) => void;
 }
 
 function OutputToggle({ onClick }) {
-
   return (
     <button className="button button--primary" onClick={onClick}>
       Run
@@ -30,6 +29,14 @@ function RunButton({ onClick, runFinished }) {
   return (
     <button className="button button--primary" onClick={onClick}>
       {runFinished ? "Edit and Run" : "Running..."}
+    </button>
+  );
+}
+
+function ResetButton({ onClick }) {
+  return (
+    <button className="button button--primary" onClick={onClick}>
+      Reset
     </button>
   );
 }
@@ -54,20 +61,23 @@ function Output({ result, codeChanged }) {
 
 function Z3Editor(props: MyProps) {
 
-  const { id, input, language, showLineNumbers, editable, onChange } = props;
+  const { child, id, input, language, showLineNumbers, editable, onChange } = props;
 
   const prismTheme = usePrismTheme();
   const isBrowser = useIsBrowser();
 
+  const liveProviderProps = { child: child, code: input.code, language: language, theme: prismTheme, id: id }
+
   const component = (
-    <div className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ''}`}>
+    <div
+      className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ''}`}
+    >
       <LiveProvider
-        code={input}
-        theme={prismTheme}
-        id={id}
+        {...liveProviderProps}
       >
         <>
           <LiveEditor
+            code={input.code}
             disabled={!editable}
             key={String(isBrowser)}
             className={liveCodeBlockStyles.playgroundEditor}
@@ -90,7 +100,7 @@ function Z3Editor(props: MyProps) {
 export default function Z3CodeBlock({ input }) {
   const { code, result } = input;
 
-  const [currCode, setCurrCode] = useState(code);
+  const [currCode, setCurrCode] = useState({ code: code });
 
   const [codeChanged, setCodeChanged] = useState(false);
 
@@ -113,7 +123,7 @@ export default function Z3CodeBlock({ input }) {
       const newResult = { ...result };
       let errorMsg;
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-      runZ3Web(currCode).then((res) => {
+      runZ3Web(currCode.code).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
           const errRegex = new RegExp(/(\(error)|(unsupported)/g);
@@ -126,14 +136,14 @@ export default function Z3CodeBlock({ input }) {
           newResult.status = 'z3-failed';
         } else {
           // both output and error are empty, which means we have a bug
-          errorMsg = `runZ3Web returned no output or error with input:\n${currCode}`
+          errorMsg = `runZ3Web returned no output or error with input:\n${currCode.code}`
           newResult.error = errorMsg
           newResult.status = 'buggy-code';
           throw new Error(errorMsg);
         }
       }).catch((error) => {
         // runZ3web fails
-        errorMsg = `runZ3Web failed with input:\n${currCode}\n\nerror:\n${error}`;
+        errorMsg = `runZ3Web failed with input:\n${currCode.code}\n\nerror:\n${error}`;
         newResult.error = errorMsg;
         newResult.status = 'runZ3Web-failed';
         throw new Error(errorMsg);
@@ -146,25 +156,36 @@ export default function Z3CodeBlock({ input }) {
     } : () => { };
 
   const onDidChangeCode = (code: string) => {
-    setCurrCode(code);
+    setCurrCode({ code: code });
     if (outputRendered) setCodeChanged(true);
   };
-  const inputNode = <>{code}</>
+
+  const onDidClickReset = () => {
+    ;
+    let newCode = { ...currCode, code: code };
+    setCurrCode(newCode);
+    setOutput(result);
+    setCodeChanged(false);
+  }
+
+
+  const inputNode = <>{currCode.code}</>
 
   return (
     <div>
-      {outputRendered ? <div /> : <OutputToggle onClick={onDidClickOutputToggle} />}
-      {outputRendered ? <RunButton onClick={onDidClickRun} runFinished={runFinished}/> : <div />}
+      {outputRendered ? <></> : <OutputToggle onClick={onDidClickOutputToggle} />}
+      {outputRendered ? <RunButton onClick={onDidClickRun} runFinished={runFinished} /> : <></>}
+      {outputRendered ? <ResetButton onClick={onDidClickReset} /> : <></>}
       <Z3Editor
-        children={inputNode}
-        input={code}
+        child={inputNode}
+        input={currCode}
         id={result.hash}
         showLineNumbers={true}
         onChange={onDidChangeCode}
         editable={outputRendered}
         language={"lisp" as Language}
       />
-      {outputRendered ? <Output codeChanged={codeChanged} result={output} /> : <div />}
+      {outputRendered ? <Output codeChanged={codeChanged} result={output} /> : <></>}
     </div>
   );
 }

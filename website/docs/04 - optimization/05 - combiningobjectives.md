@@ -25,6 +25,7 @@ Z3 uses by default a lexicographic priority of objectives. It solves first for t
 ```
 
 It is also possible to declare multiple classes of soft assertions. To do this, use an optional tag to differentiate classes of soft assertions.
+The first tag group `A` is given precedence over the second group `B` that is introduced later.
 
 ```z3 
 (declare-const a Bool)

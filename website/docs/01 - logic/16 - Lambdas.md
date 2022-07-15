@@ -27,7 +27,7 @@ The simplifier performs $\beta$ reduction.
 
 Other rules $\alpha$ (renaming) and $\eta$ (extensionality) are enforced by the solver.
 
-## Lambdas to inline definitions
+## Inlining definitions using Lambda
 
 The main utility of lambdas in Z3 is for introducing inline definitions as the following `memset` example illustrates.
 
@@ -71,7 +71,7 @@ This contrasts functinos declared using `define-fun` that are treated as macros 
 (pop)
 ```
 
-## From first-order to limited higher-order
+## From First-Order to limited Higher-Order
 
 There is limited true higher order reasoning. One basic example that _does_ work thanks to model construction of MBQI instantiation procedure
 is establishing a second-order definition for equality.

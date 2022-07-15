@@ -3,7 +3,7 @@ title: Soft Constraints
 sidebar_position: 4
 ---
 
-The (assert-soft formula :weight numeral) command asserts a weighted soft constraint. The weight must be a positive natural number, but is optional. If omitted, the weight is set to 1.
+The `(assert-soft formula [:weight numeral] [:id id])` command asserts a weighted soft constraint. The weight must be a positive natural number, but is optional. If omitted, the weight is set to 1.
 
 ```z3
 (declare-const x Int)
@@ -40,3 +40,16 @@ Floating point and integer weights can be mixed; internally weights are converte
 (get-model)
 ```
 
+You can use identifiers to group soft constraints. You can also repeat the same soft constraint. Every repetition counts independently. In the example we add the soft constrsaint `a` twice and force it to be false. The penalty for group `x` is therefore 2. The penalty for group `y` is because there is only one soft constraint that is impossible to satisfy.
+
+```z3
+(declare-const a Bool)
+(assert-soft false :id y)
+(assert-soft a :id x)
+(assert-soft a :id x)
+(assert-soft b :id x)
+(assert (not a))
+
+(check-sat)
+(get-objectives)
+```

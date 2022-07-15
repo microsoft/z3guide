@@ -5,7 +5,7 @@ sidebar_position: 16
 
 Lambda binding is available as an extension to the theory of arrays.
 
-## Syntax
+## Syntax and Semantics
 
 Lambda expressions use syntax similar to quantifiers. It is of the form:
 
@@ -14,6 +14,18 @@ Lambda expressions use syntax similar to quantifiers. It is of the form:
 ```
 
 where `x y z` are lambda bound variables and `t` is an expression that can contain the bound variables. 
+
+The laws of lambda calculus apply. 
+The simplifier performs $\beta$ reduction.
+
+```z3
+(declare-const a Int)
+(declare-const b Int)
+(declare-const c Int)
+(simplify (select (lambda ((x Int) (y Int) (z Int)) (+ x (* z y))) a b c))
+```
+
+Other rules $\alpha$ (renaming) and $\eta$ (extensionality) are enforced by the solver.
 
 ## Lambdas to inline definitions
 

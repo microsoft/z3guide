@@ -8,6 +8,7 @@ import runZ3Web from './runZ3Web';
 import { Language } from 'prism-react-renderer';
 import liveCodeBlockStyles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
 import styles from './styles.module.css';
+import { useEditable } from 'use-editable';
 
 interface MyProps extends Props {
   readonly id: string;
@@ -71,16 +72,7 @@ function Z3Editor(props: MyProps) {
 
   const newContext = { code: input, language: language, theme: prismTheme, disabled: !editable, onChange: onChange };
 
-  /*
-   <LiveEditor
-            code={input.code}
-            disabled={!editable}
-            key={String(isBrowser)}
-            className={liveCodeBlockStyles.playgroundEditor}
-            onChange={onChange}
-            language={language}
-          />
-          */
+
   const component = (
     <div
       className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ''}`}
@@ -92,14 +84,12 @@ function Z3Editor(props: MyProps) {
         id={id}
       >
         <>
-          {/* <LiveContext.Provider value={newContext}> */}
           <LiveEditor
             key={String(isBrowser)}
             className={liveCodeBlockStyles.playgroundEditor}
             code={input}
             {...newContext}
           />
-          {/* </LiveContext.Provider> */}
         </>
       </LiveProvider>
     </div>);
@@ -128,7 +118,7 @@ function reducer(state, action) {
 }
 
 function init(initCode) {
-  return {editorCode: initCode};
+  return { editorCode: initCode };
 }
 
 // event handlers
@@ -214,7 +204,7 @@ export default function Z3CodeBlock({ input }) {
         : <></>}
       {outputRendered ? <ResetButton onClick={() => onDidClickReset({ code, result, setCurrCode, setOutput, setCodeChanged, dispatch })} /> : <></>}
       <Z3Editor
-        child={inputNode}
+        children={inputNode}
         input={state.editorCode}
         id={result.hash}
         showLineNumbers={true}

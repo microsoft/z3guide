@@ -44,6 +44,7 @@ You can use identifiers to group soft constraints. You can also repeat the same 
 
 ```z3
 (declare-const a Bool)
+(declare-const b Bool)
 (assert-soft false :id y)
 (assert-soft a :id x)
 (assert-soft a :id x)

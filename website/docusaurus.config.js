@@ -52,7 +52,8 @@ async function createConfig() {
         // /** @type {import('@docusaurus/preset-classic').Options} */
         ({
           docs: {
-            remarkPlugins: [],
+            remarkPlugins: [math],
+            rehypePlugins: [katex],
             sidebarPath: require.resolve('./sidebars.js'),
             // Please change this to your repo.
             // Remove this to remove the "edit this page" links.
@@ -62,8 +63,6 @@ async function createConfig() {
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
           },
-          remarkPlugins: [math],
-          rehypePlugins: [katex],
         }),
       ],
     ],

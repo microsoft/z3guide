@@ -9,7 +9,7 @@ Command                                | Meaning
 ---------------------------------------|-------------------------------------------------------------------
 `(maximize t)`                         | The result of `(check-sat)` should seek to produce a model that _maximizes_ the value of `t`. The expression can be integer, real or Bit-vector sort.
 `(minimize t)`                         | The result of `(check-sat)` should seek to produce a model that _minimizes_ the value of `t` The expression can be integer, real or Bit-vector sort.
-`(add-soft b [:weight w] [:name id])`  | The result of `(check-sat)` should seek to satisfy soft constraints. The default weigth is 1. Weights are used to give priorities. Soft constraints can be grouped in disjoint groups by tagging them with optional names.
+`(add-soft b [:weight w] [:id id])`  | The result of `(check-sat)` should seek to satisfy soft constraints. The default weigth is 1. Weights are used to give priorities. Soft constraints can be grouped in disjoint groups by tagging them with optional identifiers.
 `(get-objectives)`                     | After `(check-sat)` retrieve the values of the maximize, minimize and soft constraint objectives.
 
 

@@ -19,7 +19,31 @@ array are the argument types and the range is the sort of the body of the lambda
 (check-sat)
 ```
 
+The type of `(lambda ((x Int)) (if (and (<= lo x) (<= x hi)) y (m x)))` is thus `(Array Int Int)`. 
+
+Thus, in z3 arrays are synomnymous with function spaces. You can transition between arrays and 
+functions using `as-array` to convert a function to an array and using function macros to treat an array as a function. 
+The example also illustrates a subtle use of recursive function declarations.
+Functions declared using `define-fun-rec` are expanded on demand and therefore the function symbols are available as arguments to `as-array`.
+This contrasts functinos declared using `define-fun` that are treated as macros that are expanded at parse time. Their function symbols cannot be passed to `as-array`.
+
+```z3
+(declare-fun f (Int) Int)
+(push)
+(assert (not (=  (select (_ as-array f) 0) (f 0))))
+(check-sat)
+(pop)
+(push)
+(declare-const a (Array Int Int))
+(define-fun-rec f2 ((x Int)) Int (select a x))
+(assert (not (= (select a 0) (select (_ as-array f2) 0))))
+(check-sat)
+(pop)
+```
+
+
 The main utility of lambdas in Z3 is for introducing inline definitions as the `memset` example illustrates.
+
 There is limited true higher order reasoning. One basic example that _does_ work thanks to model construction of MBQI instantiation procedure
 is establishing a second-order definition for equality.
 
@@ -30,3 +54,7 @@ is establishing a second-order definition for equality.
 (assert (not (= x y)))
 (check-sat)
 ```
+
+During instantiation, z3 determines to instantiate `q` with the term `(lambda ((z Int)) (= x z))` and therefore it infers the fact `(= (= x x) (= x y))`.
+Note that the example illustrates using an array as a function application. We wrote `(q x)` instead of `(select q x)` for the array `q`. 
+It is a feature that is supported as a convenience: the parser performs a best-effort coercions to insert `select` automatically. 

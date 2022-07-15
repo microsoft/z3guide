@@ -4,9 +4,18 @@ sidebar_position: 16
 ---
 
 Lambda binding is available as an extension to the theory of arrays.
-Thus, the type of a lambda expression is an array where the domain of the 
-array are the argument types and the range is the sort of the body of the lambda expression.
 
+## Syntax
+
+Lambda expressions use syntax similar to quantifiers. It is of the form:
+
+```
+(lambda ((x X) (y Y) (z Z)) t)
+```
+
+where `x y z` are lambda bound variables and `t` is an expression that can contain the bound variables. 
+
+## Lambdas to inline definitions
 
 The main utility of lambdas in Z3 is for introducing inline definitions as the following `memset` example illustrates.
 
@@ -24,6 +33,11 @@ The main utility of lambdas in Z3 is for introducing inline definitions as the f
 
 Note that the type of `(lambda ((x Int)) (if (and (<= lo x) (<= x hi)) y (m x)))` is `(Array Int Int)`. 
 
+
+## Lambdas as Arrays
+
+Thus, the type of a lambda expression is an array where the domain of the 
+array are the argument types and the range is the sort of the body of the lambda expression.
 
 Thus, in z3 arrays are synonymous with function spaces. You can transition between arrays and 
 functions using `as-array` to convert a function to an array and using function macros to treat an array as a function. 
@@ -45,6 +59,7 @@ This contrasts functinos declared using `define-fun` that are treated as macros 
 (pop)
 ```
 
+## From first-order to limited higher-order
 
 There is limited true higher order reasoning. One basic example that _does_ work thanks to model construction of MBQI instantiation procedure
 is establishing a second-order definition for equality.

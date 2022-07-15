@@ -11,7 +11,6 @@ import styles from './styles.module.css';
 
 interface MyProps extends Props {
   readonly id: string;
-  readonly inputRef: MutableRefObject<String>;
   readonly input: string;
   readonly language?: Language;
   readonly editable?: boolean;
@@ -63,7 +62,7 @@ function Output({ result, codeChanged }) {
 
 function Z3Editor(props: MyProps) {
 
-  const { id, inputRef, input, language, showLineNumbers, editable, onChange } = props;
+  const { id, input, language, showLineNumbers, editable, onChange } = props;
   console.log(`rendered with: ${input}`);
 
 
@@ -176,8 +175,8 @@ const onDidClickRun = ({ setRunFinished, result, currCode, setOutput, setCodeCha
   });
 };
 
-const onDidChangeCode = ({ code, setCurrCode, outputRendered, setCodeChanged }) => {
-  setCurrCode({ code: code });
+const onDidChangeCode = ({ newCode, setCurrCode, outputRendered, setCodeChanged }) => {
+  setCurrCode({ code: newCode });
   if (outputRendered) setCodeChanged(true);
 };
 
@@ -202,8 +201,6 @@ export default function Z3CodeBlock({ input }) {
 
   const [output, setOutput] = useState(result);
 
-  const codeRef = useRef(currCode.code);
-
   const [state, dispatch] = useReducer(reducer, code, init);
 
   const inputNode = <>{currCode.code}</>
@@ -218,11 +215,10 @@ export default function Z3CodeBlock({ input }) {
       {outputRendered ? <ResetButton onClick={() => onDidClickReset({ code, result, setCurrCode, setOutput, setCodeChanged, dispatch })} /> : <></>}
       <Z3Editor
         child={inputNode}
-        inputRef={codeRef}
         input={state.editorCode}
         id={result.hash}
         showLineNumbers={true}
-        onChange={(code) => onDidChangeCode({ code, setCurrCode, outputRendered, setCodeChanged })}
+        onChange={(newCode) => onDidChangeCode({ newCode, setCurrCode, outputRendered, setCodeChanged })}
         editable={outputRendered}
         language={"lisp" as Language}
       />

@@ -13,6 +13,7 @@ Command                                | Meaning
 `(get-objectives)`                     | After `(check-sat)` retrieve the values of the maximize, minimize and soft constraint objectives.
 
 
+## Maximize and Minimize
 
 The `(maximize t)` command instructs check-sat to produce a model that maximizes the value of term t. The type of `t` must be either `Int`, `Real`, or `BitVec`.
 

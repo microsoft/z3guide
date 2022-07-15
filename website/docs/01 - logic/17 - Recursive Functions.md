@@ -9,7 +9,7 @@ sidebar_position: 17
 
 You can define recursive functions
 
-```z3
+```z3 no-build
 (define-fun-rec length ((ls (List Int))) Int
    (if ((_ is nil) ls) 0 (+ 1 (length (tail ls)))))
 

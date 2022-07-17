@@ -244,21 +244,52 @@ The `check` method always operates on the content of solver assertion stack.
 The following example shows an example that Z3 cannot solve. The solver returns `unknown` in this case.
 Recall that Z3 can solve nonlinear polynomial constraints, but `2**x` is not a polynomial.
 
-<pre pref="z3py.11" />
+```python
+x = Real('x')
+s = Solver()
+s.add(2**x == 3)
+print s.check()
+```
 
 The following example shows how to traverse the constraints asserted into a solver, and how to collect performance statistics for
 the `check` method.
 
+```python
+x = Real('x')
+y = Real('y')
+s = Solver()
+s.add(x > 1, y > 1, Or(x + y > 3, x - y < 2))
+print "asserted constraints..."
+for c in s.assertions():
+    print c
 
-<pre pref="z3py.12" />
+print s.check()
+print "statistics for the last check method..."
+print s.statistics()
+# Traversing statistics
+for k, v in s.statistics():
+    print "%s : %s" % (k, v)
+```
 
 The command `check` returns `sat` when Z3 finds a solution for the set of asserted constraints.
 We say Z3 <b>satisfied</b> the set of constraints. We say the solution is a <b>model</b> for the set of asserted
 constraints. A model is an <b>interpretation</b> that makes each asserted constraint <b>true</b>.
 The following example shows the basic methods for inspecting models. 
 
+```python
+x, y, z = Reals('x y z')
+s = Solver()
+s.add(x > 1, y > 1, x + y > 3, z - x < 10)
+print s.check()
 
-<pre pref="z3py.13" />
+m = s.model()
+print "x = %s" % m[x]
+
+print "traversing model..."
+for d in m.decls():
+    print "%s = %s" % (d.name(), m[d])
+
+```
 
 In the example above, the function `Reals('x y z')` creates the variables. `x`, `y` and `z`.
 It is shorthand for:
@@ -283,18 +314,39 @@ Z3 supports real and integer variables. They can be mixed in a single problem.
 Like most programming languages, Z3Py will automatically add coercions converting integer expressions to real ones when needed.
 The following example demonstrates different ways to declare integer and real variables.
 
-
-<pre pref="arith.1" />
+```python
+x = Real('x')
+y = Int('y')
+a, b, c = Reals('a b c')
+s, r = Ints('s r')
+print x + y + 1 + (a + s)
+print ToReal(y) + c
+```
 
 The function `ToReal` casts an integer expression into a real expression.
 
 Z3Py supports all basic arithmetic operations.
 
-<pre pref="arith.2" />
+```python
+a, b, c = Ints('a b c')
+d, e = Reals('d e')
+solve(a > b + 2,
+      a == 2*c + 10,
+      c + b <= 1000,
+      d >= e)
+```
 
 The command `simplify` applies simple transformations on Z3 expressions.
 
-<pre pref="arith.3" />
+```python
+x, y = Reals('x y')
+# Put expression in sum-of-monomials form
+t = simplify((x + y)**3, som=True)
+print t
+# Use power operator
+t = simplify(t, mul_to_power=True)
+print t
+```
 
 The command `help_simplify()` prints all available options.
 Z3Py allows users to write option in two styles. The Z3 internal option names start with `:` and words are separated by `-`.
@@ -302,8 +354,16 @@ These options can be used in Z3Py. Z3Py also supports Python-like names,
 where `:` is suppressed and `-` is replaced with `_`.
 The following example demonstrates how to use both styles.
 
+```python
+x, y = Reals('x y')
+# Using Z3 native option names
+print simplify(x == y + 2, ':arith-lhs', True)
+# Using Z3Py option names
+print simplify(x == y + 2, arith_lhs=True)
 
-<pre pref="arith.4" />
+print "\nAll available options:"
+help_simplify()
+```
 
 Z3Py supports arbitrarily large numbers. The following example demonstrates how to perform basic arithmetic using larger integer, rational and irrational numbers.
 Z3Py only supports [algebraic irrational numbers](http://en.wikipedia.org/wiki/Algebraic_number). Algebraic irrational numbers are sufficient for presenting the solutions of systems of polynomial constraints.

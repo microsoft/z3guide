@@ -1,40 +1,32 @@
-<html>
-<head>
-<title>Z3Py Advanced</title>
-<link rel=StyleSheet href="style.css" type="text/css">
-</head>
-<body>
 
-<h1>Advanced Topics</h1>
+---
+title: Advanced Topics
+sidebar_position: 3
+---
 
-<p>
-Please send feedback, comments and/or corrections to <a href="mailto:leonardo@microsoft.com">leonardo@microsoft.com</a>.
-Your comments are very valuable.
-</p>
 
-<h2>Expressions, Sorts and Declarations</h2>
+## Expressions, Sorts and Declarations<
 
-<p>In Z3, expressions, sorts and declarations are called <i>ASTs</i>.
+In Z3, expressions, sorts and declarations are called <i>ASTs</i>.
 ASTs are directed acyclic graphs. Every expression has a sort (aka type).
 The method <tt>sort()</tt> retrieves the sort of an expression.
-</p>
 
+<!---
 <pre pref="expr.1" />
 
-<p>The function <tt>eq(n1, n2)</tt> returns <tt>True</tt> if <tt>n1</tt>
+The function <tt>eq(n1, n2)</tt> returns <tt>True</tt> if <tt>n1</tt>
 and <tt>n2</tt> are the same AST. This is a structural test. 
-</p>
+
 
 <pre pref="expr.2" />
 
-<p>The method <tt>hash()</tt> returns a hashcode for an AST node.
+The method <tt>hash()</tt> returns a hashcode for an AST node.
 If <tt>eq(n1, n2)</tt> returns <tt>True</tt>, then <tt>n1.hash()</tt>
 is equal to <tt>n2.hash()</tt>. 
-</p>
 
 <pre pref="expr.3" />
 
-<p>Z3 expressions can be divided in three basic groups: <b>applications</b>,
+Z3 expressions can be divided in three basic groups: <b>applications</b>,
 <b>quantifiers</b> and <b>bounded/free variables</b>.
 Applications are all you need if your problems do not contain 
 universal/existential quantifiers. Although we say <tt>Int('x')</tt> is an
@@ -47,13 +39,12 @@ returns the number of arguments of an application, and <tt>arg(i)</tt> one of th
 The function <tt>is_expr(n)</tt> returns <tt>True</tt>
 if <tt>n</tt> is an expression. Similarly <tt>is_app(n)</tt> (<tt>is_func_decl(n)</tt>)
 returns <tt>True</tt> if <tt>n</tt> is an application (declaration). 
-</p>
 
 <pre pref="expr.4" />
 
-<p>Declarations have names, they are retrieved using the method <tt>name()</tt>.
+Declarations have names, they are retrieved using the method <tt>name()</tt>.
 A (function) declaration has an arity, a domain and range sorts.
-</p>
+
 
 <pre pref="expr.5" />
 
@@ -105,7 +96,7 @@ to efficient saturation procedures (here efficient means,
 with an NP-complete satisfiability complexity).
 We describe these extensions in the following using a collection of examples.
 Additional background on these extensions is available in the 
-paper <a href="http://research.microsoft.com/en-us/um/people/leonardo/fmcad09.pdf" target="_blank">Generalized and Efficient Array Decision Procedures</a>.
+paper [Generalized and Efficient Array Decision Procedures](http://research.microsoft.com/en-us/um/people/leonardo/fmcad09.pdf)
 </p>
 
 <p>
@@ -116,7 +107,7 @@ It is usually much more efficient to create different variables using list compr
 
 <pre pref="array.2"/>
 
-<h3>Select and Store</h3>
+## Select and Store
 
 
 <p>Let us first check a basic property of arrays.
@@ -397,56 +388,51 @@ for debugging), <b>weight</b> (hint to the quantifier instantiation module: "mor
 prefix used to create skolem constants/functions.
 </p>
 
-<h2>Multiple Solvers</h2>
+## Multiple Solvers
 
-<p>In Z3Py and Z3 4.0 multiple solvers can be simultaneously used.
+In Z3Py and Z3 multiple solvers can be simultaneously used.
 It is also very easy to copy assertions/formulas from one solver to another.
-</p>
 
 <pre pref="msolver.1" />
 
-<h2>Unsat Cores and Soft Constraints</h2>
+## Unsat Cores and Soft Constraints
 
-<p>Z3Py also supports <i>unsat core extraction</i>. The basic idea is to use
+Z3Py also supports <i>unsat core extraction</i>. The basic idea is to use
 <i>assumptions</i>, that is, auxiliary propositional variables that we want to track.
 Assumptions are also available in the Z3 SMT 2.0 frontend, and in other Z3 front-ends.
 They are used to extract unsatisfiable cores. They may be also used to "retract"
 constraints. Note that, assumptions are not really <i>soft constraints</i>, but they can be used to implement them. 
-</p>
+
 
 <pre pref="unsatcore.1" />
 
-<p>The example above also shows that a Boolean variable (<tt>p1</tt>) can be used to track
+The example above also shows that a Boolean variable (<tt>p1</tt>) can be used to track
 more than one constraint. Note that Z3 does not guarantee that the unsat cores are minimal.
-</p>
 
-<h2>Formatter</h2>
 
-<p>
+## Formatter
+
+
 Z3Py uses a formatter (aka pretty printer) for displaying formulas, expressions, solvers, and other
 Z3 objects. The formatter supports many configuration options. 
 The command <tt>set_option(html_mode=False)</tt> makes all formulas and expressions to be
 displayed in Z3Py notation.
-</p>
+
 
 <pre pref="printer" />
 
-<p>By default, Z3Py will truncate the output if the object being displayed is too big.
+By default, Z3Py will truncate the output if the object being displayed is too big.
 Z3Py uses &hellip; to denote the output is truncated.
 The following configuration options can be set to control the behavior of Z3Py's formatter:
-</p>
 
-<ul>
-<li> <tt>max_depth</tt> Maximal expression depth. Deep expressions are replaced with &hellip;. </li>
-<li> <tt>max_args</tt> Maximal number of arguments to display per node. </li>
-<li> <tt>rational_to_decimal</tt> Display rationals as decimals if True. </li>
-<li> <tt>precision</tt> Maximal number of decimal places for numbers being displayed in decimal notation. </li>
-<li> <tt>max_lines</tt> Maximal number of lines to be displayed. </li>
-<li> <tt>max_width</tt> Maximal line width (this is a suggestion to Z3Py). </li>
-<li> <tt>max_indent</tt> Maximal indentation.</li>
-</ul>
 
-<pre pref="format" />
+* <tt>max_depth</tt> Maximal expression depth. Deep expressions are replaced with &hellip;. 
+* <tt>max_args</tt> Maximal number of arguments to display per node. 
+* <tt>rational_to_decimal</tt> Display rationals as decimals if True. 
+* <tt>precision</tt> Maximal number of decimal places for numbers being displayed in decimal notation. 
+* <tt>max_lines</tt> Maximal number of lines to be displayed. 
+* <tt>max_width</tt> Maximal line width (this is a suggestion to Z3Py). 
+* <tt>max_indent</tt> Maximal indentation.
 
-</body>
-</html>
+
+--->

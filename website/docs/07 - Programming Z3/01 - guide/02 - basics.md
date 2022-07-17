@@ -1,43 +1,33 @@
+---
+title: Z3 API in Python
+sidebar_position: 1
+---
 
 
-<html>
-<head>
-<title>Z3Py Guide</title>
-<link rel=StyleSheet href="style.css" type="text/css">
-</head>
-<body>
+Z3 is a high performance theorem prover developed at Microsoft Research.
 
-
-<h1>Z3 API in Python</h1>
-<p>Z3 is a high performance theorem prover developed at <a target="_blank" href="http://research.microsoft.com">Microsoft Research</a>.
 Z3 is used in many applications such as: software/hardware verification and testing, constraint solving, analysis of hybrid systems, 
-security, biology (in silico analysis), and geometrical problems.</p>
-<p>This tutorial demonstrates the main capabilities of Z3Py: the Z3 API in <a target="_blank" href="http://www.python.org">Python</a>. 
+security, biology (in silico analysis), and geometrical problems.
+This tutorial demonstrates the main capabilities of Z3Py: the Z3 API in [Python](http://www.python.org). 
 No Python background is needed to read this tutorial. However, it is useful to learn Python (a fun language!) at some point, and 
-there are many excellent free resources for doing so (<a target="_blank" href="http://docs.python.org/tutorial/">Python Tutorial</a>).
-</p>
+there are many excellent free resources for doing so [Python Tutorial](http://docs.python.org/tutorial/).
 
-<p>The Z3 distribution also contains the <b>C</b>, <b>.Net</b> and <b>OCaml</b> APIs. The source code of Z3Py is available in 
-the Z3 distribution, feel free to modify it to meet your needs. The source code also demonstrates how to use new features in Z3 4.0.
-Other cool front-ends for Z3 include <a target="_blank" href="http://lara.epfl.ch/~psuter/ScalaZ3/">Scala^Z3</a> and <a target="_blank" href="http://hackage.haskell.org/package/sbv">SBV</a>.</p>
 
-<p>
+The Z3 distribution also contains the **C**, **.Net** and **OCaml** APIs. The source code of Z3Py is available in 
+the Z3 distribution, feel free to modify it to meet your needs. 
+
 Be sure to follow along with the examples by clicking the <b>load in editor</b> link in the
 corner. See what Z3Py says, try your own scripts, and experiment!
-</p>
 
-<p>
-Please send feedback, comments and/or corrections to <a href="mailto:leonardo@microsoft.com">leonardo@microsoft.com</a>.
-Your comments are very valuable.
-</p>
 
-<h2>Getting Started</h2>
 
-<p>Let us start with the following simple example:</p>
+## Getting Started
+
+Let us start with the following simple example:
 
 <pre pref="z3py.1"/>
 
-<p>The function <tt class="pre">Int('x')</tt> creates an integer variable in Z3 named <tt class="pre">x</tt>.
+The function <tt class="pre">Int('x')</tt> creates an integer variable in Z3 named <tt class="pre">x</tt>.
 The <tt class="pre">solve</tt> function solves a system of constraints. The example above uses
 two variables <tt class="pre">x</tt> and <tt class="pre">y</tt>, and three constraints.
 Z3Py like Python uses <b class="pre">=</b> for assignment. The operators <tt class="pre">&lt;</tt>,
@@ -48,170 +38,160 @@ Z3Py like Python uses <b class="pre">=</b> for assignment. The operators <tt cla
 <tt class="pre">!=</tt> for comparison.
 In the example above, the expression <tt class="pre">x + 2*y  == 7</tt> is a Z3 constraint.
 Z3 can solve and crunch formulas.
-</p>
 
-<p>
+
+
 The next examples show how to use the Z3 formula/expression simplifier.
-</p>
+
 
 <pre pref="z3py.2" />
 
-<p>
+
 By default, Z3Py (for the web) displays formulas and expressions using mathematical notation.
 As usual, <tt>&and;</tt> is the logical and, <tt>&or;</tt> is the logical or, and so on.
 The command <tt>set_option(html_mode=False)</tt> makes all formulas and expressions to be
 displayed in Z3Py notation. This is also the default mode for the offline version of Z3Py that
 comes with the Z3 distribution.
-</p>
+
 
 <pre pref="printer" />
 
-<p>
+
 Z3 provides functions for traversing expressions.
-</p>
+
 
 <pre pref="z3py.3" />
 
-<p>
+
 Z3 provides all basic mathematical operations. Z3Py uses the same operator precedence of the Python language.
 Like Python, <tt>**</tt> is the power operator. Z3 can solve nonlinear <i>polynomial</i> constraints.
-</p>
+
 
 <pre pref="z3py.4" />
 
-<p>
+
 The procedure <tt>Real('x')</tt> creates the real variable <tt>x</tt>. 
 Z3Py can represent arbitrarily large integers, rational numbers (like in the example above),
 and irrational algebraic numbers. An irrational algebraic number is a root of a polynomial with integer coefficients. 
 Internally, Z3 represents all these numbers precisely. 
 The irrational numbers are displayed in decimal notation for making it easy to read the results.
-</p>
+
 
 <pre pref="z3py.5" />
 
-<p>
+
 The procedure <tt>set_option</tt> is used to configure the Z3 environment. It is used to set global configuration options
 such as how the result is displayed. The option <tt>set_option(precision=30)</tt> sets the number of decimal places used when displaying results.
 The <tt>?</tt> mark in <tt>1.2599210498?</tt> indicates the output is truncated.
-</p>
 
-<p>
+
+
 The following example demonstrates a common mistake. The expression <tt>3/2</tt> is a Python integer and not a Z3 rational number.
 The example also shows different ways to create rational numbers in Z3Py. The procedure <tt>Q(num, den)</tt> creates a
 Z3 rational where <tt>num</tt> is the numerator and <tt>den</tt> is the denominator. The <tt>RealVal(1)</tt> creates a Z3 real number
 representing the number <tt>1</tt>.
-</p>
 
 <pre pref="z3py.6" />
 
-<p>
+
 Rational numbers can also be displayed in decimal notation.
-</p>
+
 
 <pre pref="z3py.6aa" />
 
-<p>
+
 A system of constraints may not have a solution. In this case, we say the system is <b>unsatisfiable</b>.
-</p>
+
 
 <pre pref="z3py.6a" />
 
-<p>
+
 Like in Python, comments begin with the hash character <tt>#</tt> and are terminated by the end of line. 
 Z3Py does not support comments that span more than one line.
-</p>
+
 
 <pre pref="comment" />
 
-<h2>Boolean Logic</h2>
+## Boolean Logic
 
-<p>
+
 Z3 supports Boolean operators: <tt>And</tt>, <tt>Or</tt>, <tt>Not</tt>, <tt>Implies</tt> (implication),
 <tt>If</tt> (if-then-else). Bi-implications are represented using equality <tt>==</tt>.
 The following example shows how to solve a simple set of Boolean constraints.
-</p>
+
 
 <pre pref="z3py.7" />
 
-<p>
+
 The Python Boolean constants <tt>True</tt> and <tt>False</tt> can be used to build Z3 Boolean expressions.
-</p>
+
 
 <pre pref="z3py.8" />
 
-<p>The following example uses a combination of polynomial and Boolean constraints. 
-</p>
+The following example uses a combination of polynomial and Boolean constraints. 
+
 
 <pre pref="z3py.9" />
 
-<h2>Solvers</h2>
+## Solvers
 
-<p>Z3 provides different solvers. The command <tt>solve</tt>, used in the previous examples, is implemented using the Z3 solver API.
+Z3 provides different solvers. The command <tt>solve</tt>, used in the previous examples, is implemented using the Z3 solver API.
 The implementation can be found in the file <tt>z3.py</tt> in the Z3 distribution.
 The following example demonstrates the basic Solver API.
-</p>
 
 <pre pref="z3py.10" />
 
-<p>
 The command <tt>Solver()</tt> creates a general purpose solver. Constraints can be added using the method <tt>add</tt>.
 We say the constraints have been <b>asserted</b> in the solver. The method <tt>check()</tt> solves the asserted constraints.
 The result is <tt>sat</tt> (satisfiable) if a solution was found. The result is <tt>unsat</tt> (unsatisfiable) if 
 no solution exists. We may also say the system of asserted constraints is <b>infeasible</b>. Finally, a solver may fail
 to solve a system of constraints and <tt>unknown</tt> is returned.   
-</p>
 
-<p>
+
 In some applications, we want to explore several similar problems that share several constraints. 
 We can use the commands <tt>push</tt> and <tt>pop</tt> for doing that. 
 Each solver maintains a stack of assertions. The command <tt>push</tt> creates a new scope by 
 saving the current stack size. 
 The command <tt>pop</tt> removes any assertion performed between it and the matching <tt>push</tt>. 
 The <tt>check</tt> method always operates on the content of solver assertion stack.
-</p>
 
-<p>
 The following example shows an example that Z3 cannot solve. The solver returns <tt>unknown</tt> in this case.
 Recall that Z3 can solve nonlinear polynomial constraints, but <tt>2**x</tt> is not a polynomial.
-</p>
 
 <pre pref="z3py.11" />
 
-<p>
 The following example shows how to traverse the constraints asserted into a solver, and how to collect performance statistics for
 the <tt>check</tt> method.
-</p>
+
 
 <pre pref="z3py.12" />
 
-<p>
 The command <tt>check</tt> returns <tt>sat</tt> when Z3 finds a solution for the set of asserted constraints.
 We say Z3 <b>satisfied</b> the set of constraints. We say the solution is a <b>model</b> for the set of asserted
 constraints. A model is an <b>interpretation</b> that makes each asserted constraint <b>true</b>.
 The following example shows the basic methods for inspecting models. 
-</p>
+
 
 <pre pref="z3py.13" />
 
-<p>In the example above, the function <tt>Reals('x y z')</tt> creates the variables. <tt>x</tt>, <tt>y</tt> and <tt>z</tt>.
+In the example above, the function <tt>Reals('x y z')</tt> creates the variables. <tt>x</tt>, <tt>y</tt> and <tt>z</tt>.
 It is shorthand for:
-</p>
 
-<pre>
+```python
 x = Real('x')
 y = Real('y')
 z = Real('z')
-</pre>
+```
 
-<p>
+
 The expression <tt>m[x]</tt> returns the interpretation of <tt>x</tt> in the model <tt>m</tt>.
 The expression <tt>"%s = %s" % (d.name(), m[d])</tt> returns a string where the first <tt>%s</tt> is replaced with 
 the name of <tt>d</tt> (i.e., <tt>d.name()</tt>), and the second <tt>%s</tt> with a textual representation of the
 interpretation of <tt>d</tt> (i.e., <tt>m[d]</tt>). Z3Py automatically converts Z3 objects into a textual representation
 when needed.
-</p>
 
-<h2>Arithmetic</h2>
+
+## Arithmetic
 
 <p>Z3 supports real and integer variables. They can be mixed in a single problem.
 Like most programming languages, Z3Py will automatically add coercions converting integer expressions to real ones when needed.
@@ -239,34 +219,30 @@ The following example demonstrates how to use both styles.
 
 <pre pref="arith.4" />
 
-<p>Z3Py supports arbitrarily large numbers. The following example demonstrates how to perform basic arithmetic using larger integer, rational and irrational numbers.
-Z3Py only supports <a target=”_blank” href=http://en.wikipedia.org/wiki/Algebraic_number>algebraic irrational numbers</a>. Algebraic irrational numbers are sufficient for presenting the solutions of systems of polynomial constraints.
+Z3Py supports arbitrarily large numbers. The following example demonstrates how to perform basic arithmetic using larger integer, rational and irrational numbers.
+Z3Py only supports [algebraic irrational numbers](http://en.wikipedia.org/wiki/Algebraic_number). Algebraic irrational numbers are sufficient for presenting the solutions of systems of polynomial constraints.
 Z3Py will always display irrational numbers in decimal notation since it  is more convenient to read. The internal representation can be extracted using the method <tt>sexpr()</tt>.
-It displays Z3 internal representation for mathematical formulas and expressions in <a target="_blank" href=http://en.wikipedia.org/wiki/S-expression>s-expression</a> (Lisp-like) notation.
-</p>
+It displays Z3 internal representation for mathematical formulas and expressions in [s-expression](http://en.wikipedia.org/wiki/S-expression) (Lisp-like) notation.
 
 <pre pref="arith.5" />
 
-<h2>Machine Arithmetic</h2>
+## Machine Arithmetic
 
-<p>
 Modern CPUs and main-stream programming languages use 
 arithmetic over fixed-size bit-vectors.
 Machine arithmetic is available in Z3Py as <i>Bit-Vectors</i>.
 They implement the 
 precise semantics of unsigned and of 
-signed <a target="_blank" href="http://en.wikipedia.org/wiki/Two's_complement">two-complements arithmetic</a>. 
+signed [two-complements arithmetic](http://en.wikipedia.org/wiki/Two's_complement). 
 
-<p>
+
 The following example demonstrates how to create bit-vector variables and constants.
 The function <tt>BitVec('x', 16)</tt> creates a bit-vector variable in Z3 named <tt>x</tt> with <tt>16</tt> bits.
 For convenience, integer constants can be used to create bit-vector expressions in Z3Py.
 The function <tt>BitVecVal(10, 32)</tt> creates a bit-vector of size <tt>32</tt> containing the value <tt>10</tt>.
-</p>
 
 <pre pref="bitvec.1" />
 
-<p>
 In contrast to programming languages, such as C, C++, C#, Java, 
 there is no distinction between signed and unsigned bit-vectors
 as numbers. Instead, Z3 provides special signed versions of arithmetical operations
@@ -281,63 +257,51 @@ The corresponding unsigned operators are
 <tt class="pre">ULE</tt>,
 <tt class="pre">UGT</tt>,
 <tt class="pre">UGE</tt>, <tt>UDiv</tt>, <tt>URem</tt> and <tt>LShR</tt>.
-</p>
 
 <pre pref="bitvec.2" />
 
-<p>
 The operator <tt>&gt;&gt;</tt> is the arithmetic shift right, and 
 <tt>&lt;&lt;</tt> is the shift left. The logical shift right is the operator <tt>LShR</tt>.
-</p>
 
 <pre pref="bitvec.3" />
 
-<h2>Functions</h2>
+## Functions
 
-<p>
 Unlike programming languages, where functions have side-effects, can throw exceptions, 
 or never return, functions in Z3 have no side-effects and are <b>total</b>.
 That is, they are defined on all input values. This includes functions, such
-as division. Z3 is based on <a target="_blank" href="http://en.wikipedia.org/wiki/First-order_logic" >first-order logic</a>.
-</p>
+as division. Z3 is based on [first-order logic](http://en.wikipedia.org/wiki/First-order_logic).
 
-<p>
 Given a constraints such as <tt>x + y > 3</tt>, we have been saying that <tt>x</tt> and <tt>y</tt>
 are variables. In many textbooks, <tt>x</tt> and <tt>y</tt> are called uninterpreted constants.
 That is, they allow any interpretation that is consistent with the constraint <tt>x + y > 3</tt>.
-</p>
 
-<p>
 More precisely, function and constant symbols in pure first-order logic are <i>uninterpreted</i> or <i>free</i>, 
 which means that no a priori interpretation is attached.
 This is in contrast to functions belonging to the signature of theories,
 such as arithmetic where the function <tt>+</tt> has a fixed standard interpretation
 (it adds two numbers). Uninterpreted functions and constants are maximally flexible;
 they allow any interpretation that is consistent with the constraints over the function or constant.
-</p>
 
-<p>
 To illustrate uninterpreted functions and constants let us the uninterpreted integer constants (aka variables)
 <tt>x</tt>, <tt>y</tt>. Finally let <tt>f</tt> be an uninterpreted function that takes one argument of type (aka sort) integer
 and results in an integer value.
 The example illustrates how one can force an interpretation where <tt>f</tt>
 applied twice to <tt>x</tt> results in <tt>x</tt> again, but <tt>f</tt> applied once to <tt>x</tt> is different from <tt>x</tt>.
-</p>
 
 <pre pref="z3py.14" />
 
-<p>The solution (interpretation) for <tt>f</tt> should be read as <tt>f(0)</tt> is <tt>1</tt>, <tt>f(1)</tt> is <tt>0</tt>, and <tt>f(a)</tt>
+The solution (interpretation) for <tt>f</tt> should be read as <tt>f(0)</tt> is <tt>1</tt>, <tt>f(1)</tt> is <tt>0</tt>, and <tt>f(a)</tt>
 is <tt>1</tt> for all <tt>a</tt> different from <tt>0</tt> and <tt>1</tt>.
-</p>
 
-<p>In Z3, we can also evaluate expressions in the model for a system of constraints. The following example shows how to 
-use the <tt>evaluate</tt> method.</p>
+In Z3, we can also evaluate expressions in the model for a system of constraints. The following example shows how to 
+use the <tt>evaluate</tt> method.
 
 <pre pref="z3py.15" />
 
-<h2>Satisfiability and Validity</h2>
+## Satisfiability and Validity
 
-<p>A formula/constraint <tt>F</tt> is <b>valid</b> if <tt>F</tt> always evaluates to true for any assignment of appropriate values to its
+A formula/constraint <tt>F</tt> is <b>valid</b> if <tt>F</tt> always evaluates to true for any assignment of appropriate values to its
 uninterpreted symbols. 
 A formula/constraint <tt>F</tt> is <b>satisfiable</b> if there is some assignment of appropriate values
 to its uninterpreted  symbols under which <tt>F</tt> evaluates to true. 
@@ -351,26 +315,22 @@ true, then <tt>Not(F)</tt> is always false, and then <tt>Not(F)</tt> will not ha
 Alternately,
 <tt>F</tt> is satisfiable if and only if <tt>Not(F)</tt> is not valid (is invalid).
 The following example proves the deMorgan's law.
-</p>
 
-<p>The following example redefines the Z3Py function <tt>prove</tt> that receives a formula as a parameter.
+The following example redefines the Z3Py function <tt>prove</tt> that receives a formula as a parameter.
 This function creates a solver, adds/asserts the negation of the formula, and check if the negation is unsatisfiable.
 The implementation of this function is a simpler version of the Z3Py command <tt>prove</tt>.
-</p>
 
 <pre pref="z3py.16" />
 
 <h2>List Comprehensions</h2>
 
-<p>
-Python supports <a target="_blank" href="http://docs.python.org/tutorial/datastructures.html#list-comprehensions">list comprehensions</a>.
+Python supports [list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions)
 List comprehensions provide a concise way to create lists. They can be used to create Z3 expressions and problems in Z3Py.
 The following example demonstrates how to use Python list comprehensions in Z3Py.
-</p>
 
 <pre pref="list.1" />
 
-<p>In the example above, the expression <tt>"x%s" % i</tt> returns a string where <tt>%s</tt> is replaced with the value of <tt>i</tt>.</p>
+In the example above, the expression <tt>"x%s" % i</tt> returns a string where <tt>%s</tt> is replaced with the value of <tt>i</tt>.
 
 <p>The command <tt>pp</tt> is similar to <tt>print</tt>, but it uses Z3Py formatter for lists and tuples instead of Python's formatter.</p>
 
@@ -382,41 +342,38 @@ are implemented using list comprehensions.
 
 <h2>Kinematic Equations</h2>
 
-<p>
+
 In high school, students learn the kinematic equations.
 These equations describe the mathematical relationship between <b>displacement</b> (<tt>d</tt>),
 <b>time</b> (<tt>t</tt>), <b>acceleration</b> (<tt>a</tt>), <b>initial velocity</b> (<tt>v_i</tt>) and <b>final velocity</b> (<tt>v_f</tt>).
 In Z3Py notation, we can write these equations as:
-</p>
-<pre>
+
+```
    d == v_i * t + (a*t**2)/2,
    v_f == v_i + a*t
-</pre>
+```
 
-<h3>Problem 1</h3>
+### Problem 1
 
-<p>
 Ima Hurryin is approaching a stoplight moving with a velocity of <tt>30.0</tt> m/s. 
 The light turns yellow, and Ima applies the brakes and skids to a stop. 
 If Ima's acceleration is <tt>-8.00</tt> m/s<sup>2</sup>, then determine the displacement of the
 car during the skidding process. 
-</p>
+
 
 <pre pref="k.1" />
 
 
-<h3>Problem 2</h3>
+### Problem 2
 
-<p>
 Ben Rushin is waiting at a stoplight. When it finally turns green, Ben accelerated from rest at a rate of
 a <tt>6.00</tt> m/s<sup>2</sup> for a time of <tt>4.10</tt> seconds. Determine the displacement of Ben's car during this time period.
-</p>
 
 <pre pref="k.2" />
 
 <h2>Bit Tricks</h2>
 
-<p>Some low level <a target="_blank" href="http://graphics.stanford.edu/~seander/bithacks.html">hacks</a> are very popular with C programmers.
+<p>Some low level [hacks](http://graphics.stanford.edu/~seander/bithacks.html) are very popular with C programmers.
 We use some of these hacks in the Z3 implementation.
 </p>
 
@@ -449,39 +406,37 @@ How many of each should you buy?
 
 <h3>Sudoku</h3>
 
-<p><a target="_blank" href="http://www.dailysudoku.com/sudoku/">Sudoku</a> is a very popular puzzle.
+<p>[Sudoku](http://www.dailysudoku.com/sudoku/) is a very popular puzzle.
 The goal is to insert the numbers in the boxes to satisfy only one condition: each row, column and 
 <tt>3x3</tt> box must contain the digits <tt>1</tt> through <tt>9</tt> exactly once. 
 </p>
 
-<img src="http://research.microsoft.com/en-us/um/redmond/projects/z3/sudoku.png" />
+http://research.microsoft.com/en-us/um/redmond/projects/z3/sudoku.png
 
 <p>
 The following example encodes the suduko problem in Z3. Different sukudo instances can be solved
 by modifying the matrix <tt>instance</tt>. This example makes heavy use of 
-<a target="_blank" href="http://docs.python.org/tutorial/datastructures.html#list-comprehensions">list comprehensions</a>
+[list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions)
 available in the Python programming language.
 </p>
 
 <pre pref="puzzle.2" />
 
-<h3>Eight Queens</h3>
+### Eight Queens
 
-<p>
 The eight queens puzzle is the problem of placing eight chess queens on an 8x8 chessboard so that no two queens attack each other. 
 Thus, a solution requires that no two queens share the same row, column, or diagonal.
-</p>
 
-<p> <img src="http://research.microsoft.com/en-us/um/redmond/projects/z3/queens.png" />
-</p>
+http://research.microsoft.com/en-us/um/redmond/projects/z3/queens.png
+
 
 <pre pref="puzzle.3" />
 
-<h2>Application: Install Problem</h2>
+## Application: Install Problem
 
-<p>The <b>install problem</b> consists of determining whether a new set of packages can be installed in a system.
+The <b>install problem</b> consists of determining whether a new set of packages can be installed in a system.
 This application is based on the article
-<a target="_blank" href="http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf">OPIUM: Optimal Package Install/Uninstall Manager</a>.
+[OPIUM: Optimal Package Install/Uninstall Manager](http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf).
 Many packages depend on other packages to provide some functionality. 
 Each distribution contains a meta-data file that
 explicates the requirements of each package of the distribution
@@ -490,25 +445,25 @@ The meta-data contains details like the name, version, etc. More importantly, it
 clauses that stipulate which other packages should be on the
 system. The depends clauses stipulate which other packages must be present.
 The conflicts clauses stipulate which other packages must not be present.
-</p>
+
 
 <p>The install problem can be easily solved using Z3. The idea is to define a Boolean variable for each
 package. This variable is true if the package must be in the system. If package <tt>a</tt> depends on
 packages <tt>b</tt>, <tt>c</tt> and <tt>z</tt>, we write:
 </p>
 
-<pre>
+```python
 DependsOn(a, [b, c, z])
-</pre>
+```
 
 <p><tt>DependsOn</tt> is a simple Python function that creates Z3 constraints that capture the 
 depends clause semantics.
 </p>
 
-<pre>
+```python
 def DependsOn(pack, deps):
    return And([ Implies(pack, dep) for dep in deps ])
-</pre>
+```
 
 <p>
 Thus, <tt>Depends(a, [b, c, z])</tt> generates the constraint
@@ -534,7 +489,7 @@ def Conflict(p1, p2):
 
 <p><tt>Conflict(d, e)</tt> generates the constraint <tt>Or(Not(d), Not(e))</tt>.
 With these two functions, we can easily encode the example in the 
-<a target="_blank" href="http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf">Opium article</a> (Section 2) in Z3Py as:
+[Opium article](http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf) (Section 2) in Z3Py as:
 </p>
 
 <pre pref="install.1" />
@@ -575,6 +530,3 @@ You may also initialize Z3Py manually using the command:
 <pre>
 init("z3.dll")
 </pre>
-
-</body>
-</html>

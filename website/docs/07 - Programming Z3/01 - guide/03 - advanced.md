@@ -1,38 +1,56 @@
-
 ---
 title: Advanced Topics
 sidebar_position: 3
 ---
 
 
-## Expressions, Sorts and Declarations<
+## Expressions, Sorts and Declarations
 
-In Z3, expressions, sorts and declarations are called <i>ASTs</i>.
+In Z3, expressions, sorts and declarations are called _ASTs_.
 ASTs are directed acyclic graphs. Every expression has a sort (aka type).
 The method <tt>sort()</tt> retrieves the sort of an expression.
 
-<!---
-<pre pref="expr.1" />
+```python
+x = Int('x')
+y = Real('y')
+print ((x + 1).sort())
+print ((y + 1).sort())
+print ((x >= 2).sort())
+```
 
 The function <tt>eq(n1, n2)</tt> returns <tt>True</tt> if <tt>n1</tt>
 and <tt>n2</tt> are the same AST. This is a structural test. 
 
 
-<pre pref="expr.2" />
+```python
+x, y = Ints('x y')
+print (eq(x + y, x + y))
+print (eq(x + y, y + x))
+n = x + y
+print (eq(n, x + y))
+# x2 is eq to x
+x2 = Int('x') 
+print (eq(x, x2))
+# the integer variable x is not equal to 
+# the real variable x
+print (eq(Int('x'), Real('x')))
+```
 
 The method <tt>hash()</tt> returns a hashcode for an AST node.
 If <tt>eq(n1, n2)</tt> returns <tt>True</tt>, then <tt>n1.hash()</tt>
 is equal to <tt>n2.hash()</tt>. 
 
+<!---
+
 <pre pref="expr.3" />
 
-Z3 expressions can be divided in three basic groups: <b>applications</b>,
-<b>quantifiers</b> and <b>bounded/free variables</b>.
+Z3 expressions can be divided in three basic groups: **applications**,
+**quantifiers** and **bounded/free variables**.
 Applications are all you need if your problems do not contain 
 universal/existential quantifiers. Although we say <tt>Int('x')</tt> is an
 integer "variable", it is technically an integer constant, and internally
 is represented as a function application with <tt>0</tt> arguments.
-Every application is associated with a <b>declaration</b> and contains 
+Every application is associated with a **declaration** and contains 
 <tt>0</tt> or more arguments. The method <tt>decl()</tt> returns 
 the declaration associated with an application. The method <tt>num_args()</tt>
 returns the number of arguments of an application, and <tt>arg(i)</tt> one of the arguments.
@@ -48,48 +66,48 @@ A (function) declaration has an arity, a domain and range sorts.
 
 <pre pref="expr.5" />
 
-<p>
-The built-in declarations are identified using their <b>kind</b>. The kind
+
+The built-in declarations are identified using their **kind**. The kind
 is retrieved using the method <tt>kind()</tt>. The complete list of built-in declarations
 can be found in the file <tt>z3consts.py</tt> (<tt>z3_api.h</tt>) in the Z3 distribution.
-</p>
+
 
 <pre pref="expr.6" />
 
-<p>
+
 The following example demonstrates how to substitute sub-expressions in Z3 expressions.
-</p>
+
 
 <pre pref="expr.7" />
 
-<p>
+
 The function <tt>Const(name, sort)</tt> declares a constant (aka variable) of the given sort.
 For example, the functions <tt>Int(name)</tt> and <tt>Real(name)</tt> are shorthands for
 <tt>Const(name, IntSort())</tt> and <tt>Const(name, RealSort())</tt>.
-</p>
+
 
 <pre pref="expr.8" />
 
-<h2>Arrays</h2>
+## Arrays
 
-<p>As part of formulating a programme of a mathematical theory of computation
-McCarthy proposed a <i>basic</i> theory of arrays as characterized by
+As part of formulating a programme of a mathematical theory of computation
+McCarthy proposed a _basic_ theory of arrays as characterized by
 the select-store axioms. The expression <tt>Select(a, i)</tt> returns
 the value stored at position <tt>i</tt> of the array <tt>a</tt>;
 and <tt>Store(a, i, v)</tt> returns a new array identical to <tt>a</tt>,
 but on position <tt>i</tt> it contains the value <tt>v</tt>.
 In Z3Py, we can also write <tt>Select(a, i)</tt> as <tt>a[i]</tt>.
-</p>
+
 
 <pre pref="array.1"/>
 
-<p>
+
 By default, Z3 assumes that arrays are extensional over select. 
 In other words, Z3 also enforces that if two arrays agree on all positions, 
 then the arrays are equal.
-</p>
 
-<p>
+
+
 Z3 also contains various extensions 
 for operations on arrays that remain decidable and amenable
 to efficient saturation procedures (here efficient means, 
@@ -97,56 +115,56 @@ with an NP-complete satisfiability complexity).
 We describe these extensions in the following using a collection of examples.
 Additional background on these extensions is available in the 
 paper [Generalized and Efficient Array Decision Procedures](http://research.microsoft.com/en-us/um/people/leonardo/fmcad09.pdf)
-</p>
 
-<p>
+
+
 Arrays in Z3 are used to model unbounded or very large arrays.
 Arrays should not be used to model small finite collections of values.
 It is usually much more efficient to create different variables using list comprehensions.
-</p>
+
 
 <pre pref="array.2"/>
 
 ## Select and Store
 
 
-<p>Let us first check a basic property of arrays.
+Let us first check a basic property of arrays.
 Suppose <tt>A</tt> is an array of integers, then the constraints
 <tt>A[x] == x, Store(A, x, y) == A</tt>
 are satisfiable for an array that contains an index <tt>x</tt> that maps to <tt>x</tt>,
 and when <tt>x == y</tt>.
 We can solve these constraints.
-</p>
+
 
 <pre pref="array.3"/>
 
-<p>The interpretation/solution for array variables is very similar to the one used for functions.</p>
+The interpretation/solution for array variables is very similar to the one used for functions.
 
-<p>The problem becomes unsatisfiable/infeasible if we add the constraint <tt>x != y</tt>.
+The problem becomes unsatisfiable/infeasible if we add the constraint <tt>x != y</tt>.
 
 <pre pref="array.4"/>
 
 <h3>Constant arrays</h3>
 
-<p>
+
 The array that maps all indices to some fixed value can be specified in Z3Py using the
 <tt>K(s, v)</tt> construct where <tt>s</tt> is a sort/type and <tt>v</tt> is an expression.
 <tt>K(s, v)</tt> returns a array that maps any value of <tt>s</tt> into <tt>v</tt>.
 The following example defines a constant array containing only ones.
-</p>
+
 
 <pre pref="array.5" />
 
-<h2>Datatypes</h2>
+## Datatypes
 
-<p>Algebraic datatypes, known from programming languages such as ML,
+Algebraic datatypes, known from programming languages such as ML,
 offer a convenient way for specifying common data structures. Records
 and tuples are special cases of algebraic datatypes, and so are
 scalars (enumeration types). But algebraic datatypes are more
 general. They can be used to specify finite lists, trees and other
-recursive structures.</p>
+recursive structures.
 
-<p>
+
 The following example demonstrates how to declare a List in Z3Py. It is
 more verbose than using the SMT 2.0 front-end, but much simpler than using
 the Z3 C API. It consists of two phases.
@@ -164,102 +182,102 @@ cell, and <tt>cdr</tt> the list of a <tt>cons</tt> cell.
 After all constructors were declared, we use the method <tt>create()</tt> to
 create the actual datatype in Z3. Z3Py makes the new Z3 declarations and constants
 available as slots of the new object. 
-</p>
+
 
 <pre pref="datatype.1" />
 
-<p>
+
 The following example demonstrates how to define a Python function that 
 given a sort creates a list of the given sort. 
-</p>
+
 
 <pre pref="datatype.2" />
 
-<p>The example above demonstrates that Z3 supports operator overloading.
+The example above demonstrates that Z3 supports operator overloading.
 There are several functions named <tt>cons</tt>, but they are different since they receive and/or
 return values of different sorts.
 Note that it is not necessary to use a different sort name for each instance of the sort
 list. That is, the expression <tt>'List_of_%s' % sort.name()</tt> is not necessary, we
 use it just to provide more meaningful names.
-</p>
 
-<p>
+
+
 As described above enumeration types are a special case of algebraic datatypes.
 The following example declares an enumeration type consisting of three values:
 <tt>red</tt>, <tt>green</tt> and <tt>blue</tt>.
-</p>
+
 
 <pre pref="datatype.3" />
 
-<p>
+
 Z3Py also provides the following shorthand for declaring enumeration sorts.
-</p>
+
 
 <pre pref="datatype.4" />
 
-<p>
+
 Mutually recursive datatypes can also be declared. The only difference is that we use
 the function <tt>CreateDatatypes</tt> instead of the method <tt>create()</tt> to create
 the mutually recursive datatypes.
-</p>
+
 
 <pre pref="datatype.5" />
 
-<h2>Uninterpreted Sorts</h2>
+## Uninterpreted Sorts
 
-<p>
+
 Function and constant symbols in pure first-order logic are uninterpreted or free, 
 which means that no a priori interpretation is attached. 
 This is in contrast to arithmetic operators such as <tt>+</tt> and <tt>-</tt> 
 that have a fixed standard interpretation. 
 Uninterpreted functions and constants are maximally flexible; 
 they allow any interpretation that is consistent with the constraints over the function or constant.
-</p>
 
-<p>
+
+
 To illustrate uninterpreted functions and constants let us introduce an (uninterpreted) sort <tt>A</tt>, 
 and the constants <tt>x</tt>, <tt>y</tt> ranging over <tt>A</tt>. 
 Finally let <tt>f</tt> be an uninterpreted function that takes one
 argument of sort <tt>A</tt> and results in a value of sort <tt>A</tt>. 
 The example illustrates how one can force an interpretation where <tt>f</tt> applied twice to <tt>x</tt> results in <tt>x</tt> again, 
 but <tt>f</tt> applied once to <tt>x</tt> is different from <tt>x</tt>.
-</p>
+
 
 <pre pref="uninterp.1" />
 
-<p>
+
 The resulting model introduces abstract values for the elements in <tt>A</tt>,
 because the sort <tt>A</tt> is uninterpreted. The interpretation for <tt>f</tt> in the
 model toggles between the two values for <tt>x</tt> and <tt>y</tt>, which are different.
 The expression <tt>m[A]</tt> returns the interpretation (universe) for the uninterpreted sort <tt>A</tt>
 in the model <tt>m</tt>. 
-</p>
 
-<h2>Quantifiers</h2>
 
-<p>
+## Quantifiers
+
+
 Z3 is can solve quantifier-free problems containing arithmetic, bit-vector, Booleans,
 arrays, functions and datatypes. Z3 also accepts and can work with formulas
 that use quantifiers. It is no longer a decision procedure for 
 such formulas in general (and for good reasons, as there can be
 no decision procedure for first-order logic).
-</p>
+
 
 <pre pref="quant.1" />
 
-<p>
+
 Nevertheless, Z3 is often able to handle formulas involving
 quantifiers. It uses several approaches to handle quantifiers.
-The most prolific approach is using <i>pattern-based</i> quantifier
+The most prolific approach is using _pattern-based_ quantifier
 instantiation. This approach allows instantiating quantified formulas
 with ground terms that appear in the current search context based
-on <i>pattern annotations</i> on quantifiers. 
+on _pattern annotations_ on quantifiers. 
 Z3 also contains a model-based quantifier instantiation 
 component that uses a model construction to find good terms to instantiate
 quantifiers with; and Z3 also handles many decidable fragments.
-</p>
 
-<p>Note that in the previous example the constants <tt>x</tt> 
+
+Note that in the previous example the constants <tt>x</tt> 
 and <tt>y</tt> were used to create quantified formulas.
 This is a "trick" for simplifying the construction of quantified
 formulas in Z3Py. Internally, these constants are replaced by
@@ -268,24 +286,24 @@ bounded variables. The next example demonstrates that. The method
 In the resultant formula the bounded variables are free.
 The function <tt>Var(index, sort)</tt> creates a bounded/free variable
 with the given index and sort.
-</p> 
+ 
 
 <pre pref="quant.2" />
 
 <h3>Modeling with Quantifiers</h3>
 
-<p>
+
 Suppose we want to model an object oriented type system with single inheritance. 
 We would need a predicate for sub-typing. Sub-typing should be a partial order, 
 and respect single inheritance. For some built-in type constructors, 
 such as for <tt>array_of</tt>, sub-typing should be monotone.
-</p>
+
 
 <pre pref="quant.3" />
 
 <h3>Patterns</h3>
 
-<p>
+
 The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneered 
 the use of pattern-based quantifier instantiation. 
 The basic idea behind pattern-based quantifier instantiation is in a sense straight-forward: 
@@ -294,28 +312,28 @@ So a pattern is an expression (that does not contain binding operations, such as
 that contains variables bound by a quantifier. Then instantiate the quantifier whenever a term
  that matches the pattern is created during search. This is a conceptually easy starting point, 
 but there are several subtleties that are important.
-</p>
 
-<p>
+
+
 In the following example, the first two options make sure that Model-based quantifier instantiation engine is disabled. 
 We also annotate the quantified formula with the pattern <tt>f(g(x))</tt>. 
 Since there is no ground instance of this pattern, the quantifier is not instantiated, and 
 Z3 fails to show that the formula is unsatisfiable.
-</p>
+
 
 <pre pref="quant.4" />
 
-<p>When the more permissive pattern <tt>g(x)</tt> is used. Z3 proves the formula
+When the more permissive pattern <tt>g(x)</tt> is used. Z3 proves the formula
 to be unsatisfiable. More restrive patterns minimize the number of
 instantiations (and potentially improve performance), but they may
 also make Z3 "less complete".
-</p>
+
 
 <pre pref="quant.5" />
 
-<p>
+
 Some patterns may also create long instantiation chains. Consider the following assertion.
-</p>
+
 
 <pre>
 ForAll([x, y], Implies(subtype(x, y),
@@ -323,15 +341,15 @@ ForAll([x, y], Implies(subtype(x, y),
        patterns=[subtype(x, y)])
 </pre>
 
-<p>
+
 The axiom gets instantiated whenever there is some ground term of the
 form <tt>subtype(s, t)</tt>. The instantiation causes a fresh ground term
 <tt>subtype(array_of(s), array_of(t))</tt>, which enables a new
 instantiation. This undesirable situation is called a matching
 loop. Z3 uses many heuristics to break matching loops.
-</p>
 
-<p>
+
+
 Before elaborating on the subtleties, we should address an important
 first question. What defines the terms that are created during search?
 In the context of most SMT solvers, and of the Simplify theorem
@@ -340,53 +358,53 @@ also created by instantiating quantifiers, but terms are also
 implicitly created when equalities are asserted. The last point means
 that terms are considered up to congruence and pattern matching takes
 place modulo ground equalities. We call the matching problem
-<b>E-matching</b>. For example, if we have the following equalities:
-</p>
+**E-matching**. For example, if we have the following equalities:
+
 
 <pre pref="quant.6" />
 
-<p>
+
 The terms <tt>f(a)</tt> and <tt>f(g(b))</tt> are equal modulo the
 equalities. The pattern <tt>f(g(x))</tt> can be matched and <tt>x</tt> bound to <tt>b</tt>
 and the equality <tt>f(g(b)) ==  b</tt> is deduced.
-</p>
 
-<p>
+
+
 While E-matching is an NP-complete problem, the main sources of overhead in larger verification
 problems comes from matching thousands of patterns in the context of an evolving set of terms and
 equalities. Z3 integrates an efficient E-matching engine using term indexing techniques.
-</p>
+
 
 <h3>Multi-patterns</h3>
 
-<p>
+
 In some cases, there is no pattern that contains all bound variables
 and does not contain interpreted symbols. In these cases, we use
 multi-patterns. In the following example, the quantified formula
 states that <tt>f</tt> is injective. This quantified formula is annotated with
 the multi-pattern <tt>MultiPattern(f(x), f(y))</tt>.  
-</p>
+
 
 <pre pref="quant.7" />
 
-<p>
+
 The quantified formula is instantiated for every pair of occurrences
 of <tt>f</tt>. A simple trick allows formulating injectivity of <tt>f</tt> in such a way
 that only a linear number of instantiations is required. The trick is
 to realize that <tt>f</tt> is injective if and only if it has a partial
 inverse.
-</p>
+
 
 <pre pref="quant.8" />
 
 <h3>Other attributes</h3>
 
-<p>
-In Z3Py, the following additional attributes are supported: <b>qid</b> (quantifier identifier
-for debugging), <b>weight</b> (hint to the quantifier instantiation module: "more weight equals less instances"), 
-<b>no_patterns</b> (expressions that should not be used as patterns, <b>skid</b> (identifier
+
+In Z3Py, the following additional attributes are supported: **qid** (quantifier identifier
+for debugging), **weight** (hint to the quantifier instantiation module: "more weight equals less instances"), 
+**no_patterns** (expressions that should not be used as patterns, **skid** (identifier
 prefix used to create skolem constants/functions.
-</p>
+
 
 ## Multiple Solvers
 
@@ -397,11 +415,11 @@ It is also very easy to copy assertions/formulas from one solver to another.
 
 ## Unsat Cores and Soft Constraints
 
-Z3Py also supports <i>unsat core extraction</i>. The basic idea is to use
-<i>assumptions</i>, that is, auxiliary propositional variables that we want to track.
+Z3Py also supports _unsat core extraction_. The basic idea is to use
+_assumptions_, that is, auxiliary propositional variables that we want to track.
 Assumptions are also available in the Z3 SMT 2.0 frontend, and in other Z3 front-ends.
 They are used to extract unsatisfiable cores. They may be also used to "retract"
-constraints. Note that, assumptions are not really <i>soft constraints</i>, but they can be used to implement them. 
+constraints. Note that, assumptions are not really _soft constraints_, but they can be used to implement them. 
 
 
 <pre pref="unsatcore.1" />

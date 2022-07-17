@@ -16,7 +16,6 @@ The main objective of the tutorial is to introduce the reader on how to use Z3 e
  
  > For an overview of Satisfiability modulo theories (SMT) and Boolean satisfiability problem (SAT) solvers, examples of their theoretical application, and questions to work through, refer to [SAT/SMT by Example by Dennis Yurichev](https://sat-smt.codes/SAT_SMT_by_example.pdf) 
 
-> This tutorial uses Z3's frontend for the [SMTLIB format](http://smtlib.cs.uiowa.edu/).
 :::
 
 Z3 is a low level tool. It is best used as a component in the context of other tools that require solving logical formulas. Consequently, Z3 exposes a number of API facilities to make it convenient for tools to map into Z3, but there are no stand-alone editors or user-centric facilities for interacting with Z3. The language syntax used in the front ends favor simplicity in contrast to linguistic convenience.
@@ -24,3 +23,13 @@ Z3 is a low level tool. It is best used as a component in the context of other t
 :::tip
  Be sure to follow along with the examples by clicking the edit link in the corner. See what the tool says, try your own formulas, and experiment!
 :::
+
+## SMTLIB Format
+
+> This tutorial uses Z3's frontend for the [SMTLIB format](http://smtlib.cs.uiowa.edu/).
+
+The format is a community standard used by several SMT solvers. 
+It uses LISP like syntax to make it easy for tools to serialize and de-serialize models. 
+On the flip-side it is not optimized for human readability. 
+The SMTLIB initiative defines several theories and z3 supports all main theories in the SMTLIB2 format.
+This tutorial cross-references the definitions of theories in relevant sections.

@@ -61,22 +61,37 @@ The command `set_option(html_mode=False)` makes all formulas and expressions to 
 displayed in Z3Py notation. This is also the default mode for the offline version of Z3Py that
 comes with the Z3 distribution.
 
-
-<pre pref="printer" />
+```python
+x = Int('x')
+y = Int('y')
+print x**2 + y**2 >= 1
+set_option(html_mode=False)
+print x**2 + y**2 >= 1
+```
 
 
 Z3 provides functions for traversing expressions.
 
-
-<pre pref="z3py.3" />
-
+```python
+x = Int('x')
+y = Int('y')
+n = x + y >= 3
+print "num args: ", n.num_args()
+print "children: ", n.children()
+print "1st child:", n.arg(0)
+print "2nd child:", n.arg(1)
+print "operator: ", n.decl()
+print "op name:  ", n.decl().name()
+```
 
 Z3 provides all basic mathematical operations. Z3Py uses the same operator precedence of the Python language.
 Like Python, `**` is the power operator. Z3 can solve nonlinear <i>polynomial</i> constraints.
 
-
-<pre pref="z3py.4" />
-
+```python
+x = Real('x')
+y = Real('y')
+solve(x**2 + y**2 > 3, x**3 + y < 5)
+```
 
 The procedure `Real('x')` creates the real variable `x`. 
 Z3Py can represent arbitrarily large integers, rational numbers (like in the example above),
@@ -84,8 +99,15 @@ and irrational algebraic numbers. An irrational algebraic number is a root of a 
 Internally, Z3 represents all these numbers precisely. 
 The irrational numbers are displayed in decimal notation for making it easy to read the results.
 
+```python
+x = Real('x')
+y = Real('y')
+solve(x**2 + y**2 == 3, x**3 == 2)
 
-<pre pref="z3py.5" />
+set_option(precision=30)
+print "Solving, and displaying result with 30 decimal places"
+solve(x**2 + y**2 == 3, x**3 == 2)
+```
 
 
 The procedure `set_option` is used to configure the Z3 environment. It is used to set global configuration options
@@ -99,26 +121,49 @@ The example also shows different ways to create rational numbers in Z3Py. The pr
 Z3 rational where `num` is the numerator and `den` is the denominator. The `RealVal(1)` creates a Z3 real number
 representing the number `1`.
 
-<pre pref="z3py.6" />
+```python
+print 1/3
+print RealVal(1)/3
+print Q(1,3)
+
+x = Real('x')
+print x + 1/3
+print x + Q(1,3)
+print x + "1/3"
+print x + 0.25
+```
 
 
 Rational numbers can also be displayed in decimal notation.
 
+```python
+x = Real('x')
+solve(3*x == 1)
 
-<pre pref="z3py.6aa" />
+set_option(rational_to_decimal=True)
+solve(3*x == 1)
+
+set_option(precision=30)
+solve(3*x == 1)
+```
 
 
 A system of constraints may not have a solution. In this case, we say the system is <b>unsatisfiable</b>.
 
-
-<pre pref="z3py.6a" />
+```python
+x = Real('x')
+solve(x > 4, x < 0)
+```
 
 
 Like in Python, comments begin with the hash character `#` and are terminated by the end of line. 
 Z3Py does not support comments that span more than one line.
 
-
-<pre pref="comment" />
+```python
+# This is a comment
+x = Real('x') # comment: creating x
+print x**2 + 2*x + 2  # comment: printing polynomial
+```
 
 ## Boolean Logic
 
@@ -133,13 +178,21 @@ The following example shows how to solve a simple set of Boolean constraints.
 
 The Python Boolean constants `True` and `False` can be used to build Z3 Boolean expressions.
 
-
-<pre pref="z3py.8" />
+```python
+p = Bool('p')
+q = Bool('q')
+print And(p, q, True)
+print simplify(And(p, q, True))
+print simplify(And(p, False))
+```
 
 The following example uses a combination of polynomial and Boolean constraints. 
 
-
-<pre pref="z3py.9" />
+```python
+p = Bool('p')
+x = Real('x')
+solve(Or(x < 5, x > 10), Or(p, x**2 == 2), Not(p))
+```
 
 ## Solvers
 
@@ -147,7 +200,32 @@ Z3 provides different solvers. The command `solve`, used in the previous example
 The implementation can be found in the file `z3.py` in the Z3 distribution.
 The following example demonstrates the basic Solver API.
 
-<pre pref="z3py.10" />
+```python
+x = Int('x')
+y = Int('y')
+
+s = Solver()
+print s
+
+s.add(x > 10, y == x + 2)
+print s
+print "Solving constraints in the solver s ..."
+print s.check()
+
+print "Create a new scope..."
+s.push()
+s.add(y < 11)
+print s
+print "Solving updated set of constraints..."
+print s.check()
+
+print "Restoring state..."
+s.pop()
+print s
+print "Solving restored set of constraints..."
+print s.check()
+
+```
 
 The command `Solver()` creates a general purpose solver. Constraints can be added using the method `add`.
 We say the constraints have been <b>asserted</b> in the solver. The method `check()` solves the asserted constraints.

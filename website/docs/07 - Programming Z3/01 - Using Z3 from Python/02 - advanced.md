@@ -1,6 +1,6 @@
 ---
 title: Advanced Topics
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 

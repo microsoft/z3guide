@@ -16,7 +16,7 @@ there are many excellent free resources for doing so [Python Tutorial](http://do
 The Z3 distribution also contains the **C**, **.Net** and **OCaml** APIs. The source code of Z3Py is available in 
 the Z3 distribution, feel free to modify it to meet your needs. 
 
-Be sure to follow along with the examples by clicking the <b>load in editor</b> link in the
+Be sure to follow along with the examples by clicking the **load in editor** link in the
 corner. See what Z3Py says, try your own scripts, and experiment!
 
 
@@ -34,7 +34,7 @@ solve(x > 2, y < 10, x + 2*y == 7)
 The function `Int('x')` creates an integer variable in Z3 named `x`.
 The `solve` function solves a system of constraints. The example above uses
 two variables `x` and `y`, and three constraints.
-Z3Py like Python uses <b class="pre">=</b> for assignment. The operators `<`,
+Z3Py like Python uses `=` for assignment. The operators `<`,
 `<=`,
 `>`,
 `>=`,
@@ -149,7 +149,7 @@ solve(3*x == 1)
 ```
 
 
-A system of constraints may not have a solution. In this case, we say the system is <b>unsatisfiable</b>.
+A system of constraints may not have a solution. In this case, we say the system is **unsatisfiable**.
 
 ```python
 x = Real('x')
@@ -233,9 +233,9 @@ print s.check()
 ```
 
 The command `Solver()` creates a general purpose solver. Constraints can be added using the method `add`.
-We say the constraints have been <b>asserted</b> in the solver. The method `check()` solves the asserted constraints.
+We say the constraints have been **asserted** in the solver. The method `check()` solves the asserted constraints.
 The result is `sat` (satisfiable) if a solution was found. The result is `unsat` (unsatisfiable) if 
-no solution exists. We may also say the system of asserted constraints is <b>infeasible</b>. Finally, a solver may fail
+no solution exists. We may also say the system of asserted constraints is **infeasible**. Finally, a solver may fail
 to solve a system of constraints and `unknown` is returned.   
 
 
@@ -277,8 +277,8 @@ for k, v in s.statistics():
 ```
 
 The command `check` returns `sat` when Z3 finds a solution for the set of asserted constraints.
-We say Z3 <b>satisfied</b> the set of constraints. We say the solution is a <b>model</b> for the set of asserted
-constraints. A model is an <b>interpretation</b> that makes each asserted constraint <b>true</b>.
+We say Z3 **satisfied** the set of constraints. We say the solution is a **model** for the set of asserted
+constraints. A model is an **interpretation** that makes each asserted constraint **true**.
 The following example shows the basic methods for inspecting models. 
 
 ```python
@@ -375,7 +375,17 @@ Z3Py only supports [algebraic irrational numbers](http://en.wikipedia.org/wiki/A
 Z3Py will always display irrational numbers in decimal notation since it  is more convenient to read. The internal representation can be extracted using the method `sexpr()`.
 It displays Z3 internal representation for mathematical formulas and expressions in [s-expression](http://en.wikipedia.org/wiki/S-expression) (Lisp-like) notation.
 
-<pre pref="arith.5" />
+```python
+x, y = Reals('x y')
+solve(x + 10000000000000000000000 == y, y > 20000000000000000)
+
+print Sqrt(2) + Sqrt(3)
+print simplify(Sqrt(2) + Sqrt(3))
+print simplify(Sqrt(2) + Sqrt(3)).sexpr()
+# The sexpr() method is available for any Z3 expression
+print (x + Sqrt(y) * 2).sexpr()
+```
+
 
 ## Machine Arithmetic
 
@@ -392,34 +402,74 @@ The function `BitVec('x', 16)` creates a bit-vector variable in Z3 named `x` wit
 For convenience, integer constants can be used to create bit-vector expressions in Z3Py.
 The function `BitVecVal(10, 32)` creates a bit-vector of size `32` containing the value `10`.
 
-<pre pref="bitvec.1" />
+```python
+x = BitVec('x', 16)
+y = BitVec('y', 16)
+print x + 2
+# Internal representation
+print (x + 2).sexpr()
+
+# -1 is equal to 65535 for 16-bit integers 
+print simplify(x + y - 1)
+
+# Creating bit-vector constants
+a = BitVecVal(-1, 16)
+b = BitVecVal(65535, 16)
+print simplify(a == b)
+
+a = BitVecVal(-1, 32)
+b = BitVecVal(65535, 32)
+# -1 is not equal to 65535 for 32-bit integers 
+print simplify(a == b)
+```
+
 
 In contrast to programming languages, such as C, C++, C#, Java, 
 there is no distinction between signed and unsigned bit-vectors
 as numbers. Instead, Z3 provides special signed versions of arithmetical operations
 where it makes a difference whether the bit-vector is treated as signed or unsigned.
 In Z3Py, the operators 
-`&lt;`,
-`&lt;=`,
-`&gt;`,
-`&gt;=`, `/`, `%` and `&gt;&gt;` correspond to the signed versions.
+`<`, `<=`, `>`, `>=`, `/`, `%` and `>>;` correspond to the signed versions.
 The corresponding unsigned operators are
-`ULT`,
-`ULE`,
-`UGT`,
-`UGE`, `UDiv`, `URem` and `LShR`.
+`ULT`, `ULE`, `UGT`, `UGE`, `UDiv`, `URem` and `LShR`.
 
-<pre pref="bitvec.2" />
+```python
+# Create to bit-vectors of size 32
+x, y = BitVecs('x y', 32)
 
-The operator `&gt;&gt;` is the arithmetic shift right, and 
-`&lt;&lt;` is the shift left. The logical shift right is the operator `LShR`.
+solve(x + y == 2, x > 0, y > 0)
 
-<pre pref="bitvec.3" />
+# Bit-wise operators
+# & bit-wise and
+# | bit-wise or
+# ~ bit-wise not
+solve(x & y == ~y)
+
+solve(x < 0)
+
+# using unsigned version of < 
+solve(ULT(x, 0))
+```
+
+
+The operator `>>` is the arithmetic shift right, and 
+`<<` is the shift left. The logical shift right is the operator `LShR`.
+
+```python
+# Create to bit-vectors of size 32
+x, y = BitVecs('x y', 32)
+
+solve(x >> 2 == 3)
+
+solve(x << 2 == 3)
+
+solve(x << 2 == 24)
+```
 
 ## Functions
 
 Unlike programming languages, where functions have side-effects, can throw exceptions, 
-or never return, functions in Z3 have no side-effects and are <b>total</b>.
+or never return, functions in Z3 have no side-effects and are **total**.
 That is, they are defined on all input values. This includes functions, such
 as division. Z3 is based on [first-order logic](http://en.wikipedia.org/wiki/First-order_logic).
 
@@ -440,7 +490,12 @@ and results in an integer value.
 The example illustrates how one can force an interpretation where `f`
 applied twice to `x` results in `x` again, but `f` applied once to `x` is different from `x`.
 
-<pre pref="z3py.14" />
+```python
+x = Int('x')
+y = Int('y')
+f = Function('f', IntSort(), IntSort())
+solve(f(f(x)) == x, f(x) == y, x != y)
+```
 
 The solution (interpretation) for `f` should be read as `f(0)` is `1`, `f(1)` is `0`, and `f(a)`
 is `1` for all `a` different from `0` and `1`.
@@ -448,13 +503,23 @@ is `1` for all `a` different from `0` and `1`.
 In Z3, we can also evaluate expressions in the model for a system of constraints. The following example shows how to 
 use the `evaluate` method.
 
-<pre pref="z3py.15" />
+```python
+x = Int('x')
+y = Int('y')
+f = Function('f', IntSort(), IntSort())
+s = Solver()
+s.add(f(f(x)) == x, f(x) == y, x != y)
+print s.check()
+m = s.model()
+print "f(f(x)) =", m.evaluate(f(f(x)))
+print "f(x)    =", m.evaluate(f(x))
+```
 
 ## Satisfiability and Validity
 
-A formula/constraint `F` is <b>valid</b> if `F` always evaluates to true for any assignment of appropriate values to its
+A formula/constraint `F` is **valid** if `F` always evaluates to true for any assignment of appropriate values to its
 uninterpreted symbols. 
-A formula/constraint `F` is <b>satisfiable</b> if there is some assignment of appropriate values
+A formula/constraint `F` is **satisfiable** if there is some assignment of appropriate values
 to its uninterpreted  symbols under which `F` evaluates to true. 
 Validity is about finding a proof of a statement; satisfiability is about finding a solution to a set of constraints.
 Consider a formula `F` containing `a` and `b`. 
@@ -471,7 +536,22 @@ The following example redefines the Z3Py function `prove` that receives a formul
 This function creates a solver, adds/asserts the negation of the formula, and check if the negation is unsatisfiable.
 The implementation of this function is a simpler version of the Z3Py command `prove`.
 
-<pre pref="z3py.16" />
+```python
+p, q = Bools('p q')
+demorgan = And(p, q) == Not(Or(Not(p), Not(q)))
+print demorgan
+
+def prove(f):
+    s = Solver()
+    s.add(Not(f))
+    if s.check() == unsat:
+        print "proved"
+    else:
+        print "failed to prove"
+
+print "Proving demorgan..."
+prove(demorgan)
+```
 
 ## List Comprehensions
 
@@ -479,7 +559,30 @@ Python supports [list comprehensions](http://docs.python.org/tutorial/datastruct
 List comprehensions provide a concise way to create lists. They can be used to create Z3 expressions and problems in Z3Py.
 The following example demonstrates how to use Python list comprehensions in Z3Py.
 
-<pre pref="list.1" />
+```python
+# Create list [1, ..., 5] 
+print [ x + 1 for x in range(5) ]
+
+# Create two lists containg 5 integer variables
+X = [ Int('x%s' % i) for i in range(5) ]
+Y = [ Int('y%s' % i) for i in range(5) ]
+print X
+
+# Create a list containing X[i]+Y[i]
+X_plus_Y = [ X[i] + Y[i] for i in range(5) ]
+print X_plus_Y
+
+# Create a list containing X[i] > Y[i]
+X_gt_Y = [ X[i] > Y[i] for i in range(5) ]
+print X_gt_Y
+
+print And(X_gt_Y)
+
+# Create a 3x3 "matrix" (list of lists) of integer variables
+X = [ [ Int("x_%s_%s" % (i+1, j+1)) for j in range(3) ] 
+      for i in range(3) ]
+pp(X)
+```
 
 In the example above, the expression `"x%s" % i` returns a string where `%s` is replaced with the value of `i`.
 
@@ -488,15 +591,23 @@ The command `pp` is similar to `print`, but it uses Z3Py formatter for lists and
 Z3Py also provides functions for creating vectors of Boolean, Integer and Real variables. These functions
 are implemented using list comprehensions. 
  
-
-<pre pref="list.2" />
+```python
+X = IntVector('x', 5)
+Y = RealVector('y', 5)
+P = BoolVector('p', 5)
+print X
+print Y
+print P
+print [ y**2 for y in Y ]
+print Sum([ y**2 for y in Y ])
+```
 
 ## Kinematic Equations
 
 
 In high school, students learn the kinematic equations.
-These equations describe the mathematical relationship between <b>displacement</b> (`d`),
-<b>time</b> (`t`), <b>acceleration</b> (`a`), <b>initial velocity</b> (`v_i`) and <b>final velocity</b> (`v_f`).
+These equations describe the mathematical relationship between **displacement** (`d`),
+**time** (`t`), **acceleration** (`a`), **initial velocity** (`v_i`) and **final velocity** (`v_f`).
 In Z3Py notation, we can write these equations as:
 
 ```
@@ -511,8 +622,28 @@ The light turns yellow, and Ima applies the brakes and skids to a stop.
 If Ima's acceleration is `-8.00` m/s<sup>2</sup>, then determine the displacement of the
 car during the skidding process. 
 
+```python
+d, a, t, v_i, v_f = Reals('d a t v__i v__f')
 
-<pre pref="k.1" />
+equations = [
+   d == v_i * t + (a*t**2)/2,
+   v_f == v_i + a*t,
+]
+print "Kinematic equations:"
+print equations
+
+# Given v_i, v_f and a, find d
+problem = [
+    v_i == 30,
+    v_f == 0,
+    a   == -8
+]
+print "Problem:"
+print problem 
+
+print "Solution:"
+solve(equations + problem)
+```
 
 
 ### Problem 2
@@ -520,7 +651,28 @@ car during the skidding process.
 Ben Rushin is waiting at a stoplight. When it finally turns green, Ben accelerated from rest at a rate of
 a `6.00` m/s<sup>2</sup> for a time of `4.10` seconds. Determine the displacement of Ben's car during this time period.
 
-<pre pref="k.2" />
+```python
+d, a, t, v_i, v_f = Reals('d a t v__i v__f')
+
+equations = [
+   d == v_i * t + (a*t**2)/2,
+   v_f == v_i + a*t,
+]
+
+# Given v_i, t and a, find d
+problem = [
+    v_i == 0,
+    t   == 4.10,
+    a   == 6
+]
+
+solve(equations + problem)
+
+# Display rationals in decimal notation
+set_option(rational_to_decimal=True)
+
+solve(equations + problem)
+```
 
 ## Bit Tricks
 
@@ -534,14 +686,36 @@ This hack is frequently used in C programs (Z3 included) to test whether a machi
 We can use Z3 to prove it really works. The claim is that `x != 0 && !(x & (x - 1))` is true if and only if `x`
 is a power of two.
 
+```python
+x      = BitVec('x', 32)
+powers = [ 2**i for i in range(32) ]
+fast   = And(x != 0, x & (x - 1) == 0)
+slow   = Or([ x == p for p in powers ])
+print fast
+prove(fast == slow)
 
-<pre pref="bit.1" />
+print "trying to prove buggy version..."
+fast   = x & (x - 1) == 0
+prove(fast == slow)
+```
 
 ### Opposite signs
 
 The following simple hack can be used to test whether two machine integers have opposite signs.
 
-<pre pref="bit.2" />
+```python
+x      = BitVec('x', 32)
+y      = BitVec('y', 32)
+
+# Claim: (x ^ y) < 0 iff x and y have opposite signs
+trick  = (x ^ y) < 0
+
+# Naive way to check if x and y have opposite signs
+opposite = Or(And(x < 0, y >= 0),
+              And(x >= 0, y < 0))
+
+prove(trick == opposite)
+```
 
 ## Puzzles
 
@@ -552,8 +726,20 @@ Dogs cost 15 dollars, cats cost 1 dollar, and mice cost 25 cents each.
 You have to buy at least one of each.
 How many of each should you buy?
 
-
-<pre pref="puzzle.1" />
+```python
+# Create 3 integer variables
+dog, cat, mouse = Ints('dog cat mouse')
+solve(dog >= 1,   # at least one dog
+      cat >= 1,   # at least one cat
+      mouse >= 1, # at least one mouse
+      # we want to buy 100 animals
+      dog + cat + mouse == 100,  
+      # We have 100 dollars (10000 cents):
+      #   dogs cost 15 dollars (1500 cents), 
+      #   cats cost 1 dollar (100 cents), and 
+      #   mice cost 25 cents 
+      1500 * dog + 100 * cat + 25 * mouse == 10000)
+```
 
 ### Sudoku
 
@@ -570,8 +756,55 @@ by modifying the matrix `instance`. This example makes heavy use of
 [list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions)
 available in the Python programming language.
 
+```python
+# 9x9 matrix of integer variables
+X = [ [ Int("x_%s_%s" % (i+1, j+1)) for j in range(9) ] 
+      for i in range(9) ]
 
-<pre pref="puzzle.2" />
+# each cell contains a value in {1, ..., 9}
+cells_c  = [ And(1 <= X[i][j], X[i][j] <= 9) 
+             for i in range(9) for j in range(9) ]
+
+# each row contains a digit at most once
+rows_c   = [ Distinct(X[i]) for i in range(9) ]
+
+# each column contains a digit at most once
+cols_c   = [ Distinct([ X[i][j] for i in range(9) ]) 
+             for j in range(9) ]
+
+# each 3x3 square contains a digit at most once
+sq_c     = [ Distinct([ X[3*i0 + i][3*j0 + j] 
+                        for i in range(3) for j in range(3) ]) 
+             for i0 in range(3) for j0 in range(3) ]
+
+sudoku_c = cells_c + rows_c + cols_c + sq_c
+
+# sudoku instance, we use '0' for empty cells
+instance = ((0,0,0,0,9,4,0,3,0),
+            (0,0,0,5,1,0,0,0,7),
+            (0,8,9,0,0,0,0,4,0),
+            (0,0,0,0,0,0,2,0,8),
+            (0,6,0,2,0,1,0,5,0),
+            (1,0,2,0,0,0,0,0,0),
+            (0,7,0,0,0,0,5,2,0),
+            (9,0,0,0,6,5,0,0,0),
+            (0,4,0,9,7,0,0,0,0))
+
+instance_c = [ If(instance[i][j] == 0, 
+                  True, 
+                  X[i][j] == instance[i][j]) 
+               for i in range(9) for j in range(9) ]
+
+s = Solver()
+s.add(sudoku_c + instance_c)
+if s.check() == sat:
+    m = s.model()
+    r = [ [ m.evaluate(X[i][j]) for j in range(9) ] 
+          for i in range(9) ]
+    print_matrix(r)
+else:
+    print "failed to solve"
+```
 
 ### Eight Queens
 
@@ -580,19 +813,36 @@ Thus, a solution requires that no two queens share the same row, column, or diag
 
 http://research.microsoft.com/en-us/um/redmond/projects/z3/queens.png
 
+```python
+# We know each queen must be in a different row.
+# So, we represent each queen by a single integer: the column position
+Q = [ Int('Q_%i' % (i + 1)) for i in range(8) ]
 
-<pre pref="puzzle.3" />
+# Each queen is in a column {1, ... 8 }
+val_c = [ And(1 <= Q[i], Q[i] <= 8) for i in range(8) ]
+
+# At most one queen per column
+col_c = [ Distinct(Q) ]
+
+# Diagonal constraint
+diag_c = [ If(i == j, 
+              True, 
+              And(Q[i] - Q[j] != i - j, Q[i] - Q[j] != j - i)) 
+           for i in range(8) for j in range(i) ]
+
+solve(val_c + col_c + diag_c)
+```
 
 ## Application: Install Problem
 
-The <b>install problem</b> consists of determining whether a new set of packages can be installed in a system.
+The **install problem** consists of determining whether a new set of packages can be installed in a system.
 This application is based on the article
 [OPIUM: Optimal Package Install/Uninstall Manager](http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf).
 Many packages depend on other packages to provide some functionality. 
 Each distribution contains a meta-data file that
 explicates the requirements of each package of the distribution
 The meta-data contains details like the name, version, etc. More importantly, it contains 
-<b>depends</b> and <b>conflicts</b>
+**depends** and **conflicts**
 clauses that stipulate which other packages should be on the
 system. The depends clauses stipulate which other packages must be present.
 The conflicts clauses stipulate which other packages must not be present.
@@ -642,16 +892,29 @@ def Conflict(p1, p2):
 With these two functions, we can easily encode the example in the 
 [Opium article](http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf) (Section 2) in Z3Py as:
 
+```python
+def DependsOn(pack, deps):
+    return And([ Implies(pack, dep) for dep in deps ])
 
-<pre pref="install.1" />
+def Conflict(p1, p2):
+    return Or(Not(p1), Not(p2))
+
+a, b, c, d, e, f, g, z = Bools('a b c d e f g z')
+
+solve(DependsOn(a, [b, c, z]),
+      DependsOn(b, [d]),
+      DependsOn(c, [Or(d, e), Or(f, g)]),
+      Conflict(d, e),
+      a, z)
+```
 
 
 Note that the example contains the constraint
 
 
-<pre>
+```
 DependsOn(c, [Or(d, e), Or(f, g)]),
-</pre>
+```
 
 
 The meaning is: to install `c`, we must install `d` or `e`, and `f` or `g`
@@ -663,21 +926,64 @@ write a function `install_check` that returns a list of packages that must be in
 in the system. The function `Conflict` is also modified. It can now receive multiple
 arguments.
 
+```python
+def DependsOn(pack, deps):
+    if is_expr(deps):
+        return Implies(pack, deps)
+    else:
+        return And([ Implies(pack, dep) for dep in deps ])
 
-<pre pref="install.2" />
+def Conflict(*packs):
+    return Or([ Not(pack) for pack in packs ])
+
+a, b, c, d, e, f, g, z = Bools('a b c d e f g z')
+
+def install_check(*problem):
+    s = Solver()
+    s.add(*problem)
+    if s.check() == sat:
+        m = s.model()
+        r = []
+        for x in m:
+            if is_true(m[x]):
+                # x is a Z3 declaration
+                # x() returns the Z3 expression
+                # x.name() returns a string
+                r.append(x())
+        print r
+    else:
+        print "invalid installation profile"
+
+print "Check 1"
+install_check(DependsOn(a, [b, c, z]),
+              DependsOn(b, d),
+              DependsOn(c, [Or(d, e), Or(f, g)]),
+              Conflict(d, e),
+              Conflict(d, g),
+              a, z)
+
+print "Check 2"
+install_check(DependsOn(a, [b, c, z]),
+              DependsOn(b, d),
+              DependsOn(c, [Or(d, e), Or(f, g)]),
+              Conflict(d, e),
+              Conflict(d, g),
+              a, z, g)
+```
 
 ## Using Z3Py Locally
 
 Z3Py is part of the Z3 distribution. It is located in the `python` subdirectory.
 To use it locally, you have to include the following command in your Python script.
-<pre>
+
+```
 from Z3 import *
-</pre>
+```
 
 The Z3 Python frontend directory must be in your `PYTHONPATH` environment variable.
 Z3Py will automatically search for the Z3 library (`z3.dll` (Windows), `libz3.so` (Linux), or `libz3.dylib` (OSX)).
 You may also initialize Z3Py manually using the command:
 
-<pre>
+```
 init("z3.dll")
-</pre>
+```

@@ -136,6 +136,7 @@ print x + 0.25
 
 Rational numbers can also be displayed in decimal notation.
 
+
 ```python
 x = Real('x')
 solve(3*x == 1)
@@ -172,8 +173,12 @@ Z3 supports Boolean operators: `And`, `Or`, `Not`, `Implies` (implication),
 `If` (if-then-else). Bi-implications are represented using equality `==`.
 The following example shows how to solve a simple set of Boolean constraints.
 
-
-<pre pref="z3py.7" />
+```python
+p = Bool('p')
+q = Bool('q')
+r = Bool('r')
+solve(Implies(p, q), r == Not(q), Or(Not(p), r))      
+```
 
 
 The Python Boolean constants `True` and `False` can be used to build Z3 Boolean expressions.

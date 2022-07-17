@@ -23,6 +23,20 @@ The following example illustrates that two records are equal only if all the arg
 (check-sat)
 ```
 
+### Record Updates
+
+You can create variants of records by updating selected fields.
+
+```z3
+(declare-datatypes (T1 T2) ((Pair (mk-pair (first T1) (second T2)))))
+(declare-const p1 (Pair Int Int))
+(declare-const p2 (Pair Int Int))
+(assert (not (= p1 p2)))
+(assert (= p1 ((_ update-field first) p2 1)))
+(check-sat)
+(get-model)
+```
+
 ### Scalars (enumeration types)
 
 A scalar sort is a finite domain sort. The elements of the finite domain are enumerated as distinct constants. For example, the sort S is a scalar type with three values A, B and C. It is possible for three constants of sort S to be distinct, but not for four constants.

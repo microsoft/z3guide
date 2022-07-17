@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Z3 is a state-of-the art theorem prover from Microsoft Research. It can be used to check the satisfiability of logical formulas over one or more theories. Z3 offers a compelling match for software analysis and verification tools, since several common software constructs map directly into supported theories.
 
-The main objective of the tutorial is to introduce the reader on how to use Z3 effectively for logical modeling and solving. The tutorial provides some general background on logical modeling, but we have to defer a full introduction to first-order logic and decision procedures to text-books in order to develop an **in depth** understanding of the underlying concepts. To clarify: a deep understanding of logical modeling is not necessarily required to understand this tutorial and modeling with Z3, but it is necessary to understand for writing complex programs.
+The main objective of the tutorial is to introduce the reader on how to use Z3 effectively for logical modeling and solving. The tutorial provides some general background on logical modeling, but we have to defer a full introduction to first-order logic and decision procedures to text-books in order to develop an in depth understanding of the underlying concepts. To clarify: a deep understanding of logical modeling is not necessarily required to understand this tutorial and modeling with Z3, but it is necessary to understand for writing complex models.
 
 :::info
  

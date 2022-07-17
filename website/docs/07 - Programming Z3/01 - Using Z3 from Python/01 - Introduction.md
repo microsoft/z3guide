@@ -1,8 +1,9 @@
 ---
-title: Z3 API in Python
+title: Introduction
 sidebar_position: 1
 ---
 
+# Z3 API in Python
 
 Z3 is a high performance theorem prover developed at Microsoft Research.
 

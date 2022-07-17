@@ -54,6 +54,17 @@ Real constants should contain a decimal point. Unlike most programming languages
 (get-model)
 ```
 
+Some operators are chainable. This includes comparison operators such as `<` and `<=`. 
+
+```z3
+(declare-const a Int)
+(declare-const b Int)
+(declare-const c Int)
+(assert (< a b c))
+(check-sat)
+(get-model)
+```
+
 ## Non-linear arithmetic
 
 

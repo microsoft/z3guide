@@ -5,22 +5,15 @@ sidebar_position: 1
 
 # Z3 API in Python
 
-Z3 is a high performance theorem prover developed at Microsoft Research.
-
-Z3 is used in many applications such as: software/hardware verification and testing, constraint solving, analysis of hybrid systems, 
-security, biology (in silico analysis), and geometrical problems.
 This tutorial demonstrates the main capabilities of Z3Py: the Z3 API in [Python](http://www.python.org). 
 No Python background is needed to read this tutorial. However, it is useful to learn Python (a fun language!) at some point, and 
 there are many excellent free resources for doing so [Python Tutorial](http://docs.python.org/tutorial/).
 
-
-The Z3 distribution also contains the **C**, **.Net** and **OCaml** APIs. The source code of Z3Py is available in 
-the Z3 distribution, feel free to modify it to meet your needs. 
+The Z3 distribution also contains the **C**, **C++**, **.Net**, **Java**, **Julia**, **JS** and **OCaml** APIs. 
+The source code of Z3Py is available in the Z3 distribution, feel free to modify it to meet your needs. 
 
 Be sure to follow along with the examples by clicking the **load in editor** link in the
 corner. See what Z3Py says, try your own scripts, and experiment!
-
-
 
 ## Getting Started
 
@@ -35,16 +28,9 @@ solve(x > 2, y < 10, x + 2*y == 7)
 The function `Int('x')` creates an integer variable in Z3 named `x`.
 The `solve` function solves a system of constraints. The example above uses
 two variables `x` and `y`, and three constraints.
-Z3Py like Python uses `=` for assignment. The operators `<`,
-`<=`,
-`>`,
-`>=`,
-`==` and
-`!=` for comparison.
+Z3Py like Python uses `=` for assignment. The operators `<`, `<=`, `>`, `>=`, `==` and `!=` for comparison.
 In the example above, the expression `x + 2*y  == 7` is a Z3 constraint.
 Z3 can solve and crunch formulas.
-
-
 
 The next examples show how to use the Z3 formula/expression simplifier.
 
@@ -65,9 +51,9 @@ comes with the Z3 distribution.
 ```python
 x = Int('x')
 y = Int('y')
-print x**2 + y**2 >= 1
+print (x**2 + y**2 >= 1)
 set_option(html_mode=False)
-print x**2 + y**2 >= 1
+print (x**2 + y**2 >= 1)
 ```
 
 
@@ -77,16 +63,16 @@ Z3 provides functions for traversing expressions.
 x = Int('x')
 y = Int('y')
 n = x + y >= 3
-print "num args: ", n.num_args()
-print "children: ", n.children()
-print "1st child:", n.arg(0)
-print "2nd child:", n.arg(1)
-print "operator: ", n.decl()
-print "op name:  ", n.decl().name()
+print ("num args: ", n.num_args())
+print ("children: ", n.children())
+print ("1st child:", n.arg(0))
+print ("2nd child:", n.arg(1))
+print ("operator: ", n.decl())
+print ("op name:  ", n.decl().name())
 ```
 
 Z3 provides all basic mathematical operations. Z3Py uses the same operator precedence of the Python language.
-Like Python, `**` is the power operator. Z3 can solve nonlinear <i>polynomial</i> constraints.
+Like Python, `**` is the power operator. Z3 can solve nonlinear _polynomial_ constraints.
 
 ```python
 x = Real('x')
@@ -98,7 +84,7 @@ The procedure `Real('x')` creates the real variable `x`.
 Z3Py can represent arbitrarily large integers, rational numbers (like in the example above),
 and irrational algebraic numbers. An irrational algebraic number is a root of a polynomial with integer coefficients. 
 Internally, Z3 represents all these numbers precisely. 
-The irrational numbers are displayed in decimal notation for making it easy to read the results.
+Irrational numbers are displayed in decimal notation for making it easy to read the results.
 
 ```python
 x = Real('x')
@@ -128,10 +114,10 @@ print RealVal(1)/3
 print Q(1,3)
 
 x = Real('x')
-print x + 1/3
-print x + Q(1,3)
-print x + "1/3"
-print x + 0.25
+print (x + 1/3)
+print (x + Q(1,3))
+print (x + "1/3")
+print (x + 0.25)
 ```
 
 
@@ -164,7 +150,7 @@ Z3Py does not support comments that span more than one line.
 ```python
 # This is a comment
 x = Real('x') # comment: creating x
-print x**2 + 2*x + 2  # comment: printing polynomial
+print (x**2 + 2*x + 2)  # comment: printing polynomial
 ```
 
 ## Boolean Logic
@@ -187,9 +173,9 @@ The Python Boolean constants `True` and `False` can be used to build Z3 Boolean 
 ```python
 p = Bool('p')
 q = Bool('q')
-print And(p, q, True)
-print simplify(And(p, q, True))
-print simplify(And(p, False))
+print (And(p, q, True))
+print (simplify(And(p, q, True)))
+print (simplify(And(p, False)))
 ```
 
 The following example uses a combination of polynomial and Boolean constraints. 
@@ -214,23 +200,22 @@ s = Solver()
 print s
 
 s.add(x > 10, y == x + 2)
-print s
-print "Solving constraints in the solver s ..."
-print s.check()
+print (s)
+print ("Solving constraints in the solver s ...")
+print (s.check())
 
-print "Create a new scope..."
+print ("Create a new scope...")
 s.push()
 s.add(y < 11)
-print s
-print "Solving updated set of constraints..."
-print s.check()
+print (s)
+print ("Solving updated set of constraints...")
+print (s.check())
 
-print "Restoring state..."
+print ("Restoring state...")
 s.pop()
-print s
-print "Solving restored set of constraints..."
-print s.check()
-
+print (s)
+print ("Solving restored set of constraints...")
+print (s.check())
 ```
 
 The command `Solver()` creates a general purpose solver. Constraints can be added using the method `add`.
@@ -238,7 +223,6 @@ We say the constraints have been **asserted** in the solver. The method `check()
 The result is `sat` (satisfiable) if a solution was found. The result is `unsat` (unsatisfiable) if 
 no solution exists. We may also say the system of asserted constraints is **infeasible**. Finally, a solver may fail
 to solve a system of constraints and `unknown` is returned.   
-
 
 In some applications, we want to explore several similar problems that share several constraints. 
 We can use the commands `push` and `pop` for doing that. 
@@ -254,7 +238,7 @@ Recall that Z3 can solve nonlinear polynomial constraints, but `2**x` is not a p
 x = Real('x')
 s = Solver()
 s.add(2**x == 3)
-print s.check()
+print (s.check())
 ```
 
 The following example shows how to traverse the constraints asserted into a solver, and how to collect performance statistics for
@@ -265,16 +249,16 @@ x = Real('x')
 y = Real('y')
 s = Solver()
 s.add(x > 1, y > 1, Or(x + y > 3, x - y < 2))
-print "asserted constraints..."
+print("asserted constraints...")
 for c in s.assertions():
-    print c
+    print(c)
 
-print s.check()
-print "statistics for the last check method..."
-print s.statistics()
+print(s.check())
+print("statistics for the last check method...")
+print(s.statistics())
 # Traversing statistics
 for k, v in s.statistics():
-    print "%s : %s" % (k, v)
+    print (k, " : ", v)
 ```
 
 The command `check` returns `sat` when Z3 finds a solution for the set of asserted constraints.
@@ -286,14 +270,14 @@ The following example shows the basic methods for inspecting models.
 x, y, z = Reals('x y z')
 s = Solver()
 s.add(x > 1, y > 1, x + y > 3, z - x < 10)
-print s.check()
+print (s.check())
 
 m = s.model()
-print "x = %s" % m[x]
+print ("x = %s" % m[x])
 
 print "traversing model..."
 for d in m.decls():
-    print "%s = %s" % (d.name(), m[d])
+    print ("%s = %s" % (d.name(), m[d]))
 
 ```
 

@@ -15,6 +15,14 @@ The source code of Z3Py is available in the Z3 distribution, feel free to modify
 Be sure to follow along with the examples by clicking the **load in editor** link in the
 corner. See what Z3Py says, try your own scripts, and experiment!
 
+### Using Z3Py Locally
+
+The Python bindings are available from pypi. You can install them using 
+
+```
+    pip install z3-solver
+```
+
 ## Getting Started
 
 Let us start with the following simple example:
@@ -309,8 +317,8 @@ x = Real('x')
 y = Int('y')
 a, b, c = Reals('a b c')
 s, r = Ints('s r')
-print x + y + 1 + (a + s)
-print ToReal(y) + c
+print (x + y + 1 + (a + s))
+print (ToReal(y) + c)
 ```
 
 The function `ToReal` casts an integer expression into a real expression.
@@ -347,11 +355,11 @@ The following example demonstrates how to use both styles.
 ```python
 x, y = Reals('x y')
 # Using Z3 native option names
-print simplify(x == y + 2, ':arith-lhs', True)
+print (simplify(x == y + 2, ':arith-lhs', True))
 # Using Z3Py option names
-print simplify(x == y + 2, arith_lhs=True)
+print (simplify(x == y + 2, arith_lhs=True))
 
-print "\nAll available options:"
+print ("\nAll available options:")
 help_simplify()
 ```
 
@@ -364,11 +372,11 @@ It displays Z3 internal representation for mathematical formulas and expressions
 x, y = Reals('x y')
 solve(x + 10000000000000000000000 == y, y > 20000000000000000)
 
-print Sqrt(2) + Sqrt(3)
-print simplify(Sqrt(2) + Sqrt(3))
-print simplify(Sqrt(2) + Sqrt(3)).sexpr()
+print (Sqrt(2) + Sqrt(3))
+print (simplify(Sqrt(2) + Sqrt(3)))
+print (simplify(Sqrt(2) + Sqrt(3)).sexpr())
 # The sexpr() method is available for any Z3 expression
-print (x + Sqrt(y) * 2).sexpr()
+print ((x + Sqrt(y) * 2).sexpr())
 ```
 
 
@@ -390,22 +398,22 @@ The function `BitVecVal(10, 32)` creates a bit-vector of size `32` containing th
 ```python
 x = BitVec('x', 16)
 y = BitVec('y', 16)
-print x + 2
+print (x + 2)
 # Internal representation
-print (x + 2).sexpr()
+print ((x + 2).sexpr())
 
 # -1 is equal to 65535 for 16-bit integers 
-print simplify(x + y - 1)
+print (simplify(x + y - 1))
 
 # Creating bit-vector constants
 a = BitVecVal(-1, 16)
 b = BitVecVal(65535, 16)
-print simplify(a == b)
+print (simplify(a == b))
 
 a = BitVecVal(-1, 32)
 b = BitVecVal(65535, 32)
 # -1 is not equal to 65535 for 32-bit integers 
-print simplify(a == b)
+print (simplify(a == b))
 ```
 
 
@@ -494,10 +502,10 @@ y = Int('y')
 f = Function('f', IntSort(), IntSort())
 s = Solver()
 s.add(f(f(x)) == x, f(x) == y, x != y)
-print s.check()
+print (s.check())
 m = s.model()
-print "f(f(x)) =", m.evaluate(f(f(x)))
-print "f(x)    =", m.evaluate(f(x))
+print ("f(f(x)) =", m.evaluate(f(f(x))))
+print ("f(x)    =", m.evaluate(f(x)))
 ```
 
 ## Satisfiability and Validity
@@ -524,17 +532,17 @@ The implementation of this function is a simpler version of the Z3Py command `pr
 ```python
 p, q = Bools('p q')
 demorgan = And(p, q) == Not(Or(Not(p), Not(q)))
-print demorgan
+print (demorgan)
 
 def prove(f):
     s = Solver()
     s.add(Not(f))
     if s.check() == unsat:
-        print "proved"
+        print ("proved")
     else:
-        print "failed to prove"
+        print ("failed to prove")
 
-print "Proving demorgan..."
+print ("Proving demorgan...")
 prove(demorgan)
 ```
 
@@ -546,22 +554,22 @@ The following example demonstrates how to use Python list comprehensions in Z3Py
 
 ```python
 # Create list [1, ..., 5] 
-print [ x + 1 for x in range(5) ]
+print ([ x + 1 for x in range(5) ])
 
 # Create two lists containg 5 integer variables
 X = [ Int('x%s' % i) for i in range(5) ]
 Y = [ Int('y%s' % i) for i in range(5) ]
-print X
+print (X)
 
 # Create a list containing X[i]+Y[i]
 X_plus_Y = [ X[i] + Y[i] for i in range(5) ]
-print X_plus_Y
+print (X_plus_Y)
 
 # Create a list containing X[i] > Y[i]
 X_gt_Y = [ X[i] > Y[i] for i in range(5) ]
-print X_gt_Y
+print (X_gt_Y)
 
-print And(X_gt_Y)
+print (And(X_gt_Y))
 
 # Create a 3x3 "matrix" (list of lists) of integer variables
 X = [ [ Int("x_%s_%s" % (i+1, j+1)) for j in range(3) ] 
@@ -580,11 +588,11 @@ are implemented using list comprehensions.
 X = IntVector('x', 5)
 Y = RealVector('y', 5)
 P = BoolVector('p', 5)
-print X
-print Y
-print P
-print [ y**2 for y in Y ]
-print Sum([ y**2 for y in Y ])
+print (X)
+print (Y)
+print (P)
+print ([ y**2 for y in Y ])
+print (Sum([ y**2 for y in Y ]))
 ```
 
 ## Kinematic Equations
@@ -614,8 +622,8 @@ equations = [
    d == v_i * t + (a*t**2)/2,
    v_f == v_i + a*t,
 ]
-print "Kinematic equations:"
-print equations
+print ("Kinematic equations:")
+print (equations)
 
 # Given v_i, v_f and a, find d
 problem = [
@@ -623,10 +631,10 @@ problem = [
     v_f == 0,
     a   == -8
 ]
-print "Problem:"
-print problem 
+print ("Problem:")
+print (problem) 
 
-print "Solution:"
+print ("Solution:")
 solve(equations + problem)
 ```
 
@@ -676,10 +684,10 @@ x      = BitVec('x', 32)
 powers = [ 2**i for i in range(32) ]
 fast   = And(x != 0, x & (x - 1) == 0)
 slow   = Or([ x == p for p in powers ])
-print fast
+print (fast)
 prove(fast == slow)
 
-print "trying to prove buggy version..."
+print ("trying to prove buggy version...")
 fast   = x & (x - 1) == 0
 prove(fast == slow)
 ```
@@ -732,8 +740,6 @@ solve(dog >= 1,   # at least one dog
 The goal is to insert the numbers in the boxes to satisfy only one condition: each row, column and 
 `3x3` box must contain the digits `1` through `9` exactly once. 
 
-
-http://research.microsoft.com/en-us/um/redmond/projects/z3/sudoku.png
 
 
 The following example encodes the suduko problem in Z3. Different sukudo instances can be solved
@@ -788,7 +794,7 @@ if s.check() == sat:
           for i in range(9) ]
     print_matrix(r)
 else:
-    print "failed to solve"
+    print ("failed to solve")
 ```
 
 ### Eight Queens
@@ -796,7 +802,6 @@ else:
 The eight queens puzzle is the problem of placing eight chess queens on an 8x8 chessboard so that no two queens attack each other. 
 Thus, a solution requires that no two queens share the same row, column, or diagonal.
 
-http://research.microsoft.com/en-us/um/redmond/projects/z3/queens.png
 
 ```python
 # We know each queen must be in a different row.
@@ -855,9 +860,9 @@ def DependsOn(pack, deps):
 Thus, `Depends(a, [b, c, z])` generates the constraint
 
 
-<pre>
+```
 And(Implies(a, b), Implies(a, c), Implies(a, z))
-</pre>
+```
 
 That is, if users install package `a`, they must also install packages 
 `b`, `c` and `z`. 
@@ -868,10 +873,10 @@ If package `d` conflicts with package `e`, we write `Conflict(d, e)`.
 `Conflict` is also a simple Python function.
 
 
-<pre>
+```
 def Conflict(p1, p2):
     return Or(Not(p1), Not(p2))
-</pre>
+```
 
 `Conflict(d, e)` generates the constraint `Or(Not(d), Not(e))`.
 With these two functions, we can easily encode the example in the 
@@ -935,11 +940,11 @@ def install_check(*problem):
                 # x() returns the Z3 expression
                 # x.name() returns a string
                 r.append(x())
-        print r
+        print (r)
     else:
-        print "invalid installation profile"
+        print ("invalid installation profile")
 
-print "Check 1"
+print ("Check 1")
 install_check(DependsOn(a, [b, c, z]),
               DependsOn(b, d),
               DependsOn(c, [Or(d, e), Or(f, g)]),
@@ -947,7 +952,7 @@ install_check(DependsOn(a, [b, c, z]),
               Conflict(d, g),
               a, z)
 
-print "Check 2"
+print ("Check 2")
 install_check(DependsOn(a, [b, c, z]),
               DependsOn(b, d),
               DependsOn(c, [Or(d, e), Or(f, g)]),
@@ -956,19 +961,4 @@ install_check(DependsOn(a, [b, c, z]),
               a, z, g)
 ```
 
-## Using Z3Py Locally
 
-Z3Py is part of the Z3 distribution. It is located in the `python` subdirectory.
-To use it locally, you have to include the following command in your Python script.
-
-```
-from Z3 import *
-```
-
-The Z3 Python frontend directory must be in your `PYTHONPATH` environment variable.
-Z3Py will automatically search for the Z3 library (`z3.dll` (Windows), `libz3.so` (Linux), or `libz3.dylib` (OSX)).
-You may also initialize Z3Py manually using the command:
-
-```
-init("z3.dll")
-```

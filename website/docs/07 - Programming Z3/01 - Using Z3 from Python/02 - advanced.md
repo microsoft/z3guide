@@ -763,14 +763,15 @@ Z3Py uses &hellip; to denote the output is truncated.
 The following configuration options can be set to control the behavior of Z3Py's formatter:
 
 
------------------------|----------------------------------------------------------------------
-max_depth              | Maximal expression depth. Deep expressions are replaced with &hellip;. 
-max_args               | Maximal number of arguments to display per node. 
-rational_to_decimal    | Display rationals as decimals if True. 
-precision              | Maximal number of decimal places for numbers being displayed in decimal notation. 
-max_lines              | Maximal number of lines to be displayed. 
-max_width              | Maximal line width (this is a suggestion to Z3Py). 
-max_indent             | Maximal indentation.
+
+|-----------------------|--------------------------------------------------------------------------------|
+ max_depth              | Maximal expression depth. Deep expressions are replaced with &hellip;. 
+ max_args               | Maximal number of arguments to display per node. 
+ rational_to_decimal    | Display rationals as decimals if True. 
+ precision              | Maximal number of decimal places for numbers being displayed in decimal notation. 
+ max_lines              | Maximal number of lines to be displayed. 
+ max_width              | Maximal line width (this is a suggestion to Z3Py). 
+ max_indent             | Maximal indentation.
 
 
 

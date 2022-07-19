@@ -1,3 +1,6 @@
+//@ts-check
+
+
 module.exports = {
     languages: [ // languages where you want to enable interactivity in editable code blocks 
         {
@@ -15,7 +18,6 @@ module.exports = {
                     runError: 'z3-failed',
                     runtimeError: 'z3-runtime-error',
                 },
-                solutionsDir: './solutions',
             }
         },
         {
@@ -24,4 +26,5 @@ module.exports = {
             prism: 'javascript',
         },
     ],
+    solutionsDir: './solutions',
 }

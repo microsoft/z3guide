@@ -2,19 +2,21 @@
 
 import visit from 'unist-util-visit';
 import fs_extra_pkg from 'fs-extra';
-const { readJsonSync, writeJsonSync, ensureDirSync, copySync } = fs_extra_pkg;
-import { createHash } from 'crypto';
-import languageConfig from 'language.config';
-import langpkg from `z3-solver/package.json` assert { type: 'json' };
 import { spawnSync } from 'child_process';
+const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
+import { createHash } from 'crypto';
+import languageConfig from '../../language.config.js';
+
+import langpkg from 'z3-solver/package.json' assert { type: 'json' };
 
 /**
  * Turns a "```z3" code block into a code block and an output area
  */
 const VERSION = "1" // TODO move this into config
+const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
 
-function checkZ3(input, output, hash, errRegex, skipErr) {
+function checkRuntimeError(input, output, hash, errRegex, skipErr) {
     if (skipErr) {
         return output;
     }
@@ -52,7 +54,7 @@ async function getOutput(input, lang, skipErr) {
         .update(langpkg.version)
         .update(String(timeout))
         .digest('hex');
-    const dir = `./solutions/${lang}/${langpkg.version}/${hash}`;
+    const dir = `${SOLUTIONS_DIR}/${lang}/${langpkg.version}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
@@ -62,7 +64,7 @@ async function getOutput(input, lang, skipErr) {
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)
-        const errorToReport = checkZ3(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        const errorToReport = checkRuntimeError(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
             data.status = "z3-runtime-error";
@@ -98,7 +100,7 @@ async function getOutput(input, lang, skipErr) {
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
 
 
-    const errorToReport = checkZ3(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+    const errorToReport = checkRuntimeError(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
 
     if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
         error = errorToReport;
@@ -125,7 +127,8 @@ export default function plugin(options) {
     // console.log({ options });
     const transformer = async (ast) => {
 
-        ensureDirSync('./solutions');
+
+        ensureDirSync(SOLUTIONS_DIR);
 
         const promises = [];
 
@@ -176,6 +179,7 @@ export default function plugin(options) {
             // need to run sync according to Kevin
             await p();
             // console.log(`num promises: ${promises.length}`);
+
         }
     };
     return transformer;

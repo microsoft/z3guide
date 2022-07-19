@@ -4,7 +4,8 @@ import visit from 'unist-util-visit';
 import fs_extra_pkg from 'fs-extra';
 const { readJsonSync, writeJsonSync, ensureDirSync, copySync } = fs_extra_pkg;
 import { createHash } from 'crypto';
-import z3pkg from 'z3-solver/package.json' assert { type: 'json' };
+import languageConfig from 'language.config';
+import langpkg from `z3-solver/package.json` assert { type: 'json' };
 import { spawnSync } from 'child_process';
 
 /**
@@ -22,7 +23,7 @@ function checkZ3(input, output, hash, errRegex, skipErr) {
     if (hasError !== null) {
         throw new Error(
             `\n******************************************
-Z3 (version ${z3pkg.version}) Runtime Error
+Z3 (version ${langpkg.version}) Runtime Error
 
 - Snippet: 
 ${input}
@@ -48,10 +49,10 @@ async function getOutput(input, lang, skipErr) {
         .update(VERSION)
         .update(input)
         .update(lang)
-        .update(z3pkg.version)
+        .update(langpkg.version)
         .update(String(timeout))
         .digest('hex');
-    const dir = `./solutions/${lang}/${z3pkg.version}/${hash}`;
+    const dir = `./solutions/${lang}/${langpkg.version}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;

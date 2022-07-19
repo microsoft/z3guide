@@ -753,9 +753,9 @@ displayed in Z3Py notation.
 ```python
 x = Int('x')
 y = Int('y')
-print x**2 + y**2 >= 1
+print (x**2 + y**2 >= 1)
 set_option(html_mode=False)
-print x**2 + y**2 >= 1
+print (x**2 + y**2 >= 1)
 ```
 
 By default, Z3Py will truncate the output if the object being displayed is too big.
@@ -763,13 +763,14 @@ Z3Py uses &hellip; to denote the output is truncated.
 The following configuration options can be set to control the behavior of Z3Py's formatter:
 
 
-* <tt>max_depth</tt> Maximal expression depth. Deep expressions are replaced with &hellip;. 
-* <tt>max_args</tt> Maximal number of arguments to display per node. 
-* <tt>rational_to_decimal</tt> Display rationals as decimals if True. 
-* <tt>precision</tt> Maximal number of decimal places for numbers being displayed in decimal notation. 
-* <tt>max_lines</tt> Maximal number of lines to be displayed. 
-* <tt>max_width</tt> Maximal line width (this is a suggestion to Z3Py). 
-* <tt>max_indent</tt> Maximal indentation.
+-----------------------|----------------------------------------------------------------------
+max_depth              | Maximal expression depth. Deep expressions are replaced with &hellip;. 
+max_args               | Maximal number of arguments to display per node. 
+rational_to_decimal    | Display rationals as decimals if True. 
+precision              | Maximal number of decimal places for numbers being displayed in decimal notation. 
+max_lines              | Maximal number of lines to be displayed. 
+max_width              | Maximal line width (this is a suggestion to Z3Py). 
+max_indent             | Maximal indentation.
 
 
 

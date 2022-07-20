@@ -7,7 +7,7 @@ const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
 import { createHash } from 'crypto';
 
 import languageConfig from '../../language.config.js';
-
+// alas, we cannot load modules at runtime
 import langpkg from 'z3-solver/package.json' assert { type: 'json' };
 
 /**
@@ -64,7 +64,7 @@ async function getOutput(timeout, input, lang, skipErr) {
     const errRegex = new RegExp(/(\(error)|(unsupported)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        console.log(`cache hit ${hash}`)
+        // console.log(`cache hit ${hash}`)
         const errorToReport = checkRuntimeError(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
@@ -136,10 +136,6 @@ export default function plugin() {
         visit(ast, 'root', (node) => {
 
             node.children.unshift(
-                {
-                    type: 'import',
-                    value: "import CodeBlock from '@theme/CodeBlock'"
-                },
                 {
                     type: 'import',
                     // TODO: rename `Z3CodeBlock`

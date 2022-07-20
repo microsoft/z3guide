@@ -4,10 +4,17 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { type Props } from "@theme/CodeBlock";
 import { usePrismTheme } from '@docusaurus/theme-common';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import runZ3Web from './runZ3Web';
 import { Language } from 'prism-react-renderer';
 import liveCodeBlockStyles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
 import styles from './styles.module.css';
+
+// [CONFIG HERE] custom language run process (client side) imports
+import runZ3Web from './runZ3Web';
+
+// [CONFIG HERE] language-process mapping
+const clientConfig = {
+  'z3': runZ3Web,
+}
 
 interface MyProps extends Props {
   readonly id: string;
@@ -89,7 +96,7 @@ function CustomCodeEditor(props: MyProps) {
 
 export default function CustomCodeBlock({ input }) {
 
-  const { code, result } = input;
+  const { lang, code, result } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -114,8 +121,9 @@ export default function CustomCodeBlock({ input }) {
       const newResult = { ...result };
       let errorMsg;
 
+      const runProcess = clientConfig[lang];
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-      runZ3Web(currCode).then((res) => {
+      runProcess(currCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
           const errRegex = new RegExp(/(\(error)|(unsupported)/g);

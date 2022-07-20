@@ -6,9 +6,9 @@ import { spawnSync } from 'child_process';
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
 import { createHash } from 'crypto';
 
-import languageConfig from '../../language.config.js';
-// alas, we cannot load modules at runtime
-import langpkg from 'z3-solver/package.json' assert { type: 'json' };
+import getLangConfig from '../../language.config.js';
+const languageConfig = await getLangConfig();
+
 
 /**
  * Turns a "```z3" code block into a code block and an output area
@@ -17,7 +17,7 @@ const VERSION = "1" // TODO move this into config
 const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
 
-function checkRuntimeError(input, output, hash, errRegex, skipErr) {
+function checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr) {
     if (skipErr) {
         return output;
     }
@@ -26,7 +26,7 @@ function checkRuntimeError(input, output, hash, errRegex, skipErr) {
     if (hasError !== null) {
         throw new Error(
             `\n******************************************
-Z3 (version ${langpkg.version}) Runtime Error
+Z3 (version ${langVersion}) Runtime Error
 
 - Snippet: 
 ${input}
@@ -42,8 +42,10 @@ ${hash}
     return "";
 }
 
-async function getOutput(timeout, input, lang, skipErr) {
+async function getOutput(config, input, lang, skipErr) {
     // const timeout = 30000; // TODO move this into config
+
+    const {timeout, langVersion} = config;
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -52,10 +54,10 @@ async function getOutput(timeout, input, lang, skipErr) {
         .update(VERSION)
         .update(input)
         .update(lang)
-        .update(langpkg.version)
+        .update(langVersion)
         .update(String(timeout))
         .digest('hex');
-    const dir = `${SOLUTIONS_DIR}/${lang}/${langpkg.version}/${hash}`;
+    const dir = `${SOLUTIONS_DIR}/${lang}/${langVersion}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
@@ -64,8 +66,8 @@ async function getOutput(timeout, input, lang, skipErr) {
     const errRegex = new RegExp(/(\(error)|(unsupported)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        // console.log(`cache hit ${hash}`)
-        const errorToReport = checkRuntimeError(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        console.log(`cache hit ${hash}`)
+        const errorToReport = checkRuntimeError(langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
             data.status = "z3-runtime-error";
@@ -101,7 +103,7 @@ async function getOutput(timeout, input, lang, skipErr) {
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
 
 
-    const errorToReport = checkRuntimeError(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+    const errorToReport = checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
 
     if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
         error = errorToReport;
@@ -179,8 +181,8 @@ export default function plugin() {
 
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
-                    const timeout = langConfig.buildConfig.timeout;
-                    const result = await getOutput(timeout, value, lang, skipErr);
+                    const config = langConfig.buildConfig;
+                    const result = await getOutput(config, value, lang, skipErr);
 
                     // console.log({ node, index, parent });
 

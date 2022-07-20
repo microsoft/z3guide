@@ -19,11 +19,6 @@ async function createConfig() {
                         runtimeError: 'z3-runtime-error',
                     },
                 },
-                clientConfig: {
-                    // [optional] path to the file for specific run process for the web,
-                    // must be under the directory of 'src/components/TutorialComponents'
-                    processToExecute: './runZ3Web', 
-                }
             },
             {
                 name: 'Z3 JavaScript Bindings',

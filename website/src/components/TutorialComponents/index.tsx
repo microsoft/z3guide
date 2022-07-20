@@ -88,6 +88,7 @@ function CustomCodeEditor(props: MyProps) {
 
 
 export default function CustomCodeBlock({ input }) {
+
   const { code, result } = input;
 
   const [currCode, setCurrCode] = useState(code);
@@ -112,6 +113,7 @@ export default function CustomCodeBlock({ input }) {
       // TODO: only load z3 when needed
       const newResult = { ...result };
       let errorMsg;
+
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
       runZ3Web(currCode).then((res) => {
         const result = JSON.parse(res);

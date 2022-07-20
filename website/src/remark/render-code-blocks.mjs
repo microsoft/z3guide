@@ -144,8 +144,7 @@ export default function plugin() {
             node.children.unshift(
                 {
                     type: 'import',
-                    // TODO: rename `Z3CodeBlock`
-                    value: "import Z3CodeBlock from '@site/src/components/TutorialComponents'"
+                    value: "import CustomCodeBlock from '@site/src/components/TutorialComponents'"
                 }
             )
         });
@@ -199,7 +198,7 @@ export default function plugin() {
                             // TODO: encode the source into jsx tree to avoid XSS?
                             // TODO: create a generic <CodeBlock and pass lang={lang} />
                             // TODO: pass syntax highlighting to CodeBlock
-                            value: `<Z3CodeBlock input={${val}} />`
+                            value: `<CustomCodeBlock input={${val}} />`
                         }
                     )
                 });

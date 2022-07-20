@@ -106,7 +106,7 @@ async function getOutput(config, input, lang, skipErr) {
 
     if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
         error = errorToReport;
-        status = "z3-runtime-error";
+        status = statusCodes.runtimeError;
     }
 
     const result = {

@@ -42,8 +42,8 @@ function RunButton({ onClick, runFinished }) {
 }
 
 
-function Output({ result, codeChanged }) {
-  const success = result.status === "z3-ran";
+function Output({ result, codeChanged, statusCodes }) {
+  const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
   return (
     <div>
@@ -96,7 +96,7 @@ function CustomCodeEditor(props: MyProps) {
 
 export default function CustomCodeBlock({ input }) {
 
-  const { lang, code, result } = input;
+  const { lang, statusCodes, code, result } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -130,22 +130,22 @@ export default function CustomCodeBlock({ input }) {
           const hasError = result.output.match(errRegex);
           newResult.output = hasError ? '' : result.output;
           newResult.error = hasError ? result.output : '';
-          newResult.status = hasError ? 'z3-runtime-error' : 'z3-ran';
+          newResult.status = hasError ? statusCodes.runtimeError : statusCodes.success;
         } else if (result.error) {
           newResult.error = result.error;
-          newResult.status = 'z3-failed';
+          newResult.status = statusCodes.runError;
         } else {
           // both output and error are empty, which means we have a bug
-          errorMsg = `runZ3Web returned no output or error with input:\n${currCode}`
+          errorMsg = `${lang}-web returned no output or error with input:\n${currCode}`
           newResult.error = errorMsg
           newResult.status = 'buggy-code';
           throw new Error(errorMsg);
         }
       }).catch((error) => {
-        // runZ3web fails
-        errorMsg = `runZ3Web failed with input:\n${currCode}\n\nerror:\n${error}`;
+        // runProcess fails
+        errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
         newResult.error = errorMsg;
-        newResult.status = 'runZ3Web-failed';
+        newResult.status = `${lang}-web-failed`;
         throw new Error(errorMsg);
       }).finally(() => {
         setOutput(newResult);
@@ -174,7 +174,7 @@ export default function CustomCodeBlock({ input }) {
         editable={outputRendered}
         language={"lisp" as Language}
       />
-      {outputRendered ? <Output codeChanged={codeChanged} result={output} /> : <div />}
+      {outputRendered ? <Output codeChanged={codeChanged} result={output} statusCodes={statusCodes} /> : <div />}
     </div>
   );
 }

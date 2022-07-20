@@ -184,12 +184,12 @@ export default function plugin() {
 
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
-                    const config = langConfig.buildConfig;
-                    const result = await getOutput(config, value, lang, skipErr);
+                    const buildConfig = langConfig.buildConfig;
+                    const result = await getOutput(buildConfig, value, lang, skipErr);
 
                     // console.log({ node, index, parent });
 
-                    const val = JSON.stringify({ lang: lang, code: value, result: result });
+                    const val = JSON.stringify({ lang: lang, statusCodes: buildConfig.statusCodes, code: value, result: result });
                     parent.children.splice(
                         index,
                         1,

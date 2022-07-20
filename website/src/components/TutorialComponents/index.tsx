@@ -4,7 +4,7 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { type Props } from "@theme/CodeBlock";
 import { usePrismTheme } from '@docusaurus/theme-common';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import runZ3Web from './runZ3Web';
+import runZ3Web from 'src/components/TutorialComponents/runZ3Web';
 import { Language } from 'prism-react-renderer';
 import liveCodeBlockStyles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
 import styles from './styles.module.css';
@@ -52,7 +52,7 @@ function Output({ result, codeChanged }) {
   );
 }
 
-function Z3Editor(props: MyProps) {
+function CustomCodeEditor(props: MyProps) {
 
   const { id, input, language, showLineNumbers, editable, onChange } = props;
 
@@ -87,7 +87,7 @@ function Z3Editor(props: MyProps) {
 }
 
 
-export default function Z3CodeBlock({ input }) {
+export default function CustomCodeBlock({ input }) {
   const { code, result } = input;
 
   const [currCode, setCurrCode] = useState(code);
@@ -155,7 +155,7 @@ export default function Z3CodeBlock({ input }) {
     <div>
       {outputRendered ? <div /> : <OutputToggle onClick={onDidClickOutputToggle} />}
       {outputRendered ? <RunButton onClick={onDidClickRun} runFinished={runFinished}/> : <div />}
-      <Z3Editor
+      <CustomCodeEditor
         children={inputNode}
         input={code}
         id={result.hash}

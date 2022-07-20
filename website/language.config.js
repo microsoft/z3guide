@@ -18,10 +18,13 @@ async function createConfig() {
                         runError: 'z3-failed',
                         runtimeError: 'z3-runtime-error',
                     },
+                },
+                clientConfig: {
+                    processToExecute: 'src/components/TutorialComponents/runZ3Web.ts',
                 }
             },
             {
-                name: 'Z3 JavaScript Binding',
+                name: 'Z3 JavaScript Bindings',
                 label: 'z3-js',
                 highlight: 'js',
             },

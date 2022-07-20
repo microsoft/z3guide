@@ -20,7 +20,9 @@ async function createConfig() {
                     },
                 },
                 clientConfig: {
-                    processToExecute: 'src/components/TutorialComponents/runZ3Web.ts',
+                    // [optional] path to the file for specific run process for the web,
+                    // must be under the directory of 'src/components/TutorialComponents'
+                    processToExecute: './runZ3Web', 
                 }
             },
             {

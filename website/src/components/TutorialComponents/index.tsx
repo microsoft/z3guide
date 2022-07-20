@@ -4,7 +4,7 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { type Props } from "@theme/CodeBlock";
 import { usePrismTheme } from '@docusaurus/theme-common';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import runZ3Web from 'src/components/TutorialComponents/runZ3Web';
+import runZ3Web from './runZ3Web';
 import { Language } from 'prism-react-renderer';
 import liveCodeBlockStyles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
 import styles from './styles.module.css';

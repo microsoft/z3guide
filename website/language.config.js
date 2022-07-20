@@ -35,7 +35,6 @@ async function createConfig() {
             continue;
         }
         const npmPackage = langConfig.buildConfig.npmPackage;
-        console.log(npmPackage);
         if (npmPackage) {
             const pkgJson = `${npmPackage}/package.json`;
             // @ts-ignore

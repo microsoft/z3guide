@@ -1,19 +1,25 @@
-// TODO: factor into an npm package / independent plugin
+/**
+ * Turns a "```lang" code block into a code block and an output area
+ */
 
+// TODO: factor into an independent plugin
 import visit from 'unist-util-visit';
 import fs_extra_pkg from 'fs-extra';
 import { spawnSync } from 'child_process';
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
 import { createHash } from 'crypto';
 
+// site version
+import sitePkg from '../../package.json' assert {type: 'json'};
+// for version `x.y.z`, only recompute hashes if `x` changes
+// to avoid recomputation over minor changes on the website
+// (so we only recompute for every major release)
+const VERSION = sitePkg.version.replace(/(\..)*$/g, '');
+
+// language configs
 import getLangConfig from '../../language.config.js';
 const languageConfig = await getLangConfig();
 
-
-/**
- * Turns a "```z3" code block into a code block and an output area
- */
-const VERSION = "1" // TODO move this into config
 const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
 
@@ -44,7 +50,7 @@ ${hash}
 
 async function getOutput(config, input, lang, skipErr) {
 
-    const {timeout, langVersion, processToExecute, statusCodes} = config;
+    const { timeout, langVersion, processToExecute, statusCodes } = config;
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -85,9 +91,8 @@ async function getOutput(config, input, lang, skipErr) {
 
     try {
         let result = spawnSync('node', [processToExecute, pathIn], { timeout: timeout });
-        // TODO: runtime errors are also written to stdout, because z3 does not throw an error
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
-        // when running z3 does fail
+        // when running lang does fail
         error = result.stderr.length > 0 ? result.stderr.toString() : "";
 
         status = error === "" ? statusCodes.success : statusCodes.runError;
@@ -124,6 +129,7 @@ async function getOutput(config, input, lang, skipErr) {
 
 
 export default function plugin() {
+
 
     // console.log({ options });
     const transformer = async (ast) => {

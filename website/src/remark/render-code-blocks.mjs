@@ -1,19 +1,29 @@
-// TODO: factor into an npm package / independent plugin
+/**
+ * Turns a "```lang" code block into a code block and an output area
+ */
 
+// TODO: factor into an independent plugin
 import visit from 'unist-util-visit';
 import fs_extra_pkg from 'fs-extra';
-const { readJsonSync, writeJsonSync, ensureDirSync, copySync } = fs_extra_pkg;
-import { createHash } from 'crypto';
-import z3pkg from 'z3-solver/package.json' assert { type: 'json' };
 import { spawnSync } from 'child_process';
+const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
+import { createHash } from 'crypto';
 
-/**
- * Turns a "```z3" code block into a code block and an output area
- */
-const VERSION = "1" // TODO move this into config
+// site version
+import sitePkg from '../../package.json' assert {type: 'json'};
+// for version `x.y.z`, only recompute hashes if `x` changes
+// to avoid recomputation over minor changes on the website
+// (so we only recompute for every major release)
+const VERSION = sitePkg.version.replace(/(\..)*$/g, '');
+
+// language configs
+import getLangConfig from '../../language.config.js';
+const languageConfig = await getLangConfig();
+
+const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
 
-function checkZ3(input, output, hash, errRegex, skipErr) {
+function checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr) {
     if (skipErr) {
         return output;
     }
@@ -22,7 +32,7 @@ function checkZ3(input, output, hash, errRegex, skipErr) {
     if (hasError !== null) {
         throw new Error(
             `\n******************************************
-Z3 (version ${z3pkg.version}) Runtime Error
+${lang} (version ${langVersion}) Runtime Error
 
 - Snippet: 
 ${input}
@@ -38,8 +48,9 @@ ${hash}
     return "";
 }
 
-async function getOutput(input, lang, skipErr) {
-    const timeout = 30000; // TODO move this into config
+async function getOutput(config, input, lang, skipErr) {
+
+    const { timeout, langVersion, processToExecute, statusCodes } = config;
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -48,10 +59,10 @@ async function getOutput(input, lang, skipErr) {
         .update(VERSION)
         .update(input)
         .update(lang)
-        .update(z3pkg.version)
+        .update(langVersion)
         .update(String(timeout))
         .digest('hex');
-    const dir = `./solutions/${lang}/${z3pkg.version}/${hash}`;
+    const dir = `${SOLUTIONS_DIR}/${lang}/${langVersion}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
     const pathOut = `${dir}/output.json`;
@@ -61,10 +72,10 @@ async function getOutput(input, lang, skipErr) {
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)
-        const errorToReport = checkZ3(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        const errorToReport = checkRuntimeError(langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
-            data.status = "z3-runtime-error";
+            data.status = statusCodes.runtimeError;
             writeJsonSync(pathOut, data); // update old cache
         }
         return data;
@@ -79,29 +90,27 @@ async function getOutput(input, lang, skipErr) {
     writeJsonSync(pathIn, inputObj);
 
     try {
-        let result = spawnSync('node', ['./src/remark/run-z3.js', pathIn], { timeout: timeout });
-        // TODO: runtime errors are also written to stdout, because z3 does not throw an error
+        let result = spawnSync('node', [processToExecute, pathIn], { timeout: timeout });
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
-        // when running z3 does fail
+        // when running lang does fail
         error = result.stderr.length > 0 ? result.stderr.toString() : "";
-        // TODO: don't prepend everything with z3-, keep it generic
-        status = error === "" ? "z3-ran" : "z3-failed";
+
+        status = error === "" ? statusCodes.success : statusCodes.runError;
     } catch (e) {
-        error = `Z3 timed out after ${timeout}ms.`;
+        error = `${lang} timed out after ${timeout}ms.`;
         output = "";
 
-        // TODO: status code for z3 timeout
-        status = "z3-timed-out";
+        status = statusCodes.timeout;
     }
 
-    console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
+    console.log(`${lang} finished: ${hash}, ${status}, ${output}, ${error}`);
 
 
-    const errorToReport = checkZ3(input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+    const errorToReport = checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
 
     if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
         error = errorToReport;
-        status = "z3-runtime-error";
+        status = statusCodes.runtimeError;
     }
 
     const result = {
@@ -119,12 +128,13 @@ async function getOutput(input, lang, skipErr) {
 }
 
 
-export default function plugin(options) {
+export default function plugin() {
+
 
     // console.log({ options });
     const transformer = async (ast) => {
 
-        ensureDirSync('./solutions');
+        ensureDirSync(SOLUTIONS_DIR);
 
         const promises = [];
 
@@ -134,7 +144,7 @@ export default function plugin(options) {
             node.children.unshift(
                 {
                     type: 'import',
-                    value: "import Z3CodeBlock from '@site/src/components/TutorialComponents'"
+                    value: "import CustomCodeBlock from '@site/src/components/TutorialComponents'"
                 }
             )
         });
@@ -145,29 +155,54 @@ export default function plugin(options) {
             const skipRegex = new RegExp(/(no-build)|(ignore-errors)/g);
             const skipErr = meta && meta.match(skipRegex) !== null;
 
-            if (lang !== 'z3') {
-                return;
+            for (const langConfig of languageConfig.languages) {
+
+                const label = langConfig.label;
+                const highlight = langConfig.highlight;
+
+                if (lang !== label) {
+                    continue; // onto the next lang config available until we are out
+                }
+
+                if (!langConfig.buildConfig) {
+                    // there is no runtime configured,
+                    // so just add the syntax highlighting
+
+                    parent.children.splice(
+                        index,
+                        1,
+                        {
+                            type: 'code',
+                            lang: highlight,
+                            value: value,
+                        }
+                    );
+                    // console.log(`no build config for ${lang}`);
+                    // console.log(`${highlight} syntax highlighting added for input: ${value}`);
+                    continue;
+                }
+
+                promises.push(async () => {
+                    // console.log(`num promises: ${promises.length}; `);
+                    const buildConfig = langConfig.buildConfig;
+                    const result = await getOutput(buildConfig, value, lang, skipErr);
+
+                    // console.log({ node, index, parent });
+
+                    const val = JSON.stringify({ lang: lang, statusCodes: buildConfig.statusCodes, code: value, result: result });
+                    parent.children.splice(
+                        index,
+                        1,
+                        {
+                            type: 'jsx',
+                            // TODO: encode the source into jsx tree to avoid XSS?
+                            // TODO: create a generic <CodeBlock and pass lang={lang} />
+                            // TODO: pass syntax highlighting to CodeBlock
+                            value: `<CustomCodeBlock input={${val}} />`
+                        }
+                    )
+                });
             }
-
-            // TODO: update `getOutput` according to Kevin's example
-            promises.push(async () => {
-                // console.log(`num promises: ${promises.length}; `);
-                const result = await getOutput(value, lang, skipErr);
-
-                // console.log({ node, index, parent });
-
-                const val = JSON.stringify({ code: value, result: result });
-                parent.children.splice(
-                    index,
-                    1,
-                    {
-                        type: 'jsx',
-                        // TODO: encode the source into jsx tree to avoid XSS?
-                        // TODO: create a generic <CodeBlock and pass lang={lang} />
-                        value: `<Z3CodeBlock input={${val}} />`
-                    }
-                )
-            })
 
         });
 
@@ -175,6 +210,7 @@ export default function plugin(options) {
             // need to run sync according to Kevin
             await p();
             // console.log(`num promises: ${promises.length}`);
+
         }
     };
     return transformer;

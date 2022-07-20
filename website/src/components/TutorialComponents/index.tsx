@@ -4,10 +4,17 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { type Props } from "@theme/CodeBlock";
 import { usePrismTheme } from '@docusaurus/theme-common';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import runZ3Web from './runZ3Web';
 import { Language } from 'prism-react-renderer';
 import liveCodeBlockStyles from '@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css';
 import styles from './styles.module.css';
+
+// [CONFIG HERE] custom language run process (client side) imports
+import runZ3Web from './runZ3Web';
+
+// [CONFIG HERE] language-process mapping
+const clientConfig = {
+  'z3': runZ3Web,
+}
 
 interface MyProps extends Props {
   readonly id: string;
@@ -35,8 +42,8 @@ function RunButton({ onClick, runFinished }) {
 }
 
 
-function Output({ result, codeChanged }) {
-  const success = result.status === "z3-ran";
+function Output({ result, codeChanged, statusCodes }) {
+  const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
   return (
     <div>
@@ -52,7 +59,7 @@ function Output({ result, codeChanged }) {
   );
 }
 
-function Z3Editor(props: MyProps) {
+function CustomCodeEditor(props: MyProps) {
 
   const { id, input, language, showLineNumbers, editable, onChange } = props;
 
@@ -87,8 +94,9 @@ function Z3Editor(props: MyProps) {
 }
 
 
-export default function Z3CodeBlock({ input }) {
-  const { code, result } = input;
+export default function CustomCodeBlock({ input }) {
+
+  const { lang, statusCodes, code, result } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -112,30 +120,32 @@ export default function Z3CodeBlock({ input }) {
       // TODO: only load z3 when needed
       const newResult = { ...result };
       let errorMsg;
+
+      const runProcess = clientConfig[lang];
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-      runZ3Web(currCode).then((res) => {
+      runProcess(currCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
           const errRegex = new RegExp(/(\(error)|(unsupported)/g);
           const hasError = result.output.match(errRegex);
           newResult.output = hasError ? '' : result.output;
           newResult.error = hasError ? result.output : '';
-          newResult.status = hasError ? 'z3-runtime-error' : 'z3-ran';
+          newResult.status = hasError ? statusCodes.runtimeError : statusCodes.success;
         } else if (result.error) {
           newResult.error = result.error;
-          newResult.status = 'z3-failed';
+          newResult.status = statusCodes.runError;
         } else {
           // both output and error are empty, which means we have a bug
-          errorMsg = `runZ3Web returned no output or error with input:\n${currCode}`
+          errorMsg = `${lang}-web returned no output or error with input:\n${currCode}`
           newResult.error = errorMsg
           newResult.status = 'buggy-code';
           throw new Error(errorMsg);
         }
       }).catch((error) => {
-        // runZ3web fails
-        errorMsg = `runZ3Web failed with input:\n${currCode}\n\nerror:\n${error}`;
+        // runProcess fails
+        errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
         newResult.error = errorMsg;
-        newResult.status = 'runZ3Web-failed';
+        newResult.status = `${lang}-web-failed`;
         throw new Error(errorMsg);
       }).finally(() => {
         setOutput(newResult);
@@ -155,7 +165,7 @@ export default function Z3CodeBlock({ input }) {
     <div>
       {outputRendered ? <div /> : <OutputToggle onClick={onDidClickOutputToggle} />}
       {outputRendered ? <RunButton onClick={onDidClickRun} runFinished={runFinished}/> : <div />}
-      <Z3Editor
+      <CustomCodeEditor
         children={inputNode}
         input={code}
         id={result.hash}
@@ -164,7 +174,7 @@ export default function Z3CodeBlock({ input }) {
         editable={outputRendered}
         language={"lisp" as Language}
       />
-      {outputRendered ? <Output codeChanged={codeChanged} result={output} /> : <div />}
+      {outputRendered ? <Output codeChanged={codeChanged} result={output} statusCodes={statusCodes} /> : <div />}
     </div>
   );
 }

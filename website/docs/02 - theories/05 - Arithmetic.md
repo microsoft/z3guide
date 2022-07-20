@@ -54,6 +54,17 @@ Real constants should contain a decimal point. Unlike most programming languages
 (get-model)
 ```
 
+Some operators are chainable. This includes comparison operators such as `<` and `<=`. 
+
+```z3
+(declare-const a Int)
+(declare-const b Int)
+(declare-const c Int)
+(assert (< a b c))
+(check-sat)
+(get-model)
+```
+
 ## Non-linear arithmetic
 
 
@@ -68,7 +79,7 @@ We say a formula is nonlinear if it contains expressions of the form (* t s) whe
 (echo "Z3 does not always find solutions to non-linear problems")
 (declare-const b Real)
 (declare-const c Real)
-(assert (= (+ (* b b b) (* b c)) 3.0))
+(assert (= (+ (* b b b) (sin (* b c))) 7))
 (check-sat)
 
 (echo "yet it can show unsatisfiabiltiy for some nontrivial nonlinear problems...")
@@ -81,7 +92,7 @@ We say a formula is nonlinear if it contains expressions of the form (* t s) whe
 (check-sat)
 
 (reset)
-(echo "When presented only non-linear constraints over reals, Z3 uses a specialized complete solver")
+(echo "When presented only non-linear polynomial constraints over reals, Z3 uses a specialized complete solver")
 (declare-const b Real)
 (declare-const c Real)
 (assert (= (+ (* b b b) (* b c)) 3.0))

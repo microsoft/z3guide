@@ -26,7 +26,7 @@ function checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr) 
     if (hasError !== null) {
         throw new Error(
             `\n******************************************
-Z3 (version ${langVersion}) Runtime Error
+${lang} (version ${langVersion}) Runtime Error
 
 - Snippet: 
 ${input}
@@ -43,9 +43,8 @@ ${hash}
 }
 
 async function getOutput(config, input, lang, skipErr) {
-    // const timeout = 30000; // TODO move this into config
 
-    const {timeout, langVersion, statusCodes} = config;
+    const {timeout, langVersion, processToExecute, statusCodes} = config;
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -85,7 +84,7 @@ async function getOutput(config, input, lang, skipErr) {
     writeJsonSync(pathIn, inputObj);
 
     try {
-        let result = spawnSync('node', ['./src/remark/run-z3.js', pathIn], { timeout: timeout });
+        let result = spawnSync('node', [processToExecute, pathIn], { timeout: timeout });
         // TODO: runtime errors are also written to stdout, because z3 does not throw an error
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
         // when running z3 does fail
@@ -93,13 +92,13 @@ async function getOutput(config, input, lang, skipErr) {
 
         status = error === "" ? statusCodes.success : statusCodes.runError;
     } catch (e) {
-        error = `Z3 timed out after ${timeout}ms.`;
+        error = `${lang} timed out after ${timeout}ms.`;
         output = "";
 
         status = statusCodes.timeout;
     }
 
-    console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);
+    console.log(`${lang} finished: ${hash}, ${status}, ${output}, ${error}`);
 
 
     const errorToReport = checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown

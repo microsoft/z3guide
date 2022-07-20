@@ -42,8 +42,8 @@ ${hash}
     return "";
 }
 
-async function getOutput(input, lang, skipErr) {
-    const timeout = 30000; // TODO move this into config
+async function getOutput(timeout, input, lang, skipErr) {
+    // const timeout = 30000; // TODO move this into config
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -64,7 +64,7 @@ async function getOutput(input, lang, skipErr) {
     const errRegex = new RegExp(/(\(error)|(unsupported)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        // console.log(`cache hit ${hash}`)
+        console.log(`cache hit ${hash}`)
         const errorToReport = checkRuntimeError(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
@@ -167,16 +167,6 @@ export default function plugin() {
                     // there is no runtime configured,
                     // so just add the syntax highlighting
 
-                    const newChildren = this.parse(node.value).children;
-
-                    // Replace the mdx code block by its content, parsed
-                    // parent.children.splice(
-                    //     parent.children.indexOf(node),
-                    //     1,
-                    //     ...newChildren,
-                    // );
-
-                    // const newValue = value.replace(/\n/g, '<br/>');
                     parent.children.splice(
                         index,
                         1,
@@ -186,14 +176,15 @@ export default function plugin() {
                             value: value,
                         }
                     );
-                    console.log(`no build config for ${lang}`);
-                    console.log(`${highlight} syntax highlighting added for input: ${value}`);
+                    // console.log(`no build config for ${lang}`);
+                    // console.log(`${highlight} syntax highlighting added for input: ${value}`);
                     continue;
                 }
 
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
-                    const result = await getOutput(value, lang, skipErr);
+                    const timeout = langConfig.buildConfig.timeout;
+                    const result = await getOutput(timeout, value, lang, skipErr);
 
                     // console.log({ node, index, parent });
 

@@ -45,7 +45,7 @@ ${hash}
 async function getOutput(config, input, lang, skipErr) {
     // const timeout = 30000; // TODO move this into config
 
-    const {timeout, langVersion} = config;
+    const {timeout, langVersion, statusCodes} = config;
     const hashObj = createHash('sha1');
 
     // TODO: add rise4fun engine version to the hash
@@ -70,7 +70,7 @@ async function getOutput(config, input, lang, skipErr) {
         const errorToReport = checkRuntimeError(langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
-            data.status = "z3-runtime-error";
+            data.status = statusCodes.runtimeError;
             writeJsonSync(pathOut, data); // update old cache
         }
         return data;
@@ -90,14 +90,13 @@ async function getOutput(config, input, lang, skipErr) {
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
         // when running z3 does fail
         error = result.stderr.length > 0 ? result.stderr.toString() : "";
-        // TODO: don't prepend everything with z3-, keep it generic
-        status = error === "" ? "z3-ran" : "z3-failed";
+
+        status = error === "" ? statusCodes.success : statusCodes.runError;
     } catch (e) {
         error = `Z3 timed out after ${timeout}ms.`;
         output = "";
 
-        // TODO: status code for z3 timeout
-        status = "z3-timed-out";
+        status = statusCodes.timeout;
     }
 
     console.log(`z3 finished: ${hash}, ${status}, ${output}, ${error}`);

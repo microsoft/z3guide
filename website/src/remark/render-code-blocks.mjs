@@ -5,6 +5,7 @@ import fs_extra_pkg from 'fs-extra';
 import { spawnSync } from 'child_process';
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
 import { createHash } from 'crypto';
+
 import languageConfig from '../../language.config.js';
 
 import langpkg from 'z3-solver/package.json' assert { type: 'json' };
@@ -63,7 +64,7 @@ async function getOutput(input, lang, skipErr) {
     const errRegex = new RegExp(/(\(error)|(unsupported)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        console.log(`cache hit ${hash}`)
+        // console.log(`cache hit ${hash}`)
         const errorToReport = checkRuntimeError(input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
@@ -122,11 +123,10 @@ async function getOutput(input, lang, skipErr) {
 }
 
 
-export default function plugin(options) {
+export default function plugin() {
 
     // console.log({ options });
     const transformer = async (ast) => {
-
 
         ensureDirSync(SOLUTIONS_DIR);
 
@@ -138,6 +138,11 @@ export default function plugin(options) {
             node.children.unshift(
                 {
                     type: 'import',
+                    value: "import CodeBlock from '@theme/CodeBlock'"
+                },
+                {
+                    type: 'import',
+                    // TODO: rename `Z3CodeBlock`
                     value: "import Z3CodeBlock from '@site/src/components/TutorialComponents'"
                 }
             )
@@ -149,29 +154,63 @@ export default function plugin(options) {
             const skipRegex = new RegExp(/(no-build)|(ignore-errors)/g);
             const skipErr = meta && meta.match(skipRegex) !== null;
 
-            if (lang !== 'z3') {
-                return;
+            for (const langConfig of languageConfig.languages) {
+
+                const label = langConfig.label;
+                const highlight = langConfig.highlight;
+
+                if (lang !== label) {
+                    continue; // onto the next lang config available until we are out
+                }
+
+                if (!langConfig.buildConfig) {
+                    // there is no runtime configured,
+                    // so just add the syntax highlighting
+
+                    const newChildren = this.parse(node.value).children;
+
+                    // Replace the mdx code block by its content, parsed
+                    // parent.children.splice(
+                    //     parent.children.indexOf(node),
+                    //     1,
+                    //     ...newChildren,
+                    // );
+
+                    // const newValue = value.replace(/\n/g, '<br/>');
+                    parent.children.splice(
+                        index,
+                        1,
+                        {
+                            type: 'code',
+                            lang: highlight,
+                            value: value,
+                        }
+                    );
+                    console.log(`no build config for ${lang}`);
+                    console.log(`${highlight} syntax highlighting added for input: ${value}`);
+                    continue;
+                }
+
+                promises.push(async () => {
+                    // console.log(`num promises: ${promises.length}; `);
+                    const result = await getOutput(value, lang, skipErr);
+
+                    // console.log({ node, index, parent });
+
+                    const val = JSON.stringify({ code: value, result: result });
+                    parent.children.splice(
+                        index,
+                        1,
+                        {
+                            type: 'jsx',
+                            // TODO: encode the source into jsx tree to avoid XSS?
+                            // TODO: create a generic <CodeBlock and pass lang={lang} />
+                            // TODO: pass syntax highlighting to CodeBlock
+                            value: `<Z3CodeBlock input={${val}} />`
+                        }
+                    )
+                });
             }
-
-            // TODO: update `getOutput` according to Kevin's example
-            promises.push(async () => {
-                // console.log(`num promises: ${promises.length}; `);
-                const result = await getOutput(value, lang, skipErr);
-
-                // console.log({ node, index, parent });
-
-                const val = JSON.stringify({ code: value, result: result });
-                parent.children.splice(
-                    index,
-                    1,
-                    {
-                        type: 'jsx',
-                        // TODO: encode the source into jsx tree to avoid XSS?
-                        // TODO: create a generic <CodeBlock and pass lang={lang} />
-                        value: `<Z3CodeBlock input={${val}} />`
-                    }
-                )
-            })
 
         });
 

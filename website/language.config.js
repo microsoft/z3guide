@@ -6,7 +6,7 @@ module.exports = {
         {
             name: 'Z3', // your language name
             label: 'z3', // label for the language in markdown code blocks
-            prism: 'lisp', // syntax highlighting provided by prism for the language
+            highlight: 'lisp', // syntax highlighting provided by prism for the language
             buildConfig: {
                 version: '1',
                 timeout: 30000, // timeout for execution of each code snippet in milliseconds during build
@@ -23,7 +23,7 @@ module.exports = {
         {
             name: 'Z3 JavaScript Binding',
             label: 'z3-js',
-            prism: 'javascript',
+            highlight: 'js',
         },
     ],
     solutionsDir: './solutions',

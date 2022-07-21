@@ -64,13 +64,13 @@ returns <tt>True</tt> if <tt>n</tt> is an application (declaration).
 
 ```python
 x = Int('x')
-print "is expression: ", is_expr(x)
+print ("is expression: ", is_expr(x))
 n = x + 1
-print "is application:", is_app(n)
-print "decl:          ", n.decl()
-print "num args:      ", n.num_args()
+print ("is application:", is_app(n))
+print ("decl:          ", n.decl())
+print ("num args:      ", n.num_args())
 for i in range(n.num_args()):
-    print "arg(", i, ") ->", n.arg(i)
+    print ("arg(", i, ") ->", n.arg(i))
 ```
 
 Declarations have names, they are retrieved using the method <tt>name()</tt>.
@@ -79,24 +79,24 @@ A (function) declaration has an arity, a domain and range sorts.
 ```python
 x   = Int('x')
 x_d = x.decl()
-print "is_expr(x_d):     ", is_expr(x_d)
-print "is_func_decl(x_d):", is_func_decl(x_d)
-print "x_d.name():       ", x_d.name()
-print "x_d.range():      ", x_d.range()
-print "x_d.arity():      ", x_d.arity()
+print ("is_expr(x_d):     ", is_expr(x_d))
+print ("is_func_decl(x_d):", is_func_decl(x_d))
+print ("x_d.name():       ", x_d.name())
+print ("x_d.range():      ", x_d.range())
+print ("x_d.arity():      ", x_d.arity())
 # x_d() creates an application with 0 arguments using x_d.
-print "eq(x_d(), x):     ", eq(x_d(), x)
-print "\n"
+print ("eq(x_d(), x):     ", eq(x_d(), x))
+print ("\n")
 # f is a function from (Int, Real) to Bool
 f   = Function('f', IntSort(), RealSort(), BoolSort())
-print "f.name():         ", f.name()
+print ("f.name():         ", f.name())
 print "f.range():        ", f.range()
-print "f.arity():        ", f.arity()
+print ("f.arity():        ", f.arity())
 for i in range(f.arity()):
-    print "domain(", i, "): ", f.domain(i)
+    print ("domain(", i, "): ", f.domain(i))
 # f(x, x) creates an application with 2 arguments using f.
-print f(x, x)
-print eq(f(x, x).decl(), f)
+print (f(x, x))
+print (eq(f(x, x).decl(), f))
 ```
 
 
@@ -106,8 +106,8 @@ can be found in the file <tt>z3consts.py</tt> (<tt>z3_api.h</tt>) in the Z3 dist
 
 ```python
 x, y = Ints('x y')
-print (x + y).decl().kind() == Z3_OP_ADD
-print (x + y).decl().kind() == Z3_OP_SUB
+print ((x + y).decl().kind() == Z3_OP_ADD)
+print ((x + y).decl().kind() == Z3_OP_SUB)
 ```
 
 
@@ -118,9 +118,9 @@ x, y = Ints('x y')
 f    = Function('f', IntSort(), IntSort(), IntSort())
 g    = Function('g', IntSort(), IntSort())
 n    = f(f(g(x), g(g(x))), g(g(y)))
-print n
+print (n)
 # substitute g(g(x)) with y and g(y) with x + 1
-print substitute(n, (g(g(x)), y), (g(y), x + 1))
+print (substitute(n, (g(g(x)), y), (g(y), x + 1)))
 ```
 
 The function <tt>Const(name, sort)</tt> declares a constant (aka variable) of the given sort.
@@ -129,10 +129,10 @@ For example, the functions <tt>Int(name)</tt> and <tt>Real(name)</tt> are shorth
 
 ```python
 x = Const('x', IntSort())
-print eq(x, Int('x'))
+print (eq(x, Int('x')))
 
 a, b = Consts('a b', BoolSort())
-print And(a, b)
+print (And(a, b))
 ```
 
 ## Arrays
@@ -151,10 +151,10 @@ I = IntSort()
 # A is an array from integer to integer
 A = Array('A', I, I)
 x = Int('x')
-print A[x]
-print Select(A, x)
-print Store(A, x, 10)
-print simplify(Select(Store(A, 2, x+1), 2))
+print (A[x])
+print (Select(A, x))
+print (Store(A, x, 10))
+print (simplify(Select(Store(A, 2, x+1), 2)))
 ```
 
 
@@ -183,12 +183,12 @@ It is usually much more efficient to create different variables using list compr
 # 1. Bad solution
 X = Array('x', IntSort(), IntSort())
 # Example using the array
-print X[0] + X[1] + X[2] >=0
+print (X[0] + X[1] + X[2] >=0)
 
 # 2. More efficient solution
 X = IntVector('x', 3)
-print X[0] + X[1] + X[2] >= 0
-print Sum(X) >= 0
+print (X[0] + X[1] + X[2] >= 0)
+print (Sum(X) >= 0)
 ```
 
 ## Select and Store
@@ -277,14 +277,14 @@ car  = List.car
 cdr  = List.cdr
 nil  = List.nil
 # cons, car and cdr are function declarations, and nil a constant
-print is_func_decl(cons)
-print is_expr(nil)
+print (is_func_decl(cons))
+print (is_expr(nil))
 
 l1 = cons(10, cons(20, nil))
-print l1
-print simplify(cdr(l1))
-print simplify(car(l1))
-print simplify(l1 == nil)
+print (l1)
+print (simplify(cdr(l1)))
+print (simplify(car(l1)))
+print (simplify(l1 == nil))
 ```
 
 
@@ -303,11 +303,11 @@ RealList    = DeclareList(RealSort())
 IntListList = DeclareList(IntList)
 
 l1 = IntList.cons(10, IntList.nil)
-print l1
-print IntListList.cons(l1, IntListList.cons(l1, IntListList.nil))
-print RealList.cons("1/3", RealList.nil)
+print (l1)
+print (IntListList.cons(l1, IntListList.cons(l1, IntListList.nil)))
+print (RealList.cons("1/3", RealList.nil))
 
-print l1.sort()
+print (l1.sort())
 ```
 
 The example above demonstrates that Z3 supports operator overloading.
@@ -330,9 +330,9 @@ Color.declare('green')
 Color.declare('blue')
 Color = Color.create()
 
-print is_expr(Color.green)
-print Color.green == Color.blue
-print simplify(Color.green == Color.blue)
+print (is_expr(Color.green))
+print (Color.green == Color.blue)
+print (simplify(Color.green == Color.blue))
 
 # Let c be a constant of sort Color
 c = Const('c', Color)
@@ -348,8 +348,8 @@ Z3Py also provides the following shorthand for declaring enumeration sorts.
 ```python
 Color, (red, green, blue) = EnumSort('Color', ('red', 'green', 'blue'))
 
-print green == blue
-print simplify(green == blue)
+print (green == blue)
+print (simplify(green == blue))
 
 c = Const('c', Color)
 solve(c != green, c != blue)
@@ -373,8 +373,8 @@ Tree, TreeList = CreateDatatypes(Tree, TreeList)
 t1  = Tree.leaf(10)
 tl1 = TreeList.cons(t1, TreeList.nil)
 t2  = Tree.node(tl1, TreeList.nil)
-print t2
-print simplify(Tree.val(t1))
+print (t2)
+print (simplify(Tree.val(t1)))
 
 t1, t2, t3 = Consts('t1 t2 t3', TreeList)
 
@@ -408,11 +408,11 @@ f    = Function('f', A, A)
 s    = Solver()
 s.add(f(f(x)) == x, f(x) == y, x != y)
 
-print s.check()
+print (s.check())
 m = s.model()
-print m
-print "interpretation assigned to A:"
-print m[A]
+print (m)
+print ("interpretation assigned to A:")
+print (m[A])
 ```
 
 
@@ -435,10 +435,10 @@ no decision procedure for first-order logic).
 f = Function('f', IntSort(), IntSort(), IntSort())
 x, y = Ints('x y')
 f = ForAll([x, y], f(x, y) == 0)
-print f.body()
+print (f.body())
 v1 = f.body().arg(0).arg(0)
-print v1
-print eq(v1, Var(1, IntSort()))
+print (v1)
+print (eq(v1, Var(1, IntSort())))
 ```
 
 
@@ -467,10 +467,10 @@ with the given index and sort.
 f = Function('f', IntSort(), IntSort(), IntSort())
 x, y = Ints('x y')
 f = ForAll([x, y], f(x, y) == 0)
-print f.body()
+print (f.body())
 v1 = f.body().arg(0).arg(0)
-print v1
-print eq(v1, Var(1, IntSort()))
+print (v1)
+print (eq(v1, Var(1, IntSort())))
 ```
 
 ### Modeling with Quantifiers
@@ -503,12 +503,12 @@ axioms = [ ForAll(x, subtype(x, x)),
            ]
 s = Solver()
 s.add(axioms)
-print s
-print s.check()
-print "Interpretation for Type:"
-print s.model()[Type]
-print "Model:"
-print s.model()
+print (s)
+print (s.check())
+print ("Interpretation for Type:")
+print (s.model()[Type])
+print ("Model:")
+print (s.model())
 ```
 
 
@@ -546,8 +546,8 @@ s.add( ForAll(x, f(g(x)) == x, patterns = [f(g(x))]),
        a != b )
 
 # Display solver state using internal format
-print s.sexpr()
-print s.check()
+print (s.sexpr())
+print (s.check())
 ```
 
 When the more permissive pattern <tt>g(x)</tt> is used. Z3 proves the formula
@@ -570,8 +570,8 @@ s.add( ForAll(x, f(g(x)) == x, patterns = [g(x)]),
        a != b )
 
 # Display solver state using internal format
-print s.sexpr()
-print s.check()
+print (s.sexpr())
+print (s.check())
 ```
 
 
@@ -617,7 +617,7 @@ s.add( ForAll(x, f(g(x)) == x, patterns = [f(g(x))]),
        b == c,
        f(a) != c )
 
-print s.check()
+print (s.check())
 ```
 
 
@@ -656,7 +656,7 @@ s.add(a1 != a2,
       ForAll([x, y], Implies(f(x) == f(y), x == y),
              patterns=[MultiPattern(f(x), f(y))])
       )
-print s.check()
+print (s.check())
 ```
 
 
@@ -681,7 +681,7 @@ s.add(a1 != a2,
       f(a2) == b,
       ForAll(x, finv(f(x)) == x)
       )
-print s.check()
+print (s.check())
 ```
 
 ### Other attributes
@@ -704,10 +704,10 @@ s1 = Solver()
 s1.add(x > 10, y > 10)
 s2 = Solver()
 # solver s2 is empty
-print s2
+print (s2)
 # copy assertions from s1 to s2
 s2.add(s1.assertions())
-print s2
+print (s2)
 ```
 
 ## Unsat Cores and Soft Constraints
@@ -729,8 +729,8 @@ s.add(Implies(p1, x > 10),
       Implies(p3, y > 0))
 print s
 # Check satisfiability assuming p1, p2, p3 are true
-print s.check(p1, p2, p3)
-print s.unsat_core()
+print (s.check(p1, p2, p3))
+print (s.unsat_core())
 
 # Try again retracting p2
 print s.check(p1, p3)

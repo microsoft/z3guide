@@ -15,12 +15,12 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <div className="row">
+          <div className="row" id="tryinsomthin">
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
               to="/docs/logic/intro">
-              Z3 Tutorial
-            </Link>
+              Z3 Tutorial 
+            </Link> 
             <></>
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}

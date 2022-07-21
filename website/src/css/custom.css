@@ -32,3 +32,10 @@
   --ifm-color-primary-lightest: #4fd5e1;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+#tryinsomthin{
+  padding-top: 50px;
+  padding-right: 30px;
+  padding-bottom: 50px;
+  padding-left: 80px;
+}

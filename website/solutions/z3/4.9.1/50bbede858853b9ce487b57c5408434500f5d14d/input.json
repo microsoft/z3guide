@@ -1,0 +1,1 @@
+{"input":"(declare-const a Float32)\n(declare-const b Float32)\n(declare-const c Float32)\n\n(assert (not (= (fp.add roundNearestTiesToEven a (fp.add roundNearestTiesToEven b c))\n\t        (fp.add roundNearestTiesToEven (fp.add roundNearestTiesToEven a b) c))))\n(check-sat)\n(get-model)"}

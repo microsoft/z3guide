@@ -22,3 +22,18 @@ sidebar_position: 7
 (check-sat)
 (get-model)
 ```
+
+Floating point operations are defined modulo rounding modes.
+Many algebraic properties of bit-vectors, integers and reals don't carry over to floating points.
+For example, addition is not associative.
+
+```z3
+(declare-const a Float32)
+(declare-const b Float32)
+(declare-const c Float32)
+
+(assert (not (= (fp.add roundNearestTiesToEven a (fp.add roundNearestTiesToEven b c))
+	        (fp.add roundNearestTiesToEven (fp.add roundNearestTiesToEven a b) c))))
+(check-sat)
+(get-model)
+```

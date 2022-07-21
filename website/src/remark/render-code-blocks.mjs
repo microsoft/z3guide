@@ -189,7 +189,7 @@ export default function plugin() {
 
                     // console.log({ node, index, parent });
 
-                    const val = JSON.stringify({ lang: lang, statusCodes: buildConfig.statusCodes, code: value, result: result });
+                    const val = JSON.stringify({ lang: lang, highlight: highlight, statusCodes: buildConfig.statusCodes, code: value, result: result });
                     parent.children.splice(
                         index,
                         1,

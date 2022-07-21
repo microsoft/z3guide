@@ -96,7 +96,7 @@ function CustomCodeEditor(props: MyProps) {
 
 export default function CustomCodeBlock({ input }) {
 
-  const { lang, statusCodes, code, result } = input;
+  const { lang, highlight, statusCodes, code, result } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -172,7 +172,7 @@ export default function CustomCodeBlock({ input }) {
         showLineNumbers={true}
         onChange={onDidChangeCode}
         editable={outputRendered}
-        language={"lisp" as Language}
+        language={highlight as Language}
       />
       {outputRendered ? <Output codeChanged={codeChanged} result={output} statusCodes={statusCodes} /> : <div />}
     </div>

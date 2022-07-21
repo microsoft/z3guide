@@ -5,19 +5,20 @@ sidebar_position: 1
 
 # Z3 API in Python
 
-This tutorial demonstrates the main capabilities of Z3Py: the Z3 API in [Python](http://www.python.org). 
-No Python background is needed to read this tutorial. However, it is useful to learn Python (a fun language!) at some point, and 
-there are many excellent free resources for doing so [Python Tutorial](http://docs.python.org/tutorial/).
+This tutorial demonstrates the main capabilities of Z3Py: the Z3 API in [Python](http://www.python.org). There are many benefits to using, Z3Py. First, it is much more familiar to individuals who have seen programming languages before, but have never seen functional languages like Z3.  
+No Python background is needed to read and following along with this tutorial. However, it is useful to learn Python (a fun language!) at some point for other purposes. There are many excellent free resources for doing so [Python Tutorial](http://docs.python.org/tutorial/).
 
+:::info
 The Z3 distribution also contains the **C**, **C++**, **.Net**, **Java**, **Julia**, **JS** and **OCaml** APIs. 
 The source code of Z3Py is available in the Z3 distribution, feel free to modify it to meet your needs. 
+:::
 
 Be sure to follow along with the examples by clicking the **load in editor** link in the
 corner. See what Z3Py says, try your own scripts, and experiment!
 
 ### Using Z3Py Locally
 
-The Python bindings are available from pypi. You can install them using 
+The Python bindings are available from pypi. You can install them using the following line of code:
 
 ```
     pip install z3-solver
@@ -35,7 +36,12 @@ solve(x > 2, y < 10, x + 2*y == 7)
 
 The function `Int('x')` creates an integer variable in Z3 named `x`.
 The `solve` function solves a system of constraints. The example above uses
-two variables `x` and `y`, and three constraints.
+two variables `x` and `y`, and three constraints:
+
+> x must be greater than 2 
+> y must be less than 10
+> when x is added to twice the value of y, it must equal 7
+
 Z3Py like Python uses `=` for assignment. The operators `<`, `<=`, `>`, `>=`, `==` and `!=` for comparison.
 In the example above, the expression `x + 2*y  == 7` is a Z3 constraint.
 Z3 can solve and crunch formulas.

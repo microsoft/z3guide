@@ -32,7 +32,7 @@ async function runZ3File(inputFile) {
 const inputFile = process.argv[2];
 
 if (!inputFile) {
-    throw new Error('Usage: node run-z3.js <input_file>');
+    throw new Error('Usage: node run-z3-smtlib.js <input_file>');
 }
 
 (async () => await runZ3File(inputFile))();

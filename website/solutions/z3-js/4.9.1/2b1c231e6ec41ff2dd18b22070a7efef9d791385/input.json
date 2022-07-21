@@ -1,0 +1,1 @@
+{"input":"const x = Z3.Int.const('x');\n\nconst solver = new Z3.Solver();\nsolver.add(Z3.And(x.ge(0), x.le(9)));\nawait solver.check();"}

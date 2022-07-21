@@ -68,10 +68,11 @@ async function getOutput(config, input, lang, skipErr) {
     const pathOut = `${dir}/output.json`;
     // console.log(hash);
 
+    // TODO: error handling for z3-js etc?
     const errRegex = new RegExp(/(\(error)|(unsupported)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        console.log(`cache hit ${hash}`)
+        // console.log(`cache hit ${hash}`)
         const errorToReport = checkRuntimeError(langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
@@ -80,7 +81,6 @@ async function getOutput(config, input, lang, skipErr) {
         }
         return data;
     }
-
 
     let output = "";
     let error = "";

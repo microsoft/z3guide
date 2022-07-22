@@ -26,7 +26,7 @@ solve(x > 2, y < 10, x + 2*y == 7)
 ```z3-js
 const x = Z3.Int.const('x')
 const y = Z3.Int.const('y')
-Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7))
+Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)).sexpr()
 ```
 
 ```z3-python
@@ -38,9 +38,9 @@ print (simplify(And(x + 1 >= 3, x**2 + x**2 + y**2 + 2 >= 5)))
 ```
 
 ```z3-js
-x = Z3.Int('x')
-y = Z3.Int('y')
-Z3.simplify(x.add(y).add(x.mul(2)).add(3))
+x = Z3.Int.const('x')
+y = Z3.Int.const('y')
+Z3.simplify(x.add(y).add(x.mul(2)).add(3)).sexpr()
 ```
 
 

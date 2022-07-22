@@ -182,6 +182,7 @@ export default function plugin() {
                     continue;
                 }
 
+
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
                     const buildConfig = langConfig.buildConfig;
@@ -210,7 +211,6 @@ export default function plugin() {
             // need to run sync according to Kevin
             await p();
             // console.log(`num promises: ${promises.length}`);
-
         }
     };
     return transformer;

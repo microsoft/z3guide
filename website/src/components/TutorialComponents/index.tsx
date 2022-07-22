@@ -128,7 +128,7 @@ export default function CustomCodeBlock({ input }) {
       runProcess(currCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
-          const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror)/g);
+          const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror:)/g);
           const hasError = result.output.match(errRegex);
           newResult.output = hasError ? '' : result.output;
           newResult.error = hasError ? result.output : '';

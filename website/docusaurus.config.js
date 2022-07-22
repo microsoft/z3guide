@@ -88,50 +88,50 @@ async function createConfig() {
       ({
         navbar: {
           title: 'Z3 Documentation',
-          // items: [
-          //   {
-          //     type: 'doc',
-          //     docId: 'logic/intro',
-          //     position: 'left',
-          //     label: 'Logic',
-          //   },
-          //   {
-          //     type: 'doc',
-          //     docId: 'theories/Arithmetic',
-          //     position: 'left',
-          //     label: 'Theories',
-          //   },
-          //   {
-          //     type: 'doc',
-          //     docId: 'strategies/intro',
-          //     position: 'left',
-          //     label: 'Strategies',
-          //   },
-          //   {
-          //     type: 'doc',
-          //     docId: 'optimization/intro',
-          //     position: 'left',
-          //     label: 'Optimization',
-          //   },
-          //   {
-          //     type: 'doc',
-          //     docId: 'fixedpoints/intro',
-          //     position: 'left',
-          //     label: 'Fixedpoints',
-          //   },
-          //   {
-          //     type: 'doc',
-          //     docId: 'playground/playground',
-          //     position: 'left',
-          //     label: 'Playground',
-          //   },
-          //   // link to the github repo of this site
-          //   {
-          //     href: 'https://github.com/microsoft/z3guide',
-          //     label: 'GitHub',
-          //     position: 'right',
-          //   },
-          // ],
+          items: [
+            {
+              type: 'doc',
+              docId: 'logic/intro',
+              position: 'left',
+              label: 'Logic',
+            },
+            {
+              type: 'doc',
+              docId: 'theories/Arithmetic',
+              position: 'left',
+              label: 'Theories',
+            },
+            {
+              type: 'doc',
+              docId: 'strategies/intro',
+              position: 'left',
+              label: 'Strategies',
+            },
+            {
+              type: 'doc',
+              docId: 'optimization/intro',
+              position: 'left',
+              label: 'Optimization',
+            },
+            {
+              type: 'doc',
+              docId: 'fixedpoints/intro',
+              position: 'left',
+              label: 'Fixedpoints',
+            },
+            {
+              type: 'doc',
+              docId: 'playground/playground',
+              position: 'left',
+              label: 'Playground',
+            },
+            // link to the github repo of this site
+            {
+              href: 'https://github.com/microsoft/z3guide',
+              label: 'GitHub',
+              position: 'right',
+            },
+          ],
         },
         footer: {
           style: 'dark',

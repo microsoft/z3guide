@@ -37,7 +37,7 @@ print (simplify(x < y + x + 2))
 print (simplify(And(x + 1 >= 3, x**2 + x**2 + y**2 + 2 >= 5)))
 ```
 
-``z3-js
+```z3-js
 x = Z3.Int('x')
 y = Z3.Int('y')
 Z3.simplify(x.add(y).add(x.mul(2)).add(3))

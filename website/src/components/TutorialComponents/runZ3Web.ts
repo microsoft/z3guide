@@ -1,4 +1,3 @@
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 declare global {
     interface Window { z3Promise: any } // use any to escape typechecking
 }
@@ -44,7 +43,6 @@ export default async function runZ3Web(input: string): Promise<string> {
         error = e.message;
     } finally {
         Z3.del_context(ctx);
+        return JSON.stringify({ output: output, error: error });
     }
-
-    return JSON.stringify({ output: output, error: error });
 }

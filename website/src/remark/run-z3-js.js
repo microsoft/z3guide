@@ -10,7 +10,7 @@ async function runZ3File(inputFile) {
 
     // add `return ` to the beginning of the last line of the input
     // because we are wrapping the input inside an async function
-    const lines = originalInput.split('\n');
+    const lines = originalInput.trim().split('\n'); // remove extra whitespace first
     const lastLine = `return ${lines[lines.length - 1]}`;
     const withReturn = `${lines.slice(0, lines.length - 1).join('\n')}\n${lastLine}`;
 

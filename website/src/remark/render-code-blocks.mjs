@@ -69,7 +69,7 @@ async function getOutput(config, input, lang, skipErr) {
     // console.log(hash);
 
     // TODO: error handling for z3-js etc?
-    const errRegex = new RegExp(/(\(error)|(unsupported)/g);
+    const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         // console.log(`cache hit ${hash}`)

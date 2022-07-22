@@ -10,10 +10,12 @@ import styles from './styles.module.css';
 
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from './runZ3Web';
+import runZ3JSWeb from './runZ3JSWeb';
 
 // [CONFIG HERE] language-process mapping
 const clientConfig = {
   'z3': runZ3Web,
+  'z3-js': runZ3JSWeb,
 }
 
 interface MyProps extends Props {
@@ -126,7 +128,7 @@ export default function CustomCodeBlock({ input }) {
       runProcess(currCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
-          const errRegex = new RegExp(/(\(error)|(unsupported)/g);
+          const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror)/g);
           const hasError = result.output.match(errRegex);
           newResult.output = hasError ? '' : result.output;
           newResult.error = hasError ? result.output : '';

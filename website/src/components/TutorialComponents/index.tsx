@@ -80,7 +80,7 @@ function CustomCodeEditor(props: MyProps) {
           <LiveEditor
             disabled={!editable}
             key={String(isBrowser)}
-            className={`${liveCodeBlockStyles.playgroundEditor} line-numbers`}
+            className={liveCodeBlockStyles.playgroundEditor}
             onChange={onChange}
             language={language}
           />

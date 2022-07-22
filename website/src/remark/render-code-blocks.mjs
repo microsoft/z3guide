@@ -23,7 +23,7 @@ const languageConfig = await getLangConfig();
 const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
 
-function checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr) {
+function checkRuntimeError(lang, langVersion, input, output, hash, errRegex, skipErr) {
     if (skipErr) {
         return output;
     }
@@ -68,11 +68,12 @@ async function getOutput(config, input, lang, skipErr) {
     const pathOut = `${dir}/output.json`;
     // console.log(hash);
 
-    const errRegex = new RegExp(/(\(error)|(unsupported)/g);
+    // TODO: error handling for z3-js etc?
+    const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror:)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        console.log(`cache hit ${hash}`)
-        const errorToReport = checkRuntimeError(langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
+        // console.log(`cache hit ${hash}`)
+        const errorToReport = checkRuntimeError(lang, langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
             data.status = statusCodes.runtimeError;
@@ -80,7 +81,6 @@ async function getOutput(config, input, lang, skipErr) {
         }
         return data;
     }
-
 
     let output = "";
     let error = "";
@@ -182,6 +182,7 @@ export default function plugin() {
                     continue;
                 }
 
+
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
                     const buildConfig = langConfig.buildConfig;
@@ -189,7 +190,7 @@ export default function plugin() {
 
                     // console.log({ node, index, parent });
 
-                    const val = JSON.stringify({ lang: lang, statusCodes: buildConfig.statusCodes, code: value, result: result });
+                    const val = JSON.stringify({ lang: lang, highlight: highlight, statusCodes: buildConfig.statusCodes, code: value, result: result });
                     parent.children.splice(
                         index,
                         1,
@@ -210,7 +211,6 @@ export default function plugin() {
             // need to run sync according to Kevin
             await p();
             // console.log(`num promises: ${promises.length}`);
-
         }
     };
     return transformer;

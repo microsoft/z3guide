@@ -1,9 +1,9 @@
 ### Run Z3 in JS bindings
 
 ```z3-js
-const x = Int.const('x');
+const x = Z3.Int.const('x');
 
-const solver = new Solver();
-solver.add(And(x.ge(0), x.le(9)));
-console.log(await solver.check());
+const solver = new Z3.Solver();
+solver.add(Z3.And(x.ge(0), x.le(9)));
+await solver.check();
 ```

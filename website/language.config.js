@@ -11,7 +11,7 @@ async function createConfig() {
                     version: '1',
                     timeout: 30000, // timeout for execution of each code snippet in milliseconds during build
                     npmPackage: 'z3-solver', // npm package name for the language runtime, if any
-                    processToExecute: './src/remark/run-z3.js',
+                    processToExecute: './src/remark/run-z3-smtlib.js',
                     statusCodes: {
                         success: 'z3-ran',
                         timeout: 'z3-timed-out',
@@ -24,6 +24,18 @@ async function createConfig() {
                 name: 'Z3 JavaScript Bindings',
                 label: 'z3-js',
                 highlight: 'js',
+                buildConfig: {
+                    version: '1',
+                    timeout: 30000, // timeout for execution of each code snippet in milliseconds during build
+                    npmPackage: 'z3-solver', // npm package name for the language runtime, if any
+                    processToExecute: './src/remark/run-z3-js.js',
+                    statusCodes: {
+                        success: 'z3-ran',
+                        timeout: 'z3-timed-out',
+                        runError: 'z3-failed',
+                        runtimeError: 'z3-runtime-error',
+                    },
+                },
             },
         ],
         solutionsDir: './solutions',

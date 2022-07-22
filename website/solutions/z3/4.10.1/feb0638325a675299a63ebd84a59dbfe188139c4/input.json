@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\n(declare-const y Real)\n\n(assert (or (< x 0.0) (> x 0.0)))\n(assert (= x (+ y 1.0)))\n(assert (< y 0.0))\n\n(apply split-clause)"}

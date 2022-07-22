@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun y () Int\n    1)\n  (define-fun x () Int\n    0)\n  (define-fun a3 () Bool\n    (<= (+ y x) 0))\n  (define-fun a2 () Bool\n    (< x y))\n  (define-fun a1 () Bool\n    (> x 0))\n)\n(objectives\n ( 6)\n)\nfalse\ntrue\nfalse\n","error":"","status":"z3-ran","hash":"0c5e056a1cce530a015d21a8b5988a798946abe5"}

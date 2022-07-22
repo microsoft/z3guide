@@ -1,0 +1,1 @@
+{"input":"const x = Z3.Int.const('x')\nconst y = Z3.Int.const('y')\nsolve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7))"}

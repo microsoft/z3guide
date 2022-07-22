@@ -44,12 +44,13 @@ function RunButton({ onClick, runFinished }) {
 }
 
 
-function Output({ result, codeChanged, statusCodes }) {
+function Output({ result, msg, codeChanged, statusCodes }) {
   const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
+  const mark = codeChanged ? ' (outdated)' : ''
   return (
     <div>
-      <b>Output{codeChanged ? ' (outdated)' : ''}:</b>
+      <b>Output{msg ? ` ${msg}` : mark}:</b>
       <br />
       <pre className={codeChanged ? styles.outdated : ''}>
         {success ? "" : <span style={{ color: "red" }}><b>Error: </b><br /></span>}
@@ -110,6 +111,8 @@ export default function CustomCodeBlock({ input }) {
 
   const [output, setOutput] = useState(result);
 
+  const [outputMsg, setOutputMsg] = useState(undefined);
+
   const onDidClickOutputToggle = () => {
     setOutputRendered(!outputRendered);
   };
@@ -125,6 +128,8 @@ export default function CustomCodeBlock({ input }) {
 
       const runProcess = clientConfig[lang];
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
+
+      setOutputMsg('Updating... (If taking too long, refresh the page to abort and try running the snippet locally instead)')
       runProcess(currCode).then((res) => {
         const result = JSON.parse(res);
         if (result.output) {
@@ -151,6 +156,7 @@ export default function CustomCodeBlock({ input }) {
         throw new Error(errorMsg);
       }).finally(() => {
         setOutput(newResult);
+        setOutputMsg(undefined);
         setCodeChanged(false);
         setRunFinished(true);
       });
@@ -176,7 +182,7 @@ export default function CustomCodeBlock({ input }) {
         editable={outputRendered}
         language={highlight as Language}
       />
-      {outputRendered ? <Output codeChanged={codeChanged} result={output} statusCodes={statusCodes} /> : <div />}
+      {outputRendered ? <Output codeChanged={codeChanged} msg={outputMsg} result={output} statusCodes={statusCodes} /> : <div />}
     </div>
   );
 }

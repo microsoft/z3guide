@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun a () Int\n    0)\n  (define-fun f ((x!0 Int) (x!1 Bool)) Int\n    0)\n)\n","error":"","status":"z3-ran","hash":"f74efd68d8de9612bf597060d6a4bf0ebde96a2b"}

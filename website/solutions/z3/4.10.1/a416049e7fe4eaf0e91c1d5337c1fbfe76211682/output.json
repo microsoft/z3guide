@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun z () Int\n    4)\n  (define-fun x () Int\n    3)\n  (define-fun y () Int\n    2)\n)\n(objectives\n (x 3)\n (y 2)\n)\n","error":"","status":"z3-ran","hash":"a416049e7fe4eaf0e91c1d5337c1fbfe76211682"}

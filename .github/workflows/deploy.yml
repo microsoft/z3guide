@@ -29,6 +29,8 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Upgrade z3-solver (if any)
+        run: yarn upgrade z3-solver --frozen-lockfile
       - name: Build website
         run: yarn build
       - uses: stefanzweifel/git-auto-commit-action@v4

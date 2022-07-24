@@ -5,7 +5,8 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "npm run build-eval-z3 && docusaurus build",
+    "build-eval-z3": "node src/eval-z3/build.js",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -24,6 +25,7 @@
     "@mui/material": "^5.8.6",
     "clsx": "^1.1.1",
     "coi-serviceworker": "^0.1.6",
+    "esbuild": "^0.14.49",
     "eslint": "^8.19.0",
     "fs-extra": "^10.1.0",
     "hast-util-is-element": "1.1.0",

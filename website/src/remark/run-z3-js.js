@@ -1,30 +1,23 @@
+'use strict';
 const { stdout, stderr } = require('node:process');
 const { init } = require('z3-solver');
 const { readJsonSync } = require('fs-extra');
-const { lineHeight } = require('@mui/system');
+const { evalZ3JS } = require('../../built-scripts/eval-z3');
 
 async function runZ3File(inputFile) {
-
     // if the following fails then there is a bug in our program
     const originalInput = readJsonSync(inputFile).input;
 
-    // add `return ` to the beginning of the last line of the input
-    // because we are wrapping the input inside an async function
-    const lines = originalInput.trim().split('\n'); // remove extra whitespace first
-    const lastLine = `return ${lines[lines.length - 1]}`;
-    const withReturn = `${lines.slice(0, lines.length - 1).join('\n')}\n${lastLine}`;
-
-    const { Context, em } = await init();
-    const Z3 = new Context('main');
+    let Z3 = await init();
 
     try {
-        const func = eval(`(async () => { ${withReturn} })`);
-        const res = await func();
-        stdout.write(res);
+        let result = await evalZ3JS(Z3, originalInput);
+        require('fs').writeFileSync('/tmp/log.txt', String(originalInput), 'utf8');
+        stdout.write(String(result));
     } catch (e) {
-        stderr.write(e.message);
+        stderr.write(String(e));
     } finally {
-        em.PThread.terminateAllThreads();
+        Z3.em.PThread.terminateAllThreads();
     }
 }
 

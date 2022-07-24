@@ -24,9 +24,10 @@ solve(x > 2, y < 10, x + 2*y == 7)
 ```
 
 ```z3-js
-const x = Z3.Int.const('x')
-const y = Z3.Int.const('y')
-(await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7))).sexpr()
+const x = Z3.Int.const('x');
+const y = Z3.Int.const('y');
+const model = await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
+model.sexpr()
 ```
 
 ```z3-python

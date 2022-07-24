@@ -17,6 +17,8 @@ function compile(
   let libs = TS_LIBS;
   let options: ts.CompilerOptions = {
     module: ts.ModuleKind.None,
+    // comments interfere with codegen when mutating the AST `//a\nb` gets transformed to `return\n//a\nb`, instead of `//a\nreturn b\n`.
+    removeComments: true,
     lib: ['lib.es2021.d.ts'],
     target: ts.ScriptTarget.ES2021,
     strict: true,
@@ -121,7 +123,7 @@ function compile(
 // successful output looks like `"use strict"; module.exports = (async () => { ... })();`
 export function compileZ3JS(src: string) {
   let imports = `
-    import type { init as initT } from 'z3-solver';
+    import type { init as initT, Model, Solver } from 'z3-solver';
     declare let init: typeof initT;
     declare let { Context }: Awaited<ReturnType<typeof init>>;
     declare let Z3: ReturnType<typeof Context<'main'>>;

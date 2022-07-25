@@ -28,9 +28,9 @@ jobs:
           cache-dependency-path: website/yarn.lock
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-file
       - name: Upgrade z3-solver (if any)
-        run: yarn upgrade z3-solver
+        run: yarn upgrade z3-solver --frozen-file
       - name: Build website
         run: yarn build
       - uses: stefanzweifel/git-auto-commit-action@v4

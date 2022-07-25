@@ -270,6 +270,19 @@ It is not a requirement that the state be exactly the same, but it should preser
 satisfiability relative to the previous time it was in the same scope.
 We restore state using functions that are pushed on a trail whenever some side-effect occurs within a scope.
 
+The fresh callback is invoked when z3 creates a nested solver. The main use case for the nested solver is
+z3's model-based quantifier instantiation method, MBQI. MBQI uses the nested solver to check if a quantifier
+is satisfied relative to a candidate model. The nested solver is opaque to the user propagator. Instead
+it sees a new (unique) `context` object. For our use case the nested context shares the same tables for expressions
+so we don't have to maintain separate copies of expressions. If the nested solver is created using threads
+(we are not enabling parallel solving for this example), the expression tables cannot be assumed the same
+and TC would have to set up separate expressions for the new context.
+
+The constructor of TC takes an optional solver `s` and an optional context `ctx`.
+Initially it is created using a solver (and not a context). 
+Nested instances are created using a context (and not a solver).
+
+
 
 ```python
 class TC(UserPropagateBase):

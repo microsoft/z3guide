@@ -18,8 +18,8 @@ We leave optimizations as a fun project you could explore while learning User Pr
 For example, you can implement inference rules that check that the asserted binary relations
 are consistent with the rules of transitivity.
 
-> [!WARNING]
-> Programming decision procedures is generally not a trivial task. The UserPropagate API attempts to enable new decision procedures and keeping a relatively low barrier of entry. Nevertheless, even a simple theory that we are going to explore exhibits its own subtleties. Program user propagators at your own risk.
+[!WARNING]
+Programming decision procedures is generally not a trivial task. The UserPropagate API attempts to enable new decision procedures and keeping a relatively low barrier of entry. Nevertheless, even a simple theory that we are going to explore exhibits its own subtleties. Program user propagators at your own risk.
 
 ## A Problem Instance
 

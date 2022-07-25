@@ -3,8 +3,6 @@ title: User Propagators
 sidebar_position: 6
 ---
 
-** NB: work in progress **
-
 User propagators allow implementing custom theory solvers outside of z3.
 The following example illustrates using propagators for solving over the 
 reflexive transitive closure (RTC) of a binary relation over a finite domain.
@@ -18,8 +16,9 @@ We leave optimizations as a fun project you could explore while learning User Pr
 For example, you can implement inference rules that check that the asserted binary relations
 are consistent with the rules of transitivity.
 
-[!WARNING]
+:::warning
 Programming decision procedures is generally not a trivial task. The UserPropagate API attempts to enable new decision procedures and keeping a relatively low barrier of entry. Nevertheless, even a simple theory that we are going to explore exhibits its own subtleties. Program user propagators at your own risk.
+:::
 
 ## A Problem Instance
 

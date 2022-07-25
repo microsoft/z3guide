@@ -13,9 +13,19 @@ but the representation explodes (quadratically) when the size of the finite doma
 
 We represent the relation outside of z3. For sake of simplicity the example maintains the RTC 
 as a lookup table as well (so it does not scale as well as an an implicit representation of the RTC).
-It also only implements a very basic set of rules for enforcing RTC over the finite domain. There are
-several refinements of the example that can make it more scalable.
+It also only implements a very basic set of rules for enforcing RTC over the finite domain. 
+We leave optimizations as a fun project you could explore while learning User Propagators.
+For example, you can implement inference rules that check that the asserted binary relations
+are consistent with the rules of transitivity.
 
+## A Problem Instance
+
+We take a problem instance from a user GitHub question on how to scale reasoning with RTC.
+The smaller example uses two relations `<=Sort` and `<=SortSyntax` that are reflexive and transitive
+and they are defined over the finite enumeration sort `Sort`. We elide the declarations of the
+two binary relations in the input and instead declare them outside of SMTLIB. 
+This allows us to declare the relations such that the propagator is notified whenever a new 
+predicate over `<=Sort` or `<=SortSyntax` is created.
 
 ```pyhon
 from z3 import *
@@ -69,12 +79,28 @@ example = """
 ;(assert (or false (distinct |VarA| |SortInt|) (distinct |VarB| |SortInt|) (distinct |VarC| |SortInt|) ))
 ;(check-sat)
 """
+```
 
+## Propagate Functions
+
+We can access the sort `Sort` from the SMTLIB input by declaring it as a `DatatypeSort`. 
+Then the two functions we did not define in the SMTLIB input are declared as `PropagateFunction`.
+This declaration instructs z3 to invoke callbacks whenever a new term headed by the declared
+function is introduced to the solver. It could be a term that is part of the input, or it could
+be a term that is created dynamically using quantifier instantiation.
+
+```python
 
 Sort = DatatypeSort("Sort")
 leSort = PropagateFunction("<=Sort", Sort, Sort, BoolSort())
 leSortSyntax = PropagateFunction("<=SortSyntax", Sort, Sort, BoolSort())
 fmls = parse_smt2_string(example, decls={"<=Sort":leSort, "<=SortSyntax":leSortSyntax})
+
+```
+
+## Axiomatizing RTCs
+
+```python
 
 [SortInt, SortExp, SortKItem, SortKLabel, SortK] = [Sort.constructor(i) for i in range(Sort.num_constructors())]
 
@@ -113,9 +139,13 @@ def rtc(constructors, bin):
     print(t)
     return t
 
+```
 
+## Union Find
 
+We use a simple union find with support for tracking values.
 
+```python
 class Node:
     def __init__(self, a):
         self.term = a
@@ -212,7 +242,12 @@ class UnionFind:
 
     def to_string(self):
         return "\n".join([n.to_string() for t, n in self._nodes.items()])
+        
+```
 
+## Finally, the propagator
+
+```python
 class TC(UserPropagateBase):
     def __init__(self, s=None, ctx=None):
         UserPropagateBase.__init__(self, s, ctx)

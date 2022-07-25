@@ -104,37 +104,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'logic/intro',
               position: 'left',
-              label: 'Logic',
-            },
-            {
-              type: 'doc',
-              docId: 'theories/Arithmetic',
-              position: 'left',
-              label: 'Theories',
-            },
-            {
-              type: 'doc',
-              docId: 'strategies/intro',
-              position: 'left',
-              label: 'Strategies',
-            },
-            {
-              type: 'doc',
-              docId: 'optimization/intro',
-              position: 'left',
-              label: 'Optimization',
-            },
-            {
-              type: 'doc',
-              docId: 'fixedpoints/intro',
-              position: 'left',
-              label: 'Fixedpoints',
-            },
-            {
-              type: 'doc',
-              docId: 'playground/playground',
-              position: 'left',
-              label: 'Playground',
+              label: 'SMTLIB',
             },
             // link to programming docs
             {
@@ -142,6 +112,13 @@ async function createConfig() {
               label: 'Programming Z3',
               position: 'left',
               activeBaseRegex: `/programming/`,
+            },
+            // link to playground
+            {
+              type: 'doc',
+              docId: 'playground/playground',
+              position: 'left',
+              label: 'Playground',
             },
             // link to the github repo of this site
             {

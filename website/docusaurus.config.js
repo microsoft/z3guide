@@ -44,6 +44,16 @@ async function createConfig() {
     plugins: [
       './plugins/add-z3-files',
       './plugins/more-webpack-config',
+      [
+        '@docusaurus/plugin-content-docs',
+        {
+          id: 'programming',
+          path: 'docs-programming',
+          routeBasePath: 'programming',
+          sidebarPath: require.resolve('./programmingSidebars.js'),
+          // ... other options
+        },
+      ],
     ],
 
     presets: [
@@ -54,7 +64,8 @@ async function createConfig() {
           docs: {
             remarkPlugins: [math],
             rehypePlugins: [katex],
-            sidebarPath: require.resolve('./sidebars.js'),
+            sidebarPath: require.resolve('./smtSidebars.js'),
+            path: 'docs-smtlib',
             // Please change this to your repo.
             // Remove this to remove the "edit this page" links.
             editUrl:
@@ -124,6 +135,13 @@ async function createConfig() {
               docId: 'playground/playground',
               position: 'left',
               label: 'Playground',
+            },
+            // link to programming docs
+            {
+              to: '/programming/Programming%20Z3/use-z3-from-python/Introduction',
+              label: 'Programming Z3',
+              position: 'left',
+              activeBaseRegex: `/programming/`,
             },
             // link to the github repo of this site
             {

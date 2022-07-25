@@ -12,7 +12,7 @@ async function runZ3File(inputFile) {
 
     try {
         let result = await evalZ3JS(Z3, originalInput);
-        require('fs').writeFileSync('/tmp/log.txt', String(originalInput), 'utf8');
+        // require('fs').writeFileSync('/tmp/log.txt', String(originalInput), 'utf8');
         stdout.write(String(result));
     } catch (e) {
         stderr.write(String(e));

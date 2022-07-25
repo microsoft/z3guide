@@ -415,14 +415,14 @@ can track equivalence classes by using a union-find data-structure as we are doi
             return False
         if is_true(v):
             if vb not in rtc[va]:
-                print("Conflict not included in TC", f, v, a, va, b, vb)
+                print("Conflict: asserted relation should be included in TC", f, v, a, va, b, vb)
                 self.conflict(deps = [f], eqs = [(a, va), (b, vb)])
                 return True
             else:
                 return False
         elif is_false(v):
             if vb in rtc[va]:
-                print("Conflict negated but included in TC", f, v, a, va, b, vb)
+                print("Conflict: asserted negated relation should not be included in TC", f, v, a, va, b, vb)
                 self.conflict(deps = [f], eqs = [(a, va), (b, vb)])
                 return True
             else:

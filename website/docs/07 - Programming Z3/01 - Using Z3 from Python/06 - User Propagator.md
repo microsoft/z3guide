@@ -317,7 +317,7 @@ class TC(UserPropagateBase):
 
 ### New Terms
 
-```
+```python
     def _created(self, t):
         print("Created", t)
         self.add(t)
@@ -399,7 +399,12 @@ can track equivalence classes by using a union-find data-structure as we are doi
         for (f, v) in asserted:            
             if self.check_conflict(f, v, rtc, is_final = True):
                 return
-                
+
+```
+
+## Using the User Propagator
+
+```python
 s = Solver()
 b = TC(s)
 

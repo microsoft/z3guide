@@ -1,8 +1,7 @@
------------------
-User Propagators
-----------------
-
-
+---
+title: User Propagators
+sidebar_position: 6
+---
 
 ** NB: work in progress **
 

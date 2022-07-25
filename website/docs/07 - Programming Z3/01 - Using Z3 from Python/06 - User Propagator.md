@@ -251,6 +251,10 @@ class UnionFind:
 
 ## Finally, the propagator
 
+It uses a good set of features exposed for user propagators
+
+### TC as a subclass
+
 ```python
 class TC(UserPropagateBase):
     def __init__(self, s=None, ctx=None):
@@ -282,38 +286,17 @@ class TC(UserPropagateBase):
 
     def fresh(self, new_ctx):
         return TC(ctx=new_ctx)
+```
 
+### Handling assignments to fixed values
+
+```python
     def _fixed(self, x, v):        
         print("fixed: ", x, " := ", v)
         if x.decl().eq(leSort):
             self._fixed_trail(x, v, self._fixed_le_table, self._fixed_le)
         elif x.decl().eq(leSortSyntax):
             self._fixed_trail(x, v, self._fixed_le_syntax_table, self._fixed_le_syntax)
-
-    def _final(self):
-        print("Final")
-        self.check_rtc(self._fixed_le, self._fixed_le_table)
-        self.check_rtc(self._fixed_le_syntax, self._fixed_le_syntax_table)
-
-    def _eq(self, x, y):
-        print(x, " = ", y)
-        self.uf.merge(x, y)
-
-    def _created(self, t):
-        print("Created", t)
-        self.add(t)
-        x, y = t.arg(0), t.arg(1)
-        self.add(x)
-        self.add(y)
-        # This is subtle: We need to register all constructors with the solver
-        # otherwise, it could be that a constructor does not occur as argument of any
-        # of the tracked predicates, but gets used by the solver and merged with
-        # one of the arguments during search. If the constructor isn't registered
-        # final() cannot resolve the value associated with a x or y.
-        if self.first:
-            self.first = False
-            for v in constructors:
-                self.add(v)
 
     #
     # When x is fixed to value v, we check if it immediately
@@ -329,6 +312,52 @@ class TC(UserPropagateBase):
         def undo():
             trail.pop(-1)
         self.trail.append(undo)
+
+```
+
+### New Terms
+
+```
+    def _created(self, t):
+        print("Created", t)
+        self.add(t)
+        x, y = t.arg(0), t.arg(1)
+        self.add(x)
+        self.add(y)
+        # This is subtle: We need to register all constructors with the solver
+        # otherwise, it could be that a constructor does not occur as argument of any
+        # of the tracked predicates, but gets used by the solver and merged with
+        # one of the arguments during search. If the constructor isn't registered
+        # final() cannot resolve the value associated with a x or y.
+        if self.first:
+            self.first = False
+            for v in constructors:
+                self.add(v)
+```
+
+### Equality callbacks
+
+Terms that have been registered using `self.add` are tracked by the solver. 
+The solver issues the equality callback when two registered terms are equated.
+The number of equality callbacks for _N_ terms that are equal is _N-1_, corresponding
+to a spanning tree. So not all equalities are presented in callbacks and the client 
+can track equivalence classes by using a union-find data-structure as we are doing.
+
+```python
+
+    def _eq(self, x, y):
+        print(x, " = ", y)
+        self.uf.merge(x, y)
+
+```
+
+### Final check
+
+```python
+    def _final(self):
+        print("Final")
+        self.check_rtc(self._fixed_le, self._fixed_le_table)
+        self.check_rtc(self._fixed_le_syntax, self._fixed_le_syntax_table)
 
     #
     # Check if assignment f := v triggers a conflict with respect

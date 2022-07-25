@@ -258,6 +258,18 @@ It illustrates
 
 ### TC as a subclass
 
+The `TC` solver is instantiated as a subclass of `UserPropagateBase`. 
+The subclass implements three virtual methods `push`, `pop`, and `fresh`.
+It adds other optional callbacks for `fixed`, `final`, `eq` `created` and
+initializes data-structures for tracking the reflexive transitive closure of
+ relations `<=Sort` and `<=SortSyntax`.
+
+The push/pop callbacks are invoked when z3's CDCL-based solver case splits and backtracks.
+State changes within the scope of a push have to be reverted to an equivalent state.
+It is not a requirement that the state be exactly the same, but it should preserve
+satisfiability relative to the previous time it was in the same scope.
+We restore state using functions that are pushed on a trail whenever some side-effect occurs within a scope.
+
 
 ```python
 class TC(UserPropagateBase):
@@ -294,6 +306,14 @@ class TC(UserPropagateBase):
 
 ### Handling assignments to fixed values
 
+    
+When `x` is fixed to value `v`, we check if it immediately
+triggers a conflict. If it doesn't we add it to a trail
+that is checked on final. It is assumed that during final
+`check_conflict` is conclusive (returns True) as all equatlities
+are known between arguments to <=Sort and <=SortSyntax.
+    
+
 ```python
     def _fixed(self, x, v):        
         print("fixed: ", x, " := ", v)
@@ -302,13 +322,6 @@ class TC(UserPropagateBase):
         elif x.decl().eq(leSortSyntax):
             self._fixed_trail(x, v, self._fixed_le_syntax_table, self._fixed_le_syntax)
 
-    #
-    # When x is fixed to value v, we check if it immediately
-    # triggers a conflict. If it doesn't we add it to a trail
-    # that is checked on final. It is assumed that during final
-    # check_conflict is conclusive (returns True) as all equatlities
-    # are known between arguments to <=Sort and <=SortSyntax.
-    # 
     def _fixed_trail(self, x, v, table, trail):
         if self.check_conflict(x, v, table):
             return
@@ -321,6 +334,11 @@ class TC(UserPropagateBase):
 
 ### New Terms
 
+When a new term `t` is created using one of the `PropagateFunction` declarations we receive a callback.
+It allows register `t` and its two arguments with z3. In return for registering these terms, z3 will
+invoke `fixed` and `eq` callbacks when z3 infers a fixed value assignment or a new equality between
+tracked terms.
+
 ```python
     def _created(self, t):
         print("Created", t)
@@ -328,16 +346,17 @@ class TC(UserPropagateBase):
         x, y = t.arg(0), t.arg(1)
         self.add(x)
         self.add(y)
-        # This is subtle: We need to register all constructors with the solver
-        # otherwise, it could be that a constructor does not occur as argument of any
-        # of the tracked predicates, but gets used by the solver and merged with
-        # one of the arguments during search. If the constructor isn't registered
-        # final() cannot resolve the value associated with a x or y.
         if self.first:
             self.first = False
             for v in constructors:
                 self.add(v)
 ```
+
+There is a subtle component in this callback: We need to register all constructors with the solver
+otherwise, it could be that a constructor does not occur as argument of any
+of the tracked predicates, but gets used by the solver and merged with
+one of the arguments during search. If the constructor isn't registered
+`final()` cannot resolve the value associated with a `x` or `y`.
 
 ### Equality callbacks
 

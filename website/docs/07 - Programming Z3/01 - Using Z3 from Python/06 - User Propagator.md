@@ -108,19 +108,14 @@ fmls = parse_smt2_string(example, decls={"<=Sort":leSort, "<=SortSyntax":leSortS
 
 [SortInt, SortExp, SortKItem, SortKLabel, SortK] = [Sort.constructor(i) for i in range(Sort.num_constructors())]
 
+
 leSortTable = [(SortKItem, SortK),
                (SortExp, SortKItem),
-               (SortExp, SortK),
-               (SortInt, SortKItem),
-               (SortInt, SortExp),
-               (SortInt, SortK)]
+               (SortInt, SortExp)]
 
 leSortSyntaxTable = [(SortKItem, SortK),
                      (SortExp, SortKItem),
-                     (SortExp, SortK),
-                     (SortInt, SortKItem),
-                     (SortInt, SortExp),
-                     (SortInt, SortK)]
+                     (SortInt, SortExp)]
 
 constructors = {con() for con in [SortInt, SortExp, SortKItem, SortKLabel, SortK]}
 
@@ -131,15 +126,15 @@ def rtc(constructors, bin):
     step = { k : set([]) for k in constructors }
     for k, v in bin:
         step[k()] |= { v() }
-    t = { k : set([k]) for k in constructors }
+    t = { k : {k} for k in constructors }
     change = True
     while change:
         change = False
         for k, vs in t.items():
-            for w in step[k]:
-                if w not in vs:
-                    vs |= { w }
-                    change = True
+            sz0 = len(vs)
+            vs |= { w for v in vs for w in step[v] }
+            if len(vs) > sz0:
+                change = True
     print(t)
     return t
 
@@ -251,9 +246,18 @@ class UnionFind:
 
 ## Finally, the propagator
 
-It uses a good set of features exposed for user propagators
+It uses a good set of features exposed for user propagators.
+It illustrates 
+
+* Instantiation of basic methods for backtracking and cloning
+* Registering terms to be tracked in callbacks
+* Callbacks for when terms are assigned fixed values
+* Callbacks for new equalities are detected by z3
+* Callbacks when new terms are created using `PropagateFunction`
+* Callbacks when z3's search is done case splitting
 
 ### TC as a subclass
+
 
 ```python
 class TC(UserPropagateBase):

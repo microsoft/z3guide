@@ -17,7 +17,9 @@ For example, you can implement inference rules that check that the asserted bina
 are consistent with the rules of transitivity.
 
 :::warning
+
 Programming decision procedures is generally not a trivial task. The UserPropagate API attempts to enable new decision procedures and keeping a relatively low barrier of entry. Nevertheless, even a simple theory that we are going to explore exhibits its own subtleties. Program user propagators at your own risk.
+
 :::
 
 ## A Problem Instance

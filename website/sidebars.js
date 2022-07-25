@@ -18,7 +18,7 @@ const sidebars = {
 
   // But you can create a sidebar manually
 
-  generalSidebar: {
+  LogicSidebar: {
     Logic: [
       {
       type: 'category',
@@ -32,38 +32,41 @@ const sidebars = {
     },
   
     Theories:[
-      'theories/Arithmetic',
       {
-        Docs: ['theories/Bitvectors', 'theories/IEEE Floats', 'theories/Arrays', 'theories/Datatypes', 'theories/Strings', 'theories/Sequences', 'theories/Special Relations']
+      type: 'category',
+      label: 'Theories',
+      collapsible: true,
+      collapsed: false,
+      items: [ 'theories/Arithmetic','theories/Bitvectors', 'theories/IEEE Floats', 'theories/Arrays', 'theories/Datatypes', 'theories/Strings', 'theories/Sequences', 'theories/Special Relations']
       }
     ], 
     Strategies:[
-      'strategies/intro',
       {
-        Docs: ['strategies/goals', 'strategies/tactics', 'strategies/probes']
+        type: 'category',
+        label: 'Strategies',
+        collapsible: true,
+        collapsed: false, 
+        items: ['strategies/intro','strategies/goals', 'strategies/tactics', 'strategies/probes']
       }
     ],
     Optimization:[
-      'optimization/intro',
       {
-        Docs: ['optimization/apioptimization', 'optimization/arithmeticaloptimization', 'optimization/softconstraints', 'optimization/combiningobjectives', 'optimization/asmallcasestudy', 'optimization/advancedtopics']
+        type: 'category',
+        label: 'Optimization',
+        collapsible: true,
+        collapsed: false,  
+        items: ['optimization/intro','optimization/apioptimization', 'optimization/arithmeticaloptimization', 'optimization/softconstraints', 'optimization/combiningobjectives', 'optimization/asmallcasestudy', 'optimization/advancedtopics']
       }
     ],
      FixedPoints:[
-       'fixedpoints/intro',
-       {
-         Docs: ['fixedpoints/basicdatalog', 'fixedpoints/engineforpdr', 'fixedpoints/syntax']
+      {
+        type: 'category',
+        label: 'FixedPoints',
+        collapsible: true,
+        collapsed: false, 
+         items: ['fixedpoints/intro','fixedpoints/basicdatalog', 'fixedpoints/engineforpdr', 'fixedpoints/syntax']
        }
      ]
   };
-
-  // programmingZ3Sidebar:{
-  //   Python:[
-  //     'programming Z3/Using Z3 from Python',
-  //     {
-  //       Docs: []
-  //     }
-  //   ]
-  // },
 
 module.exports = sidebars;

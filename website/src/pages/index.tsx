@@ -19,7 +19,13 @@ function HomepageHeader() {
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
               to="/docs/logic/intro">
-              Z3 Tutorial 
+              Z3 SMTLIB Tutorial 
+            </Link> 
+            <></>
+            <Link
+              className={clsx("button button--secondary button--lg", styles.mainButton)}
+              to="/programming/Programming Z3/Using Z3 from Python/Introduction">
+              Programming Z3 
             </Link> 
             <></>
             <Link

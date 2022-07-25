@@ -64,7 +64,7 @@ async function createConfig() {
           docs: {
             remarkPlugins: [math],
             rehypePlugins: [katex],
-            sidebarPath: require.resolve('./smtSidebars.js'),
+            sidebarPath: require.resolve('./sidebars.js'),
             path: 'docs-smtlib',
             // Please change this to your repo.
             // Remove this to remove the "edit this page" links.
@@ -138,7 +138,7 @@ async function createConfig() {
             },
             // link to programming docs
             {
-              to: '/programming/Programming%20Z3/use-z3-from-python/Introduction',
+              to: '/programming/Programming Z3/Using Z3 from Python/Introduction',
               label: 'Programming Z3',
               position: 'left',
               activeBaseRegex: `/programming/`,

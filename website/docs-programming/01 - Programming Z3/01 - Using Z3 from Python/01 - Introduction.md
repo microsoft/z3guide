@@ -13,8 +13,16 @@ The Z3 distribution also contains the **C**, **C++**, **.Net**, **Java**, **Juli
 The source code of Z3Py is available in the Z3 distribution, feel free to modify it to meet your needs. 
 :::
 
+:::info
+The following guide on _Programming Z3_ is available as a reference](https://z3prover.github.io/papers/programmingz3.html)
+:::
+
+In the present form this tutorial is static. You can run the examples locally by copying the text into a python interpreter where you have imported z3.
+
+<!---
 Be sure to follow along with the examples by clicking the **load in editor** link in the
 corner. See what Z3Py says, try your own scripts, and experiment!
+--->
 
 ### Using Z3Py Locally
 

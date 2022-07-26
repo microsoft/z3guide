@@ -42,8 +42,6 @@ async function createConfig() {
     },
 
     plugins: [
-      './plugins/add-z3-files',
-      './plugins/more-webpack-config',
       [
         '@docusaurus/plugin-content-docs',
         {
@@ -51,9 +49,13 @@ async function createConfig() {
           path: 'docs-programming',
           routeBasePath: 'programming',
           sidebarPath: require.resolve('./programmingSidebars.js'),
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
           // ... other options
         },
       ],
+      './plugins/add-z3-files',
+      './plugins/more-webpack-config',
     ],
 
     presets: [
@@ -207,7 +209,14 @@ async function createConfig() {
   };
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
+
+  // add custom codeblocks to the default docs
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
+
+  // add custom codeblocks to the programming docs
+  config.plugins[0][1].remarkPlugins.push(renderCodeBlocks);
+
+
   config.scripts.push({
     src: `${config.baseUrl}coi-serviceworker.js`,
     type: 'text/javascript',

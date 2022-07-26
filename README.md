@@ -4,7 +4,17 @@ This repository contains sources of [Z3Guide](https://microsoft.github.io/z3guid
 
 The rest of this page is for developers contributing to the tutorial docs of Z3.
 
-## Developer setup
+## Table of Content
+1. [Developer Setup](#developer-setup)
+    1. [Local Setup](#local-setup-not-using-codespaces)
+    2. [Codespaces](#codespaces-microsoft-internal-only)
+2. [Development](#development)
+    1. [Contributing to Existing Materials](#contributing-to-existing-tutorial-materials)
+    2. [Creating New Tutorial Materials](#creating-new-tutorial-materials)
+3. [Code of Conduct](#microsoft-open-source-code-of-conduct)
+4. [Trademarks](#trademarks)
+
+## Developer Setup
 
 ### Local Setup (not using Codespaces)
 

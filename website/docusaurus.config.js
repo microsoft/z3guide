@@ -52,11 +52,25 @@ async function createConfig() {
           remarkPlugins: [math],
           rehypePlugins: [katex],
           editUrl:
-              'https://github.com/microsoft/z3guide/tree/main/website',
+            'https://github.com/microsoft/z3guide/tree/main/website',
           // ... other options for the docs, just as in `presets -> docs`
         },
       ],
-      // more docs plugins here
+      // [NEW DOCS] more docs plugins here
+      // Example:
+      // [
+      //   '@docusaurus/plugin-content-docs',
+      //   {
+      //     id: 'api',
+      //     path: 'docs-api',
+      //     routeBasePath: 'api',
+      //     sidebarPath: require.resolve('./sidebars/apiSidebars.js'),
+      //     remarkPlugins: [math],
+      //     rehypePlugins: [katex],
+      //     editUrl:
+      //         'https://github.com/microsoft/z3guide/tree/main/website',
+      //   },
+      // ],
 
       // non-docs plugins here
       './plugins/add-z3-files',
@@ -220,6 +234,10 @@ async function createConfig() {
 
   // add custom codeblocks to the programming docs
   config.plugins[0][1].remarkPlugins.push(renderCodeBlocks);
+
+  // [NEW DOCS] add custom codeblocks to the new docs
+  // Example:
+  // config.plugins[1][1].remarkPlugins.push(renderCodeBlocks);
 
 
   config.scripts.push({

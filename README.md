@@ -6,6 +6,18 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
 
 ## Developer setup
 
+### Local Setup (not using Codespaces)
+
+- install node.js >= 16.15.1
+- install yarn globally if needed
+
+```
+npm install -g yarn
+```
+
+- Set up repo and start development following the steps in [Development](#development).
+
+
 ### Codespaces (Microsoft Internal ONLY)
 
 - Join the Microsoft github organization from [Microsoft Open Source](https://opensource.microsoft.com/) via the `Employee sign-in` at the bottom.
@@ -20,20 +32,6 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
 
 - Set up repo and start development following the steps in [Development](#development).
 
-### Local Setup (not using Codespaces)
-
-- install node.js >= 16.15.1
-- install yarn globally if needed
-
-```
-npm install -g yarn
-```
-
-- Set up repo and start development following the steps in [Development](#development).
-
-#### Updating dependencies
-
-Use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to upgrade all dependencies expect blockly\*, tfjs, mdx.
 
 ## Development
 
@@ -57,34 +55,70 @@ cd website && yarn clean && cd ../
 
 - Click on the generated URL in the terminal output to see the website now running locally.
 
-- Start adding / editing tutorial materials in `website/docs`.
+### Contributing to Existing Tutorial Materials
 
-    -   You may find the Docusaurus documentation on [Docs](https://docusaurus.io/docs/docs-introduction) useful, especially for configuring the sidebar.
+The online Z3 Guide serves multiple instances of tutorial materials: currently it has a [Z3 tutorial in SMTLIB format](https://microsoft.github.io/z3guide/docs/logic/intro), and [Programming Z3 in different language bindings](https://microsoft.github.io/z3guide/programming/Programming%20Z3/Using%20Z3%20from%20Python/Introduction). 
 
-    -   Note that Docusaurus does live reload, so that every change you make to `website/docs` will be immediately reflected in the locally running tab.
+The instances are hosted under `website/docs-smtlib` and `website/docs-programming`, respectively. To contribute to existing tutorial materials, you may add/edit materials in either directory.
 
-    -   For all Z3 code snippets, please use the following Markdown Code blocks format:
-        ~~~
-        ```z3
-        (exec-this-command arg)
-        ```
-        ~~~
+-   You may find the Docusaurus documentation on [Docs](https://docusaurus.io/docs/docs-introduction) useful, especially for configuring the sidebar.
 
-    - Any Z3 runtime error with the code specified in the code block above would fail the build.
-        However, you may intentionally bypass the errors by using flags of `no-build` or `ignore-errors`:
+-   Note that Docusaurus does live reload, so that every change you make to `website/docs` will be immediately reflected in the locally running tab.
 
-        ~~~
-        ```z3 no-build
-        give me the error on the webpage I know it is invalid
-        ```
-        ~~~
+-   For all Z3-SMTLIB code snippets, please use the following Markdown code blocks format:
+    ~~~
+    ```z3
+    (exec-this-command arg)
+    ```
+    ~~~
 
-        or
-        ~~~
-        ```z3 ignore-errors
-        I know this snippet is problematic but I want to teach about error messages so show them
-        ```
-        ~~~
+- Any Z3 runtime error with the code specified in the code block above would fail the build.
+    However, you may intentionally bypass the errors by using flags of `no-build` or `ignore-errors`:
+
+    ~~~
+    ```z3 no-build
+    give me the error on the webpage I know it is invalid
+    ```
+    ~~~
+
+    or
+    ~~~
+    ```z3 ignore-errors
+    I know this snippet is problematic but I want to teach about error messages so show them
+    ```
+    ~~~
+
+- You may also add Z3-JavaScript or Z3-Python code snippets using Markdown code blocks, e.g.,:
+
+  ~~~
+  ```z3-js
+  // some z3-js code
+  ```
+  ~~~
+
+  and 
+
+  ~~~
+  ```z3-python
+  # some z3-python code
+  ```
+  ~~~
+
+  and the flags of `no-build` and `ignore-errors` remain applicable to these code blocks.
+
+  Note that we currently support output rendering and code editing for Z3-SMTLIB and Z3-JavaScript code snippets, with similar support for Z3-Python coming soon.
+
+- Programming Z3 in other language bindings is not supported at the moment.
+
+- Sidebar content is maintained in files under `website/sidebars`. The Z3-SMTLIB guide uses `website/sidebars/smtlibSidebars.js`, while the Programming Z3 (with other language bindings) guide uses `website/sidebars/programmingSidebars.js`. If you find your new content missing from either sidebar, please modify the respective sidebar file accordingly.
+
+### Creating New Tutorial Materials
+
+The process of creating new tutorial materials is similar to the above, except for the following additional steps:
+
+1. You will need to create a new `docs-*` directory under `website`. E.g., `website/docs-api`.
+2. You will need a JavaScript file for configuring the sidebar for your docs under `website/sidebars`. The sidebar can be generated automatically. You may simply make a renamed copy of `programmingSidebars.js` for such automation.
+3. You will need to go to `docusaurus.config.js` to add additional configurations so that the build process can pick up the new directories. Search for comments beginning with `[NEW DOCS]` within the file for more instructions.
 
 ## Microsoft Open Source Code of Conduct
 
@@ -105,7 +139,3 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
-
-```
-
-```

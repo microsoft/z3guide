@@ -51,6 +51,8 @@ async function createConfig() {
           sidebarPath: require.resolve('./programmingSidebars.js'),
           remarkPlugins: [math],
           rehypePlugins: [katex],
+          editUrl:
+              'https://github.com/microsoft/z3guide/tree/main/website',
           // ... other options for the docs, just as in `presets -> docs`
         },
       ],

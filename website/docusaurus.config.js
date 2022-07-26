@@ -48,7 +48,7 @@ async function createConfig() {
           id: 'programming',
           path: 'docs-programming',
           routeBasePath: 'programming',
-          sidebarPath: require.resolve('./programmingSidebars.js'),
+          sidebarPath: require.resolve('./sidebars/programmingSidebars.js'),
           remarkPlugins: [math],
           rehypePlugins: [katex],
           editUrl:
@@ -71,7 +71,7 @@ async function createConfig() {
           docs: {
             remarkPlugins: [math],
             rehypePlugins: [katex],
-            sidebarPath: require.resolve('./sidebars.js'),
+            sidebarPath: require.resolve('./sidebars/smtlibSidebars.js'),
             path: 'docs-smtlib',
             // Please change this to your repo.
             // Remove this to remove the "edit this page" links.

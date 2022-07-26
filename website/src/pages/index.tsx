@@ -45,8 +45,8 @@ export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`Documentation for ${siteConfig.title}`}
+      description="An interactive online for the Z3 theorem prover with the ability to execute Z3 in the browser.">
       <HomepageHeader />
     </Layout>
   );

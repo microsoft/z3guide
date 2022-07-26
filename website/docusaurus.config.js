@@ -51,9 +51,12 @@ async function createConfig() {
           sidebarPath: require.resolve('./programmingSidebars.js'),
           remarkPlugins: [math],
           rehypePlugins: [katex],
-          // ... other options
+          // ... other options for the docs, just as in `presets -> docs`
         },
       ],
+      // more docs plugins here
+
+      // non-docs plugins here
       './plugins/add-z3-files',
       './plugins/more-webpack-config',
     ],

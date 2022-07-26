@@ -42,6 +42,23 @@ async function createConfig() {
     },
 
     plugins: [
+      [
+        '@docusaurus/plugin-content-docs',
+        {
+          id: 'programming',
+          path: 'docs-programming',
+          routeBasePath: 'programming',
+          sidebarPath: require.resolve('./programmingSidebars.js'),
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
+          editUrl:
+              'https://github.com/microsoft/z3guide/tree/main/website',
+          // ... other options for the docs, just as in `presets -> docs`
+        },
+      ],
+      // more docs plugins here
+
+      // non-docs plugins here
       './plugins/add-z3-files',
       './plugins/more-webpack-config',
     ],
@@ -55,6 +72,7 @@ async function createConfig() {
             remarkPlugins: [math],
             rehypePlugins: [katex],
             sidebarPath: require.resolve('./sidebars.js'),
+            path: 'docs-smtlib',
             // Please change this to your repo.
             // Remove this to remove the "edit this page" links.
             editUrl:
@@ -93,32 +111,16 @@ async function createConfig() {
               type: 'doc',
               docId: 'logic/intro',
               position: 'left',
-              label: 'Logic',
+              label: 'SMTLIB',
             },
+            // link to programming docs
             {
-              type: 'doc',
-              docId: 'theories/Arithmetic',
+              to: '/programming/Programming Z3/Using Z3 from Python/Introduction',
+              label: 'Programming Z3',
               position: 'left',
-              label: 'Theories',
+              activeBaseRegex: `/programming/`,
             },
-            {
-              type: 'doc',
-              docId: 'strategies/intro',
-              position: 'left',
-              label: 'Strategies',
-            },
-            {
-              type: 'doc',
-              docId: 'optimization/intro',
-              position: 'left',
-              label: 'Optimization',
-            },
-            {
-              type: 'doc',
-              docId: 'fixedpoints/intro',
-              position: 'left',
-              label: 'Fixedpoints',
-            },
+            // link to playground
             {
               type: 'doc',
               docId: 'playground/playground',
@@ -212,7 +214,14 @@ async function createConfig() {
   };
 
   const renderCodeBlocks = (await import('./src/remark/render-code-blocks.mjs')).default;
+
+  // add custom codeblocks to the default docs
   config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);
+
+  // add custom codeblocks to the programming docs
+  config.plugins[0][1].remarkPlugins.push(renderCodeBlocks);
+
+
   config.scripts.push({
     src: `${config.baseUrl}coi-serviceworker.js`,
     type: 'text/javascript',

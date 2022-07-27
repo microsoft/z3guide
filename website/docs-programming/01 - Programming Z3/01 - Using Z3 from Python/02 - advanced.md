@@ -10,7 +10,7 @@ In Z3, expressions, sorts and declarations are called _ASTs_.
 ASTs are directed acyclic graphs. Every expression has a sort (aka type).
 The method <tt>sort()</tt> retrieves the sort of an expression.
 
-```python
+```z3-python
 x = Int('x')
 y = Real('y')
 print ((x + 1).sort())
@@ -22,7 +22,7 @@ The function <tt>eq(n1, n2)</tt> returns <tt>True</tt> if <tt>n1</tt>
 and <tt>n2</tt> are the same AST. This is a structural test. 
 
 
-```python
+```z3-python
 x, y = Ints('x y')
 print (eq(x + y, x + y))
 print (eq(x + y, y + x))
@@ -41,7 +41,7 @@ If <tt>eq(n1, n2)</tt> returns <tt>True</tt>, then <tt>n1.hash()</tt>
 is equal to <tt>n2.hash()</tt>. 
 
 
-```python
+```z3-python
 x = Int('x')
 print (x + 1).hash()
 print (1 + x).hash()
@@ -62,7 +62,7 @@ The function <tt>is_expr(n)</tt> returns <tt>True</tt>
 if <tt>n</tt> is an expression. Similarly <tt>is_app(n)</tt> (<tt>is_func_decl(n)</tt>)
 returns <tt>True</tt> if <tt>n</tt> is an application (declaration). 
 
-```python
+```z3-python
 x = Int('x')
 print ("is expression: ", is_expr(x))
 n = x + 1
@@ -76,7 +76,7 @@ for i in range(n.num_args()):
 Declarations have names, they are retrieved using the method <tt>name()</tt>.
 A (function) declaration has an arity, a domain and range sorts.
 
-```python
+```z3-python
 x   = Int('x')
 x_d = x.decl()
 print ("is_expr(x_d):     ", is_expr(x_d))
@@ -104,7 +104,7 @@ The built-in declarations are identified using their **kind**. The kind
 is retrieved using the method <tt>kind()</tt>. The complete list of built-in declarations
 can be found in the file <tt>z3consts.py</tt> (<tt>z3_api.h</tt>) in the Z3 distribution.
 
-```python
+```z3-python
 x, y = Ints('x y')
 print ((x + y).decl().kind() == Z3_OP_ADD)
 print ((x + y).decl().kind() == Z3_OP_SUB)
@@ -113,7 +113,7 @@ print ((x + y).decl().kind() == Z3_OP_SUB)
 
 The following example demonstrates how to substitute sub-expressions in Z3 expressions.
 
-```python
+```z3-python
 x, y = Ints('x y')
 f    = Function('f', IntSort(), IntSort(), IntSort())
 g    = Function('g', IntSort(), IntSort())
@@ -127,7 +127,7 @@ The function <tt>Const(name, sort)</tt> declares a constant (aka variable) of th
 For example, the functions <tt>Int(name)</tt> and <tt>Real(name)</tt> are shorthands for
 <tt>Const(name, IntSort())</tt> and <tt>Const(name, RealSort())</tt>.
 
-```python
+```z3-python
 x = Const('x', IntSort())
 print (eq(x, Int('x')))
 
@@ -145,7 +145,7 @@ and <tt>Store(a, i, v)</tt> returns a new array identical to <tt>a</tt>,
 but on position <tt>i</tt> it contains the value <tt>v</tt>.
 In Z3Py, we can also write <tt>Select(a, i)</tt> as <tt>a[i]</tt>.
 
-```python
+```z3-python
 # Use I as an alias for IntSort()
 I = IntSort()
 # A is an array from integer to integer
@@ -178,7 +178,7 @@ Arrays in Z3 are used to model unbounded or very large arrays.
 Arrays should not be used to model small finite collections of values.
 It is usually much more efficient to create different variables using list comprehensions.
 
-```python
+```z3-python
 # We want an array with 3 elements.
 # 1. Bad solution
 X = Array('x', IntSort(), IntSort())
@@ -201,7 +201,7 @@ are satisfiable for an array that contains an index <tt>x</tt> that maps to <tt>
 and when <tt>x == y</tt>.
 We can solve these constraints.
 
-```python
+```z3-python
 A = Array('A', IntSort(), IntSort())
 x, y = Ints('x y')
 solve(A[x] == x, Store(A, x, y) == A)
@@ -211,7 +211,7 @@ The interpretation/solution for array variables is very similar to the one used 
 
 The problem becomes unsatisfiable/infeasible if we add the constraint <tt>x != y</tt>.
 
-```python
+```z3-python
 A = Array('A', IntSort(), IntSort())
 x, y = Ints('x y')
 solve(A[x] == x, Store(A, x, y) == A, x != y)
@@ -226,7 +226,7 @@ The array that maps all indices to some fixed value can be specified in Z3Py usi
 <tt>K(s, v)</tt> returns a array that maps any value of <tt>s</tt> into <tt>v</tt>.
 The following example defines a constant array containing only ones.
 
-```python
+```z3-python
 AllOne = K(IntSort(), 1)
 a, i = Ints('a i')
 solve(a == AllOne[i])
@@ -262,7 +262,7 @@ After all constructors were declared, we use the method <tt>create()</tt> to
 create the actual datatype in Z3. Z3Py makes the new Z3 declarations and constants
 available as slots of the new object. 
 
-```python
+```z3-python
 # Declare a List of integers
 List = Datatype('List')
 # Constructor cons: (Int, List) -> List
@@ -291,7 +291,7 @@ print (simplify(l1 == nil))
 The following example demonstrates how to define a Python function that 
 given a sort creates a list of the given sort. 
 
-```python
+```z3-python
 def DeclareList(sort):
     List = Datatype('List_of_%s' % sort.name())
     List.declare('cons', ('car', sort), ('cdr', List))
@@ -323,7 +323,7 @@ As described above enumeration types are a special case of algebraic datatypes.
 The following example declares an enumeration type consisting of three values:
 <tt>red</tt>, <tt>green</tt> and <tt>blue</tt>.
 
-```python
+```z3-python
 Color = Datatype('Color')
 Color.declare('red')
 Color.declare('green')
@@ -345,7 +345,7 @@ prove(Or(c == Color.green,
 
 Z3Py also provides the following shorthand for declaring enumeration sorts.
 
-```python
+```z3-python
 Color, (red, green, blue) = EnumSort('Color', ('red', 'green', 'blue'))
 
 print (green == blue)
@@ -360,7 +360,7 @@ Mutually recursive datatypes can also be declared. The only difference is that w
 the function <tt>CreateDatatypes</tt> instead of the method <tt>create()</tt> to create
 the mutually recursive datatypes.
 
-```python
+```z3-python
 TreeList = Datatype('TreeList')
 Tree     = Datatype('Tree')
 Tree.declare('leaf', ('val', IntSort()))
@@ -400,7 +400,7 @@ argument of sort <tt>A</tt> and results in a value of sort <tt>A</tt>.
 The example illustrates how one can force an interpretation where <tt>f</tt> applied twice to <tt>x</tt> results in <tt>x</tt> again, 
 but <tt>f</tt> applied once to <tt>x</tt> is different from <tt>x</tt>.
 
-```python
+```z3-python
 A    = DeclareSort('A')
 x, y = Consts('x y', A)
 f    = Function('f', A, A)
@@ -431,7 +431,7 @@ that use quantifiers. It is no longer a decision procedure for
 such formulas in general (and for good reasons, as there can be
 no decision procedure for first-order logic).
 
-```python
+```z3-python
 f = Function('f', IntSort(), IntSort(), IntSort())
 x, y = Ints('x y')
 f = ForAll([x, y], f(x, y) == 0)
@@ -463,7 +463,7 @@ In the resultant formula the bounded variables are free.
 The function <tt>Var(index, sort)</tt> creates a bounded/free variable
 with the given index and sort.
  
-```python
+```z3-python
 f = Function('f', IntSort(), IntSort(), IntSort())
 x, y = Ints('x y')
 f = ForAll([x, y], f(x, y) == 0)
@@ -481,7 +481,7 @@ We would need a predicate for sub-typing. Sub-typing should be a partial order,
 and respect single inheritance. For some built-in type constructors, 
 such as for <tt>array_of</tt>, sub-typing should be monotone.
 
-```python
+```z3-python
 Type     = DeclareSort('Type')
 subtype  = Function('subtype', Type, Type, BoolSort())
 array_of = Function('array_of', Type, Type)
@@ -531,7 +531,7 @@ We also annotate the quantified formula with the pattern <tt>f(g(x))</tt>.
 Since there is no ground instance of this pattern, the quantifier is not instantiated, and 
 Z3 fails to show that the formula is unsatisfiable.
 
-```python
+```z3-python
 f = Function('f', IntSort(), IntSort())
 g = Function('g', IntSort(), IntSort())
 a, b, c = Ints('a b c')
@@ -555,7 +555,7 @@ to be unsatisfiable. More restrive patterns minimize the number of
 instantiations (and potentially improve performance), but they may
 also make Z3 "less complete".
 
-```python
+```z3-python
 f = Function('f', IntSort(), IntSort())
 g = Function('g', IntSort(), IntSort())
 a, b, c = Ints('a b c')
@@ -603,7 +603,7 @@ that terms are considered up to congruence and pattern matching takes
 place modulo ground equalities. We call the matching problem
 **E-matching**. For example, if we have the following equalities:
 
-```python
+```z3-python
 f = Function('f', IntSort(), IntSort())
 g = Function('g', IntSort(), IntSort())
 a, b, c = Ints('a b c')
@@ -641,7 +641,7 @@ multi-patterns. In the following example, the quantified formula
 states that <tt>f</tt> is injective. This quantified formula is annotated with
 the multi-pattern <tt>MultiPattern(f(x), f(y))</tt>.  
 
-```python
+```z3-python
 A = DeclareSort('A')
 B = DeclareSort('B')
 f = Function('f', A, B)
@@ -666,7 +666,7 @@ that only a linear number of instantiations is required. The trick is
 to realize that <tt>f</tt> is injective if and only if it has a partial
 inverse.
 
-```python
+```z3-python
 A = DeclareSort('A')
 B = DeclareSort('B')
 f = Function('f', A, B)
@@ -698,7 +698,7 @@ prefix used to create skolem constants/functions.
 In Z3Py and Z3 multiple solvers can be simultaneously used.
 It is also very easy to copy assertions/formulas from one solver to another.
 
-```python
+```z3-python
 x, y = Ints('x y')
 s1 = Solver()
 s1.add(x > 10, y > 10)
@@ -718,7 +718,7 @@ Assumptions are also available in the Z3 SMT 2.0 frontend, and in other Z3 front
 They are used to extract unsatisfiable cores. They may be also used to "retract"
 constraints. Note that, assumptions are not really _soft constraints_, but they can be used to implement them. 
 
-```python
+```z3-python
 p1, p2, p3 = Bools('p1 p2 p3')
 x, y = Ints('x y')
 # We assert Implies(p, C) to track constraint C using p
@@ -750,7 +750,7 @@ Z3 objects. The formatter supports many configuration options.
 The command <tt>set_option(html_mode=False)</tt> makes all formulas and expressions to be
 displayed in Z3Py notation.
 
-```python
+```z3-python
 x = Int('x')
 y = Int('y')
 print (x**2 + y**2 >= 1)

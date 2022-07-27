@@ -181,12 +181,13 @@ export default function plugin() {
                     // so just add the syntax highlighting and github discussion button (if configured)
 
                     if (githubRepo) {
+                        const input = JSON.stringify({repo: langConfig.githubRepo});
                         parent.children.splice(
                             index,
                             1,
                             {
                                 type: 'jsx',
-                                value: `<GithubDiscussionBtn repo={${langConfig.githubRepo}} />`,
+                                value: `<GithubDiscussionBtn repo={${input}} />`,
                             },
                             {
                                 type: 'code',

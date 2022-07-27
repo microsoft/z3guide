@@ -45,7 +45,7 @@ function RunButton({ onClick, runFinished }) {
 
 export function GithubDiscussionBtn({ repo }) {
   return (
-    <div className='button'>
+    <div>
       <GitHubButton
         href={`https://github.com/${repo}/discussions`}
         data-size="large"

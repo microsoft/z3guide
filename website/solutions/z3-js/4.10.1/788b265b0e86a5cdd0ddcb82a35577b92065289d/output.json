@@ -1,1 +1,0 @@
-{"output":"","error":"Error: main.ts (8,23): Property 'solver' does not exist on type 'Context<\"main\">'. Did you mean 'Solver'?","status":"z3-failed","hash":"788b265b0e86a5cdd0ddcb82a35577b92065289d"}

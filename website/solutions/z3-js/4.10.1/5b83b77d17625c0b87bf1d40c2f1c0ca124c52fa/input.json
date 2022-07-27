@@ -1,1 +1,0 @@
-{"input":"const solver = new Z3.Solver();\nconst sort = Z3.Int.sort();\nconst x = Z3.Int.const('x');\nconst y = Z3.Int.const('y');\nconst g = Z3.Function.declare('g', sort, sort);\nconst conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));\nsolver.add(Z3.Not(conjecture));\nawait solver.check(); //sat"}

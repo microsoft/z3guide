@@ -127,6 +127,16 @@ async function getOutput(config, input, lang, skipErr) {
     return result;
 }
 
+function getGithubRepo(langConfig) {
+    if (langConfig.githubDiscussion) {
+        if (!langConfig.githubRepo) {
+            throw new Error(`Cannot create GithubDiscussionBtn for ${lang} without githubRepo configured in language.config.js`);
+        }
+        return langConfig.githubRepo;
+    }
+    return undefined;
+}
+
 
 export default function plugin() {
 
@@ -144,7 +154,7 @@ export default function plugin() {
             node.children.unshift(
                 {
                     type: 'import',
-                    value: "import CustomCodeBlock from '@site/src/components/TutorialComponents'"
+                    value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'"
                 }
             )
         });
@@ -164,19 +174,39 @@ export default function plugin() {
                     continue; // onto the next lang config available until we are out
                 }
 
+                const githubRepo = getGithubRepo(langConfig);
+
                 if (!langConfig.buildConfig) {
                     // there is no runtime configured,
-                    // so just add the syntax highlighting
+                    // so just add the syntax highlighting and github discussion button (if configured)
 
-                    parent.children.splice(
-                        index,
-                        1,
-                        {
-                            type: 'code',
-                            lang: highlight,
-                            value: value,
-                        }
-                    );
+                    if (githubRepo) {
+                        parent.children.splice(
+                            index,
+                            1,
+                            {
+                                type: 'jsx',
+                                value: `<GithubDiscussionBtn repo={${langConfig.githubRepo}} />`,
+                            },
+                            {
+                                type: 'code',
+                                lang: highlight,
+                                value: value,
+                            }
+                        );
+
+                    } else {
+                        parent.children.splice(
+                            index,
+                            1,
+                            {
+                                type: 'code',
+                                lang: highlight,
+                                value: value,
+                            }
+                        );
+                    }
+
                     // console.log(`no build config for ${lang}`);
                     // console.log(`${highlight} syntax highlighting added for input: ${value}`);
                     continue;
@@ -190,7 +220,14 @@ export default function plugin() {
 
                     // console.log({ node, index, parent });
 
-                    const val = JSON.stringify({ lang: lang, highlight: highlight, statusCodes: buildConfig.statusCodes, code: value, result: result });
+                    const val = JSON.stringify({
+                        lang: lang,
+                        highlight: highlight,
+                        statusCodes: buildConfig.statusCodes,
+                        code: value,
+                        result: result,
+                        githubRepo: githubRepo,
+                    });
                     parent.children.splice(
                         index,
                         1,

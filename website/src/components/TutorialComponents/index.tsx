@@ -15,8 +15,8 @@ import runZ3JSWeb from "./runZ3JSWeb";
 
 // [CONFIG HERE] language-process mapping
 const clientConfig = {
-  z3: runZ3Web,
-  "z3-js": runZ3JSWeb,
+  'z3': runZ3Web,
+  'z3-js': runZ3JSWeb,
 };
 
 interface MyProps extends Props {
@@ -43,16 +43,16 @@ function RunButton({ onClick, runFinished }) {
   );
 }
 
-function GithubDiscussionBtn() {
+export function GithubDiscussionBtn({ repo }) {
   return (
     <div className='button'>
-    <GitHubButton
-      href="https://github.com/Z3Prover/z3/discussions"
-      data-size="large"
-      aria-label="Discuss Z3Prover/z3 on GitHub"
-    >
-      Discuss
-    </GitHubButton>
+      <GitHubButton
+        href={`https://github.com/${repo}/discussions`}
+        data-size="large"
+        aria-label={`Discuss ${repo} on GitHub`}
+      >
+        Discuss
+      </GitHubButton>
     </div>
   );
 }
@@ -112,7 +112,7 @@ function CustomCodeEditor(props: MyProps) {
 }
 
 export default function CustomCodeBlock({ input }) {
-  const { lang, highlight, statusCodes, code, result } = input;
+  const { lang, highlight, statusCodes, code, result, githubRepo } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -196,7 +196,11 @@ export default function CustomCodeBlock({ input }) {
         ) : (
           <div />
         )}
-        <GithubDiscussionBtn />
+        {githubRepo ? (
+          <GithubDiscussionBtn repo={githubRepo} />
+        ) : (
+          <div />
+        )}
       </div>
       <CustomCodeEditor
         children={inputNode}

@@ -93,7 +93,7 @@ This declaration instructs z3 to invoke callbacks whenever a new term headed by 
 function is introduced to the solver. It could be a term that is part of the input, or it could
 be a term that is created dynamically using quantifier instantiation.
 
-```python
+```z3-python
 
 Sort = DatatypeSort("Sort")
 leSort = PropagateFunction("<=Sort", Sort, Sort, BoolSort())
@@ -104,7 +104,7 @@ fmls = parse_smt2_string(example, decls={"<=Sort":leSort, "<=SortSyntax":leSortS
 
 ## Axiomatizing RTCs
 
-```python
+```z3-python
 
 [SortInt, SortExp, SortKItem, SortKLabel, SortK] = [Sort.constructor(i) for i in range(Sort.num_constructors())]
 
@@ -144,7 +144,7 @@ def rtc(constructors, bin):
 
 We use a simple union find with support for tracking values.
 
-```python
+```z3-python
 class Node:
     def __init__(self, a):
         self.term = a
@@ -284,7 +284,7 @@ Nested instances are created using a context (and not a solver).
 
 
 
-```python
+```z3-python
 class TC(UserPropagateBase):
     def __init__(self, s=None, ctx=None):
         UserPropagateBase.__init__(self, s, ctx)
@@ -327,7 +327,7 @@ that is checked on final. It is assumed that during final
 are known between arguments to <=Sort and <=SortSyntax.
     
 
-```python
+```z3-python
     def _fixed(self, x, v):        
         print("fixed: ", x, " := ", v)
         if x.decl().eq(leSort):
@@ -352,7 +352,7 @@ It allows register `t` and its two arguments with z3. In return for registering 
 invoke `fixed` and `eq` callbacks when z3 infers a fixed value assignment or a new equality between
 tracked terms.
 
-```python
+```z3-python
     def _created(self, t):
         print("Created", t)
         self.add(t)
@@ -379,7 +379,7 @@ The number of equality callbacks for _N_ terms that are equal is _N-1_, correspo
 to a spanning tree. So not all equalities are presented in callbacks and the client 
 can track equivalence classes by using a union-find data-structure as we are doing.
 
-```python
+```z3-python
 
     def _eq(self, x, y):
         print(x, " = ", y)
@@ -389,7 +389,7 @@ can track equivalence classes by using a union-find data-structure as we are doi
 
 ### Final check
 
-```python
+```z3-python
     def _final(self):
         print("Final")
         self.check_rtc(self._fixed_le, self._fixed_le_table)
@@ -440,7 +440,7 @@ can track equivalence classes by using a union-find data-structure as we are doi
 
 ## Using the User Propagator
 
-```python
+```z3-python
 s = Solver()
 b = TC(s)
 

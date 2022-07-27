@@ -1,0 +1,1 @@
+{"output":"","error":"Error: main.ts (2,4): Property 'setParam' does not exist on type 'Context<\"main\">'.\nmain.ts (3,4): Property 'setParam' does not exist on type 'Context<\"main\">'.","status":"z3-failed","hash":"6e9d92ab87857e9183644de010f7ef6bdef562b8"}

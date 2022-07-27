@@ -1,0 +1,1 @@
+{"output":"","error":"Error: main.ts (2,22): Parameter 'conjecture' implicitly has an 'any' type.","status":"z3-failed","hash":"e3e11a5ab2dbe41c0b86925b87de881d5160974d"}

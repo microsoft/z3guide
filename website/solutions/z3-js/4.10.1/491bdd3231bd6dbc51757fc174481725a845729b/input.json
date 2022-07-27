@@ -1,0 +1,1 @@
+{"input":"const { Solver, Int, Function, Implies, Not } = Z3.Context('main');\nconst solver = new Solver();\n\nconst sort = Int.sort();\nconst x = Int.const('x');\nconst y = Int.const('y');\nconst g = Function.declare('g', sort, sort);\n\nconst conjecture = Implies(x.eq(y), g.call(x).eq(g.call(y)));\nsolver.add(Not(conjecture));\nawait solver.check(); // unsat"}

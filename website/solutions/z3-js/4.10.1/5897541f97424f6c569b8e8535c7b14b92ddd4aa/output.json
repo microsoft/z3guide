@@ -1,0 +1,1 @@
+{"output":"","error":"Error: main.ts (4,33): Cannot find namespace 'Z3'.\nmain.ts (6,17): Cannot find name 'Int'. Did you mean 'init'?","status":"z3-failed","hash":"5897541f97424f6c569b8e8535c7b14b92ddd4aa"}

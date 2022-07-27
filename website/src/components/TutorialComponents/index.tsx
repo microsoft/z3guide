@@ -1,17 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  LiveProvider,
-  LiveEditor,
-  withLive,
-  LiveError,
-  LivePreview,
-  LiveContext,
-} from "react-live";
+import { LiveProvider, LiveEditor } from "react-live";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 import { type Props } from "@theme/CodeBlock";
 import { usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import { Language } from "prism-react-renderer";
+import GitHubButton from 'react-github-btn';
 import liveCodeBlockStyles from "@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css";
 import styles from "./styles.module.css";
 
@@ -51,15 +45,15 @@ function RunButton({ onClick, runFinished }) {
 
 function GithubDiscussionBtn() {
   return (
-    <a
-      className="github-button"
+    <div className='button'>
+    <GitHubButton
       href="https://github.com/Z3Prover/z3/discussions"
-      data-color-scheme="no-preference: light; light: light; dark: dark;"
       data-size="large"
       aria-label="Discuss Z3Prover/z3 on GitHub"
     >
       Discuss
-    </a>
+    </GitHubButton>
+    </div>
   );
 }
 
@@ -97,9 +91,8 @@ function CustomCodeEditor(props: MyProps) {
 
   const component = (
     <div
-      className={`${liveCodeBlockStyles.playgroundContainer} ${
-        editable ? styles.editable : ""
-      }`}
+      className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ""
+        }`}
     >
       <LiveProvider code={input} theme={prismTheme} id={id}>
         <>
@@ -138,51 +131,51 @@ export default function CustomCodeBlock({ input }) {
   // bypassing server-side rendering
   const onDidClickRun = ExecutionEnvironment.canUseDOM
     ? () => {
-        setRunFinished(false);
-        // TODO: only load z3 when needed
-        const newResult = { ...result };
-        let errorMsg;
+      setRunFinished(false);
+      // TODO: only load z3 when needed
+      const newResult = { ...result };
+      let errorMsg;
 
-        const runProcess = clientConfig[lang];
-        // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-        runProcess(currCode)
-          .then((res) => {
-            const result = JSON.parse(res);
-            if (result.output) {
-              const errRegex = new RegExp(
-                /(\(error)|(unsupported)|([eE]rror:)/g
-              );
-              const hasError = result.output.match(errRegex);
-              newResult.output = hasError ? "" : result.output;
-              newResult.error = hasError ? result.output : "";
-              newResult.status = hasError
-                ? statusCodes.runtimeError
-                : statusCodes.success;
-            } else if (result.error) {
-              newResult.error = result.error;
-              newResult.status = statusCodes.runError;
-            } else {
-              // both output and error are empty, which means we have a bug
-              errorMsg = `${lang}-web returned no output or error with input:\n${currCode}`;
-              newResult.error = errorMsg;
-              newResult.status = "buggy-code";
-              throw new Error(errorMsg);
-            }
-          })
-          .catch((error) => {
-            // runProcess fails
-            errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+      const runProcess = clientConfig[lang];
+      // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
+      runProcess(currCode)
+        .then((res) => {
+          const result = JSON.parse(res);
+          if (result.output) {
+            const errRegex = new RegExp(
+              /(\(error)|(unsupported)|([eE]rror:)/g
+            );
+            const hasError = result.output.match(errRegex);
+            newResult.output = hasError ? "" : result.output;
+            newResult.error = hasError ? result.output : "";
+            newResult.status = hasError
+              ? statusCodes.runtimeError
+              : statusCodes.success;
+          } else if (result.error) {
+            newResult.error = result.error;
+            newResult.status = statusCodes.runError;
+          } else {
+            // both output and error are empty, which means we have a bug
+            errorMsg = `${lang}-web returned no output or error with input:\n${currCode}`;
             newResult.error = errorMsg;
-            newResult.status = `${lang}-web-failed`;
+            newResult.status = "buggy-code";
             throw new Error(errorMsg);
-          })
-          .finally(() => {
-            setOutput(newResult);
-            setCodeChanged(false);
-            setRunFinished(true);
-          });
-      }
-    : () => {};
+          }
+        })
+        .catch((error) => {
+          // runProcess fails
+          errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+          newResult.error = errorMsg;
+          newResult.status = `${lang}-web-failed`;
+          throw new Error(errorMsg);
+        })
+        .finally(() => {
+          setOutput(newResult);
+          setCodeChanged(false);
+          setRunFinished(true);
+        });
+    }
+    : () => { };
 
   const onDidChangeCode = (code: string) => {
     setCurrCode(code);
@@ -192,16 +185,19 @@ export default function CustomCodeBlock({ input }) {
 
   return (
     <div>
-      {outputRendered ? (
-        <div />
-      ) : (
-        <OutputToggle onClick={onDidClickOutputToggle} />
-      )}
-      {outputRendered ? (
-        <RunButton onClick={onDidClickRun} runFinished={runFinished} />
-      ) : (
-        <div />
-      )}
+      <div className={styles.buttons}>
+        {outputRendered ? (
+          <div />
+        ) : (
+          <OutputToggle onClick={onDidClickOutputToggle} />
+        )}
+        {outputRendered ? (
+          <RunButton onClick={onDidClickRun} runFinished={runFinished} />
+        ) : (
+          <div />
+        )}
+        <GithubDiscussionBtn />
+      </div>
       <CustomCodeEditor
         children={inputNode}
         input={code}

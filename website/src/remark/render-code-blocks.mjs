@@ -72,7 +72,7 @@ async function getOutput(config, input, lang, skipErr) {
     const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror:)/g);
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
-        // console.log(`cache hit ${hash}`)
+        console.log(`cache hit ${hash}`)
         const errorToReport = checkRuntimeError(lang, langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
         if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
@@ -102,6 +102,11 @@ async function getOutput(config, input, lang, skipErr) {
 
         status = statusCodes.timeout;
     }
+
+    if (status === statusCodes.runError) {
+        throw new Error(`${lang} runtime error: ${hash}, ${status}, ${input}, ${error}`);
+    }
+
 
     console.log(`${lang} finished: ${hash}, ${status}, ${output}, ${error}`);
 

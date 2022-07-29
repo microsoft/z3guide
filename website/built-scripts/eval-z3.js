@@ -115,11 +115,11 @@ function compile(source, fixupErrorLocations) {
 }
 function compileZ3JS(src) {
   let imports = `
-  import type { init as initT, Model, Solver } from 'z3-solver';
-  declare let init: typeof initT;
-  declare let Z3: Awaited<ReturnType<typeof init>>;
-  declare let { Context, setParam } = Z3;
-`;
+    import type { init as initT, Model, Solver } from 'z3-solver';
+    declare let init: typeof initT;
+    declare let { Context }: Awaited<ReturnType<typeof init>>;
+    declare let Z3: ReturnType<typeof Context<'main'>>;
+  `;
   let wrapped = `
 ${imports}
 export = (async () => {

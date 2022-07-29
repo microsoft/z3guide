@@ -92,7 +92,7 @@ describe_tactics()
 Z3Py comes equipped with the following tactic combinators (aka tacticals):
 
 
------------------------ -|-------------------------
+-------------------------|--------------------------------
  <tt>Then(t, s)</tt>     | applies <tt>t</tt> to the input goal and <tt>s</tt> to every subgoal produced by <tt>t</tt>.
 <tt>OrElse(t, s)</tt>    | first applies <tt>t</tt> to the given goal, if it fails then returns the result of <tt>s</tt> applied to the given goal.
 <tt>Repeat(t)</tt>       | Keep applying the given tactic until no subgoal is modified by it.

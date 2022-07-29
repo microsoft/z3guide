@@ -235,8 +235,9 @@ solver.add(conjecture);
 await solver.check(); // sat
 
 const model = solver.model();
-const xSol = model.get(x);
-const ySol = model.get(y);
+// need the following cast for `asSignedValue` to work
+const xSol = model.get(x) as BitVecNum;
+const ySol = model.get(y) as BitVecNum;
 
 Z3.isBitVecVal(xSol) && Z3.isBitVecVal(ySol); // true
 
@@ -252,8 +253,7 @@ const yv = ySol.asSignedValue();
 // AstVector
 const solver = new Z3.Solver();
 
-// @ts-ignore: skipping typechecking for the following line for now, is there a better solution?
-const vector = new Z3.AstVector<Z3.Arith>();
+const vector = new Z3.AstVector<Z3.Arith>() as AstVector;
 for (let i = 0; i < 5; i++) {
     vector.push(Z3.Int.const(`int__${i}`));
 }

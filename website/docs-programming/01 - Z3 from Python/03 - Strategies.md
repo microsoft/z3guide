@@ -34,21 +34,21 @@ formulas called **Goals**.
 
 
 
-When a tactic is applied to some goal <tt>G</tt>, four different outcomes 
-are possible. The tactic succeeds in showing <tt>G</tt> to be satisfiable (i.e., feasible);
-succeeds in showing <tt>G</tt> to be unsatisfiable (i.e., infeasible); produces a sequence of subgoals; or fails.
-When reducing a goal <tt>G</tt> to a sequence of subgoals <tt>G1</tt>, ...,
-<tt>Gn</tt>, we face the problem of model conversion.
-A **model converter** construct a model for <tt>G</tt>
-using a model for some subgoal <tt>Gi</tt>. 
+When a tactic is applied to some goal `G`, four different outcomes 
+are possible. The tactic succeeds in showing `G` to be satisfiable (i.e., feasible);
+succeeds in showing `G` to be unsatisfiable (i.e., infeasible); produces a sequence of subgoals; or fails.
+When reducing a goal `G` to a sequence of subgoals `G1`, ...,
+`Gn`, we face the problem of model conversion.
+A **model converter** construct a model for `G`
+using a model for some subgoal `Gi`. 
 
 
-In the following example, we create a goal <tt>g</tt> consisting of three formulas, and a tactic <tt>t</tt>
-composed of two built-in tactics: <tt>simplify</tt> and <tt>solve-eqs</tt>. The tactic <tt>simplify</tt>
-apply transformations equivalent to the ones found in the command <tt>simplify</tt>. The tactic <tt>solver-eqs</tt>
-eliminate variables using Gaussian elimination. Actually, <tt>solve-eqs</tt> is not restricted only to linear arithmetic.
-It can also eliminate arbitrary variables. Then, combinator <tt>Then</tt> applies <tt>simplify</tt> to the input goal
-and <tt>solve-eqs</tt> to each subgoal produced by <tt>simplify</tt>. In this example, only one subgoal is produced.
+In the following example, we create a goal `g` consisting of three formulas, and a tactic `t`
+composed of two built-in tactics: `simplify` and `solve-eqs`. The tactic `simplify`
+apply transformations equivalent to the ones found in the command `simplify`. The tactic `solver-eqs`
+eliminate variables using Gaussian elimination. Actually, `solve-eqs` is not restricted only to linear arithmetic.
+It can also eliminate arbitrary variables. Then, combinator `Then` applies `simplify` to the input goal
+and `solve-eqs` to each subgoal produced by `simplify`. In this example, only one subgoal is produced.
 
 ```python
 x, y = Reals('x y')
@@ -62,12 +62,12 @@ t  = Then(t1, t2)
 print t(g)
 ```
 
-In the example above, variable <tt>x</tt> is eliminated, and is not present the resultant goal.
+In the example above, variable `x` is eliminated, and is not present the resultant goal.
 
 
-In Z3, we say a **clause** is any constraint of the form <tt>Or(f_1, ..., f_n)</tt>.
-The tactic <tt>split-clause</tt> will select a clause <tt>Or(f_1, ..., f_n)</tt> in the input goal, and split it 
-<tt>n</tt> subgoals. One for each subformula <tt>f_i</tt>.
+In Z3, we say a **clause** is any constraint of the form `Or(f_1, ..., f_n)`.
+The tactic `split-clause` will select a clause `Or(f_1, ..., f_n)` in the input goal, and split it 
+`n` subgoals. One for each subformula `f_i`.
 
 ```python
 x, y = Reals('x y')
@@ -83,7 +83,7 @@ for g in r:
 ## Tactics 
 
 Z3 comes equipped with many built-in tactics.
-The command <tt>describe_tactics()</tt> provides a short description of all built-in tactics.
+The command `describe_tactics()` provides a short description of all built-in tactics.
 
 ```python
 describe_tactics()
@@ -92,13 +92,14 @@ describe_tactics()
 Z3Py comes equipped with the following tactic combinators (aka tacticals):
 
 
--------------------------|--------------------------------
-`Then(t, s)`             | applies <tt>t</tt> to the input goal and <tt>s</tt> to every subgoal produced by <tt>t</tt>.
-`OrElse(t, s)`           | first applies <tt>t</tt> to the given goal, if it fails then returns the result of <tt>s</tt> applied to the given goal.
-<tt>Repeat(t)</tt>       | Keep applying the given tactic until no subgoal is modified by it.
-<tt>Repeat(t, n)</tt>    | Keep applying the given tactic until no subgoal is modified by it, or the number of iterations is greater than <tt>n</tt>.
-<tt>TryFor(t, ms)</tt>   | Apply tactic <tt>t</tt> to the input goal, if it does not return in <tt>ms</tt> millisenconds, it fails.
-<tt>With(t, params)</tt> | Apply the given tactic using the given parameters.
+                          |
+--------------------------|--------------------------------
+ `Then(t, s)`             | applies `t` to the input goal and `s` to every subgoal produced by `t`.
+ `OrElse(t, s)`           | first applies `t` to the given goal, if it fails then returns the result of `s` applied to the given goal.
+ `Repeat(t)`              | Keep applying the given tactic until no subgoal is modified by it.
+ `Repeat(t, n)`           | Keep applying the given tactic until no subgoal is modified by it, or the number of iterations is greater than `n`.
+ `TryFor(t, ms)`          | Apply tactic `t` to the input goal, if it does not return in `ms` millisenconds, it fails.
+ `With(t, params)`        | Apply the given tactic using the given parameters.
 
 The following example demonstrate how to use these combinators.
 
@@ -128,10 +129,10 @@ split_solve = Then(Repeat(OrElse(Tactic('split-clause'),
 print split_solve(g)
 ```
 
-In the tactic <tt>split_solver</tt>, the tactic <tt>solve-eqs</tt> discharges all but one goal.
+In the tactic `split_solver`, the tactic `solve-eqs` discharges all but one goal.
 Note that, this tactic generates one goal: the empty goal which is trivially satisfiable (i.e., feasible) 
 
-The list of subgoals can be easily traversed using the Python <tt>for</tt> statement.
+The list of subgoals can be easily traversed using the Python `for` statement.
 
 ```python
 x, y, z = Reals('x y z')
@@ -148,10 +149,10 @@ for s in split_all(g):
     print s
 ```
 
-A tactic can be converted into a solver object using the method <tt>solver()</tt>.
-If the tactic produces the empty goal, then the associated solver returns <tt>sat</tt>.
-If the tactic produces a single goal containing <tt>False</tt>, then the solver returns <tt>unsat</tt>.
-Otherwise, it returns <tt>unknown</tt>.
+A tactic can be converted into a solver object using the method `solver()`.
+If the tactic produces the empty goal, then the associated solver returns `sat`.
+If the tactic produces a single goal containing `False`, then the solver returns `unsat`.
+Otherwise, it returns `unknown`.
 
 ```python
 bv_solver = Then('simplify', 
@@ -163,15 +164,15 @@ x, y = BitVecs('x y', 16)
 solve_using(bv_solver, x | y == 13, x > y)
 ```
 
-In the example above, the tactic <tt>bv_solver</tt> implements a basic bit-vector solver using equation solving,
-bit-blasting, and a propositional SAT solver. Note that, the command <tt>Tactic</tt> is suppressed.
-All Z3Py combinators automatically invoke <tt>Tactic</tt> command if the argument is a string.
-Finally, the command <tt>solve_using</tt> is a variant of the <tt>solve</tt> command where the first
+In the example above, the tactic `bv_solver` implements a basic bit-vector solver using equation solving,
+bit-blasting, and a propositional SAT solver. Note that, the command `Tactic` is suppressed.
+All Z3Py combinators automatically invoke `Tactic` command if the argument is a string.
+Finally, the command `solve_using` is a variant of the `solve` command where the first
 argument specifies the solver to be used.
 
 
-In the following example, we use the solver API directly instead of the command <tt>solve_using</tt>.
-We use the combinator <tt>With</tt> to configure our little solver. We also include the tactic <tt>aig</tt>
+In the following example, we use the solver API directly instead of the command `solve_using`.
+We use the combinator `With` to configure our little solver. We also include the tactic `aig`
 which tries to compress Boolean formulas using And-Inverted Graphs.
 
 ```python
@@ -190,7 +191,7 @@ print x & y, "==", m.evaluate(x & y)
 ```
 
 
-The tactic <tt>smt</tt> wraps the main solver in Z3 as a tactic.
+The tactic `smt` wraps the main solver in Z3 as a tactic.
 
 ```python
 x, y = Ints('x y')
@@ -250,15 +251,15 @@ print r.convert_model(s.model())
 
 **Probes** (aka formula measures) are evaluated over goals.
 Boolean expressions over them can be built using relational operators and Boolean connectives.
-The tactic <tt>FailIf(cond)</tt> fails if the given goal does not satisfy the condition <tt>cond</tt>.
-Many numeric and Boolean measures are available in Z3Py. The command <tt>describe_probes()</tt> provides the list of 
+The tactic `FailIf(cond)` fails if the given goal does not satisfy the condition `cond`.
+Many numeric and Boolean measures are available in Z3Py. The command `describe_probes()` provides the list of 
 all built-in probes.
 
 ```python
 describe_probes()
 ```
 
-In the following example, we build a simple tactic using <tt>FailIf</tt>. It also shows that a probe can be applied directly 
+In the following example, we build a simple tactic using `FailIf`. It also shows that a probe can be applied directly 
 to a goal.
 
 ```python
@@ -281,20 +282,20 @@ g.add(x + y > 0)
 print t(g)
 ```
 
-Z3Py also provides the combinator (tactical) <tt>If(p, t1, t2)</tt> which is a shorthand for:
+Z3Py also provides the combinator (tactical) `If(p, t1, t2)` which is a shorthand for:
 
 ```
 OrElse(Then(FailIf(Not(p)), t1), t2)
 ```
 
-The combinator <tt>When(p, t)</tt> is a shorthand for:
+The combinator `When(p, t)` is a shorthand for:
 
 ```
 If(p, t, 'skip')
 ```
 
-The tactic <tt>skip</tt> just returns the input goal.
-The following example demonstrates how to use the <tt>If</tt> combinator.
+The tactic `skip` just returns the input goal.
+The following example demonstrates how to use the `If` combinator.
 
 ```python
 x, y, z = Reals('x y z')

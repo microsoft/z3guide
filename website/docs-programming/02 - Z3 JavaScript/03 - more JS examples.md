@@ -184,7 +184,7 @@ await solver.check();
 ```
 
 TODO: setParam doesn't work with how with process JS inputs
-```z3-js
+```z3-js no-build
 // non-linear arithmetic
 
 Z3.setParam('pp.decimal', true);

@@ -115,11 +115,11 @@ function compile(source, fixupErrorLocations) {
 }
 function compileZ3JS(src) {
   let imports = `
-    import type { init as initT, Model, Solver } from 'z3-solver';
-    declare let init: typeof initT;
-    declare let { Context }: Awaited<ReturnType<typeof init>>;
-    declare let Z3: ReturnType<typeof Context<'main'>>;
-  `;
+  import type { init as initT, Model, Solver } from 'z3-solver';
+  declare let init: typeof initT;
+  declare let Z3: Awaited<ReturnType<typeof init>>;
+  declare let { Context, setParam } = Z3;
+`;
   let wrapped = `
 ${imports}
 export = (async () => {
@@ -157,14 +157,14 @@ async function evalZ3JS(Z3, src) {
     return Promise.reject(new Error(result.message));
   }
   let wrapped = `
-(function (Z3) {
+(function (Z3, setParam) {
   'use strict';
   let module = {};
   ${result.result}
   return module.exports;
 })
   `;
-  return await (0, eval)(wrapped)(Z3.Context("main"));
+  return await (0, eval)(wrapped)(Z3.Context("main"), Z3.setParam);
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

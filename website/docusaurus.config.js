@@ -129,7 +129,7 @@ async function createConfig() {
             },
             // link to programming docs
             {
-              to: '/programming/Programming Z3/Using Z3 from Python/Introduction',
+              to: '/programming/Programming Z3/Z3 from Python/Introduction',
               label: 'Programming Z3',
               position: 'left',
               activeBaseRegex: `/programming/`,

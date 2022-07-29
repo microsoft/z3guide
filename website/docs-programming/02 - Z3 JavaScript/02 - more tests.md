@@ -45,6 +45,20 @@ const y = Z3.Int.const('y');
 x.add(y).sexpr()
 ```
 
+## From High-level.test.ts
+
+prove `x = y implies g(x) = g(y)`
+
+```z3-js
+   const solver = new Z3.Solver()
+   const sort = Z3.Int.sort();
+   const x = Z3.Int.const('x');
+   const y = Z3.Int.const('y');
+   const g = Z3.Function.declare('g', sort, sort);
+   const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
+   solver.add(Z3.Not(conjecture));
+   await solver.check()
+```
 
 
 

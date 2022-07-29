@@ -253,14 +253,14 @@ const yv = ySol.asSignedValue();
 // AstVector
 const solver = new Z3.Solver();
 
-const vector = new Z3.AstVector<Z3.Arith>() as AstVector;
+const vector = new Z3.AstVector<Arith>() as AstVector<string, Arith>;
 for (let i = 0; i < 5; i++) {
     vector.push(Z3.Int.const(`int__${i}`));
 }
 
 const length = vector.length();
 for (let i = 0; i < length; i++) {
-    solver.add(vector.get(i).gt(1));
+    solver.add((vector.get(i) as Arith).gt(1));
 }
 
 await solver.check(); // sat

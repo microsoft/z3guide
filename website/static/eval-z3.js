@@ -438,7 +438,7 @@ Verbose Debug Information: `+(typeof mr=="string"?mr:mr())),X(Ir,Ee||z))}G.asser
 `);return`${D.file.fileName} (${oe+1},${me+1}): ${y}`}else return ic.flattenDiagnosticMessageText(D.messageText,`
 `)});return h.length>0?{success:!1,message:h.join(`
 `)}:I.emitSkipped||!("main.js"in ee)?{success:!1,message:"typechecking failed with unknown error"}:{success:!0,result:ee["main.js"]}}function SE(e){let o=`
-  import type { init as initT, Model, Solver, BitVecNum, AstVector } from 'z3-solver';
+  import type { init as initT, Model, Solver, BitVecNum, AstVector, Arith } from 'z3-solver';
   declare let init: typeof initT;
   declare let { Context, setParam }: Awaited<ReturnType<typeof init>>;
   declare let Z3: ReturnType<typeof Context<'main'>>;

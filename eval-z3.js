@@ -438,10 +438,10 @@ Verbose Debug Information: `+(typeof mr=="string"?mr:mr())),X(Ir,Ee||z))}G.asser
 `);return`${D.file.fileName} (${oe+1},${me+1}): ${y}`}else return ic.flattenDiagnosticMessageText(D.messageText,`
 `)});return h.length>0?{success:!1,message:h.join(`
 `)}:I.emitSkipped||!("main.js"in ee)?{success:!1,message:"typechecking failed with unknown error"}:{success:!0,result:ee["main.js"]}}function SE(e){let o=`
-    import type { init as initT, Model, Solver } from 'z3-solver';
-    declare let init: typeof initT;
-    declare let { Context }: Awaited<ReturnType<typeof init>>;
-    declare let Z3: ReturnType<typeof Context<'main'>>;
+  import type { init as initT, Model, Solver, BitVecNum, AstVector, Arith } from 'z3-solver';
+  declare let init: typeof initT;
+  declare let { Context, setParam }: Awaited<ReturnType<typeof init>>;
+  declare let Z3: ReturnType<typeof Context<'main'>>;
   `,$=`
 ${o}
 export = (async () => {
@@ -449,13 +449,13 @@ ${e}
 })();
 `,G=o.split(`
 `).length+2;function ee({line:h,column:D}){return{line:h-G,column:D}}let F=ic.createSourceFile(zD,$,ic.ScriptTarget.ES2021);if(F.statements.length!==5)throw new Error("failed to parse input: wrong number of statements");let ie=F.statements[4];if(!ic.isCallExpression(ie.expression)||!ic.isParenthesizedExpression(ie.expression.expression)||!ic.isArrowFunction(ie.expression.expression.expression))throw new Error("failed to parse input: last line is not call");let De=ie.expression.expression.expression;if(!ic.isBlock(De.body))throw new Error("failed to parse input: arrow body is not block");let I=De.body.statements.length;if(I>0){let h=De.body.statements[I-1];ic.isExpressionStatement(h)&&(De.body.statements[I-1]=ic.factory.createReturnStatement(h.expression))}return e7(F,ee)}async function r7(e,o){let $=SE(o);if(!$.success)return Promise.reject(new Error($.message));let G=`
-(function (Z3) {
+(function (Z3, setParam) {
   'use strict';
   let module = {};
   ${$.result}
   return module.exports;
 })
-  `;return await(0,eval)(G)(e.Context("main"))}return ZI(n7);})();
+  `;return await(0,eval)(G)(e.Context("main"),e.setParam)}return ZI(n7);})();
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use

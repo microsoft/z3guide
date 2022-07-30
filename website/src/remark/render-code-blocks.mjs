@@ -103,6 +103,11 @@ async function getOutput(config, input, lang, skipErr) {
         status = statusCodes.timeout;
     }
 
+    if (status === statusCodes.runError && !skipErr) {
+        throw new Error(`${lang} runtime error: ${hash}, ${status}, ${input}, ${error}`);
+    }
+
+
     console.log(`${lang} finished: ${hash}, ${status}, ${output}, ${error}`);
 
 

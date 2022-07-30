@@ -123,10 +123,10 @@ function compile(
 // successful output looks like `"use strict"; module.exports = (async () => { ... })();`
 export function compileZ3JS(src: string) {
   let imports = `
-    import type { init as initT, Model, Solver } from 'z3-solver';
-    declare let init: typeof initT;
-    declare let { Context }: Awaited<ReturnType<typeof init>>;
-    declare let Z3: ReturnType<typeof Context<'main'>>;
+  import type { init as initT, Model, Solver, BitVecNum, AstVector, Arith } from 'z3-solver';
+  declare let init: typeof initT;
+  declare let { Context, setParam }: Awaited<ReturnType<typeof init>>;
+  declare let Z3: ReturnType<typeof Context<'main'>>;
   `;
   let wrapped = `
 ${imports}
@@ -174,16 +174,17 @@ ${src}
 export async function evalZ3JS(Z3: Awaited<ReturnType<typeof initZ3>>, src: string): Promise<string> {
   let result = compileZ3JS(src);
   if (!result.success) {
+    // @ts-ignore: `result.message` is guaranteed to exist if `result.success === false`
     return Promise.reject(new Error(result.message));
   }
   // we need to `eval` a function so we can pass Z3 into it
   let wrapped = `
-(function (Z3) {
+(function (Z3, setParam) {
   'use strict';
   let module = {};
   ${result.result}
   return module.exports;
 })
   `;
-  return await (0, eval)(wrapped)(Z3.Context('main'));
+  return await (0, eval)(wrapped)(Z3.Context('main'), Z3.setParam);
 }

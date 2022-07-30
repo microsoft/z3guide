@@ -68,7 +68,7 @@ then it finds a minimal unsatisfiable subset corresponding to these atoms.
 If asserting the atoms is consistent with the <em>SubsetSolver</em>, then 
 it extends this set of atoms maximally to a satisfying set.
 
-```python
+```z3-python
 
 
 def main():

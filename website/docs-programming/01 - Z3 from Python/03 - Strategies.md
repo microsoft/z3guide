@@ -50,7 +50,7 @@ eliminate variables using Gaussian elimination. Actually, `solve-eqs` is not res
 It can also eliminate arbitrary variables. Then, combinator `Then` applies `simplify` to the input goal
 and `solve-eqs` to each subgoal produced by `simplify`. In this example, only one subgoal is produced.
 
-```python
+```z3-python
 x, y = Reals('x y')
 g  = Goal()
 g.add(x > 0, y > 0, x == y + 2)
@@ -69,7 +69,7 @@ In Z3, we say a **clause** is any constraint of the form `Or(f_1, ..., f_n)`.
 The tactic `split-clause` will select a clause `Or(f_1, ..., f_n)` in the input goal, and split it 
 `n` subgoals. One for each subformula `f_i`.
 
-```python
+```z3-python
 x, y = Reals('x y')
 g  = Goal()
 g.add(Or(x < 0, x > 0), x == y + 1, y < 0)
@@ -85,7 +85,7 @@ for g in r:
 Z3 comes equipped with many built-in tactics.
 The command `describe_tactics()` provides a short description of all built-in tactics.
 
-```python
+```z3-python
 describe_tactics()
 ```
 
@@ -103,7 +103,7 @@ Z3Py comes equipped with the following tactic combinators (aka tacticals):
 
 The following example demonstrate how to use these combinators.
 
-```python
+```z3-python
 x, y, z = Reals('x y z')
 g = Goal()
 g.add(Or(x == 0, x == 1), 
@@ -134,7 +134,7 @@ Note that, this tactic generates one goal: the empty goal which is trivially sat
 
 The list of subgoals can be easily traversed using the Python `for` statement.
 
-```python
+```z3-python
 x, y, z = Reals('x y z')
 g = Goal()
 g.add(Or(x == 0, x == 1), 
@@ -154,7 +154,7 @@ If the tactic produces the empty goal, then the associated solver returns `sat`.
 If the tactic produces a single goal containing `False`, then the solver returns `unsat`.
 Otherwise, it returns `unknown`.
 
-```python
+```z3-python
 bv_solver = Then('simplify', 
                  'solve-eqs', 
                  'bit-blast', 
@@ -175,7 +175,7 @@ In the following example, we use the solver API directly instead of the command 
 We use the combinator `With` to configure our little solver. We also include the tactic `aig`
 which tries to compress Boolean formulas using And-Inverted Graphs.
 
-```python
+```z3-python
 bv_solver = Then(With('simplify', mul2concat=True),
                  'solve-eqs', 
                  'bit-blast', 
@@ -193,7 +193,7 @@ print x & y, "==", m.evaluate(x & y)
 
 The tactic `smt` wraps the main solver in Z3 as a tactic.
 
-```python
+```z3-python
 x, y = Ints('x y')
 s = Tactic('smt').solver()
 s.add(x > y + 1)
@@ -204,7 +204,7 @@ print s.model()
 Now, we show how to implement a solver for integer arithmetic using SAT. The solver is complete
 only for problems where every variable has a lower and upper bound.
 
-```python
+```z3-python
 s = Then(With('simplify', arith_lhs=True, som=True),
          'normalize-bounds', 'lia2pb', 'pb2bv', 
          'bit-blast', 'sat').solver()
@@ -224,7 +224,7 @@ Tactics can be combined with solvers. For example, we can apply a tactic to a go
 then select one of the subgoals and solve it using a solver. The next example demonstrates how to do that, and how to
 use model converters to convert a model for a subgoal into a model for the original goal.
 
-```python
+```z3-python
 t = Then('simplify', 
          'normalize-bounds', 
          'solve-eqs')
@@ -255,14 +255,14 @@ The tactic `FailIf(cond)` fails if the given goal does not satisfy the condition
 Many numeric and Boolean measures are available in Z3Py. The command `describe_probes()` provides the list of 
 all built-in probes.
 
-```python
+```z3-python
 describe_probes()
 ```
 
 In the following example, we build a simple tactic using `FailIf`. It also shows that a probe can be applied directly 
 to a goal.
 
-```python
+```z3-python
 x, y, z = Reals('x y z')
 g = Goal()
 g.add(x + y + z > 0)
@@ -297,7 +297,7 @@ If(p, t, 'skip')
 The tactic `skip` just returns the input goal.
 The following example demonstrates how to use the `If` combinator.
 
-```python
+```z3-python
 x, y, z = Reals('x y z')
 g = Goal()
 g.add(x**2 - y**2 >= 0)

@@ -8,13 +8,13 @@
 
 /* To get the origin config: current value + 0x17 */
 :root {
-  --ifm-color-primary: #2e6e55;
-  --ifm-color-primary-dark: #29614c;
-  --ifm-color-primary-darker: #275a48;
-  --ifm-color-primary-darkest: #20463b;
-  --ifm-color-primary-light: #337b5d;
-  --ifm-color-primary-lighter: #358262;
-  --ifm-color-primary-lightest: #3c966e;
+  --ifm-color-primary: #727272;
+  --ifm-color-primary-dark: #686868;
+  --ifm-color-primary-darker: #626262;
+  --ifm-color-primary-darkest: #515252;
+  --ifm-color-primary-light: #95999D;
+  --ifm-color-primary-lighter: #ACB0B5;
+  --ifm-color-primary-lightest: #BFC4CA;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
@@ -38,4 +38,8 @@
   padding-right: 30px;
   padding-bottom: 50px;
   padding-left: 80px;
+}
+
+.greenbutton{
+  background-color: #374BBB;
 }

@@ -183,7 +183,6 @@ solver.add(Z3.Not(conjecture));
 await solver.check();
 ```
 
-TODO: setParam doesn't work with how with process JS inputs
 ```z3-js
 // non-linear arithmetic
 
@@ -202,6 +201,8 @@ await solver.check(); // sat
 ```
 
 TODO: seems that we can only get the final output, not intermediate ones
+- `console.log` doesn't work
+- should divide code blocks with intermediate results into smaller snippets
 ```z3-js
 // bitvectors: simple proofs
 const x = Z3.BitVec.const('x', 32);
@@ -241,7 +242,6 @@ const ySol = model.get(y) as BitVecNum;
 
 Z3.isBitVecVal(xSol) && Z3.isBitVecVal(ySol); // true
 
-// TODO: fix the remaining lines
 const xv = xSol.asSignedValue();
 const yv = ySol.asSignedValue();
 

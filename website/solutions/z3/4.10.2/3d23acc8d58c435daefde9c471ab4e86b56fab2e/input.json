@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(assert (< x z))\n(assert (< y z))\n(assert (< z 5))\n(assert (not (= x y)))\n(maximize x)\n(maximize y)\n(check-sat)\n(get-model)\n(get-objectives)"}

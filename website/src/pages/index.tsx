@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import favicon from '/img/favicon/favicon.ico';
+// import favicon from '../static/img/favicon.ico';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
@@ -34,7 +34,7 @@ function HomepageHeader() {
         </div>
       </div>
       <div class="col">
-        <h1> Hi </h1>
+      {/* <img src="../static/img/logoz3.png" alt="Girl in a jacket"></img> */}
       </div>
     </div>
   );

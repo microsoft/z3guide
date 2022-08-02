@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun c () Bool\n    true)\n  (define-fun b () Bool\n    false)\n  (define-fun a () Bool\n    true)\n)\n(objectives\n (A 0)\n (B 2)\n)\n","error":"","status":"z3-ran","hash":"f6b41385ac5e520b0a1dd6d7f30a5ac3628030f9"}

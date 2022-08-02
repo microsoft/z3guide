@@ -9,3 +9,8 @@
 .outdated {
     color: grey;
 }
+
+.buttons {
+    display: flex;
+    align-items: center;
+}

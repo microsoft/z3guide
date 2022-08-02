@@ -1,0 +1,1 @@
+{"input":"(declare-const a Unicode)\n(declare-const b Unicode)\n(simplify (char.<= a b))\n(simplify (char.<= (_ Char 1) (_ Char 2)))\n(simplify (char.to_int (_ Char 1)))\n(simplify (char.is_digit (_ Char 1)))\n(simplify (char.is_digit (_ Char 49))) ; it is the digit 1"}

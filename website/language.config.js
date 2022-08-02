@@ -19,6 +19,8 @@ async function createConfig() {
                         runtimeError: 'z3-runtime-error',
                     },
                 },
+                githubRepo: 'Z3Prover/z3',
+                githubDiscussion: true,
             },
             {
                 name: 'Z3 JavaScript Bindings',
@@ -36,7 +38,16 @@ async function createConfig() {
                         runtimeError: 'z3-runtime-error',
                     },
                 },
+                githubRepo: 'Z3Prover/z3',
+                githubDiscussion: true,
             },
+            {
+                name: 'Z3 Python Bindings',
+                label: 'z3-python',
+                highlight: 'python',
+                githubRepo: 'Z3Prover/z3',
+                githubDiscussion: true,
+            }
         ],
         solutionsDir: './solutions',
     }

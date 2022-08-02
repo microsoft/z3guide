@@ -13,8 +13,8 @@ function HomepageHeader() {
   return (
     <div className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container" id="tryinsomthin">
-      <div class="row">
-      <div class="col">
+      <div className="row">
+      <div className="col">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
@@ -39,8 +39,8 @@ function HomepageHeader() {
           </div>
         </div>
       </div>
-      <div class="col">
-      {/* <img src="../static/img/logoz3.png" alt="Girl in a jacket"></img> */}
+      <div className="col">
+        <img src="/static/img/logoz3.png" alt="Z3 Logo"></img>
       </div>
     </div>
   );

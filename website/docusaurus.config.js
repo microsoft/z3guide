@@ -256,4 +256,12 @@ async function createConfig() {
   return config;
 }
 
-module.exports = createConfig;
+// module.exports = createConfig;
+
+module.exports = {
+  title: 'Z3 Guide',
+  url: 'https://microsoft.github.io',
+  baseUrl: '/z3guide/',
+  favicon: '/img/favicon.ico',
+  staticDirectories: ['static']
+};

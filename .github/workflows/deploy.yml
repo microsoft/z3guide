@@ -30,7 +30,7 @@ jobs:
           cache-dependency-path: website/yarn.lock
 
       - name: Install dependencies
-        run: yarn install --frozen-file
+        run: yarn install --frozen-lockfile
       - name: Build website
         run: yarn build
       - uses: stefanzweifel/git-auto-commit-action@v4

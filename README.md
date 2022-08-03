@@ -11,8 +11,10 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
 2. [Development](#development)
     1. [Contributing to Existing Materials](#contributing-to-existing-tutorial-materials)
     2. [Creating New Tutorial Materials](#creating-new-tutorial-materials)
-3. [Code of Conduct](#microsoft-open-source-code-of-conduct)
-4. [Trademarks](#trademarks)
+3. [Manually Updating `z3-solver`](#manually-updating-z3-solver)
+4. [Releases](#releases)
+5. [Code of Conduct](#microsoft-open-source-code-of-conduct)
+6. [Trademarks](#trademarks)
 
 ## Developer Setup
 
@@ -48,7 +50,7 @@ npm install -g yarn
 - From the root directory, build docusaurus
 
 ```
-./build.sh
+./scripts/build.sh
 ```
 
 If the build fails after pulling, try
@@ -60,7 +62,7 @@ cd website && yarn clean && cd ../
 - Launch the docs server
 
 ```
-./run.sh
+./scripts/run.sh
 ```
 
 - Click on the generated URL in the terminal output to see the website now running locally.
@@ -130,6 +132,44 @@ The process of creating new tutorial materials is similar to the above, except f
 2. You will need a JavaScript file for configuring the sidebar for your docs under `website/sidebars`. The sidebar can be generated automatically. You may simply make a renamed copy of `programmingSidebars.js` for such automation.
 3. You will need to go to `docusaurus.config.js` to add additional configurations so that the build process can pick up the new directories. Search for comments beginning with `[NEW DOCS]` within the file for more instructions.
 
+
+## Manually Updating `z3-solver`
+Upgrades of `z3-solver` should be done ONLY you are certain that the latest version of `z3-solver` works well with the existing examples and website infrastructure. We provide a script to automate the manual upgrade process:
+
+```
+./scripts/upgrade-z3.sh
+```
+
+The script will update `z3-solver` to the latest and then try to build the website. If the build fails, then it will downgrade `z3-solver` to the version before your upgrade. It is unlikely that the update itself fails.
+
+After done, make sure the field `dependencies.z3-solver` in `website/package.json` is exactly the version that you just upgraded to. For example, if you just upgraded to version 4.10.1, it should look like
+```js
+{
+  //...
+  "dependencies": {
+    //...
+    "z3-solver": "4.10.1" // it should not be "^4.10.1" or "~4.10.1" or any other values that contain other symbols
+  }
+}
+```
+So that we make sure that `yarn install` always picks up the _exact_ version of `z3-solver` that you mean for the website to run on.
+
+## Releases
+We ONLY deploy changes to our github pages when we decide to _release_ current changes, so that we avoid nightly changes that might affect user experience. To do so, you would need to merge the `main` branch into the `release` branch, which is reserved for releases. The configured github actions will only make a release AND deploy to gh-pages when commits are pushed onto the `release` branch.
+
+In command line, assuming you have a local `main` branch that is up-to-date with `origin/main`, it looks like the following:
+
+```bash
+git fetch
+# fetches all remote branches
+git checkout release
+# switch into the release branch
+git merge main
+# merge commits on the main branch into the release branch
+# and resolve merge conflicts accordingly
+git push origin release
+# push the `release` branch and trigger CI
+```
 ## Microsoft Open Source Code of Conduct
 
 This project is hosted at https://github.com/microsoft/z3guide/.

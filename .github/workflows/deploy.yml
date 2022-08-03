@@ -20,6 +20,7 @@ jobs:
       Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
       Z3GUIDE_GITHUB_REF: ${{ github.ref }}
       Z3GUIDE_GITHUB_SHA: ${{ github.sha }}
+      
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -35,6 +36,12 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           file_pattern: website/solutions/*
+
+      - name: Release
+        if: ${{ github.ref == 'refs/heads/release' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        run: yarn semantic-release
 
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus

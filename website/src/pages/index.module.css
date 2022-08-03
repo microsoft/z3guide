@@ -25,3 +25,8 @@
 .mainButton {
   margin: 0 1rem;
 }
+
+.format{
+  text-align: left;
+  padding-left: 1em;
+}

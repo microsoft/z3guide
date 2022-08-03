@@ -24,6 +24,8 @@ async function createConfig() {
     tagline: 'Learn Z3 online!',
     url: 'https://microsoft.github.io/',
     baseUrl: '/z3guide/',
+    staticDirectories: ['static'],
+    favicon: '/img/favicon.ico',
     onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'warn',
 

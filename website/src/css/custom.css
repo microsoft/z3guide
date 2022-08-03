@@ -48,5 +48,11 @@
 }
 
 .hometextformat{
-  padding: 50 px;
-}
+  margin-left: 2em;
+  margin-right: 1em;
+} 
+
+/* .sizing{
+  padding-left: 2em;
+  padding-right: 2em;
+} */

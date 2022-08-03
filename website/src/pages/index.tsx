@@ -39,7 +39,7 @@ function HomepageHeader() {
           </div>
           <div class="col hometextformat">
             {/* <img src="/img/logoz3.png" alt="Z3 Logo"></img> */}
-            <img src={require('@site/static/img/logoz3.png').default} />
+            <img class="fit-picture" src={require('@site/static/img/logoz3.png').default} />
           </div>
         </div>
     </div>

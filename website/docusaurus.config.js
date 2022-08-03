@@ -20,15 +20,14 @@ async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
   // where information such as course title, description etc. are configured
   const config = {
-    title: 'Z3',
-    tagline: 'Learn Z3 online!',
+    title: 'Z3 Guide',
+    tagline: 'Z3 is a state-of-the art theorem prover from Microsoft Research. It can be used to check the satisfiability of logical formulas over one or more theories. Click on SMTLIB or Programming Z3 to learn how to use Z3 in its pure SMTLIB format or any of its language bindings. Click playground to try yout own formulas!',
     url: 'https://microsoft.github.io/',
     baseUrl: '/z3guide/',
     staticDirectories: ['static'],
     favicon: '/img/favicon.ico',
     onBrokenLinks: 'ignore',
     onBrokenMarkdownLinks: 'warn',
-
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'microsoft', // Usually your GitHub org/user name.
@@ -122,6 +121,15 @@ async function createConfig() {
       ({
         navbar: {
           title: 'Z3 Documentation',
+          logo: {
+            alt: 'Site Logo',
+            src: 'img/logoz3.png',
+            srcDark: 'img/logoz3.png',
+            href: 'https://microsoft.github.io/z3guide/',
+            target: '_self',
+            width: 48,
+            height: 32,
+           },
           items: [
             {
               type: 'doc',

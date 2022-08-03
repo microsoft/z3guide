@@ -12,8 +12,8 @@ function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <div className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container" id="tryinsomthin">
-        <div class="row">
+      <div className="container">
+        <div class="row" >
           <div class="col format">
             <h1 className="hero__title">{siteConfig.title}</h1>
             <p className="hero__subtitle">{siteConfig.tagline}</p>
@@ -40,8 +40,6 @@ function HomepageHeader() {
           <div class="col">
             {/* <img src="/img/logoz3.png" alt="Z3 Logo"></img> */}
             <img src={require('@site/static/img/logoz3.png').default} />
-
- *
           </div>
         </div>
     </div>

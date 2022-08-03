@@ -38,7 +38,10 @@ function HomepageHeader() {
             </div>
           </div>
           <div class="col">
-            <img src="/static/img/logoz3.png" alt="Z3 Logo"></img>
+            {/* <img src="/img/logoz3.png" alt="Z3 Logo"></img> */}
+            <img src={require('@site/static/img/logoz3.png').default} />
+
+ *
           </div>
         </div>
     </div>

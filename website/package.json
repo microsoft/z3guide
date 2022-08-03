@@ -39,6 +39,7 @@
     "react-live": "^2.4.1",
     "rehype-katex": "5",
     "remark-math": "3",
+    "semantic-release": "^19.0.3",
     "z3-solver": "^4.10.1"
   },
   "devDependencies": {

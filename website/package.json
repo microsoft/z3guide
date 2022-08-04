@@ -39,7 +39,8 @@
     "react-live": "^2.4.1",
     "rehype-katex": "5",
     "remark-math": "3",
-    "z3-solver": "^4.10.1"
+    "semantic-release": "^19.0.3",
+    "z3-solver": "4.10.2"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^2.0.0-beta.21",
@@ -59,6 +60,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "release": {
+    "branches": [
+      "release"
     ]
   }
 }

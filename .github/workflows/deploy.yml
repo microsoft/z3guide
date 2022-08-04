@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
   pull_request:
+  release:
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
@@ -19,6 +20,7 @@ jobs:
       Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
       Z3GUIDE_GITHUB_REF: ${{ github.ref }}
       Z3GUIDE_GITHUB_SHA: ${{ github.sha }}
+      
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -28,20 +30,24 @@ jobs:
           cache-dependency-path: website/yarn.lock
 
       - name: Install dependencies
-        run: yarn install --frozen-file
-      - name: Upgrade z3-solver (if any)
-        run: yarn upgrade z3-solver --frozen-file
+        run: yarn install --frozen-lockfile
       - name: Build website
         run: yarn build
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           file_pattern: website/solutions/*
 
+      - name: Release
+        if: ${{ github.ref == 'refs/heads/release' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        run: yarn semantic-release
+
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/release' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Build output to publish to the `gh-pages` branch:

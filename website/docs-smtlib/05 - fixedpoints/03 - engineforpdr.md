@@ -1,9 +1,9 @@
 ---
-title: Generalized PDR
+title: Generalized PDR with SPACER
 sidebar_position: 3
 ---
 
-A different underlying engine for fixed-points is based on an algorithm for 
+A different underlying engine for fixed-points is based on the SPACER algorithm for 
 Property Directed Reachability [(PDR)](https://spacer.bitbucket.io/). The PDR engine is used by default for relations over integers, reals and algebraic data-types. The version in Z3 applies to Horn clauses with arithmetic and Boolean domains. The engine also works with domains using arrays, algebraic data-types and bit-vectors. The PDR engine is targeted at applications from symbolic model checking of software. The systems may be infinite state. The following examples also serve a purpose of showing how software model checking problems (of safety properties) can be embedded into Horn clauses and solved using PDR.
 
 ## Procedure Calls

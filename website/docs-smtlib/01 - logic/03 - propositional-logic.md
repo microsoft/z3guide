@@ -10,8 +10,8 @@ The pre-defined sort Bool is the sort (type) of all Boolean propositional expres
 (declare-const q Bool)
 (declare-const r Bool)
 (define-fun conjecture () Bool
-	(=> (and (= p q) (= q r))
-		(= p r)))
+	(=> (and (=> p q) (=> q r))
+		(=> p r)))
 (assert (not conjecture))
 (check-sat)
 ``` 

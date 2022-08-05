@@ -1,6 +1,6 @@
 --- 
 title: Bitvectors 
-sidebar_position: 6
+sidebar_position: 2
 ---
 
 >  **SMTLIB2** standard [The Theory of fixed sized bit-vectors](http://smtlib.cs.uiowa.edu/theories-FixedSizeBitVectors.shtml)

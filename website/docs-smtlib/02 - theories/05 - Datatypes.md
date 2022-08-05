@@ -1,6 +1,6 @@
 ---
 title: Datatypes
-sidebar_position: 9 
+sidebar_position: 5
 ---
 
 Algebraic datatypes, known from programming languages such as ML, offer a convenient way for specifying common data structures. Records and tuples are special cases of algebraic datatypes, and so are scalars (enumeration types). But algebraic datatypes are more general. They can be used to specify finite lists, trees and other recursive structures.

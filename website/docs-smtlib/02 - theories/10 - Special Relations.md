@@ -1,6 +1,6 @@
 ---
 title: Special Relations
-sidebar_position: 14
+sidebar_position: 10
 ---
 
 ## Special Binary Relations

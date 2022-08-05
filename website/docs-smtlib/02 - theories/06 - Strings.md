@@ -1,6 +1,6 @@
 --- 
 title: Strings
-sidebar_position: 10
+sidebar_position: 6
 ---
 
 > **SMTLIB2 standard** [The theory of unicode strings](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml)

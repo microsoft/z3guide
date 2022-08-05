@@ -1,6 +1,6 @@
 ---
 title: Unicode Characters
-sidebar_position: 13
+sidebar_position: 9
 ---
 
 The _Unicode_ sort ranges over unicode characters.

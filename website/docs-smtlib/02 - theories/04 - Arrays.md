@@ -1,6 +1,6 @@
 ---
 title: Arrays
-sidebar_position: 8
+sidebar_position: 4
 ---
 
 > **SMTLIB2 standard** [Arrays](http://smtlib.cs.uiowa.edu/theories-ArraysEx.shtml)

@@ -49,6 +49,8 @@ const sidebars = {
         'theories/Datatypes',
         'theories/Strings',
         'theories/Sequences',
+        'theories/Regular Expressions',
+        'theories/Characterss',
         'theories/Special Relations'
       ]
     },

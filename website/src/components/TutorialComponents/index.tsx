@@ -154,12 +154,6 @@ export default function CustomCodeBlock({ input }) {
           } else if (result.error) {
             newResult.error = result.error;
             newResult.status = statusCodes.runError;
-          } else {
-            // both output and error are empty, which means we have a bug
-            errorMsg = `${lang}-web returned no output or error with input:\n${currCode}`;
-            newResult.error = errorMsg;
-            newResult.status = "buggy-code";
-            throw new Error(errorMsg);
           }
         })
         .catch((error) => {

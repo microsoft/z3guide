@@ -50,7 +50,7 @@ const sidebars = {
         'theories/Strings',
         'theories/Sequences',
         'theories/Regular Expressions',
-        'theories/Characterss',
+        'theories/Characters',
         'theories/Special Relations'
       ]
     },

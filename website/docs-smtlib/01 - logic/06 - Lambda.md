@@ -1,6 +1,6 @@
 ---
 title: Lambdas
-sidebar_position: 16
+sidebar_position: 6
 ---
 
 Lambda binding is available as an extension to the theory of arrays.

@@ -4,7 +4,6 @@ import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 import { type Props } from "@theme/CodeBlock";
 import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
-import GitHubButton from 'react-github-btn';
 import Container from "@theme/CodeBlock/Container";
 import CodeEditor from './CodeBlock';
 import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css';

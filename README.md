@@ -30,11 +30,9 @@ npm install -g yarn
 - Set up repo and start development following the steps in [Development](#development).
 
 
-### Codespaces (Microsoft Internal ONLY)
+### Codespaces
 
-- Join the Microsoft github organization from [Microsoft Open Source](https://opensource.microsoft.com/) via the `Employee sign-in` at the bottom.
-
-  - From there, go to the `GitHub for Open Source at Microsoft` tab and follow the instructions to join the organization via the management portal.
+These instruction use GitHub Codespaces, a convienient way to get a perfect cloud development environment. Your organization may or may not support Codespaces.
 
 - From [this repository](https://github.com/microsoft/z3guide/), click on the green `<> Code` button, select the `Codespaces` tab and then `Create codespaces on main`. The setup might take a couple of minutes.
 
@@ -44,6 +42,11 @@ npm install -g yarn
 
 - Set up repo and start development following the steps in [Development](#development).
 
+### Microsoft Employees ONLY
+
+- Join the Microsoft github organization from [Microsoft Open Source](https://opensource.microsoft.com/) via the `Employee sign-in` at the bottom.
+
+  - From there, go to the `GitHub for Open Source at Microsoft` tab and follow the instructions to join the organization via the management portal.
 
 ## Development
 

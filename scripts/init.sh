@@ -4,11 +4,11 @@ set -euo pipefail
 if [[ -d website ]]; then
 
     echo "------------------------------"
-    echo "-- Building Docusaurus -------"
+    echo "-- Installing Dependencies ---"
     echo "------------------------------"
 
     cd website;
-    yarn && yarn build;
+    yarn;
     cd ../;
 
 else

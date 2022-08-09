@@ -47,22 +47,30 @@ npm install -g yarn
 
 ## Development
 
-- From the root directory, build docusaurus
+- From the *root directory*, run the script to install dependencies
 
 ```
-./scripts/build.sh
+./scripts/init.sh
 ```
 
-If the build fails after pulling, try
+Or run the exact command
 
 ```
-cd website && yarn clean && cd ../
+cd website && yarn && cd ../
 ```
 
-- Launch the docs server
+- Launch the docs server (which does client-side rendering and allows for hot reloading, so that you see your changes immediately reflected to the locally running page)
 
 ```
 ./scripts/run.sh
+```
+
+Or run the exact command
+```
+cd website;
+yarn clear; # for clearing cache
+yarn start; 
+cd ../;
 ```
 
 - Click on the generated URL in the terminal output to see the website now running locally.

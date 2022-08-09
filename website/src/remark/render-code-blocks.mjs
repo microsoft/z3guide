@@ -186,37 +186,24 @@ export default function plugin() {
                 if (!langConfig.buildConfig) {
                     // there is no runtime configured,
                     // so just add the syntax highlighting and github discussion button (if configured)
-
-                    if (githubRepo) {
-                        const input = JSON.stringify(githubRepo);
-                        parent.children.splice(
-                            index,
-                            1,
-                            {
-                                type: 'jsx',
-                                value: `<GithubDiscussionBtn repo={${input}} />`,
-                            },
-                            {
-                                type: 'code',
-                                lang: highlight,
-                                value: value,
-                            }
-                        );
-
-                    } else {
-                        parent.children.splice(
-                            index,
-                            1,
-                            {
-                                type: 'code',
-                                lang: highlight,
-                                value: value,
-                            }
-                        );
-                    }
-
-                    // console.log(`no build config for ${lang}`);
-                    // console.log(`${highlight} syntax highlighting added for input: ${value}`);
+                    const val = JSON.stringify({
+                        lang: lang,
+                        highlight: highlight,
+                        statusCodes: {},
+                        code: value,
+                        result: {},
+                        githubRepo: githubRepo,
+                        editable: false,
+                        readonly: true,
+                    });
+                    parent.children.splice(
+                        index,
+                        1,
+                        {
+                            type: 'jsx',
+                            value: `<CustomCodeBlock input={${val}} />`
+                        }
+                    );
                     continue;
                 }
 
@@ -235,7 +222,8 @@ export default function plugin() {
                         code: value,
                         result: result,
                         githubRepo: githubRepo,
-                        editable: alwaysEditable
+                        editable: alwaysEditable,
+                        readonly: false
                     });
                     parent.children.splice(
                         index,
@@ -247,7 +235,7 @@ export default function plugin() {
                             // TODO: pass syntax highlighting to CodeBlock
                             value: `<CustomCodeBlock input={${val}} />`
                         }
-                    )
+                    );
                 });
             }
 

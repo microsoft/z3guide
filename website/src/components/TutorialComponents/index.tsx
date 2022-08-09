@@ -34,7 +34,8 @@ interface MyProps extends Props {
   readonly language?: string;
   readonly editable?: boolean;
   readonly onChange?: (code: string) => void;
-  readonly githubRepo?: string
+  readonly githubRepo?: string,
+  readonly readonly?: boolean,
 }
 
 function OutputToggle({ onClick }) {
@@ -81,7 +82,7 @@ function Output({ result, codeChanged, statusCodes }) {
 }
 
 function CustomCodeEditor(props: MyProps) {
-  const { id, input, language, showLineNumbers, editable, githubRepo, onChange } = props;
+  const { id, input, language, showLineNumbers, editable, githubRepo, readonly, onChange } = props;
 
   const prismTheme = usePrismTheme();
   console.log(prismTheme);
@@ -109,6 +110,7 @@ function CustomCodeEditor(props: MyProps) {
         prism={Prism}
         //@ts-ignore
         githubRepo={githubRepo}
+        readonly={readonly}
       />
     </Container>
   );
@@ -117,7 +119,7 @@ function CustomCodeEditor(props: MyProps) {
 }
 
 export default function CustomCodeBlock({ input }) {
-  const { lang, highlight, statusCodes, code, result, githubRepo, editable } = input;
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable, readonly } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -196,28 +198,34 @@ export default function CustomCodeBlock({ input }) {
         editable={editable || outputRendered}
         language={highlight}
         githubRepo={githubRepo}
+        readonly={readonly}
       />
-      <div className={styles.buttons}>
-        {editable || outputRendered ? (
-          <div />
-        ) : (
-          <OutputToggle onClick={onDidClickOutputToggle} />
-        )}
-        {editable || outputRendered ? (
-          <RunButton onClick={onDidClickRun} runFinished={runFinished} />
-        ) : (
-          <div />
-        )}
-      </div>
-      {outputRendered ? (
-        <Output
-          codeChanged={codeChanged}
-          result={output}
-          statusCodes={statusCodes}
-        />
-      ) : (
-        <div />
-      )}
+      {readonly ?
+        <></> :
+        <>
+          <div className={styles.buttons}>
+            {editable || outputRendered ? (
+              <div />
+            ) : (
+              <OutputToggle onClick={onDidClickOutputToggle} />
+            )}
+            {editable || outputRendered ? (
+              <RunButton onClick={onDidClickRun} runFinished={runFinished} />
+            ) : (
+              <div />
+            )}
+          </div>
+          {outputRendered ? (
+            <Output
+              codeChanged={codeChanged}
+              result={output}
+              statusCodes={statusCodes}
+            />
+          ) : (
+            <div />
+          )}
+        </>}
+
     </div>
   );
 }

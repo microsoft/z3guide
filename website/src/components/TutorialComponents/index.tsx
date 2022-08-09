@@ -49,7 +49,7 @@ function OutputToggle({ onClick }) {
 function RunButton({ onClick, runFinished }) {
   return (
     <button className="button button--primary" onClick={onClick}>
-      {runFinished ? "Edit and Run" : "Running..."}
+      {runFinished ? "Run" : "Running..."}
     </button>
   );
 }
@@ -185,6 +185,16 @@ export default function CustomCodeBlock({ input }) {
 
   return (
     <div>
+      <CustomCodeEditor
+        children={inputNode}
+        input={code}
+        id={result.hash}
+        showLineNumbers={true}
+        onChange={onDidChangeCode}
+        editable={outputRendered}
+        language={highlight}
+        githubRepo={githubRepo}
+      />
       <div className={styles.buttons}>
         {outputRendered ? (
           <div />
@@ -197,16 +207,6 @@ export default function CustomCodeBlock({ input }) {
           <div />
         )}
       </div>
-      <CustomCodeEditor
-        children={inputNode}
-        input={code}
-        id={result.hash}
-        showLineNumbers={true}
-        onChange={onDidChangeCode}
-        editable={outputRendered}
-        language={highlight}
-        githubRepo={githubRepo}
-      />
       {outputRendered ? (
         <Output
           codeChanged={codeChanged}

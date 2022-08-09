@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { useEditable } from "use-editable";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import CopyButton from '@theme/CodeBlock/CopyButton';
-import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import Highlight, {
     Prism,
     defaultProps,
@@ -16,97 +15,90 @@ import Highlight, {
 // a good starting point for customizing our own code editor
 
 const CodeEditor = (props) => {
-  const editorRef = useRef(null);
-  const [code, setCode] = useState(props.code || "");
+    const editorRef = useRef(null);
+    const [code, setCode] = useState(props.code || "");
 
-  useEffect(() => {
-    setCode(props.code);
-  }, [props.code]);
+    useEffect(() => {
+        setCode(props.code);
+    }, [props.code]);
 
-  const onEditableChange = useCallback((_code) => {
-    setCode(_code.slice(0, -1));
-  }, []);
+    const onEditableChange = useCallback((_code) => {
+        setCode(_code.slice(0, -1));
+    }, []);
 
-  useEditable(editorRef, onEditableChange, {
-    disabled: props.disabled,
-    indentation: 2,
-  });
+    useEditable(editorRef, onEditableChange, {
+        disabled: props.disabled,
+        indentation: 2,
+    });
 
-  useEffect(() => {
-    if (props.onChange) {
-      props.onChange(code);
-    }
-  }, [code]);
+    useEffect(() => {
+        if (props.onChange) {
+            props.onChange(code);
+        }
+    }, [code]);
 
-//   prismIncludeLanguages(Prism);
+    //   prismIncludeLanguages(Prism);
 
-  return (
-    <div className={props.className} style={props.style}>
-      <Highlight
-        Prism={props.prism || Prism}
-        code={code}
-        theme={props.theme}
-        language={props.language}
-      >
-        {({
-          className: _className,
-          tokens,
-          getLineProps,
-          getTokenProps,
-          style: _style,
-        }) => (
-          <pre
-            className={_className}
-            style={{
-              margin: 0,
-              outline: "none",
-              padding: 10,
-              fontFamily: "inherit",
-              ...(!props.className || !props.theme ? {} : _style),
-            }}
-            ref={editorRef}
-            spellCheck="false"
-          >
-            {tokens.map((line, lineIndex) => (
-              // eslint-disable-next-line react/jsx-key
-              <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
-                {line
-                  .filter((token) => !token.empty)
-                  .map((token, tokenIndex) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <span
-                      {...getTokenProps({ token, key: `token-${tokenIndex}` })}
-                    />
-                  ))}
-                {"\n"}
-              </div>
-            ))}
-          </pre>
-        )}
-      </Highlight>
-      <div className={codeBlockContentStyles.buttonGroup}>
-          {/* {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
-          <WordWrapButton
-            className={styles.codeButton}
-            onClick={() => wordWrap.toggle()}
-            isEnabled={wordWrap.isEnabled}
-          />
-        )} */}
-          <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+    return (
+        <div className={props.className} style={props.style}>
+            <Highlight
+                Prism={props.prism || Prism}
+                code={code}
+                theme={props.theme}
+                language={props.language}
+            >
+                {({
+                    className: _className,
+                    tokens,
+                    getLineProps,
+                    getTokenProps,
+                    style: _style,
+                }) => (
+                    <pre
+                        className={_className}
+                        style={{
+                            margin: 0,
+                            outline: "none",
+                            padding: 10,
+                            fontFamily: "inherit",
+                            ...(!props.className || !props.theme ? {} : _style),
+                        }}
+                        ref={editorRef}
+                        spellCheck="false"
+                    >
+                        {tokens.map((line, lineIndex) => (
+                            // eslint-disable-next-line react/jsx-key
+                            <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                                {line
+                                    .filter((token) => !token.empty)
+                                    .map((token, tokenIndex) => (
+                                        // eslint-disable-next-line react/jsx-key
+                                        <span
+                                            {...getTokenProps({ token, key: `token-${tokenIndex}` })}
+                                        />
+                                    ))}
+                                {"\n"}
+                            </div>
+                        ))}
+                    </pre>
+                )}
+            </Highlight>
+            <div className={codeBlockContentStyles.buttonGroup}>
+                <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+            </div>
         </div>
-    </div>
-  );
+    );
 };
 
 CodeEditor.propTypes = {
-  className: PropTypes.string,
-  code: PropTypes.string,
-  disabled: PropTypes.bool,
-  language: PropTypes.string,
-  onChange: PropTypes.func,
-  prism: PropTypes.object,
-  style: PropTypes.object,
-  theme: PropTypes.object,
+    className: PropTypes.string,
+    code: PropTypes.string,
+    disabled: PropTypes.bool,
+    language: PropTypes.string,
+    onChange: PropTypes.func,
+    prism: PropTypes.object,
+    style: PropTypes.object,
+    theme: PropTypes.object,
 };
 
 export default CodeEditor;

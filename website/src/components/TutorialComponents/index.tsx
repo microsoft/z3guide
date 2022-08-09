@@ -118,7 +118,7 @@ function CustomCodeEditor(props: MyProps) {
 }
 
 export default function CustomCodeBlock({ input }) {
-  const { lang, highlight, statusCodes, code, result, githubRepo } = input;
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -191,7 +191,7 @@ export default function CustomCodeBlock({ input }) {
         id={result.hash}
         showLineNumbers={true}
         onChange={onDidChangeCode}
-        editable={outputRendered}
+        editable={editable || outputRendered}
         language={highlight}
         githubRepo={githubRepo}
       />

@@ -173,6 +173,9 @@ export default function CustomCodeBlock({ input }) {
           setOutput(newResult);
           setCodeChanged(false);
           setRunFinished(true);
+          if (!outputRendered) {
+            setOutputRendered(true); // hack for the playground editor
+          }
         });
     }
     : () => { };
@@ -196,12 +199,12 @@ export default function CustomCodeBlock({ input }) {
         githubRepo={githubRepo}
       />
       <div className={styles.buttons}>
-        {outputRendered ? (
+        {editable || outputRendered ? (
           <div />
         ) : (
           <OutputToggle onClick={onDidClickOutputToggle} />
         )}
-        {outputRendered ? (
+        {editable || outputRendered ? (
           <RunButton onClick={onDidClickRun} runFinished={runFinished} />
         ) : (
           <div />

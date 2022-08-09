@@ -1,6 +1,6 @@
 ---
 title: Cores and Satisfying Subsets
-sidebar_position: 5
+sidebar_position: 1
 ---
 
 

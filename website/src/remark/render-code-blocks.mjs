@@ -169,6 +169,8 @@ export default function plugin() {
 
             const skipRegex = new RegExp(/(no-build)|(ignore-errors)/g);
             const skipErr = meta && meta.match(skipRegex) !== null;
+            const editableRegex = new RegExp(/(always-editable)/g);
+            const alwaysEditable = meta && meta.match(editableRegex) !== null;
 
             for (const langConfig of languageConfig.languages) {
 
@@ -233,6 +235,7 @@ export default function plugin() {
                         code: value,
                         result: result,
                         githubRepo: githubRepo,
+                        editable: alwaysEditable
                     });
                     parent.children.splice(
                         index,

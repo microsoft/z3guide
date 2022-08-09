@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useEditable } from "use-editable";
+import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
+import CopyButton from '@theme/CodeBlock/CopyButton';
+import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import Highlight, {
     Prism,
     defaultProps,
@@ -81,6 +84,16 @@ const CodeEditor = (props) => {
           </pre>
         )}
       </Highlight>
+      <div className={codeBlockContentStyles.buttonGroup}>
+          {/* {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
+          <WordWrapButton
+            className={styles.codeButton}
+            onClick={() => wordWrap.toggle()}
+            isEnabled={wordWrap.isEnabled}
+          />
+        )} */}
+          <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+        </div>
     </div>
   );
 };

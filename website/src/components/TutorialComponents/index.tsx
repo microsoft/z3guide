@@ -5,11 +5,12 @@ import { type Props } from "@theme/CodeBlock";
 import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import GitHubButton from 'react-github-btn';
+import Container from "@theme/CodeBlock/Container";
+import CodeEditor from './CodeBlock';
 import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css';
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import styles from "./styles.module.css";
-import Container from "@theme/CodeBlock/Container";
-import CodeEditor from './CodeBlock';
+
 
 import Prism from "prism-react-renderer/prism";
 
@@ -96,31 +97,31 @@ function CustomCodeEditor(props: MyProps) {
   const { id, input, language, showLineNumbers, editable, onChange } = props;
 
   const prismTheme = usePrismTheme();
-  console.log(prismTheme); 
+  console.log(prismTheme);
   // the line above shows that we are still using `plain` for syntax highlighting
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
   const component = (
-    <Container
-      as="pre"
-      className={clsx(
-        (editable ? styles.editable : ""),
-        codeBlockContainerStyles.codeBlockContainer,
-        ThemeClassNames.common.codeBlock,
-      )}
-    >
-      <CodeEditor
-        code={input}
-        theme={prismTheme}
-        disabled={!editable}
-        key={String(isBrowser)}
-        className={codeBlockContentStyles.codeBlockContent}
-        onChange={onChange}
-        language={language}
-        prism={Prism}
+      <Container
+        as="pre"
+        className={clsx(
+          (editable ? styles.editable : ""),
+          codeBlockContainerStyles.codeBlockContainer,
+          ThemeClassNames.common.codeBlock,
+        )}
+      >
+        <CodeEditor
+          code={input}
+          theme={prismTheme}
+          disabled={!editable}
+          key={String(isBrowser)}
+          className={codeBlockContentStyles.codeBlockContent}
+          onChange={onChange}
+          language={language}
+          prism={Prism}
         />
-    </Container>
+      </Container>
   );
 
   return <>{isBrowser ? component : <></>}</>;

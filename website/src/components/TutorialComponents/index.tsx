@@ -1,14 +1,22 @@
-import React, { useState, useRef, useEffect } from "react";
-import { LiveProvider, LiveEditor } from "react-live";
+import React, { useState } from "react";
+import clsx from "clsx";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 import { type Props } from "@theme/CodeBlock";
-import { usePrismTheme } from "@docusaurus/theme-common";
+import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
-import { Language } from "prism-react-renderer";
 import GitHubButton from 'react-github-btn';
-import liveCodeBlockStyles from "@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css";
+import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css';
+import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import styles from "./styles.module.css";
+import Container from "@theme/CodeBlock/Container";
 import CodeEditor from './CodeBlock';
+
+import Prism from "prism-react-renderer/prism";
+
+(typeof global !== "undefined" ? global : window).Prism = Prism;
+
+require("prismjs/components/prism-lisp");
+
 
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from "./runZ3Web";
@@ -23,7 +31,7 @@ const clientConfig = {
 interface MyProps extends Props {
   readonly id: string;
   readonly input: string;
-  readonly language?: Language;
+  readonly language?: string;
   readonly editable?: boolean;
   readonly onChange?: (code: string) => void;
 }
@@ -88,34 +96,31 @@ function CustomCodeEditor(props: MyProps) {
   const { id, input, language, showLineNumbers, editable, onChange } = props;
 
   const prismTheme = usePrismTheme();
+  console.log(prismTheme); 
+  // the line above shows that we are still using `plain` for syntax highlighting
+  // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
   const component = (
-    <div
-      className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ""
-        }`}
+    <Container
+      as="pre"
+      className={clsx(
+        (editable ? styles.editable : ""),
+        codeBlockContainerStyles.codeBlockContainer,
+        ThemeClassNames.common.codeBlock,
+      )}
     >
       <CodeEditor
         code={input}
         theme={prismTheme}
         disabled={!editable}
         key={String(isBrowser)}
-        className={liveCodeBlockStyles.playgroundEditor}
+        className={codeBlockContentStyles.codeBlockContent}
         onChange={onChange}
         language={language}
+        prism={Prism}
         />
-      {/* <LiveProvider code={input} theme={prismTheme} id={id}>
-        <>
-          <LiveEditor
-            disabled={!editable}
-            key={String(isBrowser)}
-            className={liveCodeBlockStyles.playgroundEditor}
-            onChange={onChange}
-            language={language}
-          />
-        </>
-      </LiveProvider> */}
-    </div>
+    </Container>
   );
 
   return <>{isBrowser ? component : <></>}</>;
@@ -213,7 +218,7 @@ export default function CustomCodeBlock({ input }) {
         showLineNumbers={true}
         onChange={onDidChangeCode}
         editable={outputRendered}
-        language={highlight as Language}
+        language={highlight}
       />
       {outputRendered ? (
         <Output

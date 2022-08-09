@@ -1,7 +1,16 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useEditable } from "use-editable";
-import Highlight, { Prism } from "prism-react-renderer";
+import Highlight, {
+    Prism,
+    defaultProps,
+    Language,
+    PrismTheme,
+} from "prism-react-renderer";
+
+
+// source code of LiveEditor that allows for code editing
+// a good starting point for customizing our own code editor
 
 const CodeEditor = (props) => {
   const editorRef = useRef(null);
@@ -25,6 +34,8 @@ const CodeEditor = (props) => {
       props.onChange(code);
     }
   }, [code]);
+
+//   prismIncludeLanguages(Prism);
 
   return (
     <div className={props.className} style={props.style}>

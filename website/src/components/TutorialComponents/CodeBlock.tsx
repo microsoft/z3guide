@@ -10,6 +10,7 @@ import Highlight, {
     Language,
     PrismTheme,
 } from "prism-react-renderer";
+import styles from "./styles.module.css";
 
 export function GithubDiscussionBtn({ repo }) {
     const openInNewTab = () => {
@@ -95,33 +96,45 @@ const CodeEditor = (props) => {
                     getTokenProps,
                     style: _style,
                 }) => (
-                    <pre
-                        className={_className}
-                        style={{
-                            margin: 0,
-                            outline: "none",
-                            padding: 10,
-                            fontFamily: "inherit",
-                            ...(!props.className || !props.theme ? {} : _style),
-                        }}
-                        ref={editorRef}
-                        spellCheck="false"
-                    >
-                        {tokens.map((line, lineIndex) => (
-                            // eslint-disable-next-line react/jsx-key
-                            <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
-                                {line
-                                    .filter((token) => !token.empty)
-                                    .map((token, tokenIndex) => (
+                    // <div>
+                        <div style={{ display: "flex" }}>
+                            <div className={`${styles.LineNumber}`}>
+                            {tokens.map((line, i) => (
+                                <>{i + 1}<br /></>
+                            ))}
+                        </div>
+                            <pre
+                                className={_className}
+                                style={{
+                                    margin: 0,
+                                    outline: "none",
+                                    padding: "0",
+                                    fontFamily: "inherit",
+                                    fontSize: "inherit",
+                                    ...(!props.className || !props.theme ? {} : _style),
+                                }}
+                                ref={editorRef}
+                                spellCheck="false"
+                            >
+                                <div>
+                                    {tokens.map((line, lineIndex) => (
                                         // eslint-disable-next-line react/jsx-key
-                                        <span
-                                            {...getTokenProps({ token, key: `token-${tokenIndex}` })}
-                                        />
+                                        <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                                            {line
+                                                .filter((token) => !token.empty)
+                                                .map((token, tokenIndex) => (
+                                                    // eslint-disable-next-line react/jsx-key
+                                                    <span
+                                                        {...getTokenProps({ token, key: `token-${tokenIndex}` })}
+                                                    />
+                                                ))}
+                                            {"\n"}
+                                        </div>
                                     ))}
-                                {"\n"}
-                            </div>
-                        ))}
-                    </pre>
+                                </div>
+                            </pre>
+                        </div>
+                    // </div>
                 )}
             </Highlight>
             <div className={codeBlockContentStyles.buttonGroup}>

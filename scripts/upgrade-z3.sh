@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CURR_DIR=$PWD;
-
-CURR_VERSION=$(node website/get-z3-version.js);
-
-cd website;
+CURR_VERSION=$(node get-z3-version.js);
 
 if UPGRADE_RESULTS=$(yarn upgrade z3-solver --latest 2>&1); then
     echo "$UPGRADE_RESULTS";
@@ -27,6 +23,3 @@ else
     echo "Downgrading to the previous version";
     yarn add z3-solver@$CURR_VERSION;
 fi;
-
-cd $CURR_DIR;
-

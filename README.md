@@ -50,34 +50,42 @@ These instruction use GitHub Codespaces, a convienient way to get a perfect clou
 
 ## Development
 
-- From the *root directory*, run the script to install dependencies
+- Change the working directory to `website`:
 
 ```
-./scripts/init.sh
+cd website
 ```
 
-Or run the exact command
+- From `website`, run the script to install dependencies
 
 ```
-cd website && yarn && cd ../
+yarn
 ```
 
 - Launch the docs server (which does client-side rendering and allows for hot reloading, so that you see your changes immediately reflected to the locally running page)
 
 ```
-./scripts/run.sh
-```
-
-Or run the exact command
-```
-cd website;
 yarn clear; # for clearing cache
 yarn start; 
-cd ../;
 ```
 
 - Click on the generated URL in the terminal output to see the website now running locally.
 
+### Inspecting the Output from the Build
+- In case you want to inspect the output (.html files etc. from server-side rendering) from the build, you can run
+
+```
+yarn clear; # clearing your cache first is always recommended
+yarn build;
+```
+
+and if successful, you should see a `build` directory under `website`.
+
+- If you want to see how these output files are rendered in the browser, you may run 
+```
+yarn serve
+```
+Note that this is _different_ from `yarn start`, as `yarn serve` does not do hot-reloading because it is simply _serving_ the files under `build` rather than rebuilding everything from scratch for every change you make, like what `yarn start` does.
 ### Contributing to Existing Tutorial Materials
 
 The online Z3 Guide serves multiple instances of tutorial materials: currently it has a [Z3 tutorial in SMTLIB format](https://microsoft.github.io/z3guide/docs/logic/intro), and [Programming Z3 in different language bindings](https://microsoft.github.io/z3guide/programming/Programming%20Z3/Using%20Z3%20from%20Python/Introduction). 
@@ -148,7 +156,8 @@ The process of creating new tutorial materials is similar to the above, except f
 Upgrades of `z3-solver` should be done ONLY you are certain that the latest version of `z3-solver` works well with the existing examples and website infrastructure. We provide a script to automate the manual upgrade process:
 
 ```
-./scripts/upgrade-z3.sh
+# remember to switch into the `website` directory first
+yarn upgrade-z3
 ```
 
 The script will update `z3-solver` to the latest and then try to build the website. If the build fails, then it will downgrade `z3-solver` to the version before your upgrade. It is unlikely that the update itself fails.

@@ -8,6 +8,7 @@ import { Language } from "prism-react-renderer";
 import GitHubButton from 'react-github-btn';
 import liveCodeBlockStyles from "@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css";
 import styles from "./styles.module.css";
+import CodeEditor from './CodeBlock';
 
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from "./runZ3Web";
@@ -94,7 +95,16 @@ function CustomCodeEditor(props: MyProps) {
       className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ""
         }`}
     >
-      <LiveProvider code={input} theme={prismTheme} id={id}>
+      <CodeEditor
+        code={input}
+        theme={prismTheme}
+        disabled={!editable}
+        key={String(isBrowser)}
+        className={liveCodeBlockStyles.playgroundEditor}
+        onChange={onChange}
+        language={language}
+        />
+      {/* <LiveProvider code={input} theme={prismTheme} id={id}>
         <>
           <LiveEditor
             disabled={!editable}
@@ -104,7 +114,7 @@ function CustomCodeEditor(props: MyProps) {
             language={language}
           />
         </>
-      </LiveProvider>
+      </LiveProvider> */}
     </div>
   );
 

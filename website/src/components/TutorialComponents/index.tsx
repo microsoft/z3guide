@@ -35,6 +35,7 @@ interface MyProps extends Props {
   readonly language?: string;
   readonly editable?: boolean;
   readonly onChange?: (code: string) => void;
+  readonly githubRepo?: string
 }
 
 function OutputToggle({ onClick }) {
@@ -53,19 +54,6 @@ function RunButton({ onClick, runFinished }) {
   );
 }
 
-export function GithubDiscussionBtn({ repo }) {
-  return (
-    <div>
-      <GitHubButton
-        href={`https://github.com/${repo}/discussions`}
-        data-size="large"
-        aria-label={`Discuss ${repo} on GitHub`}
-      >
-        Discuss
-      </GitHubButton>
-    </div>
-  );
-}
 
 function Output({ result, codeChanged, statusCodes }) {
   const success = result.status === statusCodes.success;
@@ -94,7 +82,7 @@ function Output({ result, codeChanged, statusCodes }) {
 }
 
 function CustomCodeEditor(props: MyProps) {
-  const { id, input, language, showLineNumbers, editable, onChange } = props;
+  const { id, input, language, showLineNumbers, editable, githubRepo, onChange } = props;
 
   const prismTheme = usePrismTheme();
   console.log(prismTheme);
@@ -103,25 +91,27 @@ function CustomCodeEditor(props: MyProps) {
   const isBrowser = useIsBrowser();
 
   const component = (
-      <Container
-        as="pre"
-        className={clsx(
-          (editable ? styles.editable : ""),
-          codeBlockContainerStyles.codeBlockContainer,
-          ThemeClassNames.common.codeBlock,
-        )}
-      >
-        <CodeEditor
-          code={input}
-          theme={prismTheme}
-          disabled={!editable}
-          key={String(isBrowser)}
-          className={codeBlockContentStyles.codeBlockContent}
-          onChange={onChange}
-          language={language}
-          prism={Prism}
-        />
-      </Container>
+    <Container
+      as="pre"
+      className={clsx(
+        (editable ? styles.editable : ""),
+        codeBlockContainerStyles.codeBlockContainer,
+        ThemeClassNames.common.codeBlock,
+      )}
+    >
+      <CodeEditor
+        code={input}
+        theme={prismTheme}
+        disabled={!editable}
+        key={String(isBrowser)}
+        className={codeBlockContentStyles.codeBlockContent}
+        onChange={onChange}
+        language={language}
+        prism={Prism}
+        //@ts-ignore
+        githubRepo={githubRepo}
+      />
+    </Container>
   );
 
   return <>{isBrowser ? component : <></>}</>;
@@ -206,11 +196,6 @@ export default function CustomCodeBlock({ input }) {
         ) : (
           <div />
         )}
-        {githubRepo ? (
-          <GithubDiscussionBtn repo={githubRepo} />
-        ) : (
-          <div />
-        )}
       </div>
       <CustomCodeEditor
         children={inputNode}
@@ -220,6 +205,7 @@ export default function CustomCodeBlock({ input }) {
         onChange={onDidChangeCode}
         editable={outputRendered}
         language={highlight}
+        githubRepo={githubRepo}
       />
       {outputRendered ? (
         <Output
@@ -233,3 +219,5 @@ export default function CustomCodeBlock({ input }) {
     </div>
   );
 }
+
+export { GithubDiscussionBtn } from './CodeBlock';

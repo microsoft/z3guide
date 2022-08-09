@@ -2,32 +2,15 @@ declare global {
     interface Window { z3Promise: any } // use any to escape typechecking
 }
 
-// code commented out for now for loading z3 on demand
-
-// function loadZ3(callback: () => void) {
-
-//     // }
-// };
-
 export default async function runZ3Web(input: string): Promise<string> {
-    /*
-        // load z3
-        const callback = () => console.log('z3 loaded');
-        const existingScript = document.getElementById('z3-script');
-        if (!existingScript) {
-            const { siteConfig } = useDocusaurusContext();
-            const script = document.createElement('script');
-            script.src = `${siteConfig.baseUrl}z3-built.js`;
-            script.id = 'z3-script';
-            document.head.appendChild(script);
-        }
-        if (existingScript && callback) callback();
-        */
 
-    // init z3
     const z3 = require('z3-solver');
-    window.z3Promise = z3.init();
-    let { Z3 } = await window.z3Promise;
+    // init z3
+    const z3p = window.z3Promise || (() => {
+        return window.z3Promise = z3.init();
+    })();
+
+    const { Z3 } = await z3p;
 
     // done on every snippet
     const cfg = Z3.mk_config();

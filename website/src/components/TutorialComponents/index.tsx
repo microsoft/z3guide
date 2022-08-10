@@ -85,7 +85,7 @@ function CustomCodeEditor(props: MyProps) {
   const { id, input, language, showLineNumbers, editable, githubRepo, readonly, onChange } = props;
 
   const prismTheme = usePrismTheme();
-  console.log(prismTheme);
+  // console.log(prismTheme);
   // the line above shows that we are still using `plain` for syntax highlighting
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
@@ -111,6 +111,7 @@ function CustomCodeEditor(props: MyProps) {
         //@ts-ignore
         githubRepo={githubRepo}
         readonly={readonly}
+        showLineNumbers={showLineNumbers}
       />
     </Container>
   );
@@ -119,7 +120,7 @@ function CustomCodeEditor(props: MyProps) {
 }
 
 export default function CustomCodeBlock({ input }) {
-  const { lang, highlight, statusCodes, code, result, githubRepo, editable, readonly } = input;
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable, readonly, showLineNumbers } = input
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -193,7 +194,7 @@ export default function CustomCodeBlock({ input }) {
         children={inputNode}
         input={code}
         id={result.hash}
-        showLineNumbers={true}
+        showLineNumbers={showLineNumbers}
         onChange={onDidChangeCode}
         editable={editable || outputRendered}
         language={highlight}

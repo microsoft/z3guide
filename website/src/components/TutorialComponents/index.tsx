@@ -1,13 +1,22 @@
-import React, { useState, useRef, useEffect } from "react";
-import { LiveProvider, LiveEditor } from "react-live";
+import React, { useState } from "react";
+import clsx from "clsx";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 import { type Props } from "@theme/CodeBlock";
-import { usePrismTheme } from "@docusaurus/theme-common";
+import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
-import { Language } from "prism-react-renderer";
-import GitHubButton from 'react-github-btn';
-import liveCodeBlockStyles from "@docusaurus/theme-live-codeblock/src/theme/Playground/styles.module.css";
+import Container from "@theme/CodeBlock/Container";
+import CodeEditor from './CodeBlock';
+import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css';
+import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import styles from "./styles.module.css";
+
+
+import Prism from "prism-react-renderer/prism";
+
+(typeof global !== "undefined" ? global : window).Prism = Prism;
+
+require("prismjs/components/prism-lisp");
+
 
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from "./runZ3Web";
@@ -22,9 +31,10 @@ const clientConfig = {
 interface MyProps extends Props {
   readonly id: string;
   readonly input: string;
-  readonly language?: Language;
+  readonly language?: string;
   readonly editable?: boolean;
   readonly onChange?: (code: string) => void;
+  readonly githubRepo?: string
 }
 
 function OutputToggle({ onClick }) {
@@ -38,24 +48,11 @@ function OutputToggle({ onClick }) {
 function RunButton({ onClick, runFinished }) {
   return (
     <button className="button button--primary" onClick={onClick}>
-      {runFinished ? "Edit and Run" : "Running..."}
+      {runFinished ? "Run" : "Running..."}
     </button>
   );
 }
 
-export function GithubDiscussionBtn({ repo }) {
-  return (
-    <div>
-      <GitHubButton
-        href={`https://github.com/${repo}/discussions`}
-        data-size="large"
-        aria-label={`Discuss ${repo} on GitHub`}
-      >
-        Discuss
-      </GitHubButton>
-    </div>
-  );
-}
 
 function Output({ result, codeChanged, statusCodes }) {
   const success = result.status === statusCodes.success;
@@ -84,35 +81,43 @@ function Output({ result, codeChanged, statusCodes }) {
 }
 
 function CustomCodeEditor(props: MyProps) {
-  const { id, input, language, showLineNumbers, editable, onChange } = props;
+  const { id, input, language, showLineNumbers, editable, githubRepo, onChange } = props;
 
   const prismTheme = usePrismTheme();
+  console.log(prismTheme);
+  // the line above shows that we are still using `plain` for syntax highlighting
+  // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
   const component = (
-    <div
-      className={`${liveCodeBlockStyles.playgroundContainer} ${editable ? styles.editable : ""
-        }`}
+    <Container
+      as="pre"
+      className={clsx(
+        (editable ? styles.editable : ""),
+        codeBlockContainerStyles.codeBlockContainer,
+        ThemeClassNames.common.codeBlock,
+      )}
     >
-      <LiveProvider code={input} theme={prismTheme} id={id}>
-        <>
-          <LiveEditor
-            disabled={!editable}
-            key={String(isBrowser)}
-            className={liveCodeBlockStyles.playgroundEditor}
-            onChange={onChange}
-            language={language}
-          />
-        </>
-      </LiveProvider>
-    </div>
+      <CodeEditor
+        code={input}
+        theme={prismTheme}
+        disabled={!editable}
+        key={String(isBrowser)}
+        className={codeBlockContentStyles.codeBlockContent}
+        onChange={onChange}
+        language={language}
+        prism={Prism}
+        //@ts-ignore
+        githubRepo={githubRepo}
+      />
+    </Container>
   );
 
   return <>{isBrowser ? component : <></>}</>;
 }
 
 export default function CustomCodeBlock({ input }) {
-  const { lang, highlight, statusCodes, code, result, githubRepo } = input;
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable } = input;
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -167,6 +172,9 @@ export default function CustomCodeBlock({ input }) {
           setOutput(newResult);
           setCodeChanged(false);
           setRunFinished(true);
+          if (!outputRendered) {
+            setOutputRendered(true); // hack for the playground editor
+          }
         });
     }
     : () => { };
@@ -179,32 +187,28 @@ export default function CustomCodeBlock({ input }) {
 
   return (
     <div>
-      <div className={styles.buttons}>
-        {outputRendered ? (
-          <div />
-        ) : (
-          <OutputToggle onClick={onDidClickOutputToggle} />
-        )}
-        {outputRendered ? (
-          <RunButton onClick={onDidClickRun} runFinished={runFinished} />
-        ) : (
-          <div />
-        )}
-        {githubRepo ? (
-          <GithubDiscussionBtn repo={githubRepo} />
-        ) : (
-          <div />
-        )}
-      </div>
       <CustomCodeEditor
         children={inputNode}
         input={code}
         id={result.hash}
         showLineNumbers={true}
         onChange={onDidChangeCode}
-        editable={outputRendered}
-        language={highlight as Language}
+        editable={editable || outputRendered}
+        language={highlight}
+        githubRepo={githubRepo}
       />
+      <div className={styles.buttons}>
+        {editable || outputRendered ? (
+          <div />
+        ) : (
+          <OutputToggle onClick={onDidClickOutputToggle} />
+        )}
+        {editable || outputRendered ? (
+          <RunButton onClick={onDidClickRun} runFinished={runFinished} />
+        ) : (
+          <div />
+        )}
+      </div>
       {outputRendered ? (
         <Output
           codeChanged={codeChanged}
@@ -217,3 +221,5 @@ export default function CustomCodeBlock({ input }) {
     </div>
   );
 }
+
+export { GithubDiscussionBtn } from './CodeBlock';

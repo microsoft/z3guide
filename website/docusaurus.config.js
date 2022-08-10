@@ -113,10 +113,6 @@ async function createConfig() {
       },
     ],
 
-    themes: [
-      '@docusaurus/theme-live-codeblock',
-    ],
-
     themeConfig:
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({

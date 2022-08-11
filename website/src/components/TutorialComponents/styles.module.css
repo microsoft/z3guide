@@ -14,3 +14,7 @@
     display: flex;
     align-items: center;
 }
+
+.LineNumber {
+    min-width: 20px;
+}

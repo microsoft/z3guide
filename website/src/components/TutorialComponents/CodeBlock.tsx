@@ -3,14 +3,20 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { useEditable } from "use-editable";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
+import { useThemeConfig, usePrismTheme } from "@docusaurus/theme-common";
+// @ts-ignore: the import is actually correct
+import { parseLines } from '@docusaurus/theme-common/internal';
 import CopyButton from '@theme/CodeBlock/CopyButton';
 import Highlight, {
-    Prism,
     defaultProps,
     Language,
     PrismTheme,
 } from "prism-react-renderer";
 import styles from "./styles.module.css";
+import prismIncludeLanguages from '@theme/prism-include-languages';
+
+import Prism from "prism-react-renderer/prism";
+// prismIncludeLanguages(Prism);
 
 export function GithubDiscussionBtn({ repo }) {
     const openInNewTab = () => {
@@ -57,12 +63,38 @@ export function ResetBtn({ resetCode, input }) {
 // a good starting point for customizing our own code editor
 
 const CodeEditor = (props) => {
+    const { prism } = useThemeConfig();
+
+    globalThis.Prism = Prism;
+
+    prism.additionalLanguages.forEach((lang) => {
+        // eslint-disable-next-line global-require, import/no-dynamic-require
+        require(`prismjs/components/prism-${lang}`);
+    });
+
+    delete (globalThis as Global & { Prism?}).Prism;
+
+    const language = props.language;
+    const prismTheme = usePrismTheme();
+
+    debugger;
+    let parsedResult = parseLines(props.code, {
+        metastring: undefined,
+        language: language,
+        magicComments: prism.magicComments,
+    });
+
     const editorRef = useRef(null);
-    const [code, setCode] = useState(props.code || "");
+    const [currCode, setCode] = useState(parsedResult.code || "");
 
     useEffect(() => {
-        setCode(props.code);
-    }, [props.code]);
+        parsedResult = parseLines(props.code, {
+            metastring: undefined,
+            language: language,
+            magicComments: prism.magicComments,
+        });
+        setCode(parsedResult.code);
+    }, [parsedResult.code]);
 
     const onEditableChange = useCallback((_code) => {
         setCode(_code.slice(0, -1));
@@ -75,19 +107,21 @@ const CodeEditor = (props) => {
 
     useEffect(() => {
         if (props.onChange) {
-            props.onChange(code);
+            props.onChange(currCode);
         }
-    }, [code]);
+    }, [currCode]);
 
-    //   prismIncludeLanguages(Prism);
+
+    console.log(parsedResult.lineClassNames)
 
     return (
         <div className={props.className} style={props.style}>
             <Highlight
-                Prism={props.prism || Prism}
-                code={code}
-                theme={props.theme}
-                language={props.language}
+                {...defaultProps}
+                Prism={Prism}
+                code={currCode}
+                theme={prismTheme}
+                language={language}
             >
                 {({
                     className: _className,
@@ -111,7 +145,7 @@ const CodeEditor = (props) => {
                                 padding: "0",
                                 fontFamily: "inherit",
                                 fontSize: "inherit",
-                                ...(!props.className || !props.theme ? {} : _style),
+                                ...(!props.className || !prismTheme ? {} : _style),
                             }}
                             ref={editorRef}
                             spellCheck="false"
@@ -119,12 +153,12 @@ const CodeEditor = (props) => {
                             <div>
                                 {tokens.map((line, lineIndex) => (
                                     // eslint-disable-next-line react/jsx-key
-                                    <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                                    <div {...getLineProps({ line, key: `line-${lineIndex}`, className: (!parsedResult.lineClassNames.hasOwnProperty(lineIndex) ? '' : parsedResult.lineClassNames[lineIndex].join(' ')) })}>
                                         {line
                                             .filter((token) => !token.empty)
                                             .map((token, tokenIndex) => (
                                                 // eslint-disable-next-line react/jsx-key
-                                                <span
+                                                <span key={`token-${tokenIndex}`}
                                                     {...getTokenProps({ token, key: `token-${tokenIndex}` })}
                                                 />
                                             ))}
@@ -137,7 +171,7 @@ const CodeEditor = (props) => {
                 )}
             </Highlight>
             <div className={codeBlockContentStyles.buttonGroup}>
-                <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+                <CopyButton className={codeBlockContentStyles.codeButton} code={currCode} />
                 {props.readonly ? <></> : <ResetBtn resetCode={setCode} input={props.code} />}
                 {props.githubRepo ? (
                     <GithubDiscussionBtn repo={props.githubRepo} />

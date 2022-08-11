@@ -11,13 +11,6 @@ import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBloc
 import styles from "./styles.module.css";
 
 
-import Prism from "prism-react-renderer/prism";
-
-(typeof global !== "undefined" ? global : window).Prism = Prism;
-
-require("prismjs/components/prism-lisp");
-
-
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from "./runZ3Web";
 import runZ3JSWeb from "./runZ3JSWeb";
@@ -107,7 +100,6 @@ function CustomCodeEditor(props: MyProps) {
         className={codeBlockContentStyles.codeBlockContent}
         onChange={onChange}
         language={language}
-        prism={Prism}
         //@ts-ignore
         githubRepo={githubRepo}
         readonly={readonly}
@@ -115,6 +107,8 @@ function CustomCodeEditor(props: MyProps) {
       />
     </Container>
   );
+
+  // const component = <CodeBlock language="lisp">{input}</CodeBlock>
 
   return <>{isBrowser ? component : <></>}</>;
 }

@@ -7,6 +7,7 @@ async function createConfig() {
                 name: 'Z3', // your language name
                 label: 'z3', // label for the language in markdown code blocks
                 highlight: 'lisp', // syntax highlighting provided by prism for the language
+                showLineNumbers: true, // whether to show line numbers in all code block of this language
                 buildConfig: {
                     version: '1',
                     timeout: 30000, // timeout for execution of each code snippet in milliseconds during build
@@ -26,6 +27,7 @@ async function createConfig() {
                 name: 'Z3 JavaScript Bindings',
                 label: 'z3-js',
                 highlight: 'js',
+                showLineNumbers: true, // whether to show line numbers in all code block of this language
                 buildConfig: {
                     version: '1',
                     timeout: 30000, // timeout for execution of each code snippet in milliseconds during build
@@ -45,6 +47,7 @@ async function createConfig() {
                 name: 'Z3 Python Bindings',
                 label: 'z3-python',
                 highlight: 'python',
+                showLineNumbers: true, // whether to show line numbers in all code block of this language
                 githubRepo: 'Z3Prover/z3',
                 githubDiscussion: true,
             }

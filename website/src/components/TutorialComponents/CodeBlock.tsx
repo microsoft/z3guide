@@ -78,45 +78,44 @@ const CodeEditor = (props) => {
                     getTokenProps,
                     style: _style,
                 }) => (
-                    // <div>
                     <div style={{ display: "flex" }}>
+                         {props.showLineNumbers ?
                         <div className={`${styles.LineNumber}`}>
-                            {tokens.map((line, i) => (
-                                <>{i + 1}<br /></>
-                            ))}
-                        </div>
-                        <pre
-                            className={_className}
-                            style={{
-                                margin: 0,
-                                outline: "none",
-                                padding: "0",
-                                fontFamily: "inherit",
-                                fontSize: "inherit",
-                                ...(!props.className || !props.theme ? {} : _style),
-                            }}
-                            ref={editorRef}
-                            spellCheck="false"
-                        >
-                            <div>
-                                {tokens.map((line, lineIndex) => (
-                                    // eslint-disable-next-line react/jsx-key
-                                    <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
-                                        {line
-                                            .filter((token) => !token.empty)
-                                            .map((token, tokenIndex) => (
-                                                // eslint-disable-next-line react/jsx-key
-                                                <span
-                                                    {...getTokenProps({ token, key: `token-${tokenIndex}` })}
-                                                />
-                                            ))}
-                                        {"\n"}
-                                    </div>
-                                ))}
-                            </div>
-                        </pre>
-                    </div>
-                    // </div>
+                                {tokens.map((line, i) => (
+                                     <>{i + 1}<br /></>
+                                 ))}
+                             </div> : <></>}
+                         <pre
+                             className={_className}
+                             style={{
+                                 margin: 0,
+                                 outline: "none",
+                                 padding: "0",
+                                 fontFamily: "inherit",
+                                 fontSize: "inherit",
+                                 ...(!props.className || !props.theme ? {} : _style),
+                             }}
+                             ref={editorRef}
+                             spellCheck="false"
+                         >
+                             <div>
+                                 {tokens.map((line, lineIndex) => (
+                                     // eslint-disable-next-line react/jsx-key
+                                     <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                                         {line
+                                             .filter((token) => !token.empty)
+                                             .map((token, tokenIndex) => (
+                                                 // eslint-disable-next-line react/jsx-key
+                                                 <span
+                                                     {...getTokenProps({ token, key: `token-${tokenIndex}` })}
+                                                 />
+                                             ))}
+                                         {"\n"}
+                                     </div>
+                                 ))}
+                             </div>
+                         </pre>
+                     </div>
                 )}
             </Highlight>
             <div className={codeBlockContentStyles.buttonGroup}>
@@ -140,6 +139,7 @@ CodeEditor.propTypes = {
     prism: PropTypes.object,
     style: PropTypes.object,
     theme: PropTypes.object,
+    showLineNumbers: PropTypes.bool,
 };
 
 export default CodeEditor;

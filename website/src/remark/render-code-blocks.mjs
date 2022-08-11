@@ -171,11 +171,18 @@ export default function plugin() {
             const skipErr = meta && meta.match(skipRegex) !== null;
             const editableRegex = new RegExp(/(always-editable)/g);
             const alwaysEditable = meta && meta.match(editableRegex) !== null;
+            const lineNumRegex = new RegExp(/(showLineNumbers)/g);
+
 
             for (const langConfig of languageConfig.languages) {
 
                 const label = langConfig.label;
                 const highlight = langConfig.highlight;
+
+// line numbers can be shown for all blocks through `language.config.js`,
+                 // or for a specific block through `showLineNumbers`
+                 // e.g. ```z3 showLineNumbers
+                 const showLineNumbers = langConfig.showLineNumbers || meta && meta.match(lineNumRegex) !== null;
 
                 if (lang !== label) {
                     continue; // onto the next lang config available until we are out
@@ -235,7 +242,8 @@ export default function plugin() {
                         code: value,
                         result: result,
                         githubRepo: githubRepo,
-                        editable: alwaysEditable
+                        editable: alwaysEditable,
+                        showLineNumbers: showLineNumbers
                     });
                     parent.children.splice(
                         index,

@@ -28,24 +28,27 @@ const clientConfig = {
   'z3-js': runZ3JSWeb,
 };
 
-interface MyProps extends Props {
-  readonly id: string;
-  readonly input: string;
-  readonly language?: string;
-  readonly editable?: boolean;
-  readonly onChange?: (code: string) => void;
-  readonly githubRepo?: string
+interface CodeBlockProps {
+  lang: string,
+  highlight: string,
+  statusCodes: {[key: string]: string},
+  code: string,
+  result: {[key: string]: string},
+  githubRepo: string | undefined,
+  editable: boolean,
+  showLineNumbers: boolean,
 }
 
-function OutputToggle({ onClick }) {
+function OutputToggle(props: { onClick: () => void }) {
   return (
-    <button className="button button--primary" onClick={onClick}>
+    <button className="button button--primary" onClick={props.onClick}>
       Run
     </button>
   );
 }
 
-function RunButton({ onClick, runFinished }) {
+function RunButton(props: { onClick: () => void, runFinished: boolean }) {
+  const { onClick, runFinished } = props;
   return (
     <button className="button button--primary" onClick={onClick}>
       {runFinished ? "Run" : "Running..."}
@@ -54,7 +57,12 @@ function RunButton({ onClick, runFinished }) {
 }
 
 
-function Output({ result, codeChanged, statusCodes }) {
+function Output(props: {
+  result: { [key: string]: any },
+  codeChanged: boolean,
+  statusCodes: { [key: string]: string }
+}) {
+  const { result, codeChanged, statusCodes } = props;
   const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
   return (
@@ -80,7 +88,16 @@ function Output({ result, codeChanged, statusCodes }) {
   );
 }
 
-function CustomCodeEditor(props: MyProps) {
+function CustomCodeEditor(props: {
+  children: JSX.Element,
+  id: string;
+  input: string;
+  showLineNumbers?: boolean;
+  language?: string;
+  editable?: boolean;
+  onChange?: (code: string) => void;
+  githubRepo: string | undefined
+}) {
   const { id, input, language, showLineNumbers, editable, githubRepo, onChange } = props;
 
   const prismTheme = usePrismTheme();
@@ -107,10 +124,8 @@ function CustomCodeEditor(props: MyProps) {
         onChange={onChange}
         language={language}
         prism={Prism}
-        //@ts-ignore
         githubRepo={githubRepo}
         showLineNumbers={showLineNumbers}
-
       />
     </Container>
   );
@@ -118,7 +133,8 @@ function CustomCodeEditor(props: MyProps) {
   return <>{isBrowser ? component : <></>}</>;
 }
 
-export default function CustomCodeBlock({ input }) {
+export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
+  const { input } = props;
   const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers } = input
 
   const [currCode, setCurrCode] = useState(code);

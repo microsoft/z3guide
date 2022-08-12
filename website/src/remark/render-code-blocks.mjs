@@ -168,9 +168,9 @@ export default function plugin() {
             const { value, lang, meta } = node;
 
             const skipRegex = /(no-build)|(ignore-errors)/;
-            const skipErr = meta && meta.match(skipRegex) !== null;
+            const skipErr = skipRegex.test(meta);
             const editableRegex = /(always-editable)/;
-            const alwaysEditable = meta && meta.match(editableRegex) !== null;
+            const alwaysEditable = editableRegex.test(meta);
             const lineNumRegex = /(showLineNumbers)/i;
 
 
@@ -182,7 +182,7 @@ export default function plugin() {
 // line numbers can be shown for all blocks through `language.config.js`,
                  // or for a specific block through `showLineNumbers`
                  // e.g. ```z3 showLineNumbers
-                 const showLineNumbers = langConfig.showLineNumbers || meta && meta.match(lineNumRegex) !== null;
+                 const showLineNumbers = langConfig.showLineNumbers || lineNumRegex.test(meta);
 
                 if (lang !== label) {
                     continue; // onto the next lang config available until we are out

@@ -150,16 +150,4 @@ function CodeEditor(props: {
     );
 };
 
-CodeEditor.propTypes = {
-    className: PropTypes.string,
-    code: PropTypes.string,
-    disabled: PropTypes.bool,
-    language: PropTypes.string,
-    onChange: PropTypes.func,
-    prism: PropTypes.object,
-    style: PropTypes.object,
-    theme: PropTypes.object,
-    showLineNumbers: PropTypes.bool,
-};
-
 export default CodeEditor;

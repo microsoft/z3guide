@@ -96,7 +96,7 @@ function CodeEditor(props: {
     const [code, setCode] = useState(props.code || "");
     const [disabled, setDisabled] = useState(props.disabled);
     const [allowUndo, setAllowUndo] = useState(false);
-    let currCode;
+    const [tmpCode, setTmpCode] = useState("");
 
     useEffect(() => {
         setCode(props.code);
@@ -118,7 +118,7 @@ function CodeEditor(props: {
     }, [code]);
 
     const onClickReset = () => {
-        currCode = code.slice();
+        setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
         setDisabled(true);
         setAllowUndo(true);
@@ -129,7 +129,8 @@ function CodeEditor(props: {
     }
 
     const onClickUndo = () => {
-        setCode(currCode);
+        console.log(tmpCode)
+        setCode(tmpCode);
     }
 
     //   prismIncludeLanguages(Prism);

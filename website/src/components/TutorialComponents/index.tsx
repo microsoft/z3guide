@@ -40,10 +40,10 @@ interface CodeBlockProps {
   readonly: boolean,
 }
 
-function OutputToggle(props: { onClick: () => void }) {
+function OutputToggle(props: { onClick: () => void, disabled?: boolean }) {
   return (
-    <button className="button button--primary" onClick={props.onClick}>
-      Run
+    <button disabled={props.disabled} className="button button--primary" onClick={props.onClick}>
+      {props.disabled ? "This block is read-only" : "Run"}
     </button>
   );
 }
@@ -218,14 +218,14 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         githubRepo={githubRepo}
         readonly={readonly}
       />
-      {readonly ?
-        <></> :
+      {/* {readonly ? */}
+        {/* <OutputToggle disabled={true} onClick={onDidClickOutputToggle} /> : */}
         <>
           <div className={styles.buttons}>
             {editable || outputRendered ? (
               <div />
             ) : (
-              <OutputToggle onClick={onDidClickOutputToggle} />
+              <OutputToggle disabled={readonly} onClick={onDidClickOutputToggle} />
             )}
             {editable || outputRendered ? (
               <RunButton onClick={onDidClickRun} runFinished={runFinished} />
@@ -242,7 +242,8 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
           ) : (
             <div />
           )}
-        </>}
+        </>
+        {/* } */}
 
     </div>
   );

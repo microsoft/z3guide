@@ -202,6 +202,7 @@ export default function plugin() {
                         githubRepo: githubRepo,
                         editable: false,
                         readonly: true,
+                        showLineNumbers: showLineNumbers
                     });
                     parent.children.splice(
                         index,

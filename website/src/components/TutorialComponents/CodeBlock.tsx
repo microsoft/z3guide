@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, CSSProperties } from "react";
 import clsx from "clsx";
-import PropTypes from "prop-types";
 import { useEditable } from "use-editable";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import CopyButton from '@theme/CodeBlock/CopyButton';
@@ -10,6 +9,8 @@ import Highlight, {
     Language,
     PrismTheme,
 } from "prism-react-renderer";
+import styles from "./styles.module.css";
+
 
 export function GithubDiscussionBtn({ repo }) {
     const openInNewTab = () => {
@@ -55,7 +56,19 @@ export function ResetBtn({ resetCode, input }) {
 // source code of LiveEditor that allows for code editing
 // a good starting point for customizing our own code editor
 
-const CodeEditor = (props) => {
+function CodeEditor(props: {
+    className: string,
+    code: string,
+    disabled: boolean,
+    language: string,
+    onChange: (code: string) => void,
+    prism: typeof Prism,
+    style?: CSSProperties,
+    theme: PrismTheme,
+    githubRepo: string | undefined,
+    showLineNumbers: boolean,
+    readonly: boolean,
+}) {
     const editorRef = useRef(null);
     const [code, setCode] = useState(props.code || "");
 
@@ -86,7 +99,7 @@ const CodeEditor = (props) => {
                 Prism={props.prism || Prism}
                 code={code}
                 theme={props.theme}
-                language={props.language}
+                language={props.language as Language}
             >
                 {({
                     className: _className,
@@ -95,58 +108,66 @@ const CodeEditor = (props) => {
                     getTokenProps,
                     style: _style,
                 }) => (
-                    <pre
-                        className={_className}
-                        style={{
-                            margin: 0,
-                            outline: "none",
-                            padding: 10,
-                            fontFamily: "inherit",
-                            ...(!props.className || !props.theme ? {} : _style),
-                        }}
-                        ref={editorRef}
-                        spellCheck="false"
-                    >
-                        {tokens.map((line, lineIndex) => (
-                            // eslint-disable-next-line react/jsx-key
-                            <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
-                                {line
-                                    .filter((token) => !token.empty)
-                                    .map((token, tokenIndex) => (
-                                        // eslint-disable-next-line react/jsx-key
-                                        <span
-                                            {...getTokenProps({ token, key: `token-${tokenIndex}` })}
-                                        />
-                                    ))}
-                                {"\n"}
-                            </div>
-                        ))}
-                    </pre>
+                    <div className={clsx(
+                        styles.CustomCodeEditorContent,
+                        codeBlockContentStyles.codeBlockContent,
+                    )}>
+                        {props.showLineNumbers &&
+                            <span className={clsx(
+                                styles.LineNumber, 
+                                // codeBlockLineNumberStyles.codeLineNumber,
+                                codeBlockContentStyles.codeBlockLines
+                                )}>
+                                {tokens.map((line, i) => (
+                                    <>{i + 1}<br /></>
+                                ))}
+                            </span>}
+                        <pre
+                            className={clsx(
+                                _className,
+                                styles.codeBlock, 
+                                'thin-scrollbar')}
+                            style={{
+                                // margin: 0,
+                                // outline: "none",
+                                padding: "0",
+                                // fontFamily: "inherit",
+                                // fontSize: "inherit",
+                                ...(!props.className || !props.theme ? {} : _style),
+                            }}
+                            ref={editorRef}
+                            spellCheck="false"
+                        >
+                            <code
+                                className={clsx(
+                                    codeBlockContentStyles.codeBlockLines,
+                                )}>
+                                {tokens.map((line, lineIndex) => (
+                                    // eslint-disable-next-line react/jsx-key
+                                    <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                                        {line
+                                            .filter((token) => !token.empty)
+                                            .map((token, tokenIndex) => (
+                                                // eslint-disable-next-line react/jsx-key
+                                                <span
+                                                    {...getTokenProps({ token, key: `token-${tokenIndex}` })}
+                                                />
+                                            ))}
+                                        {"\n"}
+                                    </div>
+                                ))}
+                            </code>
+                        </pre>
+                    </div>
                 )}
             </Highlight>
             <div className={codeBlockContentStyles.buttonGroup}>
                 <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
                 {props.readonly ? <></> : <ResetBtn resetCode={setCode} input={props.code} />}
-                {props.githubRepo ? (
-                    <GithubDiscussionBtn repo={props.githubRepo} />
-                ) : (
-                    <div />
-                )}
+                {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}
             </div>
         </div>
     );
-};
-
-CodeEditor.propTypes = {
-    className: PropTypes.string,
-    code: PropTypes.string,
-    disabled: PropTypes.bool,
-    language: PropTypes.string,
-    onChange: PropTypes.func,
-    prism: PropTypes.object,
-    style: PropTypes.object,
-    theme: PropTypes.object,
-    readonly: PropTypes.bool,
 };
 
 export default CodeEditor;

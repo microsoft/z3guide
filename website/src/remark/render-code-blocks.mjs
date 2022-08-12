@@ -69,7 +69,7 @@ async function getOutput(config, input, lang, skipErr) {
     // console.log(hash);
 
     // TODO: error handling for z3-js etc?
-    const errRegex = new RegExp(/(\(error)|(unsupported)|([eE]rror:)/g);
+    const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)
@@ -167,15 +167,22 @@ export default function plugin() {
         visit(ast, 'code', (node, index, parent) => {
             const { value, lang, meta } = node;
 
-            const skipRegex = new RegExp(/(no-build)|(ignore-errors)/g);
-            const skipErr = meta && meta.match(skipRegex) !== null;
-            const editableRegex = new RegExp(/(always-editable)/g);
-            const alwaysEditable = meta && meta.match(editableRegex) !== null;
+            const skipRegex = /(no-build)|(ignore-errors)/;
+            const skipErr = skipRegex.test(meta);
+            const editableRegex = /(always-editable)/;
+            const alwaysEditable = editableRegex.test(meta);
+            const lineNumRegex = /(show-line-numbers)/i;
+
 
             for (const langConfig of languageConfig.languages) {
 
                 const label = langConfig.label;
                 const highlight = langConfig.highlight;
+
+                // line numbers can be shown for all blocks through `language.config.js`,
+                // or for a specific block through `show-line-numbers`
+                // e.g. ```z3 show-line-numbers
+                const showLineNumbers = langConfig.showLineNumbers || lineNumRegex.test(meta);
 
                 if (lang !== label) {
                     continue; // onto the next lang config available until we are out
@@ -223,7 +230,8 @@ export default function plugin() {
                         result: result,
                         githubRepo: githubRepo,
                         editable: alwaysEditable,
-                        readonly: false
+                        readonly: false,
+                        showLineNumbers: showLineNumbers
                     });
                     parent.children.splice(
                         index,

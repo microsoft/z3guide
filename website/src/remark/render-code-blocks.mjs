@@ -69,7 +69,7 @@ async function getOutput(config, input, lang, skipErr) {
     // console.log(hash);
 
     // TODO: error handling for z3-js etc?
-    const errRegex = /(\(error)|(unsupported)|([eE]rror:)/g;
+    const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         console.log(`cache hit ${hash}`)
@@ -167,11 +167,11 @@ export default function plugin() {
         visit(ast, 'code', (node, index, parent) => {
             const { value, lang, meta } = node;
 
-            const skipRegex = /(no-build)|(ignore-errors)/g;
+            const skipRegex = /(no-build)|(ignore-errors)/;
             const skipErr = meta && meta.match(skipRegex) !== null;
             const editableRegex = /(always-editable)/;
             const alwaysEditable = meta && meta.match(editableRegex) !== null;
-            const lineNumRegex = /(showLineNumbers)/ig;
+            const lineNumRegex = /(showLineNumbers)/i;
 
 
             for (const langConfig of languageConfig.languages) {

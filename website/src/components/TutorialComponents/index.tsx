@@ -166,7 +166,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         .then((res) => {
           const result = JSON.parse(res);
           if (result.output) {
-            const errRegex = /(\(error)|(unsupported)|([eE]rror:)/g;
+            const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
             const hasError = result.output.match(errRegex);
             newResult.output = hasError ? "" : result.output;
             newResult.error = hasError ? result.output : "";

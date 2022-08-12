@@ -232,7 +232,9 @@ export default function plugin() {
                         githubRepo: githubRepo,
                         editable: alwaysEditable,
                         readonly: false,
-                        showLineNumbers: showLineNumbers
+                        showLineNumbers: showLineNumbers,
+                        langVersion: buildConfig.langVersion,
+                        tool: buildConfig.npmPackage
                     });
                     parent.children.splice(
                         index,

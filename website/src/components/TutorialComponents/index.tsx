@@ -38,21 +38,31 @@ interface CodeBlockProps {
   editable: boolean,
   showLineNumbers: boolean,
   readonly: boolean,
+  langVersion?: string,
+  tool?: string,
 }
 
-function OutputToggle(props: { onClick: () => void, disabled?: boolean }) {
+function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?: string, tool?: string }) {
+  const { onClick, disabled, version, tool } = props;
+  if (disabled && version && tool) {
+    throw new Error('buggy code; read-only blocks should not have been attached with language executables');
+  }
+
+  const langInfo = version && tool ? ` (${tool}, ver. ${version})` : '';
+
   return (
-    <button disabled={props.disabled} className="button button--primary" onClick={props.onClick}>
-      {props.disabled ? "This block is read-only" : "Run"}
+    <button disabled={disabled} className="button button--primary" onClick={onClick}>
+      {props.disabled ? "This block is read-only" : `Run${langInfo}`}
     </button>
   );
 }
 
-function RunButton(props: { onClick: () => void, runFinished: boolean }) {
-  const { onClick, runFinished } = props;
+function RunButton(props: { onClick: () => void, runFinished: boolean, version?: string, tool?: string }) {
+  const { onClick, runFinished, version, tool } = props;
+  const langInfo = version && tool ? ` (${tool}, ver. ${version})` : '';
   return (
     <button className="button button--primary" onClick={onClick}>
-      {runFinished ? "Run" : "Running..."}
+      {runFinished ? `Run${langInfo}` : "Running..."}
     </button>
   );
 }
@@ -139,7 +149,7 @@ function CustomCodeEditor(props: {
 
 export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
   const { input } = props;
-  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers, readonly } = input
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers, readonly, langVersion, tool } = input
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -225,10 +235,10 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
             {editable || outputRendered ? (
               <div />
             ) : (
-              <OutputToggle disabled={readonly} onClick={onDidClickOutputToggle} />
+              <OutputToggle disabled={readonly} onClick={onDidClickOutputToggle} version={langVersion} tool={tool} />
             )}
             {editable || outputRendered ? (
-              <RunButton onClick={onDidClickRun} runFinished={runFinished} />
+              <RunButton onClick={onDidClickRun} runFinished={runFinished} version={langVersion} tool={tool}/>
             ) : (
               <div />
             )}

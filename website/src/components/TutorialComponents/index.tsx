@@ -28,24 +28,27 @@ const clientConfig = {
   'z3-js': runZ3JSWeb,
 };
 
-interface MyProps extends Props {
-  readonly id: string;
-  readonly input: string;
-  readonly language?: string;
-  readonly editable?: boolean;
-  readonly onChange?: (code: string) => void;
-  readonly githubRepo?: string
+interface CodeBlockProps {
+  lang: string,
+  highlight: string,
+  statusCodes: {[key: string]: string},
+  code: string,
+  result: {[key: string]: string},
+  githubRepo: string | undefined,
+  editable: boolean,
+  showLineNumbers: boolean,
 }
 
-function OutputToggle({ onClick }) {
+function OutputToggle(props: { onClick: () => void }) {
   return (
-    <button className="button button--primary" onClick={onClick}>
+    <button className="button button--primary" onClick={props.onClick}>
       Run
     </button>
   );
 }
 
-function RunButton({ onClick, runFinished }) {
+function RunButton(props: { onClick: () => void, runFinished: boolean }) {
+  const { onClick, runFinished } = props;
   return (
     <button className="button button--primary" onClick={onClick}>
       {runFinished ? "Run" : "Running..."}
@@ -54,7 +57,12 @@ function RunButton({ onClick, runFinished }) {
 }
 
 
-function Output({ result, codeChanged, statusCodes }) {
+function Output(props: {
+  result: { [key: string]: any },
+  codeChanged: boolean,
+  statusCodes: { [key: string]: string }
+}) {
+  const { result, codeChanged, statusCodes } = props;
   const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
   return (
@@ -80,22 +88,32 @@ function Output({ result, codeChanged, statusCodes }) {
   );
 }
 
-function CustomCodeEditor(props: MyProps) {
+function CustomCodeEditor(props: {
+  children: JSX.Element,
+  id: string;
+  input: string;
+  showLineNumbers?: boolean;
+  language?: string;
+  editable?: boolean;
+  onChange?: (code: string) => void;
+  githubRepo: string | undefined
+}) {
   const { id, input, language, showLineNumbers, editable, githubRepo, onChange } = props;
 
   const prismTheme = usePrismTheme();
-  console.log(prismTheme);
+  // console.log(prismTheme);
   // the line above shows that we are still using `plain` for syntax highlighting
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
   const component = (
     <Container
-      as="pre"
+      as="div"
       className={clsx(
         (editable ? styles.editable : ""),
         codeBlockContainerStyles.codeBlockContainer,
         ThemeClassNames.common.codeBlock,
+        language && `language-${language}`,
       )}
     >
       <CodeEditor
@@ -107,8 +125,8 @@ function CustomCodeEditor(props: MyProps) {
         onChange={onChange}
         language={language}
         prism={Prism}
-        //@ts-ignore
         githubRepo={githubRepo}
+        showLineNumbers={showLineNumbers}
       />
     </Container>
   );
@@ -116,8 +134,9 @@ function CustomCodeEditor(props: MyProps) {
   return <>{isBrowser ? component : <></>}</>;
 }
 
-export default function CustomCodeBlock({ input }) {
-  const { lang, highlight, statusCodes, code, result, githubRepo, editable } = input;
+export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
+  const { input } = props;
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers } = input
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -147,10 +166,8 @@ export default function CustomCodeBlock({ input }) {
         .then((res) => {
           const result = JSON.parse(res);
           if (result.output) {
-            const errRegex = new RegExp(
-              /(\(error)|(unsupported)|([eE]rror:)/g
-            );
-            const hasError = result.output.match(errRegex);
+            const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+            const hasError = errRegex.test(result.output);
             newResult.output = hasError ? "" : result.output;
             newResult.error = hasError ? result.output : "";
             newResult.status = hasError
@@ -191,7 +208,7 @@ export default function CustomCodeBlock({ input }) {
         children={inputNode}
         input={code}
         id={result.hash}
-        showLineNumbers={true}
+        showLineNumbers={showLineNumbers}
         onChange={onDidChangeCode}
         editable={editable || outputRendered}
         language={highlight}

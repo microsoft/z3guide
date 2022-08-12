@@ -228,8 +228,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         githubRepo={githubRepo}
         readonly={readonly}
       />
-      {/* {readonly ? */}
-        {/* <OutputToggle disabled={true} onClick={onDidClickOutputToggle} /> : */}
         <>
           <div className={styles.buttons}>
             {editable || outputRendered ? (
@@ -253,8 +251,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
             <div />
           )}
         </>
-        {/* } */}
-
     </div>
   );
 }

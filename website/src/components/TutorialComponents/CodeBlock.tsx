@@ -89,27 +89,40 @@ function CodeEditor(props: {
                     getTokenProps,
                     style: _style,
                 }) => (
-                    <div style={{ display: "flex" }}>
+                    <div className={clsx(
+                        styles.CustomCodeEditorContent,
+                        codeBlockContentStyles.codeBlockContent,
+                    )}>
                         {props.showLineNumbers &&
-                            <div className={`${styles.LineNumber}`}>
+                            <span className={clsx(
+                                styles.LineNumber, 
+                                // codeBlockLineNumberStyles.codeLineNumber,
+                                codeBlockContentStyles.codeBlockLines
+                                )}>
                                 {tokens.map((line, i) => (
                                     <>{i + 1}<br /></>
                                 ))}
-                            </div>}
+                            </span>}
                         <pre
-                            className={_className}
+                            className={clsx(
+                                _className,
+                                styles.codeBlock, 
+                                'thin-scrollbar')}
                             style={{
-                                margin: 0,
-                                outline: "none",
+                                // margin: 0,
+                                // outline: "none",
                                 padding: "0",
-                                fontFamily: "inherit",
-                                fontSize: "inherit",
+                                // fontFamily: "inherit",
+                                // fontSize: "inherit",
                                 ...(!props.className || !props.theme ? {} : _style),
                             }}
                             ref={editorRef}
                             spellCheck="false"
                         >
-                            <div>
+                            <code
+                                className={clsx(
+                                    codeBlockContentStyles.codeBlockLines,
+                                )}>
                                 {tokens.map((line, lineIndex) => (
                                     // eslint-disable-next-line react/jsx-key
                                     <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
@@ -124,7 +137,7 @@ function CodeEditor(props: {
                                         {"\n"}
                                     </div>
                                 ))}
-                            </div>
+                            </code>
                         </pre>
                     </div>
                 )}

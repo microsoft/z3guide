@@ -108,11 +108,12 @@ function CustomCodeEditor(props: {
 
   const component = (
     <Container
-      as="pre"
+      as="div"
       className={clsx(
         (editable ? styles.editable : ""),
         codeBlockContainerStyles.codeBlockContainer,
         ThemeClassNames.common.codeBlock,
+        language && `language-${language}`,
       )}
     >
       <CodeEditor

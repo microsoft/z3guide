@@ -54,8 +54,8 @@ function CodeEditor(props: {
     const [code, setCode] = useState(props.code || "");
 
     useEffect(() => {
-        setCode(code);
-    }, [code]);
+        setCode(props.code);
+    }, [props.code]);
 
     const onEditableChange = useCallback((_code) => {
         setCode(_code.slice(0, -1));

@@ -106,19 +106,14 @@ function CustomCodeEditor(props: {
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
-  console.log(clsx(
-    (editable ? styles.editable : ""),
-    codeBlockContainerStyles.codeBlockContainer,
-    ThemeClassNames.common.codeBlock,
-    language && `language-${language}`,
-  ))
+  
   const component = (
     <Container
       as="div"
       className={clsx(
         (editable ? styles.editable : ""),
         codeBlockContainerStyles.codeBlockContainer,
-        ThemeClassNames.common.codeBlock,
+        // ThemeClassNames.common.codeBlock,
         language && `language-${language}`,
       )}
     >

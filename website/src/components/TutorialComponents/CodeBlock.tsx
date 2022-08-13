@@ -117,7 +117,6 @@ function CodeEditor(props: {
         }
     }, [currCode]);
 
-    console.log(prismTheme)
     return (
         <div className={props.className} style={props.style}>
             <Highlight

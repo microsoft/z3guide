@@ -2,14 +2,24 @@ import React, { useEffect, useState, useRef, useCallback, CSSProperties } from "
 import clsx from "clsx";
 import { useEditable } from "use-editable";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
+import { useThemeConfig, usePrismTheme } from "@docusaurus/theme-common";
+// @ts-ignore: the import is actually correct
+import { parseLines } from '@docusaurus/theme-common/internal';
 import CopyButton from '@theme/CodeBlock/CopyButton';
 import Highlight, {
-    Prism,
     defaultProps,
     Language,
     PrismTheme,
 } from "prism-react-renderer";
 import styles from "./styles.module.css";
+import prismIncludeLanguages from '@theme/prism-include-languages';
+
+
+import Prism from "prism-react-renderer/prism";
+
+(typeof global !== "undefined" ? global : window).Prism = Prism;
+
+require("prismjs/components/prism-lisp");
 
 
 export function GithubDiscussionBtn({ repo }) {
@@ -43,18 +53,54 @@ function CodeEditor(props: {
     disabled: boolean,
     language: string,
     onChange: (code: string) => void,
-    prism: typeof Prism,
+    // prism: typeof Prism,
     style?: CSSProperties,
     theme: PrismTheme,
     githubRepo: string | undefined,
     showLineNumbers: boolean,
 }) {
+    const { prism } = useThemeConfig();
+
+    // globalThis.Prism = Prism;
+
+    // prism.additionalLanguages.forEach((lang) => {
+        // eslint-disable-next-line global-require, import/no-dynamic-require
+        // require(`prismjs/components/prism-${lang}`);
+    // });
+
+    // delete (globalThis as Global & { Prism?}).Prism;
+
+    const language = props.language;
+    const prismTheme = usePrismTheme();
+
+    // debugger;
+
+    const parse: (code: string) => {
+        lineClassNames: {
+            [lineIndex: number]: string[];
+        };
+        code: string;
+    } = (code: string) => {
+        return parseLines(code, {
+            metastring: undefined,
+            language: language,
+            magicComments: prism.magicComments,
+        });
+    }
+
+    const [parsedRes, setParsedRes] = useState(parse(props.code));
+
     const editorRef = useRef(null);
-    const [code, setCode] = useState(props.code || "");
+    const [currCode, setCode] = useState(parsedRes.code || "");
 
     useEffect(() => {
-        setCode(props.code);
+        // setCode(props.code);
+        setParsedRes(parse(props.code));
     }, [props.code]);
+
+    useEffect(() => {
+        setCode(parsedRes.code);
+    }, [parsedRes])
 
     const onEditableChange = useCallback((_code) => {
         setCode(_code.slice(0, -1));
@@ -67,19 +113,19 @@ function CodeEditor(props: {
 
     useEffect(() => {
         if (props.onChange) {
-            props.onChange(code);
+            props.onChange(currCode);
         }
-    }, [code]);
+    }, [currCode]);
 
-    //   prismIncludeLanguages(Prism);
-
+    console.log(prismTheme)
     return (
         <div className={props.className} style={props.style}>
             <Highlight
-                Prism={props.prism || Prism}
-                code={code}
-                theme={props.theme}
-                language={props.language as Language}
+                {...defaultProps}
+                Prism={Prism}
+                code={currCode}
+                theme={prismTheme}
+                language={language as Language}
             >
                 {({
                     className: _className,
@@ -89,15 +135,16 @@ function CodeEditor(props: {
                     style: _style,
                 }) => (
                     <div className={clsx(
+                        _className,
                         styles.CustomCodeEditorContent,
                         codeBlockContentStyles.codeBlockContent,
                     )}>
                         {props.showLineNumbers &&
                             <span className={clsx(
-                                styles.LineNumber, 
+                                styles.LineNumber,
                                 // codeBlockLineNumberStyles.codeLineNumber,
                                 codeBlockContentStyles.codeBlockLines
-                                )}>
+                            )}>
                                 {tokens.map((line, i) => (
                                     <>{i + 1}<br /></>
                                 ))}
@@ -105,7 +152,7 @@ function CodeEditor(props: {
                         <pre
                             className={clsx(
                                 _className,
-                                styles.codeBlock, 
+                                styles.codeBlock,
                                 'thin-scrollbar')}
                             style={{
                                 // margin: 0,
@@ -113,7 +160,7 @@ function CodeEditor(props: {
                                 padding: "0",
                                 // fontFamily: "inherit",
                                 // fontSize: "inherit",
-                                ...(!props.className || !props.theme ? {} : _style),
+                                ...(!props.className || !prismTheme ? {} : _style),
                             }}
                             ref={editorRef}
                             spellCheck="false"
@@ -124,17 +171,25 @@ function CodeEditor(props: {
                                 )}>
                                 {tokens.map((line, lineIndex) => (
                                     // eslint-disable-next-line react/jsx-key
-                                    <div {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                                    <span {...getLineProps(
+                                        {
+                                            line,
+                                            // key: `line-${lineIndex}`, 
+                                            className: clsx(parsedRes.lineClassNames[lineIndex]),
+                                            // className: (!parsedRes.lineClassNames.hasOwnProperty(lineIndex) ? ''
+                                            //     : parsedRes.lineClassNames[lineIndex].join(' '))
+                                        })
+                                    }>
                                         {line
                                             .filter((token) => !token.empty)
-                                            .map((token, tokenIndex) => (
+                                            .map((token, key) => (
                                                 // eslint-disable-next-line react/jsx-key
-                                                <span
-                                                    {...getTokenProps({ token, key: `token-${tokenIndex}` })}
+                                                <span key={key}
+                                                    {...getTokenProps({ token, key })}
                                                 />
                                             ))}
                                         {"\n"}
-                                    </div>
+                                    </span>
                                 ))}
                             </code>
                         </pre>
@@ -142,7 +197,7 @@ function CodeEditor(props: {
                 )}
             </Highlight>
             <div className={codeBlockContentStyles.buttonGroup}>
-                <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+                <CopyButton className={codeBlockContentStyles.codeButton} code={currCode} />
                 {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}
             </div>
         </div>

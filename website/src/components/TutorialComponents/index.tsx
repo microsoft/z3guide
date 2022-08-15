@@ -11,11 +11,11 @@ import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBloc
 import styles from "./styles.module.css";
 
 
-import Prism from "prism-react-renderer/prism";
+// import Prism from "prism-react-renderer/prism";
 
-(typeof global !== "undefined" ? global : window).Prism = Prism;
+// (typeof global !== "undefined" ? global : window).Prism = Prism;
 
-require("prismjs/components/prism-lisp");
+// require("prismjs/components/prism-lisp");
 
 
 // [CONFIG HERE] custom language run process (client side) imports

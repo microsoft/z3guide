@@ -7,19 +7,20 @@ import { useThemeConfig, usePrismTheme } from "@docusaurus/theme-common";
 import { parseLines } from '@docusaurus/theme-common/internal';
 import CopyButton from '@theme/CodeBlock/CopyButton';
 import Highlight, {
+    Prism,
     defaultProps,
     Language,
     PrismTheme,
 } from "prism-react-renderer";
 import styles from "./styles.module.css";
-import prismIncludeLanguages from '@theme/prism-include-languages';
+// import prismIncludeLanguages from '@theme/prism-include-languages';
 
 
-import Prism from "prism-react-renderer/prism";
+// import Prism from "prism-react-renderer/prism";
 
-(typeof global !== "undefined" ? global : window).Prism = Prism;
+// (typeof global !== "undefined" ? global : window).Prism = Prism;
 
-require("prismjs/components/prism-lisp");
+// require("prismjs/components/prism-lisp");
 
 
 export function GithubDiscussionBtn({ repo }) {
@@ -117,6 +118,7 @@ function CodeEditor(props: {
         }
     }, [currCode]);
 
+    console.log({props})
     return (
         <div className={props.className} style={props.style}>
             <Highlight
@@ -168,17 +170,20 @@ function CodeEditor(props: {
                                 className={clsx(
                                     codeBlockContentStyles.codeBlockLines,
                                 )}>
-                                {tokens.map((line, lineIndex) => (
-                                    // eslint-disable-next-line react/jsx-key
-                                    <span {...getLineProps(
+                                {tokens.map((line, lineIndex) => {
+                                    const lineOutputProps = getLineProps(
                                         {
                                             line,
-                                            // key: `line-${lineIndex}`, 
+                                            key: `${lineIndex}`, 
                                             className: clsx(parsedRes.lineClassNames[lineIndex]),
                                             // className: (!parsedRes.lineClassNames.hasOwnProperty(lineIndex) ? ''
                                             //     : parsedRes.lineClassNames[lineIndex].join(' '))
-                                        })
-                                    }>
+                                        });
+
+                                    console.log({lineOutputProps, line});
+
+                                    // eslint-disable-next-line react/jsx-key
+                                    return <span {...lineOutputProps}>
                                         {line
                                             .filter((token) => !token.empty)
                                             .map((token, key) => (
@@ -189,7 +194,7 @@ function CodeEditor(props: {
                                             ))}
                                         {"\n"}
                                     </span>
-                                ))}
+                                })}
                             </code>
                         </pre>
                     </div>

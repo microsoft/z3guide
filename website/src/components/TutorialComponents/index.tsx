@@ -37,11 +37,16 @@ interface CodeBlockProps {
   githubRepo: string | undefined,
   editable: boolean,
   showLineNumbers: boolean,
+  readonly: boolean,
+  langVersion?: string,
+  tool?: string,
 }
 
-function OutputToggle(props: { onClick: () => void }) {
+function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?: string, tool?: string }) {
+  const { onClick } = props;
+
   return (
-    <button className="button button--primary" onClick={props.onClick}>
+    <button className="button button--primary" onClick={onClick}>
       Run
     </button>
   );
@@ -51,7 +56,7 @@ function RunButton(props: { onClick: () => void, runFinished: boolean }) {
   const { onClick, runFinished } = props;
   return (
     <button className="button button--primary" onClick={onClick}>
-      {runFinished ? "Run" : "Running..."}
+      {runFinished ? `Run` : "Running..."}
     </button>
   );
 }
@@ -90,15 +95,16 @@ function Output(props: {
 
 function CustomCodeEditor(props: {
   children: JSX.Element,
-  id: string;
-  input: string;
-  showLineNumbers?: boolean;
-  language?: string;
-  editable?: boolean;
-  onChange?: (code: string) => void;
-  githubRepo: string | undefined
+  id: string,
+  input: string,
+  showLineNumbers?: boolean,
+  language?: string,
+  editable?: boolean,
+  onChange?: (code: string) => void,
+  githubRepo: string | undefined,
+  readonly: boolean,
 }) {
-  const { id, input, language, showLineNumbers, editable, githubRepo, onChange } = props;
+  const { id, input, language, showLineNumbers, editable, githubRepo, onChange, readonly } = props;
 
   const prismTheme = usePrismTheme();
   // console.log(prismTheme);
@@ -126,6 +132,7 @@ function CustomCodeEditor(props: {
         language={language}
         prism={Prism}
         githubRepo={githubRepo}
+        readonly={readonly}
         showLineNumbers={showLineNumbers}
       />
     </Container>
@@ -136,7 +143,7 @@ function CustomCodeEditor(props: {
 
 export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
   const { input } = props;
-  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers } = input
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers, readonly, langVersion, tool } = input
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -213,28 +220,23 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         editable={editable || outputRendered}
         language={highlight}
         githubRepo={githubRepo}
+        readonly={readonly}
       />
-      <div className={styles.buttons}>
-        {editable || outputRendered ? (
-          <div />
-        ) : (
-          <OutputToggle onClick={onDidClickOutputToggle} />
-        )}
-        {editable || outputRendered ? (
-          <RunButton onClick={onDidClickRun} runFinished={runFinished} />
-        ) : (
-          <div />
-        )}
-      </div>
-      {outputRendered ? (
-        <Output
-          codeChanged={codeChanged}
-          result={output}
-          statusCodes={statusCodes}
-        />
-      ) : (
-        <div />
-      )}
+        <>
+          <div className={styles.buttons}>
+            {!readonly && !editable && !outputRendered && <OutputToggle onClick={onDidClickOutputToggle} />}
+            {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished}/>}
+          </div>
+          {outputRendered ? (
+            <Output
+              codeChanged={codeChanged}
+              result={output}
+              statusCodes={statusCodes}
+            />
+          ) : (
+            <div />
+          )}
+        </>
     </div>
   );
 }

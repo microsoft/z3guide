@@ -13,6 +13,8 @@
 .buttons {
     display: flex;
     align-items: center;
+    margin-bottom: var(--ifm-leading);
+    margin-top: var(--ifm-leading);
 }
 
 .LineNumber {

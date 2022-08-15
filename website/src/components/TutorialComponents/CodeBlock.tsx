@@ -12,7 +12,8 @@ import Highlight, {
 import styles from "./styles.module.css";
 
 
-export function GithubDiscussionBtn({ repo }) {
+export function GithubDiscussionBtn(props: { repo: string }) {
+    const { repo } = props;
     const openInNewTab = () => {
         const url = `https://github.com/${repo}/discussions`;
         window.open(url, '_blank');
@@ -21,6 +22,7 @@ export function GithubDiscussionBtn({ repo }) {
         <button
             type="button"
             aria-label="Go to GitHub discussion"
+            title="Go to GitHub discussion"
             className={clsx(
                 'clean-btn',
                 codeBlockContentStyles.codeButton
@@ -33,6 +35,46 @@ export function GithubDiscussionBtn({ repo }) {
     );
 }
 
+export function ResetBtn(props: { resetCode: () => void }) {
+    const { resetCode } = props;
+    return (
+        <button
+            type="button"
+            aria-label="Reset code"
+            title="Reset code"
+            className={clsx(
+                'clean-btn',
+                codeBlockContentStyles.codeButton
+            )}
+            onClick={resetCode}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+            </svg>
+        </button>
+    );
+}
+
+export function UndoBtn(props: { undoCode: () => void }) {
+    const { undoCode } = props;
+    return (
+        <button
+            type="button"
+            aria-label="Undo the reset"
+            title="Undo the reset"
+            className={clsx(
+                'clean-btn',
+                codeBlockContentStyles.codeButton,
+            )}
+            style={{borderColor: "var(--custom-editor-reset-color)"}}
+            onClick={undoCode}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--custom-editor-reset-color)" strokeWidth="3" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+            </svg>
+        </button>
+    );
+}
 
 // source code of LiveEditor that allows for code editing
 // a good starting point for customizing our own code editor
@@ -48,9 +90,13 @@ function CodeEditor(props: {
     theme: PrismTheme,
     githubRepo: string | undefined,
     showLineNumbers: boolean,
+    readonly: boolean,
 }) {
     const editorRef = useRef(null);
     const [code, setCode] = useState(props.code || "");
+    const [disabled, setDisabled] = useState(props.disabled);
+    const [allowUndo, setAllowUndo] = useState(false);
+    const [tmpCode, setTmpCode] = useState("");
 
     useEffect(() => {
         setCode(props.code);
@@ -61,7 +107,7 @@ function CodeEditor(props: {
     }, []);
 
     useEditable(editorRef, onEditableChange, {
-        disabled: props.disabled,
+        disabled: disabled,
         indentation: 2,
     });
 
@@ -70,6 +116,22 @@ function CodeEditor(props: {
             props.onChange(code);
         }
     }, [code]);
+
+    const onClickReset = () => {
+        setTmpCode(code.slice()); // use copy not reference
+        setCode(props.code);
+        setDisabled(true);
+        setAllowUndo(true);
+        setTimeout(() => {
+            setDisabled(props.disabled);
+            setAllowUndo(false);
+        }, 3000);
+    }
+
+    const onClickUndo = () => {
+        console.log(tmpCode)
+        setCode(tmpCode);
+    }
 
     //   prismIncludeLanguages(Prism);
 
@@ -94,10 +156,10 @@ function CodeEditor(props: {
                     )}>
                         {props.showLineNumbers &&
                             <span className={clsx(
-                                styles.LineNumber, 
+                                styles.LineNumber,
                                 // codeBlockLineNumberStyles.codeLineNumber,
                                 codeBlockContentStyles.codeBlockLines
-                                )}>
+                            )}>
                                 {tokens.map((line, i) => (
                                     <>{i + 1}<br /></>
                                 ))}
@@ -105,7 +167,7 @@ function CodeEditor(props: {
                         <pre
                             className={clsx(
                                 _className,
-                                styles.codeBlock, 
+                                styles.codeBlock,
                                 'thin-scrollbar')}
                             style={{
                                 // margin: 0,
@@ -143,6 +205,8 @@ function CodeEditor(props: {
             </Highlight>
             <div className={codeBlockContentStyles.buttonGroup}>
                 <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+                {!props.readonly && !allowUndo && <ResetBtn resetCode={onClickReset} />}
+                {!props.readonly && allowUndo && <UndoBtn undoCode={onClickUndo} />}
                 {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}
             </div>
         </div>

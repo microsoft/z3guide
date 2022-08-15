@@ -43,16 +43,11 @@ interface CodeBlockProps {
 }
 
 function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?: string, tool?: string }) {
-  const { onClick, disabled, version, tool } = props;
-  if (disabled && version && tool) {
-    throw new Error('buggy code; read-only blocks should not have been attached with language executables');
-  }
-
-  const langInfo = version && tool ? ` (${tool}, ver. ${version})` : '';
+  const { onClick } = props;
 
   return (
-    <button disabled={disabled} className="button button--primary" onClick={onClick}>
-      {props.disabled ? "This block is read-only" : `Run${langInfo}`}
+    <button className="button button--primary" onClick={onClick}>
+      Run
     </button>
   );
 }
@@ -230,16 +225,8 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
       />
         <>
           <div className={styles.buttons}>
-            {editable || outputRendered ? (
-              <div />
-            ) : (
-              <OutputToggle disabled={readonly} onClick={onDidClickOutputToggle} version={langVersion} tool={tool} />
-            )}
-            {editable || outputRendered ? (
-              <RunButton onClick={onDidClickRun} runFinished={runFinished} version={langVersion} tool={tool}/>
-            ) : (
-              <div />
-            )}
+            {!readonly && !editable && !outputRendered && <OutputToggle onClick={onDidClickOutputToggle} />}
+            {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished} version={langVersion} tool={tool}/>}
           </div>
           {outputRendered ? (
             <Output

@@ -1,11 +1,73 @@
-# Examples from the JS bindings unit test
+---
+title: Introduction
+sidebar_position: 1
+---
 
-:::warning 
-Type checking for Z3-typed function parameters messes up with how we process JS/TS inputs, so for now we don't include any top-level functions that include such parameters.
-:::
+The Z3 distribution comes with TypeScript (and therefore JavaScript) bindings to Z3.
+In the following we give a few examples of using Z3 through these bindings. 
+You can run and modify the examples locally in your browser.
+
+## Warmup
+
+We use a collection of basic examples to illustrate the bindings.
+We check that there are no numbers both above 9 and below 10:
 
 ```z3-js
-// proves x = y implies g(x) = g(y)
+const x = Z3.Int.const('x');
+const solver = new Z3.Solver();
+solver.add(Z3.And(x.ge(10), x.le(9)));
+await solver.check();
+```
+
+### Porting guide
+
+Let us contine with a few illustrations of the Python bindings side-by-side with JavaScript:
+
+```z3-python
+x = Int('x')
+y = Int('y')
+solve(x > 2, y < 10, x + 2*y == 7)
+```
+
+```z3-js
+const x = Z3.Int.const('x');
+const y = Z3.Int.const('y');
+const model = await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
+model.sexpr()
+```
+
+## 
+
+prove `x = y implies g(x) = g(y)`
+
+```z3-js
+   const solver = new Z3.Solver()
+   const sort = Z3.Int.sort();
+   const x = Z3.Int.const('x');
+   const y = Z3.Int.const('y');
+   const g = Z3.Function.declare('g', sort, sort);
+   const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
+   solver.add(Z3.Not(conjecture));
+   await solver.check()
+```
+
+disprove `x = y implies g(g(x)) = g(y)`
+
+```z3-js
+    const solver = new Z3.Solver();
+
+    const sort = Z3.Int.sort();
+    const x = Z3.Int.const('x');
+    const y = Z3.Int.const('y');
+    const g = Z3.Function.declare('g', sort, sort);
+    const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
+    solver.add(Z3.Not(conjecture));
+    await solver.check()
+```    
+
+Prove `x = y implies g(x) = g(y)`
+
+```z3-js
 
 const solver = new Z3.Solver();
 const sort = Z3.Int.sort();
@@ -18,9 +80,9 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); // unsat
 ```
 
-```z3-js
-// disproves that x = y implies g(g(x)) = g(y)
+disproves that `x = y implies g(g(x)) = g(y)`
 
+```z3-js
 const solver = new Z3.Solver();
 const sort = Z3.Int.sort();
 const x = Z3.Int.const('x');
@@ -31,8 +93,9 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); //sat
 ```
 
+proves De Morgan's Law
+
 ```z3-js
-// proves De Morgan's Law
 const solver = new Z3.Solver();
 const [x, y] = [Z3.Bool.const('x'), Z3.Bool.const('y')];
 const conjecture = Z3.Eq(Z3.Not(Z3.And(x, y)), Z3.Or(Z3.Not(x), Z3.Not(y)));
@@ -40,23 +103,9 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); // unsat
 ```
 
-```z3-js
-// finds a model
-const solver = new Z3.Solver();
-const x = Z3.Int.const('x');
-const y = Z3.Int.const('y');
-
-solver.add(x.ge(1)); // x >= 1
-solver.add(y.lt(x.add(3))); // y < x + 3
-
-await solver.check(); // sat
-
-const model = solver.model();
-await model.sexpr();
-```
+Solves sudoku
 
 ```z3-js
-// solves sudoku
 function toSudoku(data: string): (number | null)[][] {
     const cells: (number | null)[][] = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => null));
 
@@ -155,8 +204,11 @@ for (let i = 0; i < 9; i++) {
     }
 }
 
-await solver.check(); // sat
+const is_sat = await solver.check(); // sat
+const model = solver.model() as Model
+model.sexpr()
 ```
+
 
 ```z3-js
 // numerals 1
@@ -200,9 +252,6 @@ solver.add(x.mul(x).mul(x).add(z.mul(z).mul(z)).lt('1/2')); // x^3 + z^3 < 1/2
 await solver.check(); // sat
 ```
 
-TODO: seems that we can only get the final output, not intermediate ones
-- `console.log` doesn't work
-- should divide code blocks with intermediate results into smaller snippets
 ```z3-js
 // bitvectors: simple proofs
 const x = Z3.BitVec.const('x', 32);
@@ -224,9 +273,10 @@ const uModel = uSolver.model();
 uModel.get(x) // unsigned
 ```
 
+Solves an equation
+
 
 ```z3-js
-// solves an equation
 const x = Z3.BitVec.const('x', 32);
 const y = Z3.BitVec.const('y', 32);
 
@@ -242,19 +292,20 @@ const xSol = model.get(x) as BitVecNum;
 const ySol = model.get(y) as BitVecNum;
 
 
-const are_vals= Z3.isBitVecVal(xSol) && Z3.isBitVecVal(ySol); // true
+const are_vals = Z3.isBitVecVal(xSol) && Z3.isBitVecVal(ySol); // true
 
 const xv = xSol.asSignedValue();
 const yv = ySol.asSignedValue();
 
 // this solutions wraps around so we need to check using modulo
-const is_eq= (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
+const is_eq = (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
 
-` ${is_sat} ${are_vals} ${is_eq}`
+` is-sat: ${is_sat} solutions are values: ${are_vals} satisfy equality: ${is_eq}`
 ```
 
+The following example illustrates the use of AstVector
+
 ```z3-js
-// AstVector
 const solver = new Z3.Solver();
 
 const vector = new Z3.AstVector<Arith>() as AstVector<string, Arith>;
@@ -269,3 +320,4 @@ for (let i = 0; i < length; i++) {
 
 await solver.check(); // sat
 ```
+

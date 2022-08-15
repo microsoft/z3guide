@@ -52,12 +52,11 @@ function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?
   );
 }
 
-function RunButton(props: { onClick: () => void, runFinished: boolean, version?: string, tool?: string }) {
-  const { onClick, runFinished, version, tool } = props;
-  const langInfo = version && tool ? ` (${tool}, ver. ${version})` : '';
+function RunButton(props: { onClick: () => void, runFinished: boolean }) {
+  const { onClick, runFinished } = props;
   return (
     <button className="button button--primary" onClick={onClick}>
-      {runFinished ? `Run${langInfo}` : "Running..."}
+      {runFinished ? `Run` : "Running..."}
     </button>
   );
 }
@@ -226,7 +225,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         <>
           <div className={styles.buttons}>
             {!readonly && !editable && !outputRendered && <OutputToggle onClick={onDidClickOutputToggle} />}
-            {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished} version={langVersion} tool={tool}/>}
+            {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished}/>}
           </div>
           {outputRendered ? (
             <Output

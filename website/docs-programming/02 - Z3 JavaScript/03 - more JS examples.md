@@ -233,20 +233,24 @@ const y = Z3.BitVec.const('y', 32);
 const solver = new Z3.Solver();
 const conjecture = x.xor(y).sub(103).eq(x.mul(y));
 solver.add(conjecture);
-await solver.check(); // sat
+const is_sat = await solver.check(); // sat
 
 const model = solver.model();
+
 // need the following cast for `asSignedValue` to work
 const xSol = model.get(x) as BitVecNum;
 const ySol = model.get(y) as BitVecNum;
 
-Z3.isBitVecVal(xSol) && Z3.isBitVecVal(ySol); // true
+
+const are_vals= Z3.isBitVecVal(xSol) && Z3.isBitVecVal(ySol); // true
 
 const xv = xSol.asSignedValue();
 const yv = ySol.asSignedValue();
 
 // this solutions wraps around so we need to check using modulo
-(xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
+const is_eq= (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
+
+` ${is_sat} ${are_vals} ${is_eq}`
 ```
 
 ```z3-js

@@ -38,9 +38,9 @@ We start with a Boolean encoding. Let xij denote that VM i is put into server j 
 
 ; And an used server is implied by having a VM on it.
 
-(assert (and (implies y1 x11) (implies y1 x21) (implies y1 x31)))
-(assert (and (implies y2 x12) (implies y2 x22) (implies y2 x32)))
-(assert (and (implies y3 x13) (implies y3 x23) (implies y3 x33)))
+(assert (and (implies x11 y1) (implies x21 y1) (implies x31 y1)))
+(assert (and (implies x12 y2) (implies x22 y2) (implies x32 y2)))
+(assert (and (implies x13 y3) (implies x23 y3) (implies x33 y3)))
 
 ; Capability constraints are quite natural to add.
 

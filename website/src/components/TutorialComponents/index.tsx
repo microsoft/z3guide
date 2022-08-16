@@ -112,9 +112,6 @@ function CustomCodeEditor(props: {
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
-  console.log('index.ts disabled: ', !editable)
-  console.log('index.ts readonly: ', readonly)
-
   const component = (
     <Container
       as="div"

@@ -99,7 +99,6 @@ function CodeEditor(props: {
     const [tmpCode, setTmpCode] = useState("");
     const [focused, setFocused] = useState(false);
 
-    console.log('CodeBlock.tsx disabled: ', props.disabled);
     useEffect(() => {
         setCode(props.code);
     }, [props.code]);
@@ -120,7 +119,6 @@ function CodeEditor(props: {
     }, [code]);
 
     const onClickReset = () => {
-        console.log('reset is called')
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
         setDisabled(true);
@@ -132,9 +130,38 @@ function CodeEditor(props: {
     }
 
     const onClickUndo = () => {
-        console.log(tmpCode)
         setCode(tmpCode);
     }
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (focused && !disabled) {
+            if (e.key === "Escape") {
+                if (!disabled) {
+                    e.preventDefault()
+                    console.log(e.target)
+                    console.log(e.currentTarget)
+                    console.log('deselect')
+                    const target = e.target as HTMLElement;
+                    const currTarget = e.currentTarget as HTMLElement;
+                    target.focus();
+                    currTarget.focus();
+                    currTarget.blur();
+                    target.blur();
+
+                    setFocused(false);
+                    e.stopPropagation();
+                    console.log('stopped')
+                }
+            }
+        }
+    }
+
+
+    // window.onkeyup = (e) => {
+    //     if (e.key === 'Tab') {
+    //         console.log(e.currentTarget)
+    //     }
+    // }
 
 
     return (
@@ -182,18 +209,11 @@ function CodeEditor(props: {
                             }}
                             ref={editorRef}
                             spellCheck="false"
-                            onFocus={() => setFocused(true)}
+                            onFocus={() => {
+                                setFocused(true);
+                            }}
                             onBlur={() => setFocused(false)}
-                            // onKeyUp={(e) => {
-                            //     if (focused) {
-                            //         if (e.key === "Enter") {
-                            //             if (!disabled) {
-                            //                 console.log('hi')
-                            //                 this.select();
-                            //             }
-                            //         }
-                            //     }
-                            // }}
+                            onKeyDownCapture={(e) => handleKeyDown(e)}
                         >
                             <code
                                 className={clsx(

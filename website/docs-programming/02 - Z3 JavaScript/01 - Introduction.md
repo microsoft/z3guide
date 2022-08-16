@@ -321,3 +321,23 @@ for (let i = 0; i < length; i++) {
 await solver.check(); // sat
 ```
 
+Dog, cat mouse - Integer linear programming
+```z3-js
+// Create 3 integer variables
+
+const dog = Z3.Int.const('dog')
+const cat = Z3.Int.const('cat')
+const mouse = Z3.Int.const('mouse')
+const solver = new Z3.Solver()
+// there is at least one dog, one cat, and one mouse
+solver.add(dog.ge(1), cat.ge(1), mouse.ge(1))
+//      we want to buy 100 animals
+//   
+solver.add(dog.add(cat.add(mouse)).eq(100))
+//       We have 100 dollars (10000 cents):
+//        dogs cost 15 dollars (1500 cents), 
+//       cats cost 1 dollar (100 cents), and 
+//       mice cost 25 cents 
+solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.add(25)).eq(10000))
+await solver.check()
+```

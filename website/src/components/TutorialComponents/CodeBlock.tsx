@@ -66,7 +66,7 @@ export function UndoBtn(props: { undoCode: () => void }) {
                 'clean-btn',
                 codeBlockContentStyles.codeButton,
             )}
-            style={{borderColor: "var(--custom-editor-reset-color)"}}
+            style={{ borderColor: "var(--custom-editor-reset-color)" }}
             onClick={undoCode}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--custom-editor-reset-color)" strokeWidth="3" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
@@ -97,7 +97,9 @@ function CodeEditor(props: {
     const [disabled, setDisabled] = useState(props.disabled);
     const [allowUndo, setAllowUndo] = useState(false);
     const [tmpCode, setTmpCode] = useState("");
+    const [focused, setFocused] = useState(false);
 
+    console.log('CodeBlock.tsx disabled: ', props.disabled);
     useEffect(() => {
         setCode(props.code);
     }, [props.code]);
@@ -107,7 +109,7 @@ function CodeEditor(props: {
     }, []);
 
     useEditable(editorRef, onEditableChange, {
-        disabled: disabled,
+        disabled: props.disabled,
         indentation: 2,
     });
 
@@ -118,6 +120,7 @@ function CodeEditor(props: {
     }, [code]);
 
     const onClickReset = () => {
+        console.log('reset is called')
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
         setDisabled(true);
@@ -133,7 +136,6 @@ function CodeEditor(props: {
         setCode(tmpCode);
     }
 
-    //   prismIncludeLanguages(Prism);
 
     return (
         <div className={props.className} style={props.style}>
@@ -180,6 +182,18 @@ function CodeEditor(props: {
                             }}
                             ref={editorRef}
                             spellCheck="false"
+                            onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)}
+                            // onKeyUp={(e) => {
+                            //     if (focused) {
+                            //         if (e.key === "Enter") {
+                            //             if (!disabled) {
+                            //                 console.log('hi')
+                            //                 this.select();
+                            //             }
+                            //         }
+                            //     }
+                            // }}
                         >
                             <code
                                 className={clsx(

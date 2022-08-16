@@ -41,6 +41,6 @@ export default async function runZ3JSWeb(input: string): Promise<string> {
         // error with running z3
         error = e.message;
     } finally {
-        return JSON.stringify({ output: output, error: error });
+        return JSON.stringify({ output: String(output), error: error });
     }
 }

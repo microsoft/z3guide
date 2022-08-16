@@ -173,8 +173,10 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         .then((res) => {
           const result = JSON.parse(res);
           if (result.output) {
+            console.log({result});
             const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
             const hasError = errRegex.test(result.output);
+            console.log({hasError})
             newResult.output = hasError ? "" : result.output;
             newResult.error = hasError ? result.output : "";
             newResult.status = hasError
@@ -186,6 +188,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
           }
         })
         .catch((error) => {
+          console.log({error});
           // runProcess fails
           errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
           newResult.error = errorMsg;

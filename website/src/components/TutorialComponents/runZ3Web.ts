@@ -27,6 +27,6 @@ export default async function runZ3Web(input: string): Promise<string> {
         error = e.message;
     } finally {
         Z3.del_context(ctx);
-        return JSON.stringify({ output: output, error: error });
+        return JSON.stringify({ output: String(output), error: error });
     }
 }

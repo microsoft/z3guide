@@ -165,6 +165,7 @@ function CodeEditor(props: {
                                 ))}
                             </span>}
                         <pre
+                            tabIndex={0}
                             className={clsx(
                                 _className,
                                 styles.codeBlock,

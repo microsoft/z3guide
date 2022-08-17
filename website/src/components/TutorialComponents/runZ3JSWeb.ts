@@ -9,9 +9,10 @@ async function loadEvalZ3() {
         return evalZ3JSPromise;
     }
     evalZ3JSPromise = new Promise((res, rej) => {
-        let script = document.createElement('script');
+        const script = document.createElement('script');
         script.src = '/z3guide/eval-z3.js';
         script.onload = () => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore eval-z3.js adds this binding to the global
             // the name is defined in build.js
             res(window.evalZ3Mod.evalZ3JS);

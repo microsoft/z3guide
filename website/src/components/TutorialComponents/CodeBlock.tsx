@@ -155,7 +155,7 @@ function CodeEditor(props: {
         setHasFocus(false);
     }
 
-    const handleKeydown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
         const editor = editorRef.current;
         if (e.key === 'Escape' && !props.disabled) {
             if (e.target === editor) {
@@ -172,13 +172,13 @@ function CodeEditor(props: {
 
     useEffect(() => {
         document.addEventListener('keydown',
-            handleKeydown,
+            handleKeyDown,
             {
                 capture: true,
             }
         );
         return () => {
-            document.removeEventListener('keydown', handleKeydown);
+            document.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
 
@@ -224,8 +224,8 @@ function CodeEditor(props: {
                             }}
                             ref={editorRef}
                             spellCheck="false"
-                            onFocus={(e) => handleFocus(e)}
-                            onBlur={(e) => handleBlur(e)}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
                         >
                             <code
                                 className={clsx(

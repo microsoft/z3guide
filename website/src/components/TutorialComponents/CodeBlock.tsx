@@ -152,24 +152,32 @@ function CodeEditor(props: {
         setHasFocus(false);
     }
 
-
-    document.addEventListener('keydown',
-        (e) => {
-            const editor = editorRef.current;
-            if (e.key === 'Escape' && !props.disabled) {
-                if (e.target === editor) {
-                    e.stopImmediatePropagation();
-                    e.stopPropagation();
-                    e.preventDefault();
-                    editor.focus(); // sometimes blur won't fire without focus first
-                    editor.blur();
-                }
+    const handleKeydown = (e: KeyboardEvent) => {
+        const editor = editorRef.current;
+        if (e.key === 'Escape' && !props.disabled) {
+            if (e.target === editor) {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                editor.focus(); // sometimes blur won't fire without focus first
+                editor.blur();
             }
-        },
-        {
-            capture: true,
         }
-    );
+    }
+
+
+
+    useEffect(() => {
+        document.addEventListener('keydown',
+            (e) => handleKeydown(e),
+            {
+                capture: true,
+            }
+        );
+        return () => {
+            document.removeEventListener('keydown', (e) => handleKeydown(e));
+        };
+    }, []);
 
 
     return (

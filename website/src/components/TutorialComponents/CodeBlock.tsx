@@ -168,19 +168,24 @@ function CodeEditor(props: {
         }
     }
 
+    const handleKeyDownIfEnabled = useCallback((_e: KeyboardEvent) => {
+        if (!disabled) {
+            handleKeyDown(_e);
+        }
+    }, [disabled]);
 
 
     useEffect(() => {
         document.addEventListener('keydown',
-            handleKeyDown,
+            handleKeyDownIfEnabled,
             {
                 capture: true,
             }
         );
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keydown', handleKeyDownIfEnabled);
         };
-    }, []);
+    }, [handleKeyDownIfEnabled]);
 
 
     return (

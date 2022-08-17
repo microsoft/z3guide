@@ -158,46 +158,44 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
 
   // bypassing server-side rendering
   const onDidClickRun = () => {
-    if (useIsBrowser()) {
-      setRunFinished(false);
-      // TODO: only load z3 when needed
-      const newResult = { ...result };
-      let errorMsg;
+    setRunFinished(false);
+    // TODO: only load z3 when needed
+    const newResult = { ...result };
+    let errorMsg;
 
-      const runProcess = clientConfig[lang];
-      // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-      runProcess(currCode)
-        .then((res: string) => {
-          const result = JSON.parse(res);
-          if (result.output !== '') {
-            const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
-            const hasError = errRegex.test(result.output);
-            newResult.output = hasError ? "" : result.output;
-            newResult.error = hasError ? result.output : "";
-            newResult.status = hasError
-              ? statusCodes.runtimeError
-              : statusCodes.success;
-          } else if (result.error !== '') {
-            newResult.error = result.error;
-            newResult.status = statusCodes.runError;
-          }
-        })
-        .catch((error: Error) => {
-          // runProcess fails
-          errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
-          newResult.error = errorMsg;
-          newResult.status = `${lang}-web-failed`;
-          throw new Error(errorMsg);
-        })
-        .finally(() => {
-          setOutput(newResult);
-          setCodeChanged(false);
-          setRunFinished(true);
-          if (!outputRendered) {
-            setOutputRendered(true); // hack for the playground editor
-          }
-        });
-    }
+    const runProcess = clientConfig[lang];
+    // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
+    runProcess(currCode)
+      .then((res: string) => {
+        const result = JSON.parse(res);
+        if (result.output !== '') {
+          const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+          const hasError = errRegex.test(result.output);
+          newResult.output = hasError ? "" : result.output;
+          newResult.error = hasError ? result.output : "";
+          newResult.status = hasError
+            ? statusCodes.runtimeError
+            : statusCodes.success;
+        } else if (result.error !== '') {
+          newResult.error = result.error;
+          newResult.status = statusCodes.runError;
+        }
+      })
+      .catch((error: Error) => {
+        // runProcess fails
+        errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+        newResult.error = errorMsg;
+        newResult.status = `${lang}-web-failed`;
+        throw new Error(errorMsg);
+      })
+      .finally(() => {
+        setOutput(newResult);
+        setCodeChanged(false);
+        setRunFinished(true);
+        if (!outputRendered) {
+          setOutputRendered(true); // hack for the playground editor
+        }
+      });
   };
 
   const onDidChangeCode = (code: string) => {

@@ -42,9 +42,7 @@ export default async function runZ3JSWeb(input: string): Promise<string> {
     } catch (e) {
         // error with running z3
         error = e.message ?? 'Error message is empty';
-    } finally {
-        // we are guaranteed to have non-undefined output and error
-        // eslint-disable-next-line no-unsafe-finally
-        return JSON.stringify({ output: String(output), error: error });
-    }
+    } 
+    // we are guaranteed to have non-undefined output and error
+    return JSON.stringify({ output: String(output), error: error });
 }

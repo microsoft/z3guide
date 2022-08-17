@@ -1,4 +1,4 @@
-import {type Z3LowLevel, type Z3HighLevel} from 'z3-solver';
+import { type Z3LowLevel, type Z3HighLevel } from 'z3-solver';
 
 declare global {
     interface Window { z3Promise: Promise<Z3LowLevel & Z3HighLevel> } // use any to escape typechecking
@@ -31,8 +31,8 @@ export default async function runZ3Web(input: string): Promise<string> {
         error = e.message ?? 'Error message is empty';
     } finally {
         Z3.del_context(ctx);
-        // we are guaranteed to have non-undefined output and error
-        // eslint-disable-next-line no-unsafe-finally
-        return JSON.stringify({ output: String(output), error: error });
     }
+    // we are guaranteed to have non-undefined output and error
+    return JSON.stringify({ output: String(output), error: error });
+
 }

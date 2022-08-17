@@ -136,6 +136,22 @@ function CodeEditor(props: {
         setCode(tmpCode);
     }
 
+    const handleFocus = (e: React.FocusEvent) => {
+        const selectObj = window.getSelection();
+        if (selectObj.rangeCount === 0) {
+            // when focusing on the editor without using the mouse, 
+            // merely from the Tab key
+            const range = new Range();
+            range.collapse(true);
+            selectObj.addRange(range);
+        }
+        setHasFocus(true);
+    }
+
+    const handleBlur = (e: React.FocusEvent) => {
+        setHasFocus(false);
+    }
+
 
     document.addEventListener('keydown',
         (e) => {
@@ -197,17 +213,8 @@ function CodeEditor(props: {
                             }}
                             ref={editorRef}
                             spellCheck="false"
-                            onFocus={(e) => {
-                                console.log(e.target)
-                                const selectObj = window.getSelection();
-                                if (selectObj.rangeCount === 0) {
-                                    const range = new Range();
-                                    range.collapse(true);
-                                    selectObj.addRange(range);
-                                }
-                                setHasFocus(true);
-                            }}
-                            onBlur={() => setHasFocus(false)}
+                            onFocus={(e) => handleFocus(e)}
+                            onBlur={(e) => handleBlur(e)}
                         >
                             <code
                                 className={clsx(

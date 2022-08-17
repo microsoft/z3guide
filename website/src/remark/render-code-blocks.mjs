@@ -132,7 +132,7 @@ async function getOutput(config, input, lang, skipErr) {
     return result;
 }
 
-function getGithubRepo(langConfig) {
+function getGithubRepo(lang, langConfig) {
     if (langConfig.githubDiscussion) {
         if (!langConfig.githubRepo) {
             throw new Error(`Cannot create GithubDiscussionBtn for ${lang} without githubRepo configured in language.config.js`);
@@ -188,7 +188,7 @@ export default function plugin() {
                     continue; // onto the next lang config available until we are out
                 }
 
-                const githubRepo = getGithubRepo(langConfig);
+                const githubRepo = getGithubRepo(lang, langConfig);
 
                 if (!langConfig.buildConfig) {
                     // there is no runtime configured,

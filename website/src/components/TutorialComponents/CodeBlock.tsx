@@ -5,7 +5,6 @@ import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBloc
 import CopyButton from '@theme/CodeBlock/CopyButton';
 import Highlight, {
     Prism,
-    defaultProps,
     Language,
     PrismTheme,
 } from "prism-react-renderer";
@@ -263,6 +262,6 @@ function CodeEditor(props: {
             </div>
         </div>
     );
-};
+}
 
 export default CodeEditor;

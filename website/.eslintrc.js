@@ -6,7 +6,8 @@ module.exports = {
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@docusaurus/recommended"
     ],
     "overrides": [
     ],
@@ -16,9 +17,13 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
+        "@docusaurus",
         "react",
         "@typescript-eslint"
     ],
     "rules": {
-    }
+    },
+    "except": [
+        'docusaurus.config.js',
+    ]
 }

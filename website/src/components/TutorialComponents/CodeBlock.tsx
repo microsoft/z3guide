@@ -97,7 +97,7 @@ function CodeEditor(props: {
     const [disabled, setDisabled] = useState(props.disabled);
     const [allowUndo, setAllowUndo] = useState(false);
     const [tmpCode, setTmpCode] = useState("");
-    const [focused, setFocused] = useState(false);
+    const [hasFocus, setHasFocus] = useState(false);
 
     useEffect(() => {
         setCode(props.code);
@@ -107,8 +107,9 @@ function CodeEditor(props: {
         setCode(_code.slice(0, -1));
     }, []);
 
-    useEditable(editorRef, onEditableChange, {
-        disabled: props.disabled,
+
+    const editObj = useEditable(editorRef, onEditableChange, {
+        disabled: props.disabled || !hasFocus,
         indentation: 2,
     });
 
@@ -122,9 +123,11 @@ function CodeEditor(props: {
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
         setDisabled(true);
+        setHasFocus(false);
         setAllowUndo(true);
         setTimeout(() => {
             setDisabled(props.disabled);
+            setHasFocus(true);
             setAllowUndo(false);
         }, 3000);
     }
@@ -133,35 +136,24 @@ function CodeEditor(props: {
         setCode(tmpCode);
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (focused && !disabled) {
-            if (e.key === "Escape") {
-                if (!disabled) {
-                    e.preventDefault()
-                    console.log(e.target)
-                    console.log(e.currentTarget)
-                    console.log('deselect')
-                    const target = e.target as HTMLElement;
-                    const currTarget = e.currentTarget as HTMLElement;
-                    target.focus();
-                    currTarget.focus();
-                    currTarget.blur();
-                    target.blur();
 
-                    setFocused(false);
+    document.addEventListener('keydown',
+        (e) => {
+            const editor = editorRef.current;
+            if (e.key === 'Escape' && !props.disabled) {
+                if (e.target === editor) {
+                    e.stopImmediatePropagation();
                     e.stopPropagation();
-                    console.log('stopped')
+                    e.preventDefault();
+                    editor.focus(); // sometimes blur won't fire without focus first
+                    editor.blur();
                 }
             }
+        },
+        {
+            capture: true,
         }
-    }
-
-
-    // window.onkeyup = (e) => {
-    //     if (e.key === 'Tab') {
-    //         console.log(e.currentTarget)
-    //     }
-    // }
+    );
 
 
     return (
@@ -200,20 +192,22 @@ function CodeEditor(props: {
                                 styles.codeBlock,
                                 'thin-scrollbar')}
                             style={{
-                                // margin: 0,
-                                // outline: "none",
                                 padding: "0",
-                                // fontFamily: "inherit",
-                                // fontSize: "inherit",
                                 ...(!props.className || !props.theme ? {} : _style),
                             }}
                             ref={editorRef}
                             spellCheck="false"
-                            onFocus={() => {
-                                setFocused(true);
+                            onFocus={(e) => {
+                                console.log(e.target)
+                                const selectObj = window.getSelection();
+                                if (selectObj.rangeCount === 0) {
+                                    const range = new Range();
+                                    range.collapse(true);
+                                    selectObj.addRange(range);
+                                }
+                                setHasFocus(true);
                             }}
-                            onBlur={() => setFocused(false)}
-                            onKeyDownCapture={(e) => handleKeyDown(e)}
+                            onBlur={() => setHasFocus(false)}
                         >
                             <code
                                 className={clsx(

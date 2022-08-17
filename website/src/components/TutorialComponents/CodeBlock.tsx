@@ -94,7 +94,7 @@ function CodeEditor(props: {
 }) {
     const editorRef = useRef(null);
     const [code, setCode] = useState(props.code || "");
-    const [disabled, setDisabled] = useState(props.disabled);
+    // const [disabled, setDisabled] = useState(props.disabled);
     const [allowUndo, setAllowUndo] = useState(false);
     const [tmpCode, setTmpCode] = useState("");
     const [hasFocus, setHasFocus] = useState(false);
@@ -108,8 +108,11 @@ function CodeEditor(props: {
     }, []);
 
 
+    const disabled = props.disabled || !hasFocus;
+    // we might use `editObj` later for fixing cursor position
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const editObj = useEditable(editorRef, onEditableChange, {
-        disabled: props.disabled || !hasFocus,
+        disabled: disabled,
         indentation: 2,
     });
 
@@ -122,11 +125,11 @@ function CodeEditor(props: {
     const onClickReset = () => {
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
-        setDisabled(true);
+        // setDisabled(true);
         setHasFocus(false);
         setAllowUndo(true);
         setTimeout(() => {
-            setDisabled(props.disabled);
+            // setDisabled(props.disabled);
             setHasFocus(true);
             setAllowUndo(false);
         }, 3000);

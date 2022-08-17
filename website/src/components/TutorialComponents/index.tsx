@@ -170,9 +170,9 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
       const runProcess = clientConfig[lang];
       // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
       runProcess(currCode)
-        .then((res) => {
+        .then((res: string) => {
           const result = JSON.parse(res);
-          if (result.output) {
+          if (result.output !== '') {
             const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
             const hasError = errRegex.test(result.output);
             newResult.output = hasError ? "" : result.output;
@@ -180,12 +180,12 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
             newResult.status = hasError
               ? statusCodes.runtimeError
               : statusCodes.success;
-          } else if (result.error) {
+          } else if (result.error !== '') {
             newResult.error = result.error;
             newResult.status = statusCodes.runError;
           }
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           // runProcess fails
           errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
           newResult.error = errorMsg;

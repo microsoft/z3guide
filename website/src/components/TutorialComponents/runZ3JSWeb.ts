@@ -33,15 +33,18 @@ async function loadZ3() {
 }
 
 export default async function runZ3JSWeb(input: string): Promise<string> {
-    let output, error;
+    let output = '';
+    let error = '';
     try {
-        let Z3 = await loadZ3();
-        let evalZ3JS = await loadEvalZ3();
-        output = await evalZ3JS(Z3, input);
+        const Z3 = await loadZ3();
+        const evalZ3JS = await loadEvalZ3();
+        output = await evalZ3JS(Z3, input) ?? '';
     } catch (e) {
         // error with running z3
-        error = e.message;
+        error = e.message ?? 'Error message is empty';
     } finally {
+        // we are guaranteed to have non-undefined output and error
+        // eslint-disable-next-line no-unsafe-finally
         return JSON.stringify({ output: String(output), error: error });
     }
 }

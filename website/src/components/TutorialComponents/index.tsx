@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
-import { type Props } from "@theme/CodeBlock";
 import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import Container from "@theme/CodeBlock/Container";
@@ -31,9 +29,9 @@ const clientConfig = {
 interface CodeBlockProps {
   lang: string,
   highlight: string,
-  statusCodes: {[key: string]: string},
+  statusCodes: { [key: string]: string },
   code: string,
-  result: {[key: string]: string},
+  result: { [key: string]: string },
   githubRepo: string | undefined,
   editable: boolean,
   showLineNumbers: boolean,
@@ -63,7 +61,7 @@ function RunButton(props: { onClick: () => void, runFinished: boolean }) {
 
 
 function Output(props: {
-  result: { [key: string]: any },
+  result: { [key: string]: string | Array<string> },
   codeChanged: boolean,
   statusCodes: { [key: string]: string }
 }) {
@@ -94,7 +92,6 @@ function Output(props: {
 }
 
 function CustomCodeEditor(props: {
-  children: JSX.Element,
   id: string,
   input: string,
   showLineNumbers?: boolean,
@@ -104,7 +101,7 @@ function CustomCodeEditor(props: {
   githubRepo: string | undefined,
   readonly: boolean,
 }) {
-  const { id, input, language, showLineNumbers, editable, githubRepo, onChange, readonly } = props;
+  const { input, language, showLineNumbers, editable, githubRepo, onChange, readonly } = props;
 
   const prismTheme = usePrismTheme();
   // console.log(prismTheme);
@@ -141,9 +138,9 @@ function CustomCodeEditor(props: {
   return <>{isBrowser ? component : <></>}</>;
 }
 
-export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
+export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
   const { input } = props;
-  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers, readonly, langVersion, tool } = input
+  const { lang, highlight, statusCodes, code, result, githubRepo, editable, showLineNumbers, readonly } = input
 
   const [currCode, setCurrCode] = useState(code);
 
@@ -160,59 +157,55 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
   };
 
   // bypassing server-side rendering
-  const onDidClickRun = ExecutionEnvironment.canUseDOM
-    ? () => {
-      setRunFinished(false);
-      // TODO: only load z3 when needed
-      const newResult = { ...result };
-      let errorMsg;
+  const onDidClickRun = () => {
+    setRunFinished(false);
+    // TODO: only load z3 when needed
+    const newResult = { ...result };
+    let errorMsg;
 
-      const runProcess = clientConfig[lang];
-      // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-      runProcess(currCode)
-        .then((res) => {
-          const result = JSON.parse(res);
-          if (result.output) {
-            const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
-            const hasError = errRegex.test(result.output);
-            newResult.output = hasError ? "" : result.output;
-            newResult.error = hasError ? result.output : "";
-            newResult.status = hasError
-              ? statusCodes.runtimeError
-              : statusCodes.success;
-          } else if (result.error) {
-            newResult.error = result.error;
-            newResult.status = statusCodes.runError;
-          }
-        })
-        .catch((error) => {
-          // runProcess fails
-          errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
-          newResult.error = errorMsg;
-          newResult.status = `${lang}-web-failed`;
-          throw new Error(errorMsg);
-        })
-        .finally(() => {
-          setOutput(newResult);
-          setCodeChanged(false);
-          setRunFinished(true);
-          if (!outputRendered) {
-            setOutputRendered(true); // hack for the playground editor
-          }
-        });
-    }
-    : () => { };
+    const runProcess = clientConfig[lang];
+    // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
+    runProcess(currCode)
+      .then((res: string) => {
+        const result = JSON.parse(res);
+        if (result.output !== '') {
+          const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+          const hasError = errRegex.test(result.output);
+          newResult.output = hasError ? "" : result.output;
+          newResult.error = hasError ? result.output : "";
+          newResult.status = hasError
+            ? statusCodes.runtimeError
+            : statusCodes.success;
+        } else if (result.error !== '') {
+          newResult.error = result.error;
+          newResult.status = statusCodes.runError;
+        }
+      })
+      .catch((error: Error) => {
+        // runProcess fails
+        errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+        newResult.error = errorMsg;
+        newResult.status = `${lang}-web-failed`;
+        throw new Error(errorMsg);
+      })
+      .finally(() => {
+        setOutput(newResult);
+        setCodeChanged(false);
+        setRunFinished(true);
+        if (!outputRendered) {
+          setOutputRendered(true); // hack for the playground editor
+        }
+      });
+  };
 
   const onDidChangeCode = (code: string) => {
     setCurrCode(code);
     if (outputRendered) setCodeChanged(true);
   };
-  const inputNode = <>{code}</>;
 
   return (
     <div>
       <CustomCodeEditor
-        children={inputNode}
         input={code}
         id={result.hash}
         showLineNumbers={showLineNumbers}
@@ -222,21 +215,21 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps}) {
         githubRepo={githubRepo}
         readonly={readonly}
       />
-        <>
-          <div className={styles.buttons}>
-            {!readonly && !editable && !outputRendered && <OutputToggle onClick={onDidClickOutputToggle} />}
-            {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished}/>}
-          </div>
-          {outputRendered ? (
-            <Output
-              codeChanged={codeChanged}
-              result={output}
-              statusCodes={statusCodes}
-            />
-          ) : (
-            <div />
-          )}
-        </>
+      <>
+        <div className={styles.buttons}>
+          {!readonly && !editable && !outputRendered && <OutputToggle onClick={onDidClickOutputToggle} />}
+          {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished} />}
+        </div>
+        {outputRendered ? (
+          <Output
+            codeChanged={codeChanged}
+            result={output}
+            statusCodes={statusCodes}
+          />
+        ) : (
+          <div />
+        )}
+      </>
     </div>
   );
 }

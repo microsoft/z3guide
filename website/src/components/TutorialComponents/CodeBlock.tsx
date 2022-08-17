@@ -183,6 +183,7 @@ function CodeEditor(props: {
                             <code
                                 className={clsx(
                                     codeBlockContentStyles.codeBlockLines,
+                                    'match-braces'
                                 )}>
                                 {tokens.map((line, lineIndex) => (
                                     // eslint-disable-next-line react/jsx-key

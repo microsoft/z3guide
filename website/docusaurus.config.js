@@ -250,6 +250,12 @@ async function createConfig() {
     defer: true,
   });
 
+  config.scripts.push({
+    src: `${config.baseUrl}prism.js`,
+    type: 'text/javascript',
+    defer: true,
+  });
+
 
   return config;
 }

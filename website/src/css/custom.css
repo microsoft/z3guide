@@ -7,6 +7,9 @@
 /* You can override the default Infima variables here. */
 
 /* To get the origin config: current value + 0x17 */
+
+@import 'prism.css';
+
 :root {
   --ifm-color-primary: #727272;
   --ifm-color-primary-dark: #686868;

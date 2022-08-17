@@ -139,7 +139,7 @@ function CodeEditor(props: {
         setCode(tmpCode);
     }
 
-    const handleFocus = (e: React.FocusEvent) => {
+    const handleFocus = () => {
         const selectObj = window.getSelection();
         if (selectObj.rangeCount === 0) {
             // when focusing on the editor without using the mouse, 
@@ -151,7 +151,7 @@ function CodeEditor(props: {
         setHasFocus(true);
     }
 
-    const handleBlur = (e: React.FocusEvent) => {
+    const handleBlur = () => {
         setHasFocus(false);
     }
 
@@ -172,13 +172,13 @@ function CodeEditor(props: {
 
     useEffect(() => {
         document.addEventListener('keydown',
-            (e) => handleKeydown(e),
+            handleKeydown,
             {
                 capture: true,
             }
         );
         return () => {
-            document.removeEventListener('keydown', (e) => handleKeydown(e));
+            document.removeEventListener('keydown', handleKeydown);
         };
     }, []);
 

@@ -1,5 +1,5 @@
 ---
-title: Playground
+title: SMTLIB Playground
 sidebar_position: 1
 ---
 

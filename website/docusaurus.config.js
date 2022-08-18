@@ -137,7 +137,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'playground/playground',
               position: 'left',
-              label: 'Playground',
+              label: 'SMTLIB Playground',
             },
             // link to the github repo of this site
             {

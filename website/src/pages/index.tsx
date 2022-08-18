@@ -33,7 +33,7 @@ function HomepageHeader() {
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
               to="/docs/playground/playground">
-              Playground
+              SMTLIB Playground
             </Link>
             </div>
           </div>

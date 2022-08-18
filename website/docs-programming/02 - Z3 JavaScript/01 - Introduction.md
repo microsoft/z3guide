@@ -74,7 +74,7 @@ solver.model().sexpr()
 
 ## Uninterpreted Functions
 
-### prove `x = y implies g(x) = g(y)`
+### Prove `x = y implies g(x) = g(y)`
 
 ```z3-js
    const solver = new Z3.Solver()
@@ -87,7 +87,7 @@ solver.model().sexpr()
    await solver.check()
 ```
 
-### disprove `x = y implies g(g(x)) = g(y)`
+### Disprove `x = y implies g(g(x)) = g(y)`
 
 ```z3-js
     const solver = new Z3.Solver();
@@ -116,7 +116,7 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); // unsat
 ```
 
-### disprove that `x = y implies g(g(x)) = g(y)`
+### Disprove that `x = y implies g(g(x)) = g(y)`
 
 ```z3-js
 const solver = new Z3.Solver();

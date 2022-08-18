@@ -1,48 +1,44 @@
 import type { evalZ3JS } from '../../eval-z3/eval-z3';
 import { type Z3HighLevel, Z3LowLevel } from 'z3-solver';
-import type { init as initT, Model, Solver, BitVecNum, AstVector, Arith } from 'z3-solver';
-declare let init: typeof initT;
+import { init } from 'z3-solver';
 declare let { Context, setParam }: Awaited<ReturnType<typeof init>>;
 declare let Z3: ReturnType<typeof Context<'main'>>;
 
-let evalZ3JSPromise: null | Promise<typeof evalZ3JS> = null;
-// async function loadEvalZ3() {
-//     // typescript is several megabytes of JS
-//     // so don't load it until someone actually calls it
-//     if (evalZ3JSPromise != null) {
-//         return evalZ3JSPromise;
-//     }
-//     evalZ3JSPromise = new Promise((res, rej) => {
-//         const script = document.createElement('script');
-//         script.src = '/z3guide/eval-z3.js';
-//         script.onload = () => {
-//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//             // @ts-ignore eval-z3.js adds this binding to the global
-//             // the name is defined in build.js
-//             res(window.evalZ3Mod.evalZ3JS);
-//         };
-//         script.onerror = rej;
-//         document.head.appendChild(script);
-//     });
-//     return evalZ3JSPromise;
-// }
-
-let Z3Promise: null | ReturnType<typeof init>;
-async function loadZ3() {
-    if (Z3Promise != null) {
-        return Z3Promise;
-    }
-    Z3Promise = init();
-    return Z3Promise;
+declare global {
+    interface Window { z3Promise: Promise<Z3HighLevel & Z3LowLevel> } // use any to escape typechecking
 }
 
+// let Z3Promise: null | ReturnType<typeof init>;
+// async function loadZ3() {
+//     if (Z3Promise !== null) {
+//         return Z3Promise;
+//     }
+//     Z3Promise = init();
+//     return Z3Promise;
+// }
+
+
 export default async function runZ3DuoWeb(user_input: string, secret_input: string): Promise<string> {
+    
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const z3 = require('z3-solver');
+
+    // init z3
+    const z3p: Promise<Z3HighLevel & Z3LowLevel> = window.z3Promise || (() => {
+        return window.z3Promise = z3.init();
+    })();
+
+    const {  Z3: Z3Core, Context } = await z3p;
+    let Z3 = Context('main');
+
     let output = '';
     let error = '';
+
     try {
-        const { Z3: Z3Core, Context } = await loadZ3();
-        const s1 = new Z3.Solver(user_input);
-        const s2 = new Z3.Solver(secret_input);
+        const s1 = new Z3.Solver();
+        const s2 = new Z3.Solver();
+        const parse = s1.from_string(user_input);
+
         const not_user = Z3.Not(Z3.And(s1.assertions()));
         const not_secret = Z3.Not(Z3.And(s2.assertions()));
         s2.add(not_user);
@@ -64,6 +60,7 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         // error with running z3
         error = e.message ?? 'Error message is empty';
     }
+    console.log(error)
     // we are guaranteed to have non-undefined output and error
     return JSON.stringify({ output: String(output), error: error });
 }

@@ -52,11 +52,11 @@ function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?
   );
 }
 
-function RunButton(props: { onClick: () => void, runFinished: boolean, isZ3Duo: boolean }) {
+function RunButton(props: { onClick: () => Promise<void>, runFinished: boolean, isZ3Duo: boolean }) {
   const { onClick, runFinished, isZ3Duo } = props;
   const text = isZ3Duo ? "Check" : "Run";
   return (
-    <button className="button button--primary" onClick={onClick}>
+    <button className="button button--primary" onClick={async() => await onClick()}>
       {runFinished ? text : "Running..."}
     </button>
   );
@@ -163,11 +163,11 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
   };
 
   // bypassing server-side rendering
-  const onDidClickRun = () => {
+  const onDidClickRun = async () => {
     setRunFinished(false);
     // TODO: only load z3 when needed
     const newResult = { ...result };
-    let errorMsg;
+    let errorMsg: string;
 
     const runProcess = clientConfig[lang];
     // const z3DuoCode = `const s1 = new Z3.Solver()
@@ -186,44 +186,71 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
     //    // etc`;
 
     let input = currCode;
-    if (isZ3Duo) {
-      // input = `let user_input = ${currCode}
-      // let secret_input = ${result.output}
-      // ${z3DuoCode}`
-    }
+    let process = isZ3Duo ? runProcess(input, result.output) : runProcess(input);
 
     // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-    runProcess(input)
-      .then((res: string) => {
-        const result = JSON.parse(res);
-        if (result.output !== '') {
-          const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
-          const hasError = errRegex.test(result.output);
-          newResult.output = hasError ? "" : result.output;
-          newResult.error = hasError ? result.output : "";
-          newResult.status = hasError
-            ? statusCodes.runtimeError
-            : statusCodes.success;
-        } else if (result.error !== '') {
-          newResult.error = result.error;
-          newResult.status = statusCodes.runError;
-        }
-      })
-      .catch((error: Error) => {
-        // runProcess fails
-        errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
-        newResult.error = errorMsg;
-        newResult.status = `${lang}-web-failed`;
-        throw new Error(errorMsg);
-      })
-      .finally(() => {
-        setOutput(newResult);
-        setCodeChanged(false);
-        setRunFinished(true);
-        if (!outputRendered) {
-          setOutputRendered(true); // hack for the playground editor
-        }
-      });
+    try {
+      let res: string = await process;
+      const result = JSON.parse(res);
+      console.log(res)
+      if (result.output !== '') {
+        const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+        const hasError = errRegex.test(result.output);
+        newResult.output = hasError ? "" : result.output;
+        newResult.error = hasError ? result.output : "";
+        newResult.status = hasError
+          ? statusCodes.runtimeError
+          : statusCodes.success;
+      } else if (result.error !== '') {
+        newResult.error = result.error;
+        newResult.status = statusCodes.runError;
+      }
+    } catch (error) {
+      errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+      newResult.error = errorMsg;
+      newResult.status = `${lang}-web-failed`;
+      throw new Error(errorMsg);
+    } finally {
+      setOutput(newResult);
+      setCodeChanged(false);
+      setRunFinished(true);
+      if (!outputRendered) {
+        setOutputRendered(true); // hack for the playground editor
+      }
+      console.log('i am clicked')
+    }
+
+    // runProcess(input)
+    //   .then((res: string) => {
+    //     const result = JSON.parse(res);
+    //     if (result.output !== '') {
+    //       const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+    //       const hasError = errRegex.test(result.output);
+    //       newResult.output = hasError ? "" : result.output;
+    //       newResult.error = hasError ? result.output : "";
+    //       newResult.status = hasError
+    //         ? statusCodes.runtimeError
+    //         : statusCodes.success;
+    //     } else if (result.error !== '') {
+    //       newResult.error = result.error;
+    //       newResult.status = statusCodes.runError;
+    //     }
+    //   })
+    //   .catch((error: Error) => {
+    //     // runProcess fails
+    //     errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+    //     newResult.error = errorMsg;
+    //     newResult.status = `${lang}-web-failed`;
+    //     throw new Error(errorMsg);
+    //   })
+    //   .finally(() => {
+    //     setOutput(newResult);
+    //     setCodeChanged(false);
+    //     setRunFinished(true);
+    //     if (!outputRendered) {
+    //       setOutputRendered(true); // hack for the playground editor
+    //     }
+    //   });
   };
 
   const onDidChangeCode = (code: string) => {

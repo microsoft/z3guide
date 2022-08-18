@@ -19,8 +19,7 @@ tremendous difference.
 
 
 In this tutorial we show how to create custom strategies using the basic building blocks
-available in Z3. Z3Py and Z3 implement the ideas proposed in this 
-<a target="_blank" href="http://research.microsoft.com/en-us/um/people/leonardo/strategy.pdf">article</a>.
+available in Z3. Z3Py and Z3 implement the ideas proposed in this <a target="_blank" href="http://research.microsoft.com/en-us/um/people/leonardo/strategy.pdf">article</a>.
 
 
 ## Introduction 

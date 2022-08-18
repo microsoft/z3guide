@@ -124,6 +124,7 @@ sidebar_position: 1
 (declare-const x7 (_ BitVec 3))
 
 ------
+; Gray codes
 (declare-const x0 (_ BitVec 3))
 (declare-const x1 (_ BitVec 3))
 (declare-const x2 (_ BitVec 3))

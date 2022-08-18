@@ -4,9 +4,8 @@ sidebar_position: 1
 ---
 
 ```z3-duo
-(echo "starter code")
-
+(declare-const x Int)
 ------
-
-(echo "secret")
+(declare-const x Int)
+(assert (= (mod x 2) 0))
 ```

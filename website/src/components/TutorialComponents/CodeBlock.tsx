@@ -65,7 +65,7 @@ export function UndoBtn(props: { undoCode: () => void }) {
                 'clean-btn',
                 codeBlockContentStyles.codeButton,
             )}
-            style={{borderColor: "var(--custom-editor-reset-color)"}}
+            style={{ borderColor: "var(--custom-editor-reset-color)" }}
             onClick={undoCode}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--custom-editor-reset-color)" strokeWidth="3" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
@@ -93,9 +93,10 @@ function CodeEditor(props: {
 }) {
     const editorRef = useRef(null);
     const [code, setCode] = useState(props.code || "");
-    const [disabled, setDisabled] = useState(props.disabled);
+    // const [disabled, setDisabled] = useState(props.disabled);
     const [allowUndo, setAllowUndo] = useState(false);
     const [tmpCode, setTmpCode] = useState("");
+    const [hasFocus, setHasFocus] = useState(false);
 
     useEffect(() => {
         setCode(props.code);
@@ -105,7 +106,11 @@ function CodeEditor(props: {
         setCode(_code.slice(0, -1));
     }, []);
 
-    useEditable(editorRef, onEditableChange, {
+
+    const disabled = props.disabled || !hasFocus;
+    // we might use `editObj` later for fixing cursor position
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const editObj = useEditable(editorRef, onEditableChange, {
         disabled: disabled,
         indentation: 2,
     });
@@ -119,20 +124,68 @@ function CodeEditor(props: {
     const onClickReset = () => {
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
-        setDisabled(true);
+        // setDisabled(true);
+        setHasFocus(false);
         setAllowUndo(true);
         setTimeout(() => {
-            setDisabled(props.disabled);
+            // setDisabled(props.disabled);
+            setHasFocus(true);
             setAllowUndo(false);
         }, 3000);
     }
 
     const onClickUndo = () => {
-        console.log(tmpCode)
         setCode(tmpCode);
     }
 
-    //   prismIncludeLanguages(Prism);
+    const handleFocus = () => {
+        const selectObj = window.getSelection();
+        if (selectObj.rangeCount === 0) {
+            // when focusing on the editor without using the mouse, 
+            // merely from the Tab key
+            const range = new Range();
+            range.collapse(true);
+            selectObj.addRange(range);
+        }
+        setHasFocus(true);
+    }
+
+    const handleBlur = () => {
+        setHasFocus(false);
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+        const editor = editorRef.current;
+        if (e.key === 'Escape' && !props.disabled) {
+            if (e.target === editor) {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                editor.focus(); // sometimes blur won't fire without focus first
+                editor.blur();
+            }
+        }
+    }
+
+    const handleKeyDownIfEnabled = useCallback((_e: KeyboardEvent) => {
+        if (!disabled) {
+            handleKeyDown(_e);
+        }
+    }, [disabled]);
+
+
+    useEffect(() => {
+        document.addEventListener('keydown',
+            handleKeyDownIfEnabled,
+            {
+                capture: true,
+            }
+        );
+        return () => {
+            document.removeEventListener('keydown', handleKeyDownIfEnabled);
+        };
+    }, [handleKeyDownIfEnabled]);
+
 
     return (
         <div className={props.className} style={props.style}>
@@ -164,20 +217,19 @@ function CodeEditor(props: {
                                 ))}
                             </span>}
                         <pre
+                            tabIndex={0}
                             className={clsx(
                                 _className,
                                 styles.codeBlock,
                                 'thin-scrollbar')}
                             style={{
-                                // margin: 0,
-                                // outline: "none",
                                 padding: "0",
-                                // fontFamily: "inherit",
-                                // fontSize: "inherit",
                                 ...(!props.className || !props.theme ? {} : _style),
                             }}
                             ref={editorRef}
                             spellCheck="false"
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
                         >
                             <code
                                 className={clsx(

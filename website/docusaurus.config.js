@@ -127,7 +127,7 @@ async function createConfig() {
             },
             // link to programming docs
             {
-              to: '/programming/Z3 JavaScript/Introduction',
+              to: '/programming/Z3 JavaScript/Examples',
               label: 'Programming Z3',
               position: 'left',
               activeBaseRegex: `/programming/`,

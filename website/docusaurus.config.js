@@ -117,7 +117,7 @@ async function createConfig() {
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         navbar: {
-          title: 'Z3 Documentation',
+          title: 'Z3 Guide',
           items: [
             {
               type: 'doc',

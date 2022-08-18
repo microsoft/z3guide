@@ -27,11 +27,71 @@ sidebar_position: 1
 ```
 
 ```z3-duo
+(declare-const queen1 (_ BitVec 4))
+(declare-const queen2 (_ BitVec 4))
+(declare-const queen3 (_ BitVec 4))
+(declare-const queen4 (_ BitVec 4))
+------
+
+(declare-const queen1 (_ BitVec 4))
+(declare-const queen2 (_ BitVec 4))
+(declare-const queen3 (_ BitVec 4))
+(declare-const queen4 (_ BitVec 4))
+
+
+(define-fun single_bit ((x (_ BitVec 4))) Bool
+   (or (= x (_ bv1 4)) (= x (_ bv2 4))(= x (_ bv4 4))(= x (_ bv8 4))))
+
+(assert (single_bit queen1))
+(assert (single_bit queen2))
+(assert (single_bit queen3))
+(assert (single_bit queen4))
+
+; no vertical
+(assert (= (_ bv0 4) (bvand queen1 queen2)))
+(assert (= (_ bv0 4) (bvand queen1 queen3)))
+(assert (= (_ bv0 4) (bvand queen1 queen4)))
+(assert (= (_ bv0 4) (bvand queen2 queen3)))
+(assert (= (_ bv0 4) (bvand queen2 queen4)))
+(assert (= (_ bv0 4) (bvand queen3 queen4)))
+
+; no diagonal
+(assert (= (_ bv0 4) (bvand queen1 (bvlshr queen2 (_ bv1 4)))))
+(assert (= (_ bv0 4) (bvand queen1 (bvlshr queen3 (_ bv2 4)))))
+(assert (= (_ bv0 4) (bvand queen1 (bvlshr queen4 (_ bv3 4)))))
+(assert (= (_ bv0 4) (bvand queen2 (bvlshr queen3 (_ bv1 4)))))
+(assert (= (_ bv0 4) (bvand queen2 (bvlshr queen4 (_ bv2 4)))))
+(assert (= (_ bv0 4) (bvand queen3 (bvlshr queen4 (_ bv1 4)))))
+
+(assert (= (_ bv0 4) (bvand queen1 (bvshl queen2 (_ bv1 4)))))
+(assert (= (_ bv0 4) (bvand queen1 (bvshl queen3 (_ bv2 4)))))
+(assert (= (_ bv0 4) (bvand queen1 (bvshl queen4 (_ bv3 4)))))
+(assert (= (_ bv0 4) (bvand queen2 (bvshl queen3 (_ bv1 4)))))
+(assert (= (_ bv0 4) (bvand queen2 (bvshl queen4 (_ bv2 4)))))
+(assert (= (_ bv0 4) (bvand queen3 (bvshl queen4 (_ bv1 4)))))
+
+```
+
+
+```z3-duo
 (declare-const x (_ BitVec 32))
 ------
-(declare-const x (_ BitVec 32))
-(assert (= (bvand x (bvsub 1 (_ bv1 32))) (_ bv0 32)))
 
+(declare-const x (_ BitVec 32))
+
+(define-fun pcLine1 ((x (_ BitVec 32))) (_ BitVec 32)
+   (bvsub x (bvand (bvlshr x #x00000001) #x55555555)))
+
+(define-fun pcLine2 ((x (_ BitVec 32))) (_ BitVec 32)
+   (bvadd (bvand x #x33333333) (bvand (bvlshr x #x00000002) #x33333333)))
+
+(define-fun pcLine3 ((x (_ BitVec 32))) (_ BitVec 32)
+   (bvlshr (bvmul (bvand (bvadd (bvlshr x #x00000004) x) #x0f0f0f0f) #x01010101) #x00000018))
+
+
+(assert (pcLine3 (pcLine2 (pcLine1 x))))
+(check-sat)
+(exit)
 ```
 
 

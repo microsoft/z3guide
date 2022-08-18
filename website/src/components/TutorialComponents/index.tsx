@@ -19,12 +19,13 @@ require("prismjs/components/prism-lisp");
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from "./runZ3Web";
 import runZ3JSWeb from "./runZ3JSWeb";
+import runZ3DuoWeb from "./runZ3DuoWeb";
 
 // [CONFIG HERE] language-process mapping
 const clientConfig = {
   'z3': runZ3Web,
   'z3-js': runZ3JSWeb,
-  'z3-duo': runZ3JSWeb,
+  'z3-duo': runZ3DuoWeb,
 };
 
 interface CodeBlockProps {
@@ -169,26 +170,26 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
     let errorMsg;
 
     const runProcess = clientConfig[lang];
-    const z3DuoCode = `const s1 = new Z3.Solver()
-    const s2 = new Z3.Solver()
-    s1.from_string(user_input)
-    s2.from_string(secret_input)
-    const not_user = Z3.Not(Z3.And(s1.assertions()))
-    const not_secret = Z3.Not(Z3.And(s2.assertions()))
-    s2.add(not_user)
-    s1.add(not_secret)
-    const secret_not_user = await s2.check()
-    const user_not_secret = await s1.check()
-    if (secret_not_user == "sat")
-        // say   s2.model().sexpr() satisfies secret but not user formula
-    if (user_not_secret == "sat")
-       // etc`;
+    // const z3DuoCode = `const s1 = new Z3.Solver()
+    // const s2 = new Z3.Solver()
+    // s1.from_string(user_input)
+    // s2.from_string(secret_input)
+    // const not_user = Z3.Not(Z3.And(s1.assertions()))
+    // const not_secret = Z3.Not(Z3.And(s2.assertions()))
+    // s2.add(not_user)
+    // s1.add(not_secret)
+    // const secret_not_user = await s2.check()
+    // const user_not_secret = await s1.check()
+    // if (secret_not_user == "sat")
+    //     // say   s2.model().sexpr() satisfies secret but not user formula
+    // if (user_not_secret == "sat")
+    //    // etc`;
 
     let input = currCode;
     if (isZ3Duo) {
-      input = `let user_input = ${currCode}
-      let secret_input = ${result.output}
-      ${z3DuoCode}`
+      // input = `let user_input = ${currCode}
+      // let secret_input = ${result.output}
+      // ${z3DuoCode}`
     }
 
     // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)

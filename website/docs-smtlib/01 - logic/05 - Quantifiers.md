@@ -34,6 +34,59 @@ Suppose we want to model an object oriented type system with single inheritance.
 (check-sat)
 ```
 
+
+
+Raymond Smullyan's puzzles are famous logical brain teasers. You can use predicate logic to encode and solve these.
+On a fictional island, all inhabitants are either knights, who always tell the truth, or knaves, who always lie.
+John and Bill are residents of the island of knights and knaves.
+
+```z3
+(declare-sort Inhabitant)
+(declare-datatype Statement (truth falsity))
+(declare-datatype Identity (Knave Knight))
+(declare-const John Inhabitant)
+(declare-const Bill Inhabitant)
+(declare-fun Is (Inhabitant Identity) Statement)
+(declare-fun Says (Inhabitant Statement) Bool)
+(declare-fun Holds (Statement) Bool)
+(assert (Holds truth))
+(assert (not (Holds falsity)))
+(assert (forall ((x Inhabitant)) (xor (Holds (Is x Knave)) (Holds (Is x Knight)))))
+(assert (forall ((x Inhabitant) (y Statement)) (=> (Holds (Is x Knave)) (Says x y) (not (Holds y)))))
+(assert (forall ((x Inhabitant) (y Statement)) (=> (Holds (Is x Knight)) (Says x y) (Holds y))))
+
+(push)
+; Question 1
+; John says: We are both knaves
+; Who is what?
+(declare-fun And (Statement Statement) Statement)
+(assert (forall ((x Statement) (y Statement)) (= (Holds (And x y)) (and (Holds x) (Holds y)))))
+(assert (Says John (And (Is John Knave) (Is Bill Knave))))
+(check-sat)
+(eval (Holds (Is John Knight)))
+(eval (Holds (Is Bill Knight)))
+(pop)
+
+
+(push)
+; Question 2
+; John: If (and only if) Bill is a knave, then I am a knave.
+; Bill: We are of different kinds.
+; Who is who?
+
+(declare-fun Not (Statement) Statement)
+(declare-fun Iff (Statement Statement) Statement)
+(assert (forall ((x Statement)) (= (Holds (Not x)) (not (Holds x)))))
+(assert (forall ((x Statement) (y Statement)) (= (Holds (Iff x y)) (= (Holds x) (Holds y)))))
+
+(assert (Says John (Iff (Is Bill Knave) (Is John Knave))))
+(assert (Says Bill (Not (Iff (Is Bill Knave) (Is John Knave)))))
+(check-sat)
+(eval (Holds (Is John Knight)))
+(eval (Holds (Is Bill Knight)))
+(pop)
+```
+
 ### Patterns
 
 The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneered the use of pattern-based quantifier instantiation. The basic idea behind pattern-based quantifier instantiation is in a sense straight-forward Annotate a quantified formula using a _pattern_ that contains all the bound variables. So a pattern is an expression (that does not contain binding operations, such as quantifiers) that contains variables bound by a quantifier. Then instantiate the quantifier whenever a term that matches the pattern is created during search. This is a conceptually easy starting point, but there are several subtleties that are important.

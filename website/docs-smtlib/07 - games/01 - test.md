@@ -88,7 +88,16 @@ sidebar_position: 1
 (declare-const x (_ BitVec 32))
 ------
 
+; count number of 1's in a bit-vector
+;int popcount_32 (unsigned int v) { 
+;  v = v - ((v >> 1) & 0x55555555); 
+;  v = (v & 0x33333333) + ((v >> 2) & 0x33333333); 
+;  v = ((v + (v >> 4) & 0xF0F0F0F) * 0x1010101) >> 24; 
+;  return(v); 
+;} 
+
 (declare-const x (_ BitVec 32))
+(declare-const y (_ BitVec 32))
 
 (define-fun pcLine1 ((x (_ BitVec 32))) (_ BitVec 32)
    (bvsub x (bvand (bvlshr x #x00000001) #x55555555)))
@@ -100,7 +109,7 @@ sidebar_position: 1
    (bvlshr (bvmul (bvand (bvadd (bvlshr x #x00000004) x) #x0f0f0f0f) #x01010101) #x00000018))
 
 
-(assert (pcLine3 (pcLine2 (pcLine1 x))))
+(assert (= y (pcLine3 (pcLine2 (pcLine1 x)))))
 ```
 
 

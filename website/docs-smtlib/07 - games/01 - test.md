@@ -243,3 +243,72 @@ sidebar_position: 1
 ; When this number is added to the check digit, then the result must be an even multiple of 10. In this case:
 ; 71 + 9 = 80
 ```
+
+
+```z3-duo
+(declare-fun P (Int) Bool)
+(declare-fun Q (Int) Bool)
+------
+(declare-fun P (Int) Bool)
+(declare-fun Q (Int) Bool)
+(assert (forall ((x Int)) (=> (P x) (Q x))))
+```
+
+
+```z3-duo
+(declare-fun P (Int) Bool)
+(declare-fun Q (Int) Bool)
+------
+(declare-fun P (Int) Bool)
+(declare-fun Q (Int) Bool)
+(assert (forall ((x Int)) (= (P x) (Q x))))
+```
+
+```z3-duo
+(declare-fun P (Int) Bool)
+(declare-fun Q (Int) Bool)
+------
+(declare-fun P (Int) Bool)
+(declare-fun Q (Int) Bool)
+(assert (forall ((x Int)) (not (= (P x) (Q x)))))
+```
+
+
+
+```z3-duo
+(declare-fun P (Int Int) Bool)
+------
+(declare-fun P (Int Int) Bool)
+(assert (forall ((x Int)) (P x x)))
+```
+
+
+```z3-duo
+(declare-fun P (Int Int) Bool)
+------
+(declare-fun P (Int Int) Bool)
+(assert (forall ((x Int)) (P x x)))
+(assert (forall ((x Int) (y Int)) (=> (P x y) (P y x))))
+```
+
+
+```z3-duo
+(declare-fun P (Int Int) Bool)
+------
+(declare-fun P (Int Int) Bool)
+(assert (forall ((x Int)) (P x x)))
+(assert (forall ((x Int) (y Int)) (=> (P x y) (P y x))))
+(assert (forall ((x Int) (y Int) (z Int)) (=> (and (P x y) (P y z)) (P x z))))
+```
+
+
+
+```z3-duo
+(declare-fun P (Int Int) Bool)
+------
+(declare-fun P (Int Int) Bool)
+(assert (forall ((x Int) (y Int)) (=> (P x y) (not (P y x)))))
+```
+
+
+

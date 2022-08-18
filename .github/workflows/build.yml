@@ -1,10 +1,9 @@
-name: Deployment
+name: Build
 
 on:
   workflow_dispatch:
   push:
   pull_request:
-  release:
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
@@ -13,8 +12,8 @@ defaults:
     working-directory: website
 
 jobs:
-  deploy:
-    name: Deployment
+  build:
+    name: Build
     runs-on: ubuntu-latest
     env:
       Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
@@ -38,17 +37,7 @@ jobs:
           file_pattern: website/solutions/*
 
       - name: Release
-        if: ${{ github.ref == 'refs/heads/release' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
         run: yarn semantic-release
-
-      # Popular action to deploy to GitHub Pages:
-      # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/release' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Build output to publish to the `gh-pages` branch:
-          publish_dir: website/build

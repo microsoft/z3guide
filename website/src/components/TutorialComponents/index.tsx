@@ -79,7 +79,7 @@ function Output(props: {
           ""
         ) : (
           <span style={{ color: "red" }}>
-            <b>Error: </b>
+            <b>Script contains one or more errors: </b>
             <br />
           </span>
         )}

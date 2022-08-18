@@ -10,6 +10,16 @@ sidebar_position: 1
 (assert (= (mod x 2) 0))
 ```
 
+
+```z3-duo
+(declare-const x Int)
+------
+(declare-const x Int)
+(assert (or (and (< 0 x) (<= x 7)) (= x 11)))
+
+```
+
+
 ```z3-duo
 (declare-const x Int)
 ------
@@ -17,6 +27,7 @@ sidebar_position: 1
 (assert (and (> x 0) (= (mod x 2) 0)))
 
 ```
+
 
 ```z3-duo
 (declare-const x (_ BitVec 32))

@@ -3,14 +3,14 @@ title: Introduction
 sidebar_position: 1
 ---
 
-The Z3 distribution comes with TypeScript (and therefore JavaScript) bindings to Z3.
+The Z3 distribution comes with TypeScript (and therefore JavaScript) bindings for Z3.
 In the following we give a few examples of using Z3 through these bindings. 
 You can run and modify the examples locally in your browser.
 
 ## Warmup
 
 We use a collection of basic examples to illustrate the bindings.
-We check that there are no numbers both above 9 and below 10:
+The first example is a formula that establishes that there is no number both above 9 and below 10:
 
 ```z3-js
 const x = Z3.Int.const('x');
@@ -19,15 +19,7 @@ solver.add(Z3.And(x.ge(10), x.le(9)));
 await solver.check();
 ```
 
-### Porting guide
-
-Let us contine with a few illustrations of the Python bindings side-by-side with JavaScript:
-
-```z3-python
-x = Int('x')
-y = Int('y')
-solve(x > 2, y < 10, x + 2*y == 7)
-```
+### solve `x > 2 and y < 10 and x + 2y = 7` 
 
 ```z3-js
 const x = Z3.Int.const('x');
@@ -36,9 +28,7 @@ const model = await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
 model.sexpr()
 ```
 
-## 
-
-prove `x = y implies g(x) = g(y)`
+### prove `x = y implies g(x) = g(y)`
 
 ```z3-js
    const solver = new Z3.Solver()
@@ -51,7 +41,7 @@ prove `x = y implies g(x) = g(y)`
    await solver.check()
 ```
 
-disprove `x = y implies g(g(x)) = g(y)`
+### disprove `x = y implies g(g(x)) = g(y)`
 
 ```z3-js
     const solver = new Z3.Solver();
@@ -65,7 +55,7 @@ disprove `x = y implies g(g(x)) = g(y)`
     await solver.check()
 ```    
 
-Prove `x = y implies g(x) = g(y)`
+### Prove `x = y implies g(x) = g(y)`
 
 ```z3-js
 
@@ -80,7 +70,7 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); // unsat
 ```
 
-disproves that `x = y implies g(g(x)) = g(y)`
+### disprove that `x = y implies g(g(x)) = g(y)`
 
 ```z3-js
 const solver = new Z3.Solver();
@@ -93,7 +83,7 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); //sat
 ```
 
-proves De Morgan's Law
+### prove De Morgan's Law
 
 ```z3-js
 const solver = new Z3.Solver();
@@ -103,7 +93,33 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); // unsat
 ```
 
-Solves sudoku
+
+### Dog, cat mouse - Integer linear programming
+```z3-js
+
+// Create 3 integer variables
+
+const dog = Z3.Int.const('dog')
+const cat = Z3.Int.const('cat')
+const mouse = Z3.Int.const('mouse')
+const solver = new Z3.Solver()
+// there is at least one dog, one cat, and one mouse
+solver.add(dog.ge(1), cat.ge(1), mouse.ge(1))
+//      we want to buy 100 animals
+//   
+
+solver.add(dog.add(cat.add(mouse)).eq(100))
+//       We have 100 dollars (10000 cents):
+//        dogs cost 15 dollars (1500 cents), 
+//       cats cost 1 dollar (100 cents), and 
+//       mice cost 25 cents 
+solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
+await solver.check()
+solver.model().sexpr()
+```
+
+
+## Solve sudoku
 
 ```z3-js
 function toSudoku(data: string): (number | null)[][] {
@@ -209,6 +225,7 @@ const model = solver.model() as Model
 model.sexpr()
 ```
 
+## Arithmetic over Reals
 
 ```z3-js
 // numerals 1
@@ -235,9 +252,9 @@ solver.add(Z3.Not(conjecture));
 await solver.check();
 ```
 
-```z3-js
-// non-linear arithmetic
+## Non-linear arithmetic 
 
+```z3-js
 setParam('pp.decimal', true);
 setParam('pp.decimal_precision', 20);
 
@@ -252,8 +269,10 @@ solver.add(x.mul(x).mul(x).add(z.mul(z).mul(z)).lt('1/2')); // x^3 + z^3 < 1/2
 await solver.check(); // sat
 ```
 
+### Bit-vectors
+
 ```z3-js
-// bitvectors: simple proofs
+
 const x = Z3.BitVec.const('x', 32);
 
 const sConj = x.sub(10).sle(0).eq(x.sle(10));
@@ -303,6 +322,8 @@ const is_eq = (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
 ` is-sat: ${is_sat} solutions are values: ${are_vals} satisfy equality: ${is_eq}`
 ```
 
+### Using Z3 objects wrapped in JavaScript
+
 The following example illustrates the use of AstVector
 
 ```z3-js
@@ -319,28 +340,4 @@ for (let i = 0; i < length; i++) {
 }
 
 await solver.check(); // sat
-```
-
-Dog, cat mouse - Integer linear programming
-```z3-js
-
-// Create 3 integer variables
-
-const dog = Z3.Int.const('dog')
-const cat = Z3.Int.const('cat')
-const mouse = Z3.Int.const('mouse')
-const solver = new Z3.Solver()
-// there is at least one dog, one cat, and one mouse
-solver.add(dog.ge(1), cat.ge(1), mouse.ge(1))
-//      we want to buy 100 animals
-//   
-
-solver.add(dog.add(cat.add(mouse)).eq(100))
-//       We have 100 dollars (10000 cents):
-//        dogs cost 15 dollars (1500 cents), 
-//       cats cost 1 dollar (100 cents), and 
-//       mice cost 25 cents 
-solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
-await solver.check()
-solver.model().sexpr()
 ```

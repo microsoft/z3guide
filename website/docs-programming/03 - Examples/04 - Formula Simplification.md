@@ -7,9 +7,11 @@ sidebar_position: 4
 
 Z3 exposes some built-in methods for formula simplification
 
-* `simplify` - performs rewriting simplification
-* `(apply ctx-simplify)` - maintains Boolean skeleton of formula but removes sub-formulas that are subsumed by context. It uses a syntactic equality check on expressions to determine subsumption.
-* `(apply ctx-solver-simplify)` - uses solver calls to determine context subsumption.
+ Method from SMTLIB               | Method from Python                            | Description
+----------------------------------|-----------------------------------------------|----------------------------------------
+ `simplify`                       | `simplify(..)`                                | performs rewriting simplification
+`(apply ctx-simplify)`            |  `Tactic('ctx-simplify').apply(..)`           | maintains Boolean skeleton of formula but removes sub-formulas that are subsumed by context. It uses a syntactic equality check on expressions to determine subsumption.
+`(apply ctx-solver-simplify)`     |  `Tactic('ctx-solver-simplify').apply(..)`    | uses solver calls to determine context subsumption.
 
 
 ## Developing simplification using Z3

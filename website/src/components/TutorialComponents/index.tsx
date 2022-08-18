@@ -50,11 +50,12 @@ function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?
   );
 }
 
-function RunButton(props: { onClick: () => void, runFinished: boolean }) {
-  const { onClick, runFinished } = props;
+function RunButton(props: { onClick: () => void, runFinished: boolean, isZ3Duo: boolean }) {
+  const { onClick, runFinished, isZ3Duo } = props;
+  const text = isZ3Duo ? "Check" : "Run";
   return (
     <button className="button button--primary" onClick={onClick}>
-      {runFinished ? `Run` : "Running..."}
+      {runFinished ? text : "Running..."}
     </button>
   );
 }
@@ -220,7 +221,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
       <>
         <div className={styles.buttons}>
           {(!isZ3Duo && !readonly && !editable && !outputRendered) && <OutputToggle onClick={onDidClickOutputToggle} />}
-          {(isZ3Duo || !readonly && (editable || outputRendered)) && <RunButton onClick={onDidClickRun} runFinished={runFinished} />}
+          {(isZ3Duo || !readonly && (editable || outputRendered)) && <RunButton isZ3Duo={isZ3Duo} onClick={onDidClickRun} runFinished={runFinished} />}
         </div>
         {outputRendered ? (
           <Output

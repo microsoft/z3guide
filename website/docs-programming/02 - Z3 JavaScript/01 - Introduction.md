@@ -234,7 +234,16 @@ for (let i = 0; i < 9; i++) {
 
 const is_sat = await solver.check(); // sat
 const model = solver.model() as Model
-model.sexpr()
+var buffer = ""
+
+for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+        const v = model.eval(cells[i][j])
+        buffer += `${v}`
+    }
+    buffer += "\n"
+}
+buffer
 ```
 
 ## Arithmetic over Reals

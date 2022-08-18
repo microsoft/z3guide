@@ -20,7 +20,7 @@ async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
   // where information such as course title, description etc. are configured
   const config = {
-    title: 'Z3',
+    title: 'Z3 Guide',
     tagline: 'Learn Z3 online!',
     url: 'https://microsoft.github.io/',
     baseUrl: '/z3guide/',

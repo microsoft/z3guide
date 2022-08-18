@@ -203,6 +203,8 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
     if (outputRendered) setCodeChanged(true);
   };
 
+  const isZ3Duo = lang === "z3-duo";
+
   return (
     <div>
       <CustomCodeEditor
@@ -217,8 +219,8 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
       />
       <>
         <div className={styles.buttons}>
-          {!readonly && !editable && !outputRendered && <OutputToggle onClick={onDidClickOutputToggle} />}
-          {!readonly && (editable || outputRendered) && <RunButton onClick={onDidClickRun} runFinished={runFinished} />}
+          {(!isZ3Duo && !readonly && !editable && !outputRendered) && <OutputToggle onClick={onDidClickOutputToggle} />}
+          {(isZ3Duo || !readonly && (editable || outputRendered)) && <RunButton onClick={onDidClickRun} runFinished={runFinished} />}
         </div>
         {outputRendered ? (
           <Output

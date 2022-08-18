@@ -214,7 +214,7 @@ export default function plugin() {
                         code: code,
                         result: result,
                         githubRepo: githubRepo,
-                        editable: false,
+                        editable: lang === 'z3-duo',
                         readonly: langConfig.readonly ?? true,
                         showLineNumbers: showLineNumbers
                     });

@@ -90,9 +90,45 @@ sidebar_position: 1
 
 
 (assert (pcLine3 (pcLine2 (pcLine1 x))))
-(check-sat)
-(exit)
 ```
+
+
+```z3-duo
+(declare-const x0 (_ BitVec 3))
+(declare-const x1 (_ BitVec 3))
+(declare-const x2 (_ BitVec 3))
+(declare-const x3 (_ BitVec 3))
+(declare-const x4 (_ BitVec 3))
+(declare-const x5 (_ BitVec 3))
+(declare-const x6 (_ BitVec 3))
+(declare-const x7 (_ BitVec 3))
+
+------
+(declare-const x0 (_ BitVec 3))
+(declare-const x1 (_ BitVec 3))
+(declare-const x2 (_ BitVec 3))
+(declare-const x3 (_ BitVec 3))
+(declare-const x4 (_ BitVec 3))
+(declare-const x5 (_ BitVec 3))
+(declare-const x6 (_ BitVec 3))
+(declare-const x7 (_ BitVec 3))
+
+(define-fun single_bit ((x (_ BitVec 3))) Bool
+   (or (= x (_ bv1 3)) (= x (_ bv2 3))(= x (_ bv4 3))))
+
+(assert (distinct x0 x1 x2 x3 x4 x5 x6 x7))
+(assert (single_bit (bvxor x0 x1)))
+(assert (single_bit (bvxor x1 x2)))
+(assert (single_bit (bvxor x2 x3)))
+(assert (single_bit (bvxor x3 x4)))
+(assert (single_bit (bvxor x4 x5)))
+(assert (single_bit (bvxor x5 x6)))
+(assert (single_bit (bvxor x6 x7)))
+(assert (single_bit (bvxor x7 x0)))
+
+
+```
+
 
 
 ```z3-duo

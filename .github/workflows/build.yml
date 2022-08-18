@@ -1,4 +1,4 @@
-name: Build
+name: Build and Deployment
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ defaults:
 
 jobs:
   build:
-    name: Build
+    name: Build and Deployment
     runs-on: ubuntu-latest
     env:
       Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
@@ -36,8 +36,10 @@ jobs:
         with:
           file_pattern: website/solutions/*
 
-      - name: Release
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
-        run: yarn semantic-release
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Build output to publish to the `gh-pages` branch:
+          publish_dir: website/build

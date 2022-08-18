@@ -95,6 +95,16 @@ const sidebars = {
         'fixedpoints/syntax'
       ]
     },
+
+    {
+      type: 'category',
+      label: 'GuessingGames',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        'games/test',
+      ]
+    },
   ]
 
 };

@@ -201,7 +201,7 @@ export default function plugin() {
                         result: {},
                         githubRepo: githubRepo,
                         editable: false,
-                        readonly: true,
+                        readonly: langConfig.readonly ?? true,
                         showLineNumbers: showLineNumbers
                     });
                     parent.children.splice(

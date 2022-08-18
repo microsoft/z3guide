@@ -19,7 +19,25 @@ solver.add(Z3.And(x.ge(10), x.le(9)));
 await solver.check();
 ```
 
-### solve `x > 2 and y < 10 and x + 2y = 7` 
+We note that the JavaScript bindings wrap z3 expressions into JavaScript options that support methods for building new expressions.
+For example, the method `ge` is available on an arithmetic expression `a`. It takes one argument `b` and returns 
+and expression corresponding to the predicate `a >= b`.
+
+## Propositional Logic 
+
+Prove De Morgan's Law
+
+```z3-js
+const solver = new Z3.Solver();
+const [x, y] = [Z3.Bool.const('x'), Z3.Bool.const('y')];
+const conjecture = Z3.Eq(Z3.Not(Z3.And(x, y)), Z3.Or(Z3.Not(x), Z3.Not(y)));
+solver.add(Z3.Not(conjecture));
+await solver.check(); // unsat
+```
+
+## Integer Arithmetic
+
+solve `x > 2 and y < 10 and x + 2y = 7` 
 
 ```z3-js
 const x = Z3.Int.const('x');
@@ -27,6 +45,34 @@ const y = Z3.Int.const('y');
 const model = await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
 model.sexpr()
 ```
+
+### Dog, cat mouse 
+
+```z3-js
+
+// Create 3 integer variables
+
+const dog = Z3.Int.const('dog')
+const cat = Z3.Int.const('cat')
+const mouse = Z3.Int.const('mouse')
+const solver = new Z3.Solver()
+// there is at least one dog, one cat, and one mouse
+solver.add(dog.ge(1), cat.ge(1), mouse.ge(1))
+//      we want to buy 100 animals
+//   
+
+solver.add(dog.add(cat.add(mouse)).eq(100))
+//       We have 100 dollars (10000 cents):
+//        dogs cost 15 dollars (1500 cents), 
+//       cats cost 1 dollar (100 cents), and 
+//       mice cost 25 cents 
+solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
+await solver.check()
+solver.model().sexpr()
+```
+
+
+## Uninterpreted Functions
 
 ### prove `x = y implies g(x) = g(y)`
 
@@ -83,40 +129,6 @@ solver.add(Z3.Not(conjecture));
 await solver.check(); //sat
 ```
 
-### prove De Morgan's Law
-
-```z3-js
-const solver = new Z3.Solver();
-const [x, y] = [Z3.Bool.const('x'), Z3.Bool.const('y')];
-const conjecture = Z3.Eq(Z3.Not(Z3.And(x, y)), Z3.Or(Z3.Not(x), Z3.Not(y)));
-solver.add(Z3.Not(conjecture));
-await solver.check(); // unsat
-```
-
-
-### Dog, cat mouse - Integer linear programming
-```z3-js
-
-// Create 3 integer variables
-
-const dog = Z3.Int.const('dog')
-const cat = Z3.Int.const('cat')
-const mouse = Z3.Int.const('mouse')
-const solver = new Z3.Solver()
-// there is at least one dog, one cat, and one mouse
-solver.add(dog.ge(1), cat.ge(1), mouse.ge(1))
-//      we want to buy 100 animals
-//   
-
-solver.add(dog.add(cat.add(mouse)).eq(100))
-//       We have 100 dollars (10000 cents):
-//        dogs cost 15 dollars (1500 cents), 
-//       cats cost 1 dollar (100 cents), and 
-//       mice cost 25 cents 
-solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
-await solver.check()
-solver.model().sexpr()
-```
 
 
 ## Solve sudoku
@@ -269,7 +281,7 @@ solver.add(x.mul(x).mul(x).add(z.mul(z).mul(z)).lt('1/2')); // x^3 + z^3 < 1/2
 await solver.check(); // sat
 ```
 
-### Bit-vectors
+## Bit-vectors
 
 ```z3-js
 
@@ -322,7 +334,7 @@ const is_eq = (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
 ` is-sat: ${is_sat} solutions are values: ${are_vals} satisfy equality: ${is_eq}`
 ```
 
-### Using Z3 objects wrapped in JavaScript
+## Using Z3 objects wrapped in JavaScript
 
 The following example illustrates the use of AstVector
 

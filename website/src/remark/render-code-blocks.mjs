@@ -198,10 +198,10 @@ export default function plugin() {
                     let code = value;
                     let result = {};
 
-                    // hard-coded for z3-duo
+                    const isZ3Duo = lang === "z3-duo";
                     const splitter = splitterRegex.test(value);
 
-                    if (splitter) {
+                    if (isZ3Duo && splitter) {
                         const [starter, solution] = value.split(splitterRegex).map(s => s.trim());
                         code = starter;
                         result = {output: solution};
@@ -211,10 +211,10 @@ export default function plugin() {
                         lang: lang,
                         highlight: highlight,
                         statusCodes: {},
-                        code: code,
+                        code,
                         result: result,
                         githubRepo: githubRepo,
-                        editable: lang === 'z3-duo',
+                        editable: isZ3Duo,
                         readonly: langConfig.readonly ?? true,
                         showLineNumbers: showLineNumbers
                     });

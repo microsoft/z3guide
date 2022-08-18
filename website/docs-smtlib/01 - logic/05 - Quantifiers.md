@@ -55,10 +55,11 @@ John and Bill are residents of the island of knights and knaves.
 (assert (forall ((x Inhabitant) (y Statement)) (=> (Holds (Is x Knave)) (Says x y) (not (Holds y)))))
 (assert (forall ((x Inhabitant) (y Statement)) (=> (Holds (Is x Knight)) (Says x y) (Holds y))))
 
-(push)
 ; Question 1
 ; John says: We are both knaves
 ; Who is what?
+
+(push)
 (declare-fun And (Statement Statement) Statement)
 (assert (forall ((x Statement) (y Statement)) (= (Holds (And x y)) (and (Holds x) (Holds y)))))
 (assert (Says John (And (Is John Knave) (Is Bill Knave))))
@@ -68,11 +69,12 @@ John and Bill are residents of the island of knights and knaves.
 (pop)
 
 
-(push)
 ; Question 2
 ; John: If (and only if) Bill is a knave, then I am a knave.
 ; Bill: We are of different kinds.
 ; Who is who?
+
+(push)
 
 (declare-fun Not (Statement) Statement)
 (declare-fun Iff (Statement Statement) Statement)
@@ -85,7 +87,18 @@ John and Bill are residents of the island of knights and knaves.
 (eval (Holds (Is John Knight)))
 (eval (Holds (Is Bill Knight)))
 (pop)
+
 ```
+
+Another related Smullyan puzzle asks
+John and Bill are standing at a fork in the road. You know that one of
+them is a knight and the other a knave, but you don't know which.
+You also know that one road leads to Death, and the other leads to Freedom.
+By asking one yes/no question, can you determine the road to Freedom?
+We leave solving this puzzle as an exercise. You can either provide a direct answer and check it,
+or create a search space of abstract syntax, create an interpreter for the syntax and have z3
+search for the question.
+
 
 ### Patterns
 

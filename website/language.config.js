@@ -50,7 +50,16 @@ async function createConfig() {
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
                 githubRepo: 'Z3Prover/z3',
                 githubDiscussion: true,
-            }
+            },
+            {
+                name: 'Z3 Secret Formula Guessing',
+                label: 'z3-duo',
+                highlight: 'lisp',
+                showLineNumbers: true, // whether to show line numbers in all code block of this language
+                githubRepo: 'Z3Prover/z3',
+                githubDiscussion: true,
+                readonly: false,
+            },
         ],
         solutionsDir: './solutions',
     }

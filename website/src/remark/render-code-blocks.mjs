@@ -172,6 +172,7 @@ export default function plugin() {
             const editableRegex = /(always-editable)/;
             const alwaysEditable = editableRegex.test(meta);
             const lineNumRegex = /(show-line-numbers)/i;
+            const splitterRegex = /------/;
 
 
             for (const langConfig of languageConfig.languages) {
@@ -183,7 +184,7 @@ export default function plugin() {
                 // or for a specific block through `show-line-numbers`
                 // e.g. ```z3 show-line-numbers
                 const showLineNumbers = langConfig.showLineNumbers || lineNumRegex.test(meta);
-
+                
                 if (lang !== label) {
                     continue; // onto the next lang config available until we are out
                 }
@@ -193,15 +194,28 @@ export default function plugin() {
                 if (!langConfig.buildConfig) {
                     // there is no runtime configured,
                     // so just add the syntax highlighting and github discussion button (if configured)
+
+                    let code = value;
+                    let result = {};
+
+                    // hard-coded for z3-duo
+                    const splitter = splitterRegex.test(value);
+
+                    if (splitter) {
+                        const [starter, solution] = value.split(splitterRegex).map(s => s.trim());
+                        code = starter;
+                        result = {output: solution};
+                    }
+
                     const val = JSON.stringify({
                         lang: lang,
                         highlight: highlight,
                         statusCodes: {},
-                        code: value,
-                        result: {},
+                        code: code,
+                        result: result,
                         githubRepo: githubRepo,
-                        editable: false,
-                        readonly: true,
+                        editable: lang === 'z3-duo',
+                        readonly: langConfig.readonly ?? true,
                         showLineNumbers: showLineNumbers
                     });
                     parent.children.splice(

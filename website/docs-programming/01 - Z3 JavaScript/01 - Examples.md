@@ -4,7 +4,7 @@ sidebar_position: 1
 ---
 
 The Z3 distribution comes with TypeScript (and therefore JavaScript) bindings for Z3.
-In the following we give a few examples of using Z3 through these bindings. 
+In the following we give a few examples of using Z3 through these bindings.
 You can run and modify the examples locally in your browser.
 
 ## Warmup
@@ -20,10 +20,10 @@ await solver.check();
 ```
 
 We note that the JavaScript bindings wrap z3 expressions into JavaScript options that support methods for building new expressions.
-For example, the method `ge` is available on an arithmetic expression `a`. It takes one argument `b` and returns 
+For example, the method `ge` is available on an arithmetic expression `a`. It takes one argument `b` and returns
 and expression corresponding to the predicate `a >= b`.
 
-## Propositional Logic 
+## Propositional Logic
 
 Prove De Morgan's Law
 
@@ -37,7 +37,7 @@ await solver.check(); // unsat
 
 ## Integer Arithmetic
 
-solve `x > 2 and y < 10 and x + 2y = 7` 
+solve `x > 2 and y < 10 and x + 2y = 7`
 
 ```z3-js
 const x = Z3.Int.const('x');
@@ -46,7 +46,7 @@ const model = await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
 model.sexpr()
 ```
 
-### Dog, cat mouse 
+### Dog, cat mouse
 
 ```z3-js
 
@@ -59,47 +59,46 @@ const solver = new Z3.Solver()
 // there is at least one dog, one cat, and one mouse
 solver.add(dog.ge(1), cat.ge(1), mouse.ge(1))
 //      we want to buy 100 animals
-//   
+//
 
 solver.add(dog.add(cat.add(mouse)).eq(100))
 //       We have 100 dollars (10000 cents):
-//        dogs cost 15 dollars (1500 cents), 
-//       cats cost 1 dollar (100 cents), and 
-//       mice cost 25 cents 
+//        dogs cost 15 dollars (1500 cents),
+//       cats cost 1 dollar (100 cents), and
+//       mice cost 25 cents
 solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
 await solver.check()
 solver.model().sexpr()
 ```
-
 
 ## Uninterpreted Functions
 
 ### Prove `x = y implies g(x) = g(y)`
 
 ```z3-js
-   const solver = new Z3.Solver()
-   const sort = Z3.Int.sort();
-   const x = Z3.Int.const('x');
-   const y = Z3.Int.const('y');
-   const g = Z3.Function.declare('g', sort, sort);
-   const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
-   solver.add(Z3.Not(conjecture));
-   await solver.check()
+const solver = new Z3.Solver()
+const sort = Z3.Int.sort();
+const x = Z3.Int.const('x');
+const y = Z3.Int.const('y');
+const g = Z3.Function.declare('g', sort, sort);
+const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
+solver.add(Z3.Not(conjecture));
+await solver.check()
 ```
 
 ### Disprove `x = y implies g(g(x)) = g(y)`
 
 ```z3-js
-    const solver = new Z3.Solver();
+const solver = new Z3.Solver();
 
-    const sort = Z3.Int.sort();
-    const x = Z3.Int.const('x');
-    const y = Z3.Int.const('y');
-    const g = Z3.Function.declare('g', sort, sort);
-    const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
-    solver.add(Z3.Not(conjecture));
-    await solver.check()
-```    
+const sort = Z3.Int.sort();
+const x = Z3.Int.const('x');
+const y = Z3.Int.const('y');
+const g = Z3.Function.declare('g', sort, sort);
+const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
+solver.add(Z3.Not(conjecture));
+await solver.check()
+```
 
 ### Prove `x = y implies g(x) = g(y)`
 
@@ -128,8 +127,6 @@ const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
 solver.add(Z3.Not(conjecture));
 await solver.check(); //sat
 ```
-
-
 
 ## Solve sudoku
 
@@ -261,7 +258,7 @@ solver.add(Z3.Not(conjecture));
 await solver.check();
 ```
 
-## Non-linear arithmetic 
+## Non-linear arithmetic
 
 ```z3-js
 setParam('pp.decimal', true);
@@ -302,7 +299,6 @@ uModel.get(x) // unsigned
 ```
 
 Solves an equation
-
 
 ```z3-js
 const x = Z3.BitVec.const('x', 32);

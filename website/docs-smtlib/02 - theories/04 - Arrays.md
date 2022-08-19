@@ -56,9 +56,7 @@ The array that maps all indices to some fixed value can be specified in Z3 using
 (check-sat)
 ```
 
-### Array models
 
-Models provide interpretations of the uninterpreted (aka free) constants and functions that appear in the satisfiable formula. An interpretation for arrays is very similar to the interpretation of a function. Z3 uses the construct (_ as-array f) to give the interpretation for arrays. If the array a is equal to (_ as-array f), then for every index i, (select a i) is equal to (f i). In the previous example, Z3 creates the auxiliary function k!0 to assign an interpretation to the array constant all1.
 
 ### Mapping Functions on Arrays
 
@@ -125,3 +123,7 @@ For example, if `f` has declaration:
 Then `(as-array f)` has the sort `(Array Int Bool Real)`, an array that takes an Integer, a Boolean and maps to a Real.
 Admitting the `as-array` function (and later on admitting `Lambda`) means that the universe of interpretations for the Array
 sort includes all definable function spaces. If the theory of arrays only has functions `select, store, const` the universe of interpretations for Array is wider (more formulas are satisfiable).
+
+### Array models
+
+Models provide interpretations of the uninterpreted (aka free) constants and functions that appear in the satisfiable formula. An interpretation for arrays is very similar to the interpretation of a function. Z3 sometimes uses the construct (_ as-array f) to give the interpretation for arrays. If the array a is equal to (_ as-array f), then for every index i, (select a i) is equal to (f i). 

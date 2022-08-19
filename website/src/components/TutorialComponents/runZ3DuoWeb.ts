@@ -8,15 +8,6 @@ declare global {
     interface Window { z3Promise: Promise<Z3HighLevel & Z3LowLevel> } // use any to escape typechecking
 }
 
-// let Z3Promise: null | ReturnType<typeof init>;
-// async function loadZ3() {
-//     if (Z3Promise !== null) {
-//         return Z3Promise;
-//     }
-//     Z3Promise = init();
-//     return Z3Promise;
-// }
-
 
 export default async function runZ3DuoWeb(user_input: string, secret_input: string): Promise<string> {
 
@@ -49,9 +40,9 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         const user_not_secret = await s1.check();
 
         if (secret_not_user === "sat") {
-            output = `The model satisfies the secret formula but not yours`;
+            output = `${s2.model().sexpr()} satisfies the secret formula but not yours`;
         } else if (user_not_secret === "sat") {
-            output = `The model satisfies the your formula but not the secret formula`;
+            output = `${s1.model().sexpr()} satisfies the your formula but not the secret formula`;
         } else {
             output = `The model satisfies neither your formula nor the secret formula`;
         }

@@ -1,0 +1,45 @@
+name: Build and Deployment
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    # Review gh actions docs if you want to further define triggers, paths, etc
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+
+defaults:
+  run:
+    working-directory: website
+
+jobs:
+  build:
+    name: Build and Deployment
+    runs-on: ubuntu-latest
+    env:
+      Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
+      Z3GUIDE_GITHUB_REF: ${{ github.ref }}
+      Z3GUIDE_GITHUB_SHA: ${{ github.sha }}
+      
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: yarn
+          cache-dependency-path: website/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build website
+        run: yarn build
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: website/solutions/*
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Build output to publish to the `gh-pages` branch:
+          publish_dir: website/build

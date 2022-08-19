@@ -12,9 +12,8 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
     1. [Contributing to Existing Materials](#contributing-to-existing-tutorial-materials)
     2. [Creating New Tutorial Materials](#creating-new-tutorial-materials)
 3. [Manually Updating `z3-solver`](#manually-updating-z3-solver)
-4. [Releases](#releases)
-5. [Code of Conduct](#microsoft-open-source-code-of-conduct)
-6. [Trademarks](#trademarks)
+4. [Code of Conduct](#microsoft-open-source-code-of-conduct)
+5. [Trademarks](#trademarks)
 
 ## Developer Setup
 
@@ -174,22 +173,6 @@ After done, make sure the field `dependencies.z3-solver` in `website/package.jso
 ```
 So that we make sure that `yarn install` always picks up the _exact_ version of `z3-solver` that you mean for the website to run on.
 
-## Releases
-We ONLY deploy changes to our github pages when we decide to _release_ current changes, so that we avoid nightly changes that might affect user experience. To do so, you would need to merge the `main` branch into the `release` branch, which is reserved for releases. The configured github actions will only make a release AND deploy to gh-pages when commits are pushed onto the `release` branch.
-
-In command line, assuming you have a local `main` branch that is up-to-date with `origin/main`, it looks like the following:
-
-```bash
-git fetch
-# fetches all remote branches
-git checkout release
-# switch into the release branch
-git merge main
-# merge commits on the main branch into the release branch
-# and resolve merge conflicts accordingly
-git push origin release
-# push the `release` branch and trigger CI
-```
 ## Microsoft Open Source Code of Conduct
 
 This project is hosted at https://github.com/microsoft/z3guide/.

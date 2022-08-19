@@ -26,14 +26,14 @@ function HomepageHeader() {
             <></>
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
-              to="/programming/Z3 from Python/Introduction">
+              to="/programming/Z3 JavaScript/Examples">
               Programming Z3 
             </Link> 
             <></>
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
               to="/docs/playground/playground">
-              Playground
+              SMTLIB Playground
             </Link>
             </div>
           </div>

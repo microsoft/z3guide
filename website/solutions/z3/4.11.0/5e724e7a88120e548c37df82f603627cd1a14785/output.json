@@ -1,0 +1,1 @@
+{"output":"sat\n(objectives\n (x 0)\n ((+ x y) 0)\n (y 0)\n)\nsat\n(objectives\n (x 0)\n ((+ x y) 1)\n (y 1)\n)\nsat\n(objectives\n (x 0)\n ((+ x y) 2)\n (y 2)\n)\nsat\n(objectives\n (x 0)\n ((+ x y) 3)\n (y 3)\n)\n","error":"","status":"z3-ran","hash":"5e724e7a88120e548c37df82f603627cd1a14785"}

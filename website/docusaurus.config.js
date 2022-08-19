@@ -20,7 +20,7 @@ async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
   // where information such as course title, description etc. are configured
   const config = {
-    title: 'Z3',
+    title: 'Z3 Guide',
     tagline: 'Learn Z3 online!',
     url: 'https://microsoft.github.io/',
     baseUrl: '/z3guide/',
@@ -117,7 +117,7 @@ async function createConfig() {
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         navbar: {
-          title: 'Z3 Documentation',
+          title: 'Z3 Guide',
           items: [
             {
               type: 'doc',
@@ -127,7 +127,7 @@ async function createConfig() {
             },
             // link to programming docs
             {
-              to: '/programming/Z3 from Python/Introduction',
+              to: '/programming/Z3 JavaScript/Examples',
               label: 'Programming Z3',
               position: 'left',
               activeBaseRegex: `/programming/`,
@@ -137,7 +137,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'playground/playground',
               position: 'left',
-              label: 'Playground',
+              label: 'SMTLIB Playground',
             },
             // link to the github repo of this site
             {

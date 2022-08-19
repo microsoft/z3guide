@@ -16,7 +16,7 @@ The first example is a formula that establishes that there is no number both abo
 const x = Z3.Int.const('x');
 const solver = new Z3.Solver();
 solver.add(Z3.And(x.ge(10), x.le(9)));
-await solver.check();
+await solver.check();E
 ```
 
 We note that the JavaScript bindings wrap z3 expressions into JavaScript options that support methods for building new expressions.
@@ -160,18 +160,6 @@ const INSTANCE = toSudoku(`
 .7....52.
 9...65...
 .4.97....
-`);
-
-const EXPECTED = toSudoku(`
-715894632
-234516897
-689723145
-493657218
-867231954
-152489763
-376148529
-928365471
-541972386
 `);
 
 

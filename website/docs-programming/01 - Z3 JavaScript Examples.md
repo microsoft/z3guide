@@ -264,7 +264,7 @@ await solver.check();
 
 ```z3-js
 setParam('pp.decimal', true);
-setParam('pp.decimal_precision', 20);
+setParam('pp.decimal_precision', 80);
 
 const x = Z3.Real.const('x');
 const y = Z3.Real.const('y');
@@ -275,6 +275,7 @@ solver.add(x.mul(x).add(y.mul(y)).eq(1)); // x^2 + y^2 == 1
 solver.add(x.mul(x).mul(x).add(z.mul(z).mul(z)).lt('1/2')); // x^3 + z^3 < 1/2
 
 await solver.check(); // sat
+solver.model()
 ```
 
 ## Bit-vectors

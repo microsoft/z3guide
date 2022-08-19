@@ -74,7 +74,7 @@ solver.add(dog.add(cat.add(mouse)).eq(100))
 //       mice cost 25 cents
 solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
 await solver.check()
-solve.model()
+solver.model()
 ```
 
 ## Uninterpreted Functions

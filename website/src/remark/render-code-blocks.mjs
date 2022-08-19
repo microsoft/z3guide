@@ -210,7 +210,7 @@ export default function plugin() {
                     const val = JSON.stringify({
                         lang: lang,
                         highlight: highlight,
-                        statusCodes: {},
+                        statusCodes: langConfig.statusCodes ?? {},
                         code,
                         result: result,
                         githubRepo: githubRepo,

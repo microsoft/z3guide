@@ -170,20 +170,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
     let errorMsg: string;
 
     const runProcess = clientConfig[lang];
-    // const z3DuoCode = `const s1 = new Z3.Solver()
-    // const s2 = new Z3.Solver()
-    // s1.from_string(user_input)
-    // s2.from_string(secret_input)
-    // const not_user = Z3.Not(Z3.And(s1.assertions()))
-    // const not_secret = Z3.Not(Z3.And(s2.assertions()))
-    // s2.add(not_user)
-    // s1.add(not_secret)
-    // const secret_not_user = await s2.check()
-    // const user_not_secret = await s1.check()
-    // if (secret_not_user == "sat")
-    //     // say   s2.model().sexpr() satisfies secret but not user formula
-    // if (user_not_secret == "sat")
-    //    // etc`;
 
     let input = currCode;
     let process = isZ3Duo ? runProcess(input, result.output) : runProcess(input);
@@ -192,7 +178,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
     try {
       let res: string = await process;
       const result = JSON.parse(res);
-      console.log(res)
       if (result.output !== '') {
         const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
         const hasError = errRegex.test(result.output);
@@ -217,40 +202,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
       if (!outputRendered) {
         setOutputRendered(true); // hack for the playground editor
       }
-      console.log('i am clicked')
     }
-
-    // runProcess(input)
-    //   .then((res: string) => {
-    //     const result = JSON.parse(res);
-    //     if (result.output !== '') {
-    //       const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
-    //       const hasError = errRegex.test(result.output);
-    //       newResult.output = hasError ? "" : result.output;
-    //       newResult.error = hasError ? result.output : "";
-    //       newResult.status = hasError
-    //         ? statusCodes.runtimeError
-    //         : statusCodes.success;
-    //     } else if (result.error !== '') {
-    //       newResult.error = result.error;
-    //       newResult.status = statusCodes.runError;
-    //     }
-    //   })
-    //   .catch((error: Error) => {
-    //     // runProcess fails
-    //     errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
-    //     newResult.error = errorMsg;
-    //     newResult.status = `${lang}-web-failed`;
-    //     throw new Error(errorMsg);
-    //   })
-    //   .finally(() => {
-    //     setOutput(newResult);
-    //     setCodeChanged(false);
-    //     setRunFinished(true);
-    //     if (!outputRendered) {
-    //       setOutputRendered(true); // hack for the playground editor
-    //     }
-    //   });
   };
 
   const onDidChangeCode = (code: string) => {

@@ -301,7 +301,7 @@ uSolver.add(uConj);
 await uSolver.check(); // sat
 
 const uModel = uSolver.model();
-[uModel.get(x), sModel.get(x)] // unsigned
+[uModel.get(x), sModel.get(x)] // unsigned, signed
 ```
 
 Solves an equation

@@ -36,6 +36,15 @@ a different index, such as `(_ partial-order 1)`.
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
 (assert (forall ((x A) (y A)) (or (R x y) (R y x))))
 
+
+```
+
+Use instead
+
+```z3
+(declare-sort A 0)
+(define-fun R ((x A) (y A)) Bool ((_ linear-order 0) x y))
+
 (declare-const a A)
 (declare-const b A)
 (declare-const c A)
@@ -51,11 +60,6 @@ a different index, such as `(_ partial-order 1)`.
 (check-sat)
 ```
 
-Use instead
-```
-(define-fun R ((x A) (y A)) Bool ((_ linear-order 0) x y))
-```
-
 
 ### Tree Order
 ```z3
@@ -66,6 +70,13 @@ Use instead
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R x z)) (or (R y z) (R z y)))))
 
+```
+
+Use instead
+```z3
+
+(declare-sort A 0)
+(define-fun R ((x A) (y A)) Bool ((_ tree-order 0) x y))
 
 (declare-const a A)
 (declare-const b A)
@@ -80,11 +91,6 @@ Use instead
 (assert (not (R b c)))
 (assert (not (R c b)))
 (check-sat)
-```
-
-Use instead
-```
-(define-fun R ((x A) (y A)) Bool ((_ tree-order 0) x y))
 ```
 
 ### Piece-wise Linear Order

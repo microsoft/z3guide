@@ -285,7 +285,6 @@ solver.model()
 ## Bit-vectors
 
 ```z3-js
-
 const x = Z3.BitVec.const('x', 32);
 
 const sConj = x.sub(10).sle(0).eq(x.sle(10));
@@ -294,7 +293,7 @@ sSolver.add(sConj);
 await sSolver.check(); // sat
 
 const sModel = sSolver.model();
-sModel.get(x) // signed
+
 
 const uConj = x.sub(10).ule(0).eq(x.ule(10));
 const uSolver = new Z3.Solver();
@@ -302,7 +301,7 @@ uSolver.add(uConj);
 await uSolver.check(); // sat
 
 const uModel = uSolver.model();
-uModel.get(x) // unsigned
+[uModel.get(x), sModel.get(x)] // unsigned
 ```
 
 Solves an equation

@@ -12060,10 +12060,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-z3-solver@4.10.2:
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.10.2.tgz#6ef10d3a858716278dc10207bacb046bbdb1233b"
-  integrity sha512-G0XTycKdF5vOjucF/LdTOudTTVpslZHN9BXZbVT6G/0dH306y+zKo835MKlm4NayS3dAlgJREwFKpvFGsKq+kg==
+z3-solver@4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.11.0.tgz#4ea3353f3536e222818b357101e83e3b039a2b70"
+  integrity sha512-tqa+j8TZchuhZMHeMf9k2vS6ObgarQiwPwasWQGFKx+qX1WxvKnZTTYBm9dbT2rrbJZEgSxzTQOHvPj0+d5vlA==
   dependencies:
     async-mutex "^0.3.2"
 

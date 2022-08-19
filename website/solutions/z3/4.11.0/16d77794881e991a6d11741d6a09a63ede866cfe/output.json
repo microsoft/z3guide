@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun c () Int\n    1)\n  (define-fun a () Int\n    (- 1))\n  (define-fun b () Int\n    0)\n)\n","error":"","status":"z3-ran","hash":"16d77794881e991a6d11741d6a09a63ede866cfe"}

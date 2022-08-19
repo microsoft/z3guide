@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun a () String\n    \"ababab\")\n)\nunsat\n","error":"","status":"z3-ran","hash":"2cbf682fd8fe95f16d2ba90fe6ea7342edd16f6e"}

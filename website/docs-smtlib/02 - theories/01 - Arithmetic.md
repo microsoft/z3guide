@@ -194,12 +194,11 @@ constraints z3 contains several small hammers that integrate Grobner basis simpl
 non-linear cylindric algebraic decomposition and reducing non-linear constraints to linear form by sampling at tangent points.
 
   Logic| Fragment                          | Solver                    | Example                   
-|------|-----------------------------------|---------------------------|---------------------------|
-| LRA  | Linear Real Arithmetic            | Dual Simplex              |  $x + \frac{1}{2}y \leq 3$|
-| LIA  | Linear Integer Arithmetic         | CutSat                    | $a + 3b \leq 3$           |
-| LIRA | Mixed Real/Integer                | Cuts + Branch             | $x + a \geq 4$            |
-| IDL  | Integer Difference Logic          | Floyd-Warshall            | $a - b \leq 4$            |
-| RDL  | Real Difference Logic             | Bellman-Ford              |                           |
-|UTVPI | Unit two-variable per inequality  |                           | $x + y \leq 4$            |
-| NRA  | Polynomial Real Arithmetic        | Model based CAD           | $x^2 + y^2 < 1$           |
-|      |                                   | Incremental Linearization |                           |
+|------|-----------------------------------|----------------------------------------------|---------------------------|
+| LRA  | Linear Real Arithmetic            | Dual Simplex                                 |  $x + \frac{1}{2}y \leq 3$|
+| LIA  | Linear Integer Arithmetic         | CutSat                                       | $a + 3b \leq 3$           |
+| LIRA | Mixed Real/Integer                | Cuts + Branch                                | $x + a \geq 4$            |
+| IDL  | Integer Difference Logic          | Floyd-Warshall                               | $a - b \leq 4$            |
+| RDL  | Real Difference Logic             | Bellman-Ford                                 |                           |
+|UTVPI | Unit two-variable per inequality  |                                              | $x + y \leq 4$            |
+| NRA  | Polynomial Real Arithmetic        | Model based CAD, Incremental Linearization   | $x^2 + y^2 < 1$           |

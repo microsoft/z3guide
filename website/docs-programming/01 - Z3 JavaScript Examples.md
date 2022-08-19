@@ -1,5 +1,5 @@
 ---
-title: Examples
+title: Z3 JavaScript 
 sidebar_position: 1
 ---
 

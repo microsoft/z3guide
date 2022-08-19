@@ -51,6 +51,21 @@ Use instead
 (assert (forall ((x A) (y A)) (=> (and (R x y) (R y x)) (= x y))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R x z)) (or (R y z) (R z y)))))
+
+
+(declare-const a A)
+(declare-const b A)
+(declare-const c A)
+(declare-const d A)
+(assert (R a b))
+(assert (R b d))
+(assert (R a c))
+(assert (R c d))
+(check-sat)
+(get-model)
+(assert (not (R b c)))
+(assert (not (R c b)))
+(check-sat)
 ```
 
 Use instead

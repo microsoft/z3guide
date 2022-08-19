@@ -26,7 +26,7 @@ function HomepageHeader() {
             <></>
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
-              to="/programming/Z3 JavaScript/Introduction">
+              to="/programming/Z3 JavaScript/Examples">
               Programming Z3 
             </Link> 
             <></>

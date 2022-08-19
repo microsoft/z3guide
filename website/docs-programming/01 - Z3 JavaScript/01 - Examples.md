@@ -16,7 +16,7 @@ The first example is a formula that establishes that there is no number both abo
 const x = Z3.Int.const('x');
 const solver = new Z3.Solver();
 solver.add(Z3.And(x.ge(10), x.le(9)));
-await solver.check();E
+await solver.check();
 ```
 
 We note that the JavaScript bindings wrap z3 expressions into JavaScript options that support methods for building new expressions.

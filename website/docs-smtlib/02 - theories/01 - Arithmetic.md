@@ -193,7 +193,6 @@ There are specialized solvers for different arithmetic fragments and, finally, f
 constraints z3 contains several small hammers that integrate Grobner basis simplificaitons, bounds propagation, 
 non-linear cylindric algebraic decomposition and reducing non-linear constraints to linear form by sampling at tangent points.
 
-|------|-----------------------------------|---------------------------|---------------------------|
 | Logic| Fragment                          | Solver                    | Example                   |
 |------|-----------------------------------|---------------------------|---------------------------|
 | LRA  | Linear Real Arithmetic            | Dual Simplex              |  $x + \frac{1}{2}y \leq 3$|
@@ -207,4 +206,3 @@ non-linear cylindric algebraic decomposition and reducing non-linear constraints
 |------|-----------------------------------|---------------------------|---------------------------|
 | NRA  | Polynomial Real Arithmetic        | Model based CAD           | $x^2 + y^2 < 1$           |
 |      |                                   | Incremental Linearization |                           |
-|------|-----------------------------------|---------------------------|---------------------------|

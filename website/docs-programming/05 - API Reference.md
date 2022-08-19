@@ -1,6 +1,6 @@
 ---
 title: API Reference
-sidebar_position: 3
+sidebar_position: 5
 ---
 
 ## API Reference 

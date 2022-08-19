@@ -54,6 +54,11 @@ Use instead
 
 (check-sat)
 (get-model)
+(eval (R a d))
+
+; at least one of these relations have to hold:
+(eval (R b c))
+(eval (R c b))
 
 (assert (not (R c d)))
 (assert (not (R d c)))

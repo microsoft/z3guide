@@ -20,7 +20,7 @@
 .LineNumber {
     font-family: var(--ifm-font-family-monospace);
     font-size: var(--ifm-code-font-size);
-    min-width: 20px;
+    min-width: 45px;
     border: 0;
     padding: calc(var(--ifm-pre-padding) + 1px) 0 var(--ifm-pre-padding) var(--ifm-pre-padding);
     line-height: var(--ifm-pre-line-height);

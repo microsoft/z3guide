@@ -104,7 +104,7 @@ const g = Z3.Function.declare('g', sort, sort);
 const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
 solver.add(Z3.Not(conjecture));
 await solver.check()
-solve.model()
+solver.model()
 ```
 
 

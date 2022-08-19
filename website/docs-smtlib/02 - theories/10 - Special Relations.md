@@ -35,6 +35,20 @@ a different index, such as `(_ partial-order 1)`.
 (assert (forall ((x A) (y A)) (=> (and (R x y) (R y x)) (= x y))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
 (assert (forall ((x A) (y A)) (or (R x y) (R y x))))
+
+(declare-const a A)
+(declare-const b A)
+(declare-const c A)
+(declare-const d A)
+(assert (R a b))
+(assert (R a c))
+
+(check-sat)
+(get-model)
+
+(assert (not (R c d)))
+(assert (not (R d c)))
+(check-sat)
 ```
 
 Use instead

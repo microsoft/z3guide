@@ -72,7 +72,9 @@ solver.add(dog.add(cat.add(mouse)).eq(100))
 //        dogs cost 15 dollars (1500 cents),
 //       cats cost 1 dollar (100 cents), and
 //       mice cost 25 cents
-Z3.solve((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
+solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
+await solver.check()
+solve.model()
 ```
 
 ## Uninterpreted Functions
@@ -87,8 +89,7 @@ const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
 const g = Z3.Function.declare('g', sort, sort);
 const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
-solver.add(Z3.Not(conjecture));
-await solver.check()
+Z3.solve(Z3.Not(conjecture));
 ```
 
 ### Disprove `x = y implies g(g(x)) = g(y)`
@@ -103,6 +104,7 @@ const g = Z3.Function.declare('g', sort, sort);
 const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
 solver.add(Z3.Not(conjecture));
 await solver.check()
+solve.model()
 ```
 
 
@@ -117,8 +119,7 @@ const y = Z3.Int.const('y');
 const g = Z3.Function.declare('g', sort, sort);
 
 const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
-solver.add(Z3.Not(conjecture));
-await solver.check(); // unsat
+Z3.solve(Z3.Not(conjecture));
 ```
 
 ### Disprove that `x = y implies g(g(x)) = g(y)`
@@ -130,8 +131,7 @@ const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
 const g = Z3.Function.declare('g', sort, sort);
 const conjecture = Z3.Implies(x.eq(y), g.call(g.call(x)).eq(g.call(y)));
-solver.add(Z3.Not(conjecture));
-await solver.check(); //sat
+Z3.solve(Z3.Not(conjecture));
 ```
 
 ## Solve sudoku

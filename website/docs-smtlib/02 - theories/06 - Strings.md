@@ -61,18 +61,6 @@ There is a solution to `a` that is not a sequence of "a"'s.
 (get-model)
 ```
 
-String containment is transitive
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (str.contains a b))
-(assert (str.contains b c))
-(assert (not (str.contains a c)))
-(check-sat)
-```
-
-
 ## Creating Strings
 
 ###  Built-in types and constants

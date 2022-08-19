@@ -26,7 +26,7 @@ corner. See what Z3Py says, try your own scripts, and experiment!
 
 ### Using Z3Py Locally
 
-The Python bindings are available from pypi. You can install them using the following line of code:
+The Python bindings are available from pypi. You can install them using the following command:
 
 ```
     pip install z3-solver

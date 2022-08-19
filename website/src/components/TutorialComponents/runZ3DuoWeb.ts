@@ -39,12 +39,17 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         const secret_not_user = await s2.check();
         const user_not_secret = await s1.check();
 
-        if (secret_not_user === "sat") {
+        const sat = (s: string) => s === 'sat';
+
+        if (sat(secret_not_user) && sat(user_not_secret)) {
+            output = `${s1.model().sexpr()}\nsatisfies your formula but not the secret formula;\n
+            ${s2.model().sexpr()}\nsatisfies the secret formula but not your formula.`;
+        } else if (sat(secret_not_user)) {
             output = `${s2.model().sexpr()} satisfies the secret formula but not yours`;
-        } else if (user_not_secret === "sat") {
+        } else if (sat(user_not_secret)) {
             output = `${s1.model().sexpr()} satisfies the your formula but not the secret formula`;
-        } else {
-            output = `The model satisfies neither your formula nor the secret formula`;
+        } else { // both unsat
+            output = `You got the right formula! Congratulations!`;
         }
     } catch (e) {
         // error with running z3

@@ -92,10 +92,12 @@ to the integers.
 
 ## Difference Arithmetic
 
-Many problem classes use only limited set of arithmetical constraints. One such class is job-shop scheduling constraints, 
-that in simpler instances can be encoded and solved using SMT (advanced uses of job shop scheduling problems do not
-have efficient encodings directly into arithmetic). For job-shop problems tasks have start time, duration and constraints
-specifying whether tasks should not overlap and ordering.
+Many problem classes use only limited set of arithmetical constraints. One such class is job-shop scheduling constraints.
+Simpler instances can be encoded and solved using SMT, while advanced uses of job shop scheduling problems do not
+have efficient encodings directly into arithmetic. For job-shop problems tasks have start time, duration and constraints
+specifying whether tasks should not overlap and ordering. To specify ordering and overlap constraints require 
+comparing just two time points separated by a constant offset. Comparisons of this form fall within the class
+of _difference arithmetic_ constraints. 
 
 ```z3
 (set-logic QF_IDL) ; optional in Z3
@@ -119,6 +121,10 @@ specifying whether tasks should not overlap and ordering.
 (get-model)
 ```
 
+In the  example we model three jobs, each job has two tasks 
+to be completed by two workers. Thus, there are six variables for every task/worker combination. 
+The start time of job 1 on worker 2 is given by `t12`. It has duration 1, so has to start at least one unit before 
+the completion deadline 8. It follows task `t11` which has duration 2 adn cannot overlap with other tasks on work station 2.
 
 ## Non-linear arithmetic
 

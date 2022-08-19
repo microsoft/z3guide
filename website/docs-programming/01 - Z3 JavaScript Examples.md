@@ -25,6 +25,8 @@ and expression corresponding to the predicate `a >= b`.
 
 ## Propositional Logic
 
+
+
 Prove De Morgan's Law
 
 ```z3-js
@@ -33,6 +35,14 @@ const [x, y] = [Z3.Bool.const('x'), Z3.Bool.const('y')];
 const conjecture = Z3.Eq(Z3.Not(Z3.And(x, y)), Z3.Or(Z3.Not(x), Z3.Not(y)));
 solver.add(Z3.Not(conjecture));
 await solver.check(); // unsat
+```
+
+What not to wear? It is well-known that developers of SAT solvers have difficulties looking sharp.
+They like to wear some combination of shirt and tie, but can't wear both. What should a SAT solver developer wear?
+
+```z3-js
+const [tie, shirt] = [Z3.Bool.const('tie'), Z3.Bool.const('shirt')];
+Z3.solve(Z3.Or(tie, shirt), Z3.Implies(tie, shirt), Z3.Or(Z3.Not(tie), Z3.Not(shirt)))
 ```
 
 ## Integer Arithmetic

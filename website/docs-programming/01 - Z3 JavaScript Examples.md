@@ -14,9 +14,7 @@ The first example is a formula that establishes that there is no number both abo
 
 ```z3-js
 const x = Z3.Int.const('x');
-const solver = new Z3.Solver();
-solver.add(Z3.And(x.ge(10), x.le(9)));
-await solver.check();
+Z3.solve(Z3.And(x.ge(10), x.le(9)));
 ```
 
 We note that the JavaScript bindings wrap z3 expressions into JavaScript options that support methods for building new expressions.
@@ -33,8 +31,7 @@ Prove De Morgan's Law
 const solver = new Z3.Solver();
 const [x, y] = [Z3.Bool.const('x'), Z3.Bool.const('y')];
 const conjecture = Z3.Eq(Z3.Not(Z3.And(x, y)), Z3.Or(Z3.Not(x), Z3.Not(y)));
-solver.add(Z3.Not(conjecture));
-await solver.check(); // unsat
+Z3.solve(Z3.Not(conjecture))
 ```
 
 What not to wear? It is well-known that developers of SAT solvers have difficulties looking sharp.
@@ -52,8 +49,7 @@ solve `x > 2 and y < 10 and x + 2y = 7`
 ```z3-js
 const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
-const model = await Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
-model.sexpr()
+Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
 ```
 
 ### Dog, cat mouse

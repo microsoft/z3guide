@@ -49,7 +49,7 @@ solve `x > 2 and y < 10 and x + 2y = 7`
 ```z3-js
 const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
-Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7)) as Model;
+Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7))
 ```
 
 ### Dog, cat mouse
@@ -72,9 +72,7 @@ solver.add(dog.add(cat.add(mouse)).eq(100))
 //        dogs cost 15 dollars (1500 cents),
 //       cats cost 1 dollar (100 cents), and
 //       mice cost 25 cents
-solver.add((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
-await solver.check()
-solver.model().sexpr()
+Z3.solve((dog.mul(1500)).add(cat.mul(100)).add(mouse.mul(25)).eq(10000))
 ```
 
 ## Uninterpreted Functions

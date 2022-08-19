@@ -162,18 +162,6 @@ const INSTANCE = toSudoku(`
 .4.97....
 `);
 
-const EXPECTED = toSudoku(`
-715894632
-234516897
-689723145
-493657218
-867231954
-152489763
-376148529
-928365471
-541972386
-`);
-
 
 const cells = [];
 // 9x9 matrix of integer variables

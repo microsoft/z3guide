@@ -266,9 +266,7 @@ Z3 uses arbitrary precision arithmetic, so decimal positions are not truncated w
 const n4 = Z3.Real.val('-1/3');
 const n5 = Z3.Real.val('-0.3333333333333333333333333333333333');
 
-const conjecture = n4.neq(n5);
-
-Z3.solve(Z3.Not(conjecture));
+Z3.solve(n4.eq(n5));
 ```
 
 ## Non-linear arithmetic

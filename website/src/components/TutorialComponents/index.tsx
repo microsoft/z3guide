@@ -56,7 +56,7 @@ function RunButton(props: { onClick: () => Promise<void>, runFinished: boolean, 
   const { onClick, runFinished, isZ3Duo } = props;
   const text = isZ3Duo ? "Check" : "Run";
   return (
-    <button className="button button--primary" onClick={async() => await onClick()}>
+    <button className="button button--primary" onClick={async () => await onClick()}>
       {runFinished ? text : "Running..."}
     </button>
   );
@@ -66,30 +66,76 @@ function RunButton(props: { onClick: () => Promise<void>, runFinished: boolean, 
 function Output(props: {
   result: { [key: string]: string | Array<string> },
   codeChanged: boolean,
-  statusCodes: { [key: string]: string }
+  statusCodes: { [key: string]: string },
 }) {
   const { result, codeChanged, statusCodes } = props;
   const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
+
+  let z3DuoOutput;
+
+  try {
+    z3DuoOutput = JSON.parse(result.output as string);
+  } catch (e) { // result.output is indeed a string, not a stringified obj
+    z3DuoOutput = undefined;
+  }
+
+  const buildOutput = (model1: string, msg1: string, model2?: string, msg2?: string) => {
+    const secondRow = model2 && msg2 ? <tr>
+      <td>{model2}</td>
+      <td>{msg2}</td>
+    </tr> : <></>;
+
+    return <table>
+      <tr>
+        <td>{model1}</td>
+        <td>{msg1}</td>
+      </tr>
+      {secondRow}
+    </table>
+
+  }
+
+  const z3DuoTable = z3DuoOutput ? buildOutput(z3DuoOutput.model1, z3DuoOutput.msg1, z3DuoOutput.model2, z3DuoOutput.msg2) : <></>;
+
+  const regularOutput = (<pre className={codeChanged ? styles.outdated : ""}>
+    {success ? (
+      ""
+    ) : (
+      <span style={{ color: "red" }}>
+        <b>Script contains one or more errors: </b>
+        <br />
+      </span>
+    )}
+    {success
+      ? emptyOutput
+        ? "--Output is empty--"
+        : result.output
+      : result.error}
+  </pre>);
+
+  const z3DuoOutputEl = (<div className={codeChanged ? styles.outdated : ""}>
+    {success ? (
+      ""
+    ) : (
+      <span style={{ color: "red" }}>
+        <b>Script contains one or more errors: </b>
+        <br />
+      </span>
+    )}
+    {success
+      ? emptyOutput
+        ? "--Output is empty--"
+        :
+        z3DuoTable
+      : result.error}
+  </div>)
+
   return (
     <div>
       <b>Output{codeChanged ? " (outdated)" : ""}:</b>
       <br />
-      <pre className={codeChanged ? styles.outdated : ""}>
-        {success ? (
-          ""
-        ) : (
-          <span style={{ color: "red" }}>
-            <b>Script contains one or more errors: </b>
-            <br />
-          </span>
-        )}
-        {success
-          ? emptyOutput
-            ? "--Output is empty--"
-            : result.output
-          : result.error}
-      </pre>
+      {z3DuoOutput ? z3DuoOutputEl : regularOutput}
     </div>
   );
 }

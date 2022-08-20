@@ -10,6 +10,7 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
 
     let output = '';
     let error = '';
+    let outputObj;
 
     try {
         const s1 = new Z3.Solver();
@@ -22,18 +23,35 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         s2.add(not_user);
         s1.add(not_secret);
 
-        const secret_not_user = await s2.check();
         const user_not_secret = await s1.check();
+        const secret_not_user = await s2.check();
 
         const sat = (s: string) => s === 'sat';
 
+
+
+
+        const user_not_secret_msg = 'satisfies your formula but not the secret formula.';
+        const secret_not_user_msg = 'satisfies the secret formula but not your formula.';
+
         if (sat(secret_not_user) && sat(user_not_secret)) {
-            output = `${s1.model().sexpr()}\nsatisfies your formula but not the secret formula;\n
-            ${s2.model().sexpr()}\nsatisfies the secret formula but not your formula.`;
+            outputObj = {
+                model1: s2.model().sexpr(),
+                msg1: secret_not_user_msg,
+                model2: s1.model().sexpr(),
+                msg2: user_not_secret_msg
+            };
         } else if (sat(secret_not_user)) {
-            output = `${s2.model().sexpr()} satisfies the secret formula but not yours`;
+            outputObj = {
+                model1: s2.model().sexpr(), 
+                msg1: secret_not_user_msg
+            };
         } else if (sat(user_not_secret)) {
-            output = `${s1.model().sexpr()} satisfies your formula but not the secret formula`;
+            outputObj = {
+                model1: s1.model().sexpr(),
+                msg1: user_not_secret_msg
+            };
+
         } else { // both unsat
             output = `You got the right formula! Congratulations!`;
         }
@@ -41,7 +59,10 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         // error with running z3
         error = e.message ?? 'Error message is empty';
     }
-    console.log(error)
+    console.log(error);
+
+    const finalOutput = outputObj ? JSON.stringify(outputObj) : output;
+
     // we are guaranteed to have non-undefined output and error
-    return JSON.stringify({ output: String(output), error: error });
+    return JSON.stringify({ output: finalOutput, error: error });
 }

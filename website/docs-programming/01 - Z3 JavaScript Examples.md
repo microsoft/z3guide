@@ -7,6 +7,13 @@ The Z3 distribution comes with TypeScript (and therefore JavaScript) bindings fo
 In the following we give a few examples of using Z3 through these bindings.
 You can run and modify the examples locally in your browser.
 
+:: info
+The bindings do not support all features of z3. For example, you cannot (yet) create array expressions in the same way
+that you can create arithmetic expressions. The JavaScript bindings have the distinct advantage that they allow to use 
+z3 directly in your browser with minimal extra dependencies.
+::
+
+
 ## Warmup
 
 We use a collection of basic examples to illustrate the bindings.

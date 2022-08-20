@@ -249,21 +249,20 @@ to use bit-vectors for finite domain problems in z3.
 
 ## Arithmetic over Reals
 
+You can create constants ranging over reals from strings that use fractions, decimal notation and from floating point numbers.
+
 ```z3-js
-// numerals 1
 const n1 = Z3.Real.val('1/2');
 const n2 = Z3.Real.val('0.5');
 const n3 = Z3.Real.val(0.5);
 
 const conjecture = Z3.And(n1.eq(n2), n1.eq(n3));
-
-const solver = new Z3.Solver();
-solver.add(Z3.Not(conjecture));
-await solver.check();
+Z3.solve(Z3.Not(conjecture));
 ```
 
+Z3 uses arbitrary precision arithmetic, so decimal positions are not truncated when you use strings to represent real numerals.
+
 ```z3-js
-// numerals 2
 const n4 = Z3.Real.val('-1/3');
 const n5 = Z3.Real.val('-0.3333333333333333333333333333333333');
 

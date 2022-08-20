@@ -20,6 +20,7 @@ Z3.solve(Z3.And(x.ge(10), x.le(9)));
 We note that the JavaScript bindings wrap z3 expressions into JavaScript options that support methods for building new expressions.
 For example, the method `ge` is available on an arithmetic expression `a`. It takes one argument `b` and returns
 and expression corresponding to the predicate `a >= b`.
+The `Z3.solve` method takes a sequence of predicates and checks if there is a solution. If there is a solution, it returns a model.
 
 ## Propositional Logic
 
@@ -54,6 +55,9 @@ Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7))
 
 ### Dog, cat mouse
 
+Given 100 dollars, the puzzle asks if it is possible to buy 100 animals
+based on their prices that are 15, 1, and 0.25 dollars, respectively.
+
 ```z3-js
 
 // Create 3 integer variables
@@ -79,12 +83,12 @@ Z3.solve(
 
 ## Uninterpreted Functions
 
+The method `call` is used to build expressions by applying the function node to arguments.
+
 ### Prove `x = y implies g(x) = g(y)`
 
 ```z3-js
-const solver = new Z3.Solver()
 const sort = Z3.Int.sort();
-
 const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
 const g = Z3.Function.declare('g', sort, sort);
@@ -94,9 +98,12 @@ Z3.solve(Z3.Not(conjecture));
 
 ### Disprove `x = y implies g(g(x)) = g(y)`
 
+we illustrate the use of the `Solver` object in the following example. Instead of calling `Z3.solve` 
+we here create a solver object and add assertions to it. The `solver.check()` method is used to check
+satisfiability (we expect the result to be `sat` for this example). The method `solver.model()` is used to retrieve a model.
+
 ```z3-js
 const solver = new Z3.Solver();
-
 const sort = Z3.Int.sort();
 const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
@@ -111,13 +118,10 @@ solver.model()
 ### Prove `x = y implies g(x) = g(y)`
 
 ```z3-js
-
-const solver = new Z3.Solver();
 const sort = Z3.Int.sort();
 const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
 const g = Z3.Function.declare('g', sort, sort);
-
 const conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));
 Z3.solve(Z3.Not(conjecture));
 ```
@@ -125,7 +129,6 @@ Z3.solve(Z3.Not(conjecture));
 ### Disprove that `x = y implies g(g(x)) = g(y)`
 
 ```z3-js
-const solver = new Z3.Solver();
 const sort = Z3.Int.sort();
 const x = Z3.Int.const('x');
 const y = Z3.Int.const('y');
@@ -135,6 +138,8 @@ Z3.solve(Z3.Not(conjecture));
 ```
 
 ## Solve sudoku
+
+The popular Sudoko can be solved. 
 
 ```z3-js
 function toSudoku(data: string): (number | null)[][] {
@@ -237,6 +242,11 @@ for (let i = 0; i < 9; i++) {
 buffer
 ```
 
+The encoding used in the following example uses arithmetic. 
+It works here, but is not the only possible encoding approach. 
+You can also use bit-vectors for the cells. It is generally better
+to use bit-vectors for finite domain problems in z3.
+
 ## Arithmetic over Reals
 
 ```z3-js
@@ -259,9 +269,7 @@ const n5 = Z3.Real.val('-0.3333333333333333333333333333333333');
 
 const conjecture = n4.neq(n5);
 
-const solver = new Z3.Solver();
-solver.add(Z3.Not(conjecture));
-await solver.check();
+Z3.solve(Z3.Not(conjecture));
 ```
 
 ## Non-linear arithmetic

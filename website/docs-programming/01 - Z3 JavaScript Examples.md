@@ -271,6 +271,12 @@ Z3.solve(n4.eq(n5));
 
 ## Non-linear arithmetic
 
+Z3 uses a decision procedure for non-linear arithmetic over reals. 
+It is based on Cylindric Algebraic Decomposition. Solutions to non-linear
+arithmetic formulas are no longer necessarily rational. They are represented
+as _algebraic numbers_ in general and can be displayed with any number of
+decimal position precision.
+
 ```z3-js
 setParam('pp.decimal', true);
 setParam('pp.decimal_precision', 80);
@@ -288,6 +294,13 @@ solver.model()
 ```
 
 ## Bit-vectors
+
+Unlike in programming languages, there is no distinction between 
+signed and unsigned bit-vectors. Instead the API supports operations
+that have different meaning depending on whether a bit-vector is treated
+as a signed or unsigned numeral. These are signed comparison and signed division, remainder operations.
+
+In the following we illustrate the use of signed and unsigned less-than-or-equal.
 
 ```z3-js
 const x = Z3.BitVec.const('x', 32);
@@ -309,7 +322,7 @@ const uModel = uSolver.model();
 [uModel.get(x), sModel.get(x)] // unsigned, signed
 ```
 
-Solves an equation
+It is easy to write formulas that mix bit-wise and arithmetic operations over bit-vectors.
 
 ```z3-js
 const x = Z3.BitVec.const('x', 32);

@@ -58,8 +58,8 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
     } catch (e) {
         // error with running z3
         error = e.message ?? 'Error message is empty';
+        console.log(error);
     }
-    console.log(error);
 
     const finalOutput = outputObj ? JSON.stringify(outputObj) : output;
 

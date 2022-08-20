@@ -245,7 +245,7 @@ sidebar_position: 1
 ```
 
 
-```z3-duo
+<!-- ```z3-duo
 (declare-fun P (Int) Bool)
 (declare-fun Q (Int) Bool)
 ------
@@ -308,7 +308,7 @@ sidebar_position: 1
 ------
 (declare-fun P (Int Int) Bool)
 (assert (forall ((x Int) (y Int)) (=> (P x y) (not (P y x)))))
-```
+``` -->
 
 
 

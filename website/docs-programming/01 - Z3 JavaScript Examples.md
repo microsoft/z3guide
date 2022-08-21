@@ -60,7 +60,7 @@ const y = Z3.Int.const('y');
 Z3.solve(x.gt(2), y.lt(10), x.add(y.mul(2)).eq(7))
 ```
 
-### Dog, cat mouse
+### Dogs, cats and mice
 
 Given 100 dollars, the puzzle asks if it is possible to buy 100 animals
 based on their prices that are 15, 1, and 0.25 dollars, respectively.

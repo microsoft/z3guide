@@ -374,6 +374,7 @@ const length = vector.length();
 for (let i = 0; i < length; i++) {
     solver.add((vector.get(i) as Arith).gt(1));
 }
-
-await solver.check(); // sat
+solver.add(Z3.Distinct(...vector));
+await solver.check();
+solver.model()
 ```

@@ -19,12 +19,13 @@ require("prismjs/components/prism-lisp");
 // [CONFIG HERE] custom language run process (client side) imports
 import runZ3Web from "./runZ3Web";
 import runZ3JSWeb from "./runZ3JSWeb";
+import runZ3DuoWeb from "./runZ3DuoWeb";
 
 // [CONFIG HERE] language-process mapping
 const clientConfig = {
   'z3': runZ3Web,
   'z3-js': runZ3JSWeb,
-  'z3-duo': runZ3JSWeb,
+  'z3-duo': runZ3DuoWeb,
 };
 
 interface CodeBlockProps {
@@ -51,11 +52,11 @@ function OutputToggle(props: { onClick: () => void, disabled?: boolean, version?
   );
 }
 
-function RunButton(props: { onClick: () => void, runFinished: boolean, isZ3Duo: boolean }) {
+function RunButton(props: { onClick: () => Promise<void>, runFinished: boolean, isZ3Duo: boolean }) {
   const { onClick, runFinished, isZ3Duo } = props;
   const text = isZ3Duo ? "Check" : "Run";
   return (
-    <button className="button button--primary" onClick={onClick}>
+    <button className="button button--primary" onClick={async () => await onClick()}>
       {runFinished ? text : "Running..."}
     </button>
   );
@@ -65,30 +66,91 @@ function RunButton(props: { onClick: () => void, runFinished: boolean, isZ3Duo: 
 function Output(props: {
   result: { [key: string]: string | Array<string> },
   codeChanged: boolean,
-  statusCodes: { [key: string]: string }
+  statusCodes: { [key: string]: string },
 }) {
   const { result, codeChanged, statusCodes } = props;
   const success = result.status === statusCodes.success;
   const emptyOutput = result.output === "";
+
+  let z3DuoOutput;
+
+  try {
+    z3DuoOutput = JSON.parse(result.output as string);
+  } catch (e) { // result.output is indeed a string, not a stringified obj
+    z3DuoOutput = undefined;
+  }
+
+  const icon = (b: boolean) => {
+    return b ? '✅' : '❌';
+  }
+
+  const buildOutput = (
+    model1: string,
+    res1: { [key: string]: boolean },
+    model2?: string,
+    res2?: { [key: string]: boolean }) => {
+    const secondRow = model2 && res2 ? <tr>
+      <td><pre>{model2}</pre></td>
+      <td className={styles.TableCellIcon}>{icon(res2.user)}</td>
+      <td className={styles.TableCellIcon}>{icon(res2.secret)}</td>
+    </tr> : <></>;
+
+    return <table>
+      <tr>
+        <th className={styles.FirstCol}>Model</th>
+        <th>Satisfies your formula?</th>
+        <th>Satisfies the secret formula?</th>
+      </tr>
+      <tr>
+        <td><pre>{model1}</pre></td>
+        <td className={styles.TableCellIcon}>{icon(res1.user)}</td>
+        <td className={styles.TableCellIcon}>{icon(res1.secret)}</td>
+      </tr>
+      {secondRow}
+    </table>
+
+  }
+
+  const z3DuoTable = z3DuoOutput ? buildOutput(z3DuoOutput.model1, z3DuoOutput.res1, z3DuoOutput.model2, z3DuoOutput.res2) : <></>;
+
+  const regularOutput = (<pre className={codeChanged ? styles.outdated : ""}>
+    {success ? (
+      ""
+    ) : (
+      <span style={{ color: "red" }}>
+        <b>Script contains one or more errors: </b>
+        <br />
+      </span>
+    )}
+    {success
+      ? emptyOutput
+        ? "--Output is empty--"
+        : result.output
+      : result.error}
+  </pre>);
+
+  const z3DuoOutputEl = (<div className={codeChanged ? styles.outdated : ""}>
+    {success ? (
+      ""
+    ) : (
+      <span style={{ color: "red" }}>
+        <b>Script contains one or more errors: </b>
+        <br />
+      </span>
+    )}
+    {success
+      ? emptyOutput
+        ? "--Output is empty--"
+        :
+        z3DuoTable
+      : result.error}
+  </div>)
+
   return (
     <div>
       <b>Output{codeChanged ? " (outdated)" : ""}:</b>
       <br />
-      <pre className={codeChanged ? styles.outdated : ""}>
-        {success ? (
-          ""
-        ) : (
-          <span style={{ color: "red" }}>
-            <b>Script contains one or more errors: </b>
-            <br />
-          </span>
-        )}
-        {success
-          ? emptyOutput
-            ? "--Output is empty--"
-            : result.output
-          : result.error}
-      </pre>
+      {z3DuoOutput ? z3DuoOutputEl : regularOutput}
     </div>
   );
 }
@@ -162,67 +224,46 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
   };
 
   // bypassing server-side rendering
-  const onDidClickRun = () => {
+  const onDidClickRun = async () => {
     setRunFinished(false);
     // TODO: only load z3 when needed
     const newResult = { ...result };
-    let errorMsg;
+    let errorMsg: string;
 
     const runProcess = clientConfig[lang];
-    const z3DuoCode = `const s1 = new Z3.Solver()
-    const s2 = new Z3.Solver()
-    s1.from_string(user_input)
-    s2.from_string(secret_input)
-    const not_user = Z3.Not(Z3.And(s1.assertions()))
-    const not_secret = Z3.Not(Z3.And(s2.assertions()))
-    s2.add(not_user)
-    s1.add(not_secret)
-    const secret_not_user = await s2.check()
-    const user_not_secret = await s1.check()
-    if (secret_not_user == "sat")
-        // say   s2.model().sexpr() satisfies secret but not user formula
-    if (user_not_secret == "sat")
-       // etc`;
 
     let input = currCode;
-    if (isZ3Duo) {
-      input = `let user_input = ${currCode}
-      let secret_input = ${result.output}
-      ${z3DuoCode}`
-    }
+    let process = isZ3Duo ? runProcess(input, result.output) : runProcess(input);
 
     // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
-    runProcess(input)
-      .then((res: string) => {
-        const result = JSON.parse(res);
-        if (result.output !== '') {
-          const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
-          const hasError = errRegex.test(result.output);
-          newResult.output = hasError ? "" : result.output;
-          newResult.error = hasError ? result.output : "";
-          newResult.status = hasError
-            ? statusCodes.runtimeError
-            : statusCodes.success;
-        } else if (result.error !== '') {
-          newResult.error = result.error;
-          newResult.status = statusCodes.runError;
-        }
-      })
-      .catch((error: Error) => {
-        // runProcess fails
-        errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
-        newResult.error = errorMsg;
-        newResult.status = `${lang}-web-failed`;
-        throw new Error(errorMsg);
-      })
-      .finally(() => {
-        setOutput(newResult);
-        setCodeChanged(false);
-        setRunFinished(true);
-        if (!outputRendered) {
-          setOutputRendered(true); // hack for the playground editor
-        }
-      });
+    try {
+      let res: string = await process;
+      const result = JSON.parse(res);
+      if (result.output !== '') {
+        const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+        const hasError = errRegex.test(result.output);
+        newResult.output = hasError ? "" : result.output;
+        newResult.error = hasError ? result.output : "";
+        newResult.status = hasError
+          ? statusCodes.runtimeError
+          : statusCodes.success;
+      } else if (result.error !== '') {
+        newResult.error = result.error;
+        newResult.status = statusCodes.runError;
+      }
+    } catch (error) {
+      errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;
+      newResult.error = errorMsg;
+      newResult.status = `${lang}-web-failed`;
+      throw new Error(errorMsg);
+    } finally {
+      setOutput(newResult);
+      setCodeChanged(false);
+      setRunFinished(true);
+      if (!outputRendered) {
+        setOutputRendered(true); // hack for the playground editor
+      }
+    }
   };
 
   const onDidChangeCode = (code: string) => {

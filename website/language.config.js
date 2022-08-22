@@ -59,6 +59,12 @@ async function createConfig() {
                 githubRepo: 'Z3Prover/z3',
                 githubDiscussion: true,
                 readonly: false,
+                statusCodes: {
+                    success: 'z3-ran',
+                    timeout: 'z3-timed-out',
+                    runError: 'z3-failed',
+                    runtimeError: 'z3-runtime-error',
+                },
             },
         ],
         solutionsDir: './solutions',

@@ -1,18 +1,10 @@
-import { type Z3LowLevel, type Z3HighLevel } from 'z3-solver';
+import loadZ3 from "./loadZ3";
 
-declare global {
-    interface Window { z3Promise: Promise<Z3LowLevel & Z3HighLevel> } // use any to escape typechecking
-}
 
 export default async function runZ3Web(input: string): Promise<string> {
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const z3 = require('z3-solver');
-
     // init z3
-    const z3p: Promise<Z3HighLevel & Z3LowLevel> = window.z3Promise || (() => {
-        return window.z3Promise = z3.init();
-    })();
+    const z3p = loadZ3();
 
     const { Z3 } = await z3p;
 

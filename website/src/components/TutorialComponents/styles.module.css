@@ -35,3 +35,11 @@
     display: flex;
     font: inherit;
 }
+
+.FirstCol {
+    width: 44%;
+}
+
+.TableCellIcon {
+    text-align: center;
+}

@@ -24,6 +24,7 @@ export default async function runZ3Web(input: string): Promise<string> {
     } finally {
         Z3.del_context(ctx);
     }
+
     // we are guaranteed to have non-undefined output and error
     return JSON.stringify({ output: String(output), error: error });
 

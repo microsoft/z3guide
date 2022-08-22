@@ -70,6 +70,62 @@ Some operators are chainable. This includes comparison operators such as `<` and
 (get-model)
 ```
 
+We can use mixed constraints to ask questions on how reals behave under rounding.
+The following query considers when the sum of two integers, x, y are above a constant `a`, 
+while the sum of two reals are below `a`. At the same time the integers x, y are within unit distance
+to the integers. 
+
+```z3
+(declare-const xR Real)
+(declare-const yR Real)
+(declare-const x Int)
+(declare-const y Int)
+(declare-const a Int)
+
+(assert (< (+ xR yR) a))
+(assert (> (+ x y) a))
+(assert (or (= x xR) (< x xR (+ x 1)) (< (- x 1) xR x)))
+(assert (or (= y yR) (< y yR (+ y 1)) (< (- y 1) yR y)))
+(check-sat)
+(get-model)
+```
+
+## Difference Arithmetic
+
+Many problem classes use only limited set of arithmetical constraints. One such class is job-shop scheduling constraints.
+Simpler instances can be encoded and solved using SMT, while advanced uses of job shop scheduling problems do not
+have efficient encodings directly into arithmetic. For job-shop problems tasks have start time, duration and constraints
+specifying whether tasks should not overlap and ordering. To specify ordering and overlap constraints require 
+comparing just two time points separated by a constant offset. Comparisons of this form fall within the class
+of _difference arithmetic_ constraints. 
+
+```z3
+(set-logic QF_IDL) ; optional in Z3
+(declare-fun t11 () Int)
+(declare-fun t12 () Int)
+(declare-fun t21 () Int)
+(declare-fun t22 () Int)
+(declare-fun t31 () Int)
+(declare-fun t32 () Int)
+
+(assert (and (>= t11 0) (>= t12 (+ t11 2)) (<= (+ t12 1) 8)))
+(assert (and (>= t21 0) (>= t22 (+ t21 3)) (<= (+ t22 1) 8)))
+(assert (and (>= t31 0) (>= t32 (+ t31 2)) (<= (+ t32 3) 8)))
+(assert (or (>= t11 (+ t21 3)) (>= t21 (+ t11 2))))
+(assert (or (>= t11 (+ t31 2)) (>= t31 (+ t11 2))))
+(assert (or (>= t21 (+ t31 2)) (>= t31 (+ t21 3))))
+(assert (or (>= t12 (+ t22 1)) (>= t22 (+ t12 1))))
+(assert (or (>= t12 (+ t32 3)) (>= t32 (+ t12 1))))
+(assert (or (>= t22 (+ t32 3)) (>= t32 (+ t22 1))))
+(check-sat)
+(get-model)
+```
+
+In the  example we model three jobs, each job has two tasks 
+to be completed by two workers. Thus, there are six variables for every task/worker combination. 
+The start time of job 1 on worker 2 is given by `t12`. It has duration 1, so has to start at least one unit before 
+the completion deadline 8. It follows task `t11` which has duration 2 adn cannot overlap with other tasks on work station 2.
+
 ## Non-linear arithmetic
 
 
@@ -162,3 +218,23 @@ If you are not happy with this behavior, you may use ite (if-then-else) operator
 (assert (= b 0.0))
 (check-sat)
 ```
+
+## Algorithmic Fragments of Arithmetic
+
+Z3 contains a combination of several engines for solving arithmetic formulas.
+The engines are invoked based on the shape of arithmetic formulas. 
+For linear real arithmetic formulas it uses dual simplex to determine feasibility.
+For linear integer arithmetic formulas it uses thechniques from integer programming: cuts and branch and bound.
+There are specialized solvers for different arithmetic fragments and, finally, for non-linear arithmetic
+constraints z3 contains several small hammers that integrate Grobner basis simplificaitons, bounds propagation, 
+non-linear cylindric algebraic decomposition and reducing non-linear constraints to linear form by sampling at tangent points.
+
+  Logic| Fragment                          | Solver                    | Example                   
+|------|-----------------------------------|----------------------------------------------|---------------------------|
+| LRA  | Linear Real Arithmetic            | Dual Simplex                                 |  $x + \frac{1}{2}y \leq 3$|
+| LIA  | Linear Integer Arithmetic         | CutSat                                       | $a + 3b \leq 3$           |
+| LIRA | Mixed Real/Integer                | Cuts + Branch                                | $x + a \geq 4$            |
+| IDL  | Integer Difference Logic          | Floyd-Warshall                               | $a - b \leq 4$            |
+| RDL  | Real Difference Logic             | Bellman-Ford                                 |                           |
+|UTVPI | Unit two-variable per inequality  |                                              | $x + y \leq 4$            |
+| NRA  | Polynomial Real Arithmetic        | Model based CAD, Incremental Linearization   | $x^2 + y^2 < 1$           |

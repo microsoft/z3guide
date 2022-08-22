@@ -35,11 +35,34 @@ a different index, such as `(_ partial-order 1)`.
 (assert (forall ((x A) (y A)) (=> (and (R x y) (R y x)) (= x y))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
 (assert (forall ((x A) (y A)) (or (R x y) (R y x))))
+
+
 ```
 
 Use instead
-```
+
+```z3
+(declare-sort A 0)
 (define-fun R ((x A) (y A)) Bool ((_ linear-order 0) x y))
+
+(declare-const a A)
+(declare-const b A)
+(declare-const c A)
+(declare-const d A)
+(assert (R a b))
+(assert (R a c))
+
+(check-sat)
+(get-model)
+(eval (R a d))
+
+; at least one of these relations have to hold:
+(eval (R b c))
+(eval (R c b))
+
+(assert (not (R c d)))
+(assert (not (R d c)))
+(check-sat)
 ```
 
 
@@ -51,11 +74,28 @@ Use instead
 (assert (forall ((x A) (y A)) (=> (and (R x y) (R y x)) (= x y))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R x z)) (or (R y z) (R z y)))))
+
 ```
 
 Use instead
-```
+```z3
+
+(declare-sort A 0)
 (define-fun R ((x A) (y A)) Bool ((_ tree-order 0) x y))
+
+(declare-const a A)
+(declare-const b A)
+(declare-const c A)
+(declare-const d A)
+(assert (R a b))
+(assert (R b d))
+(assert (R a c))
+(assert (R c d))
+(check-sat)
+(get-model)
+(assert (not (R b c)))
+(assert (not (R c b)))
+(check-sat)
 ```
 
 ### Piece-wise Linear Order

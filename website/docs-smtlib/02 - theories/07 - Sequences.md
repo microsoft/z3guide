@@ -61,6 +61,7 @@ then the resulting string has the same length, and either character 8 or 9 are u
 (pop)
 ```
 
+<!---
 ## Map and Fold
 
 The functions map and fold (left) are modeled after the functions found in ML languages.
@@ -68,3 +69,4 @@ Our version of `fold_lefti`, where the current index of the sequence element is 
 also an offset. The advantage of including the offset is that it is easier to formulate how the function decomposes over sequence concatenation.
 The decision procedure for map and fold behaves similar to recursive function unfolding. 
 
+--->

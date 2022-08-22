@@ -1,0 +1,1 @@
+{"input":"const n4 = Z3.Real.val('-1/3');\nconst n5 = Z3.Real.val('-0.3333333333333333333333333333333333');\n\nconst conjecture = n4.neq(n5);\n\nZ3.solve(Z3.Not(conjecture));"}

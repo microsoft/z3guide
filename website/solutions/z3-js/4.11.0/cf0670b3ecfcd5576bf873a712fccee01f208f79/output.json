@@ -1,0 +1,1 @@
+{"output":"(define-fun y () Int\n  0)\n(define-fun x () Int\n  0)\n(define-fun g ((x!0 Int)) Int\n  (ite (= x!0 1) 2\n    1))","error":"","status":"z3-ran","hash":"cf0670b3ecfcd5576bf873a712fccee01f208f79"}

@@ -35,6 +35,32 @@ Extensions to sequences operations are not supported in z3str3.
 ```
 
 
+## String Constraints by Example
+
+Strings `a, b, c` can have a non-trivial overlap.
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (= (str.++ a b) "abcd"))
+(assert (= (str.++ b c) "cdef"))
+(assert (not (= b "")))
+(check-sat)
+```
+
+There is a solution to `a` that is not a sequence of "a"'s.
+
+```z3
+(declare-const a String)
+(declare-const b String)
+(declare-const c String)
+(assert (= (str.++ a "ab" b) (str.++ b "ba" c)))
+(assert (= c (str.++ a b)))
+(assert (not (= (str.++ a "a") (str.++ "a" a))))
+(check-sat)
+(get-model)
+```
+
 ## Creating Strings
 
 ###  Built-in types and constants
@@ -213,32 +239,6 @@ Every string is equal to the prefix and suffix that add up to a its length.
 ```
 
 Note that after `(_ char 54)` is the same as `(simplify (str.from_code 54))`.
-
-## Other String Examples
-
-Strings `a, b, c` can have a non-trivial overlap.
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (= (str.++ a b) "abcd"))
-(assert (= (str.++ b c) "cdef"))
-(assert (not (= b "")))
-(check-sat)
-```
-
-There is a solution to `a` that is not a sequence of "a"'s.
-
-```z3
-(declare-const a String)
-(declare-const b String)
-(declare-const c String)
-(assert (= (str.++ a "ab" b) (str.++ b "ba" c)))
-(assert (= c (str.++ a b)))
-(assert (not (= (str.++ a "a") (str.++ "a" a))))
-(check-sat)
-(get-model)
-```
 
 
 ## Summary of Operations

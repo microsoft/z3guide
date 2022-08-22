@@ -21,7 +21,7 @@ function HomepageHeader() {
             <Link
               className={clsx("button button--secondary button--lg ", styles.mainButton)}
               to="/docs/logic/intro">
-              Z3 SMTLIB Tutorial 
+              SMTLIB Tutorial 
             </Link> 
             <></>
             <Link
@@ -32,8 +32,8 @@ function HomepageHeader() {
             <></>
             <Link
               className={clsx("button button--secondary button--lg", styles.mainButton)}
-              to="/docs/playground/playground">
-              SMTLIB Playground
+              to="/playground/Freeform Editing">
+              Playground
             </Link>
             </div>
           </div>

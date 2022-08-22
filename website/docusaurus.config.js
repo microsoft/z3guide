@@ -20,8 +20,8 @@ async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
   // where information such as course title, description etc. are configured
   const config = {
-    title: 'Z3 Guide',
-    tagline: 'Learn Z3 online!',
+    title: 'Online Z3 Guide',
+    tagline: '',
     url: 'https://microsoft.github.io/',
     baseUrl: '/z3guide/',
     staticDirectories: ['static'],
@@ -51,6 +51,20 @@ async function createConfig() {
           path: 'docs-programming',
           routeBasePath: 'programming',
           sidebarPath: require.resolve('./sidebars/programmingSidebars.js'),
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
+          editUrl:
+            'https://github.com/microsoft/z3guide/tree/main/website',
+          // ... other options for the docs, just as in `presets -> docs`
+        },
+      ],
+      [
+        '@docusaurus/plugin-content-docs',
+        {
+          id: 'playground',
+          path: 'docs-playground',
+          routeBasePath: 'playground',
+          sidebarPath: require.resolve('./sidebars/playgroundSidebars.js'),
           remarkPlugins: [math],
           rehypePlugins: [katex],
           editUrl:
@@ -123,7 +137,7 @@ async function createConfig() {
               type: 'doc',
               docId: 'logic/intro',
               position: 'left',
-              label: 'SMTLIB',
+              label: 'SMTLIB Tutorial',
             },
             // link to programming docs
             {
@@ -134,10 +148,10 @@ async function createConfig() {
             },
             // link to playground
             {
-              type: 'doc',
-              docId: 'playground/playground',
+              to: '/playground/Freeform Editing',
               position: 'left',
-              label: 'SMTLIB Playground',
+              label: 'Playground',
+              activeBaseRegex: `/playground/`,
             },
             // link to the github repo of this site
             {
@@ -232,6 +246,9 @@ async function createConfig() {
 
   // add custom codeblocks to the programming docs
   config.plugins[0][1].remarkPlugins.push(renderCodeBlocks);
+
+  // add custom codeblocks to the programming docs
+  config.plugins[1][1].remarkPlugins.push(renderCodeBlocks);
 
   // [NEW DOCS] add custom codeblocks to the new docs
   // Example:

@@ -1,7 +1,14 @@
 ---
-title: Guessing Game Tests
-sidebar_position: 1
+title: Guess a Formula
+sidebar_position: 2
 ---
+
+The following lists a few puzzles. The challenge
+is to _guess_ a hidden formula. You are provided only the
+free variables in the formula and you can only enter a candidate
+formula. As long as there are values for the free variables that evaluate
+the secret formula and yours differently, the puzzle wizard provides
+counter-examples.
 
 ```z3-duo
 (declare-const x Int)

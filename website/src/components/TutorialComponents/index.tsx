@@ -192,7 +192,12 @@ function CustomCodeEditor(props: {
     >
       {
         language === 'lisp' ?
-          <MonacoEditor /> :
+          <MonacoEditor 
+            lang={language}
+            code={input}
+            onChange={onChange}
+            readonly={readonly}
+          /> :
           <CodeEditor
             code={input}
             theme={prismTheme}

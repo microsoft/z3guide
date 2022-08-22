@@ -1,11 +1,36 @@
----
-title: Parameters
-sidebar_position: 5
----
+Z3 Options
 
-## Module pi
+## Global Parameters
 
-Description: pattern inference (heuristics) for universal formulas (without annotation)
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+auto_config | bool  |  use heuristics to automatically select solver and configure it | true
+debug_ref_count | bool  |  debug support for AST reference counting | false
+dot_proof_file | string  |  file in which to output graphical proofs | proof.dot
+dump_models | bool  |  dump models whenever check-sat returns sat | false
+encoding | string  |  string encoding used internally: unicode|bmp|ascii | unicode
+memory_high_watermark | unsigned int  |  set high watermark for memory consumption (in bytes), if 0 then there is no limit | 0
+memory_high_watermark_mb | unsigned int  |  set high watermark for memory consumption (in megabytes), if 0 then there is no limit | 0
+memory_max_alloc_count | unsigned int  |  set hard upper limit for memory allocations, if 0 then there is no limit | 0
+memory_max_size | unsigned int  |  set hard upper limit for memory consumption (in megabytes), if 0 then there is no limit | 0
+model | bool  |  model generation for solvers, this parameter can be overwritten when creating a solver | true
+model_validate | bool  |  validate models produced by solvers | false
+proof | bool  |  proof generation, it must be enabled when the Z3 context is created | false
+rlimit | unsigned int  |  default resource limit used for solvers. Unrestricted when set to 0. | 0
+smtlib2_compliant | bool  |  enable/disable SMT-LIB 2.0 compliance | false
+stats | bool  |  enable/disable statistics | false
+timeout | unsigned int  |  (default: infty) timeout in milliseconds. | 4294967295
+trace | bool  |  trace generation for VCC | false
+trace_file_name | string  |  trace out file name (see option 'trace') | z3.log
+type_check | bool  |  type checker (alias for well_sorted_check) | true
+unsat_core | bool  |  unsat-core generation for solvers, this parameter can be overwritten when creating a solver, not every solver in Z3 supports unsat core generation | false
+verbose | unsigned int  |  be verbose, where the value is the verbosity level | 0
+warning | bool  |  enable/disable warning messages | true
+well_sorted_check | bool  |  type checker | false
+
+## pi
+
+pattern inference (heuristics) for universal formulas (without annotation)
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -17,9 +42,10 @@ non_nested_arith_weight | unsigned int  |  default weight for quantifiers where 
 pull_quantifiers | bool  |  pull nested quantifiers, if no pattern was found | true
 use_database | bool  |  use pattern database | false
 warnings | bool  |  enable/disable warning messages in the pattern inference module | false
-## Module tactic
 
-Description: tactic parameters
+## tactic
+
+tactic parameters
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -31,9 +57,10 @@ solve_eqs.context_solve | bool  |  solve equalities within disjunctions. | true
 solve_eqs.ite_solver | bool  |  use if-then-else solvers. | true
 solve_eqs.max_occs | unsigned int  |  maximum number of occurrences for considering a variable for gaussian eliminations. | 4294967295
 solve_eqs.theory_solver | bool  |  use theory solvers. | true
-## Module pp
 
-Description: pretty printer
+## pp
+
+pretty printer
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -54,9 +81,10 @@ min_alias_size | unsigned int  |  min. size for creating an alias for a shared t
 pretty_proof | bool  |  use slower, but prettier, printer for proofs | false
 simplify_implies | bool  |  simplify nested implications for pretty printing | true
 single_line | bool  |  ignore line breaks when true | false
-## Module sat
 
-Description: propositional SAT solver
+## sat
+
+propositional SAT solver
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -198,9 +226,9 @@ subsumption.limit | unsigned int  |  approx. maximum number of literals visited 
 threads | unsigned int  |  number of parallel threads to use | 1
 variable_decay | unsigned int  |  multiplier (divided by 100) for the VSIDS activity increment | 110
 
-## Module solver
+## solver
 
-Description: solver parameters
+solver parameters
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -210,9 +238,9 @@ lemmas2console | bool  |  print lemmas during search | false
 smtlib2_log | symbol  |  file to save solver interaction | 
 timeout | unsigned int  |  timeout on the solver object; overwrites a global timeout | 4294967295
 
-## Module opt
+## opt
 
-Description: optimization parameters
+optimization parameters
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -244,9 +272,10 @@ rc2.totalizer | bool  |  use totalizer for rc2 encoding | true
 rlimit | unsigned int  |  resource limit (0 means no limit) | 0
 solution_prefix | symbol  |  path prefix to dump intermediary, but non-optimal, solutions | 
 timeout | unsigned int  |  timeout (in milliseconds) (UINT_MAX and 0 mean no timeout) | 4294967295
-## Module parallel
 
-Description: parameters for parallel solver
+## parallel
+
+parameters for parallel solver
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -261,9 +290,9 @@ simplify.max_conflicts | unsigned int  |  maximal number of conflicts during sim
 simplify.restart.max | unsigned int  |  maximal number of restarts during simplification phase | 5000
 threads.max | unsigned int  |  caps maximal number of threads below the number of processors | 10000
 
-## Module nnf
+## nnf
 
-Description: negation normal form
+negation normal form
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -272,9 +301,9 @@ max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
 mode | symbol  |  NNF translation mode: skolem (skolem normal form), quantifiers (skolem normal form + quantifiers in NNF), full | skolem
 sk_hack | bool  |  hack for VCC | false
 
-## Module algebraic
+## algebraic
 
-Description: real algebraic number package. Non-default parameter settings are not supported
+real algebraic number package. Non-default parameter settings are not supported
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -285,9 +314,9 @@ factor_search_size | unsigned int  |  parameter for the polynomial factorization
 min_mag | unsigned int  |  Z3 represents algebraic numbers using a (square-free) polynomial p and an isolating interval (which contains one and only one root of p). This interval may be refined during the computations. This parameter specifies whether to cache the value of a refined interval or not. It says the minimal size of an interval for caching purposes is 1/2^16 | 16
 zero_accuracy | unsigned int  |  one of the most time-consuming operations in the real algebraic number module is determining the sign of a polynomial evaluated at a sample point with non-rational algebraic number values. Let k be the value of this option. If k is 0, Z3 uses precise computation. Otherwise, the result of a polynomial evaluation is considered to be 0 if Z3 can show it is inside the interval (-1/2^k, 1/2^k) | 0
 
-## Module combined_solver
+## combined_solver
 
-Description: combines two solvers: non-incremental (solver1) and incremental (solver2)
+combines two solvers: non-incremental (solver1) and incremental (solver2)
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -295,9 +324,9 @@ ignore_solver1 | bool  |  if true, solver 2 is always used | false
 solver2_timeout | unsigned int  |  fallback to solver 1 after timeout even when in incremental model | 4294967295
 solver2_unknown | unsigned int  |  what should be done when solver 2 returns unknown: 0 - just return unknown, 1 - execute solver 1 if quantifier free problem, 2 - execute solver 1 | 1
 
-## Module rcf
+## rcf
 
-Description: real closed fields
+real closed fields
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -308,18 +337,19 @@ lazy_algebraic_normalization | bool  |  during sturm-seq and square-free polynom
 max_precision | unsigned int  |  during sign determination we switch from interval arithmetic to complete methods when the interval size is less than 1/2^k, where k is the max_precision | 128
 use_prem | bool  |  use pseudo-remainder instead of remainder when computing GCDs and Sturm-Tarski sequences | true
 
-## Module ackermannization
+## ackermannization
 
-Description: solving UF via ackermannization
+solving UF via ackermannization
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
 eager | bool  |  eagerly instantiate all congruence rules | true
 inc_sat_backend | bool  |  use incremental SAT | false
 sat_backend | bool  |  use SAT rather than SMT in qfufbv_ackr_tactic | false
-## Module nlsat
 
-Description: nonlinear solver
+## nlsat
+
+nonlinear solver
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -336,9 +366,10 @@ reorder | bool  |  reorder variables. | true
 seed | unsigned int  |  random seed. | 0
 shuffle_vars | bool  |  use a random variable order. | false
 simplify_conflicts | bool  |  simplify conflicts using equalities before resolving them in nlsat solver. | true
-## Module fp
 
-Description: fixedpoint parameters
+## fp
+
+fixedpoint parameters
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -444,7 +475,7 @@ xform.inline_linear_branch | bool  |  try linear inlining method with potential 
 xform.instantiate_arrays | bool  |  Transforms P(a) into P(i, a[i] a) | false
 xform.instantiate_arrays.enforce | bool  |  Transforms P(a) into P(i, a[i]), discards a from predicate | false
 xform.instantiate_arrays.nb_quantifier | unsigned int  |  Gives the number of quantifiers per array | 1
-xform.instantiate_arrays.slice_technique | symbol  |  &lt;no-slicing&gt;=&gt; GetId(i) = i, `<smash> => GetId(i) = true` | no-slicing
+xform.instantiate_arrays.slice_technique | symbol  |  &lt;no-slicing&gt;=&gt; GetId(i) = i, &lt;smash&gt; =&gt; GetId(i) = true | no-slicing
 xform.instantiate_quantifiers | bool  |  instantiate quantified Horn clauses using E-matching heuristic | false
 xform.magic | bool  |  perform symbolic magic set transformation | false
 xform.quantify_arrays | bool  |  create quantified Horn clauses from clauses with arrays | false
@@ -455,9 +486,9 @@ xform.tail_simplifier_pve | bool  |  propagate_variable_equivalences | true
 xform.transform_arrays | bool  |  Rewrites arrays equalities and applies select over store | false
 xform.unfold_rules | unsigned int  |  unfold rules statically using iterative squaring | 0
 
-## Module smt
+## smt
 
-Description: smt solver based on lazy smt
+smt solver based on lazy smt
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -534,7 +565,7 @@ logic | symbol  |  logic used to setup the SMT solver |
 macro_finder | bool  |  try to find universally quantified formulas that can be viewed as macros | false
 max_conflicts | unsigned int  |  maximum number of conflicts before giving up. | 4294967295
 mbqi | bool  |  model based quantifier instantiation (MBQI) | true
-mbqi.force_template | unsigned int  |  some quantifiers can be used as templates for building interpretations for functions. Z3 uses heuristics to decide whether a quantifier will be used as a template or not. Quantifiers with weight >= mbqi.force_template are forced to be used as a template | 10
+mbqi.force_template | unsigned int  |  some quantifiers can be used as templates for building interpretations for functions. Z3 uses heuristics to decide whether a quantifier will be used as a template or not. Quantifiers with weight &gt;= mbqi.force_template are forced to be used as a template | 10
 mbqi.id | string  |  Only use model-based instantiation for quantifiers with id's beginning with string | 
 mbqi.max_cexs | unsigned int  |  initial maximal number of counterexamples used in MBQI, each counterexample generates a quantifier instantiation | 1
 mbqi.max_cexs_incr | unsigned int  |  increment for MBQI_MAX_CEXS, the increment is performed after each round of MBQI | 0
@@ -589,9 +620,9 @@ threads | unsigned int  |  maximal number of parallel threads. | 1
 threads.cube_frequency | unsigned int  |  frequency for using cubing | 2
 threads.max_conflicts | unsigned int  |  maximal number of conflicts between rounds of cubing for parallel SMT | 400
 
-## Module sls
+## sls
 
-Description: Experimental Stochastic Local Search Solver (for QFBV only).
+Experimental Stochastic Local Search Solver (for QFBV only).
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
@@ -615,5 +646,5 @@ walksat_ucb | bool  |  use bandit heuristic for walksat assertion selection (ins
 walksat_ucb_constant | double  |  the ucb constant c in the term score + c * f(touched) | 20.0
 walksat_ucb_forget | double  |  scale touched by this factor every base restart interval | 1.0
 walksat_ucb_init | bool  |  initialize total ucb touched to formula size | false
-walksat_ucb_noise | double  |  add noise 0 <= 256 * ucb_noise to ucb score for assertion selection | 0.0002
+walksat_ucb_noise | double  |  add noise 0 &lt;= 256 * ucb_noise to ucb score for assertion selection | 0.0002
 wp | unsigned int  |  random walk with probability wp / 1024 | 100

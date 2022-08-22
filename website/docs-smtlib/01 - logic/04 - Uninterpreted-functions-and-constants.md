@@ -33,4 +33,24 @@ To illustrate uninterpreted functions and constants let us introduce an (uninter
 (get-model)
 ```
 
-The resulting model introduces abstract values for the elements in A, because the sort A is uninterpreted. The interpretation for f in the model toggles between the two values for x and y, which are different.
+The resulting model introduces abstract values for the elements in A, because the sort A is uninterpreted. 
+The interpretation for f in the model toggles between the two values for x and y, which are different.
+
+The solver in z3 uses congruence closure to reason about equalities.
+Congruence closure allows inferring new equalities when the arguments to two applications
+of the same function are equal. In the example below, congruence closure infers that 
+`x` equals `(f x)` based on the first two assertions.
+So the constraints become unsatisfiable when adding the disequality between
+these two terms.
+```z3
+(declare-sort A)
+(declare-fun f (A) A)
+(declare-const x A)
+(assert (= (f (f x)) x))
+(assert (= (f (f (f x))) x))
+(check-sat)
+(get-model)
+  
+(assert (not (= (f x) x)))
+(check-sat)
+```

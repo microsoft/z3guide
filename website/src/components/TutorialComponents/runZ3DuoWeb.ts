@@ -8,6 +8,10 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
     const z3p = loadZ3();
 
     const { Context, Z3: Z3Core } = await z3p;
+
+    Z3Core.global_param_set('timeout', '10000')
+
+
     let Z3 = Context('main');
 
     let output = '';

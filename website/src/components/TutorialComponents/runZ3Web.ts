@@ -13,6 +13,9 @@ export default async function runZ3Web(input: string): Promise<string> {
     const ctx = Z3.mk_context(cfg);
     Z3.del_config(cfg);
 
+    Z3.global_param_set('timeout', '10000')
+
+
     let output = '';
     let error = '';
 
@@ -23,6 +26,11 @@ export default async function runZ3Web(input: string): Promise<string> {
         error = e.message ?? 'Error message is empty';
     } finally {
         Z3.del_context(ctx);
+    }
+
+    if ((/unknown/).test(output)) {
+        output = '';
+        error = 'Z3 timeout';        
     }
 
     // we are guaranteed to have non-undefined output and error

@@ -124,7 +124,7 @@ The define-sort command defines a new sort symbol that is an abbreviation for a 
 
 The following example defines several abbreviations for sort expressions.
 
-```z2 no-build
+```z3
 (define-sort IList () (List Int))
 (define-sort List-Set (T) (Array (List T) Bool))
 (define-sort I () Int)

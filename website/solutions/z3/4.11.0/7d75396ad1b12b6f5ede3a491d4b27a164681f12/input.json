@@ -1,0 +1,1 @@
+{"input":"(declare-const s (Seq Int))\n(declare-const t (Seq Int))\n\n(assert (= t (seq.map (lambda ((x Int)) (* x 2)) s)))\n(assert (> (seq.len t) 3))\n(check-sat)\n(get-model)"}

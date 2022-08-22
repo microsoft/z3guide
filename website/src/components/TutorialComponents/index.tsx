@@ -250,6 +250,11 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
       } else if (result.error !== '') {
         newResult.error = result.error;
         newResult.status = statusCodes.runError;
+      } else {
+        // no output nor error
+        newResult.output = "";
+        newResult.error = "";
+        newResult.status = statusCodes.success;
       }
     } catch (error) {
       errorMsg = `${lang}-web failed with input:\n${currCode}\n\nerror:\n${error}`;

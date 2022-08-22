@@ -52,7 +52,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`Documentation for ${siteConfig.title}`}
-      description="An interactive online for the Z3 theorem prover with the ability to execute Z3 in the browser.">
+      description="An interactive online guide for the Z3 theorem prover with the ability to execute Z3 in the browser.">
       <HomepageHeader />
     </Layout>
   );

@@ -40,7 +40,7 @@ counter-examples.
 (declare-const x (_ BitVec 32))
 ------
 (declare-const x (_ BitVec 32))
-(assert (= (bvand x (bvsub 1 (_ bv1 32))) (_ bv0 32)))
+(assert (= (bvand x (bvsub x (_ bv1 32))) (_ bv0 32)))
 
 ```
 

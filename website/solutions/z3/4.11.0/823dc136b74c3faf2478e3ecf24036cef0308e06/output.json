@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun s1 () (Set Int)\n    ((as const (Set Int)) true))\n  (define-fun s2 () (Array (List Int) Bool)\n    ((as const (Array (List Int) Bool)) false))\n  (define-fun a () Int\n    0)\n  (define-fun l () (List Int)\n    nil)\n)\n","error":"","status":"z3-ran","hash":"823dc136b74c3faf2478e3ecf24036cef0308e06"}

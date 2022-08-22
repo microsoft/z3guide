@@ -1103,7 +1103,7 @@ The following challenge problem from the paper [SEM a system for enumerating mod
 (check-sat)
 ```
 
-:::warn
+:::warning
 Quantifier reasoning is undecidable. Z3 attempts to find a refutation or a finite model
 of quantified formulas. When formulas are satisfiable but have no finite models, z3 will
 likely diverge. The following example illustrates a formula that only has infinite models.

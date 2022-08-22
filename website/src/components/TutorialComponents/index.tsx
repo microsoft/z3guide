@@ -80,23 +80,38 @@ function Output(props: {
     z3DuoOutput = undefined;
   }
 
-  const buildOutput = (model1: string, msg1: string, model2?: string, msg2?: string) => {
-    const secondRow = model2 && msg2 ? <tr>
+  const icon = (b: boolean) => {
+    return b ? '✅' : '❌';
+  }
+
+  const buildOutput = (
+    model1: string,
+    res1: { [key: string]: boolean },
+    model2?: string,
+    res2?: { [key: string]: boolean }) => {
+    const secondRow = model2 && res2 ? <tr>
       <td>{model2}</td>
-      <td>{msg2}</td>
+      <td>{icon(res2.user)}</td>
+      <td>{icon(res2.secret)}</td>
     </tr> : <></>;
 
     return <table>
       <tr>
+        <th>Model</th>
+        <th>Satisfies your formula?</th>
+        <th>Satisfies the secret formula?</th>
+      </tr>
+      <tr>
         <td>{model1}</td>
-        <td>{msg1}</td>
+        <td>{icon(res1.user)}</td>
+        <td>{icon(res1.secret)}</td>
       </tr>
       {secondRow}
     </table>
 
   }
 
-  const z3DuoTable = z3DuoOutput ? buildOutput(z3DuoOutput.model1, z3DuoOutput.msg1, z3DuoOutput.model2, z3DuoOutput.msg2) : <></>;
+  const z3DuoTable = z3DuoOutput ? buildOutput(z3DuoOutput.model1, z3DuoOutput.res1, z3DuoOutput.model2, z3DuoOutput.res2) : <></>;
 
   const regularOutput = (<pre className={codeChanged ? styles.outdated : ""}>
     {success ? (

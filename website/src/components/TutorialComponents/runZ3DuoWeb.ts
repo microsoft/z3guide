@@ -37,19 +37,31 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         if (sat(secret_not_user) && sat(user_not_secret)) {
             outputObj = {
                 model1: s2.model().sexpr(),
-                msg1: secret_not_user_msg,
+                res1: {
+                    secret: true,
+                    user: false,
+                },
                 model2: s1.model().sexpr(),
-                msg2: user_not_secret_msg
+                res2: {
+                    user: true,
+                    secret: false
+                }
             };
         } else if (sat(secret_not_user)) {
             outputObj = {
                 model1: s2.model().sexpr(), 
-                msg1: secret_not_user_msg
+                res1: {
+                    secret: true,
+                    user: false,
+                }
             };
         } else if (sat(user_not_secret)) {
             outputObj = {
                 model1: s1.model().sexpr(),
-                msg1: user_not_secret_msg
+                res1: {
+                    user: true,
+                    secret: false
+                }
             };
 
         } else { // both unsat

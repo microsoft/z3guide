@@ -90,21 +90,21 @@ function Output(props: {
     model2?: string,
     res2?: { [key: string]: boolean }) => {
     const secondRow = model2 && res2 ? <tr>
-      <td>{model2}</td>
-      <td>{icon(res2.user)}</td>
-      <td>{icon(res2.secret)}</td>
+      <td><pre>{model2}</pre></td>
+      <td className={styles.TableCellIcon}>{icon(res2.user)}</td>
+      <td className={styles.TableCellIcon}>{icon(res2.secret)}</td>
     </tr> : <></>;
 
     return <table>
       <tr>
-        <th>Model</th>
+        <th className={styles.FirstCol}>Model</th>
         <th>Satisfies your formula?</th>
         <th>Satisfies the secret formula?</th>
       </tr>
       <tr>
-        <td>{model1}</td>
-        <td>{icon(res1.user)}</td>
-        <td>{icon(res1.secret)}</td>
+        <td><pre>{model1}</pre></td>
+        <td className={styles.TableCellIcon}>{icon(res1.user)}</td>
+        <td className={styles.TableCellIcon}>{icon(res1.secret)}</td>
       </tr>
       {secondRow}
     </table>

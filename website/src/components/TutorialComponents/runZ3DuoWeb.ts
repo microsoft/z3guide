@@ -1,6 +1,6 @@
 import loadZ3 from './loadZ3';
 
-import { Z3_error_code, } from 'z3-solver';
+import { Z3_error_code, Z3_context} from 'z3-solver';
 
 export default async function runZ3DuoWeb(user_input: string, secret_input: string): Promise<string> {
 
@@ -14,10 +14,7 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
     let error = '';
     let outputObj;
 
-    const throwIfError = (ctxPtr) => {
-        const errorCode = Z3Core.get_error_code(ctxPtr);
-        console.log(ctxPtr)
-        console.log({errorCode})
+    const throwIfError = (ctxPtr: Z3_context) => {
         if (Z3Core.get_error_code(ctxPtr) !== Z3_error_code.Z3_OK) {
             throw new Error(Z3Core.get_error_msg(ctxPtr, Z3Core.get_error_code(ctxPtr)));
         }
@@ -29,8 +26,8 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         s1.fromString(user_input);
         s2.fromString(secret_input);
 
-        throwIfError(s1.ptr);
-        throwIfError(s2.ptr);
+        throwIfError(s1.ctx.ptr);
+        throwIfError(s2.ctx.ptr);
 
         const not_user = Z3.Not(Z3.And(s1.assertions()));
         const not_secret = Z3.Not(Z3.And(s2.assertions()));

@@ -64,12 +64,14 @@ function RunButton(props: { onClick: () => Promise<void>, runFinished: boolean, 
 
 
 function Output(props: {
+  language: string,
   result: { [key: string]: string | Array<string> },
   codeChanged: boolean,
   statusCodes: { [key: string]: string },
 }) {
-  const { result, codeChanged, statusCodes } = props;
+  const { language, result, codeChanged, statusCodes } = props;
   const success = result.status === statusCodes.success;
+  const timeout = result.status === statusCodes.timeout;
   const emptyOutput = result.output === "";
 
   let z3DuoOutput;
@@ -116,17 +118,21 @@ function Output(props: {
   const regularOutput = (<pre className={codeChanged ? styles.outdated : ""}>
     {success ? (
       ""
-    ) : (
+    ) : timeout ?
       <span style={{ color: "red" }}>
-        <b>Script contains one or more errors: </b>
-        <br />
-      </span>
-    )}
+        {`--${language} timeout--`}
+      </span> :
+      (
+        <span style={{ color: "red" }}>
+          <b>Script contains one or more errors: </b>
+          <br />
+        </span>
+      )}
     {success
       ? emptyOutput
         ? "--Output is empty--"
         : result.output
-      : result.error}
+      : !timeout && result.error}
   </pre>);
 
   const z3DuoOutputEl = (<div className={codeChanged ? styles.outdated : ""}>
@@ -249,7 +255,11 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
           : statusCodes.success;
       } else if (result.error !== '') {
         newResult.error = result.error;
-        newResult.status = statusCodes.runError;
+        if (/timeout/.test(result.error)) {
+          newResult.status = statusCodes.timeout;
+        } else {
+          newResult.status = statusCodes.runError;
+        }
       } else {
         // no output nor error
         newResult.output = "";
@@ -296,6 +306,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
         </div>
         {outputRendered ? (
           <Output
+            language={lang}
             codeChanged={codeChanged}
             result={output}
             statusCodes={statusCodes}

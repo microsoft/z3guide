@@ -28,12 +28,6 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
 
         const sat = (s: string) => s === 'sat';
 
-
-
-
-        const user_not_secret_msg = 'satisfies your formula but not the secret formula.';
-        const secret_not_user_msg = 'satisfies the secret formula but not your formula.';
-
         if (sat(secret_not_user) && sat(user_not_secret)) {
             outputObj = {
                 model1: s2.model().sexpr(),

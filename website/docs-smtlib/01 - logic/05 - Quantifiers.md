@@ -1102,3 +1102,21 @@ The following challenge problem from the paper [SEM a system for enumerating mod
 (assert (distinct (g a (f b a)) (f a (g b a))))
 (check-sat)
 ```
+
+:::warn
+Quantifier reasoning is undecidable. Z3 attempts to find a refutation or a finite model
+of quantified formulas. When formulas are satisfiable but have no finite models, z3 will
+likely diverge. The following example illustrates a formula that only has infinite models.
+:::
+
+```z3 no-build
+(set-option :smt.mbqi true)
+(declare-sort S)
+(declare-fun g (S) S)
+(declare-fun f (S) S)
+(declare-const a S)
+(assert (forall ((x S)) (= (g (f x)) x)))
+(assert (forall ((x S)) (not (= a (f x)))))
+(check-sat)
+(get-model)
+```

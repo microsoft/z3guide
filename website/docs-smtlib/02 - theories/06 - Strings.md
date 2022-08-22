@@ -263,7 +263,7 @@ Note that after `(_ char 54)` is the same as `(simplify (str.from_code 54))`.
 | `(str.is_digit s)`             | A predicate whether string is a one of the digits 0 to 9 |
 | `(str.to_code s)`              | Convert string of length one to the character code (an integer). Produce -1 if the string is not of length 1 |
 | `(str.from_code i)`            | Convert an integer in the range of valid Unicode to a string of length one |
-| `(str.replace_all s src dst)'  | Currently not supported: replace all occurrences of `s` in `src` by `dst`  |
+| `(str.replace_all s src dst)`  | Currently not supported: replace all occurrences of `s` in `src` by `dst`  |
 
 
 Note that `(str.indexof s offset)` is shorthand for `(str.indexof s offset 0)`.

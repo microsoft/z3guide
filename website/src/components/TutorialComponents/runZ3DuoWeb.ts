@@ -9,7 +9,8 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
 
     const { Context, Z3: Z3Core } = await z3p;
 
-    Z3Core.global_param_set('timeout', '10000')
+    const timeout = 10000;
+    Z3Core.global_param_set('timeout', String(timeout));
 
 
     let Z3 = Context('main');
@@ -23,6 +24,8 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
             throw new Error(Z3Core.get_error_msg(ctxPtr, Z3Core.get_error_code(ctxPtr)));
         }
     }
+
+    const startTime = (new Date()).getTime();
 
     try {
         const s1 = new Z3.Solver();
@@ -42,6 +45,7 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         const secret_not_user = await s2.check();
 
         const sat = (s: string) => s === 'sat';
+        const unsat = (s: string) => s === 'unsat';
 
         if (sat(secret_not_user) && sat(user_not_secret)) {
             outputObj = {
@@ -73,13 +77,31 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
                 }
             };
 
-        } else { // both unsat
+        } else if (unsat(user_not_secret) && unsat(secret_not_user)) { // both unsat
             output = `You got the right formula! Congratulations!`;
+        } else {
+            output = 'unknown';
         }
     } catch (e) {
         // error with running z3
         error = e.message ?? 'Error message is empty';
         console.log({error});
+    }
+
+    const timeEnd = (new Date()).getTime();
+
+    const unknownOutput = (/unknown/).test(output); // both unknown
+    const hasError = error !== '';
+    const timeoutError = (toAppend: string) => {
+        if (timeEnd - startTime >= timeout) {
+            return toAppend + '\nZ3 timeout\n';
+        }
+    }
+
+    if (unknownOutput) {
+        output = timeoutError(output);
+    } else if (hasError) {
+        error = timeoutError(error);
     }
 
     const finalOutput = outputObj ? JSON.stringify(outputObj) : output;

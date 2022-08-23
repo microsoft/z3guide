@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import clsx from "clsx";
 import Editor from "@monaco-editor/react";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
@@ -81,10 +81,18 @@ export function CodeEditor(props: {
     onChange: (code: string) => void;
     githubRepo: string;
 }) {
+    const editorRef = useRef(null);
+
+    const handleEditorDidMount = (editor: typeof Editor) => {
+        editorRef.current = editor;
+    }
 
     const [code, setCode] = useState(props.code);
     const [allowUndo, setAllowUndo] = useState(false);
     const [tmpCode, setTmpCode] = useState("");
+    const [hasFocus, setHasFocus] = useState(false);
+
+
     const disabled = props.disabled;
 
     const handleEditorChange = (value: string) => {
@@ -100,8 +108,10 @@ export function CodeEditor(props: {
     const onClickReset = () => {
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
+        setHasFocus(false);
         setAllowUndo(true);
         setTimeout(() => {
+            setHasFocus(true);
             setAllowUndo(false);
         }, 3000);
     }
@@ -110,27 +120,79 @@ export function CodeEditor(props: {
         setCode(tmpCode);
     }
 
+    const handleFocus = () => {
+        const selectObj = window.getSelection();
+        if (selectObj.rangeCount === 0) {
+            // when focusing on the editor without using the mouse, 
+            // merely from the Tab key
+            const range = new Range();
+            range.collapse(true);
+            selectObj.addRange(range);
+        }
+        setHasFocus(true);
+    }
+
+    const handleBlur = () => {
+        setHasFocus(false);
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+        const editor = editorRef.current;
+        if (e.key === 'Escape' && !props.disabled) {
+            console.log((e.target as Node).nodeType)
+            if (e.target === editor) {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                editor.focus(); // sometimes blur won't fire without focus first
+                editor.blur();
+            }
+        }
+    }
+
+    const handleKeyDownIfEnabled = useCallback((_e: KeyboardEvent) => {
+        if (!disabled) {
+            handleKeyDown(_e);
+        }
+    }, [disabled]);
+
+
+    useEffect(() => {
+        document.addEventListener('keydown',
+            handleKeyDownIfEnabled,
+            {
+                capture: true,
+            }
+        );
+        return () => {
+            document.removeEventListener('keydown', handleKeyDownIfEnabled);
+        };
+    }, [handleKeyDownIfEnabled]);
+
     const options = {
         readOnly: disabled,
         minimap: { enabled: false },
-        fontSize: '15px'
+        fontSize: '15px',
     };
 
     return (
         <div className={props.className} style={props.style}>
-            <Editor
-                height='15vh'
-                language={props.lang}
-                value={code}
-                onChange={handleEditorChange}
-                options={options}
-            />
+            <div tabIndex={0} onFocus={handleFocus} onBlur={handleBlur}>
+                <Editor
+                    height='15vh'
+                    language={props.lang}
+                    value={code}
+                    onChange={handleEditorChange}
+                    options={options}
+                    onMount={handleEditorDidMount}
+                />
+            </div>
             <div className={codeBlockContentStyles.buttonGroup}>
                 <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
                 {!props.readonly && !allowUndo && <ResetBtn resetCode={onClickReset} />}
                 {!props.readonly && allowUndo && <UndoBtn undoCode={onClickUndo} />}
                 {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}
             </div>
-        </div>
+        </div >
     );
 }

@@ -82,14 +82,9 @@ export function CodeEditor(props: {
     githubRepo: string;
 }) {
 
-    //TODO: use state for props.code
-
     const [code, setCode] = useState(props.code);
     const [allowUndo, setAllowUndo] = useState(false);
     const [tmpCode, setTmpCode] = useState("");
-    // const [hasFocus, setHasFocus] = useState(false);
-
-    // const disabled = props.disabled || !hasFocus;
     const disabled = props.disabled;
 
     const handleEditorChange = (value: string) => {
@@ -105,12 +100,8 @@ export function CodeEditor(props: {
     const onClickReset = () => {
         setTmpCode(code.slice()); // use copy not reference
         setCode(props.code);
-        // setDisabled(true);
-        // setHasFocus(false);
         setAllowUndo(true);
         setTimeout(() => {
-            // setDisabled(props.disabled);
-            // setHasFocus(true);
             setAllowUndo(false);
         }, 3000);
     }

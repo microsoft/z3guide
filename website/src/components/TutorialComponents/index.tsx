@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import Container from "@theme/CodeBlock/Container";
-import CodeEditor from './CodeBlock';
 import { CodeEditor as MonacoEditor } from './CodeEditor';
 import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css';
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';

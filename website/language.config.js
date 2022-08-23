@@ -26,7 +26,7 @@ async function createConfig() {
             {
                 name: 'Z3 JavaScript Bindings',
                 label: 'z3-js',
-                highlight: 'javascript',
+                highlight: 'typescript',
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
                 buildConfig: {
                     version: '1',

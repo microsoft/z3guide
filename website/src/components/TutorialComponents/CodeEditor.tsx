@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import clsx from "clsx";
-import Editor from "@monaco-editor/react";
+import Editor, { useMonaco } from "@monaco-editor/react";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import CopyButton from '@theme/CodeBlock/CopyButton';
 import { useEffect } from "react";
@@ -90,6 +90,16 @@ export function CodeEditor(props: {
     const handleEditorChange = (value: string) => {
         setCode(value);
     }
+
+    const monaco = useMonaco();
+
+    useEffect(() => {
+        if (monaco) {
+            monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                noSemanticValidation: true,
+            });
+        }
+    }, [monaco]);
 
     useEffect(() => {
         if (props.onChange) {

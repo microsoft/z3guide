@@ -1,0 +1,1 @@
+{"input":"const [x, y] = [Z3.Bool.const('x'), Z3.Bool.const('y')];\nconst conjecture = Z3.Eq(Z3.Not(Z3.And(x, y)), Z3.Or(Z3.Not(x), Z3.Not(y)));\nZ3.solve(Z3.Not(conjecture))"}

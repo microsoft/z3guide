@@ -179,7 +179,6 @@ function CustomCodeEditor(props: {
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
-  console.log({language})
   const component = (
     <Container
       as="div"

@@ -33,7 +33,7 @@ export default async function runZ3Web(input: string): Promise<string> {
     if ((/unknown/).test(output)) {
         const time_end = (new Date()).getTime();
         if (time_end - time_start >= 10000) 
-            output = output + '\nZ3 timeout\n' + (time_end - time_start) + '\n'
+            output = output + '\nZ3 timeout\n'
     }
 
     // we are guaranteed to have non-undefined output and error

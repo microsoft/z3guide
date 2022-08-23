@@ -230,13 +230,15 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
 
   const [currCode, setCurrCode] = useState(code);
 
-  const [codeChanged, setCodeChanged] = useState(false);
-
   const [outputRendered, setOutputRendered] = useState(false);
 
   const [runFinished, setRunFinished] = useState(true);
 
   const [output, setOutput] = useState(result);
+
+  const [lastSnippet, setLastSnippet] = useState(code);
+
+  const codeChanged = lastSnippet !== currCode;
 
   const onDidClickOutputToggle = () => {
     setOutputRendered(!outputRendered);
@@ -245,13 +247,13 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
   // bypassing server-side rendering
   const onDidClickRun = async () => {
     setRunFinished(false);
-    // TODO: only load z3 when needed
     const newResult = { ...result };
     let errorMsg: string;
 
     const runProcess = clientConfig[lang];
 
     let input = currCode;
+    setLastSnippet(input);
     let process = isZ3Duo ? runProcess(input, result.output) : runProcess(input);
 
     // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
@@ -286,7 +288,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
       throw new Error(errorMsg);
     } finally {
       setOutput(newResult);
-      setCodeChanged(false);
       setRunFinished(true);
       if (!outputRendered) {
         setOutputRendered(true); // hack for the playground editor
@@ -296,7 +297,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
 
   const onDidChangeCode = (code: string) => {
     setCurrCode(code);
-    if (outputRendered) setCodeChanged(true);
   };
 
 

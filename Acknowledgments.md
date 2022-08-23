@@ -6,7 +6,7 @@ The z3guide was created by
 * Ayana Monroe, UNC, MSR Intern
 * Nikolaj Bj&oslash;rner, Peli de Halleux, Microsoft Research
 
-It relies extensive help and on the JavaScript bindings created by
+It relies on extensive help and use of the JavaScript bindings created by
 
 * Kevin Bakkot, Olaf Tomalka
 

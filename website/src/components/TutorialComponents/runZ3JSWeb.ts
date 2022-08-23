@@ -50,8 +50,6 @@ export default async function runZ3JSWeb(input: string): Promise<string> {
         error = e.message ?? 'Error message is empty';
         if (timeStart) {
             timeEnd = (new Date()).getTime();
-            console.log({timeStart})
-            console.log({timeEnd})
             if (timeEnd - timeStart >= timeout) {
                 error = error + '\nZ3 timeout\n'
             }

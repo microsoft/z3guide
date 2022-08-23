@@ -13,10 +13,10 @@ export default async function runZ3Web(input: string): Promise<string> {
     const ctx = Z3.mk_context(cfg);
     Z3.del_config(cfg);
 
-    const d = new Date();
-    const time_start = d.getTime();
-    Z3.global_param_set('timeout', '10000')
+    const timeStart = (new Date()).getTime();
+    const timeout = 10000;
 
+    Z3.global_param_set('timeout', String(timeout));
 
     let output = '';
     let error = '';
@@ -31,9 +31,10 @@ export default async function runZ3Web(input: string): Promise<string> {
     }
 
     if ((/unknown/).test(output)) {
-        const time_end = (new Date()).getTime();
-        if (time_end - time_start >= 10000) 
+        const timeEnd = (new Date()).getTime();
+        if (timeEnd - timeStart >= timeout) {
             output = output + '\nZ3 timeout\n'
+        }
     }
 
     // we are guaranteed to have non-undefined output and error

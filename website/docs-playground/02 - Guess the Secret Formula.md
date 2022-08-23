@@ -1,5 +1,5 @@
 ---
-title: Guess a Formula
+title: Guess the Secret Formula
 sidebar_position: 2
 ---
 

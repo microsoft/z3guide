@@ -61,12 +61,22 @@ then the resulting string has the same length, and either character 8 or 9 are u
 (pop)
 ```
 
-<!---
+
 ## Map and Fold
 
 The functions map and fold (left) are modeled after the functions found in ML languages.
 Our version of `fold_lefti`, where the current index of the sequence element is available is slightly different, it takes as an additional argument
 also an offset. The advantage of including the offset is that it is easier to formulate how the function decomposes over sequence concatenation.
-The decision procedure for map and fold behaves similar to recursive function unfolding. 
+The decision procedure for map and fold behaves similar to recursive function unfolding, thus they are mostly effective when
+there is a finite satisfying model or the proof of unsatisfiability does not require inventing auxiliary inductive relations.
 
---->
+```z3
+(declare-const s (Seq Int))
+(declare-const t (Seq Int))
+
+(assert (= t (seq.map (lambda ((x Int)) (* x 2)) s)))
+(assert (> (seq.len t) 3))
+(check-sat)
+(get-model)
+```
+

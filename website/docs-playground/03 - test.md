@@ -27,6 +27,15 @@ A typical SMTLIB snippet
 (pop)
 ```
 
+A nontermination z3 snippet for web testing (now readonly to skip build)
+```lisp
+(declare-fun P (Int) Bool)
+(assert (forall ((x Int)) (=> (P x) (P (+ x 1)))))
+(assert (forall ((x Int)) (=> (P x) (P (- x 1)))))
+(assert (P 0))
+(check-sat)
+```
+
 A typical z3-js snippet
 ```z3-js
 const solver = new Z3.Solver();

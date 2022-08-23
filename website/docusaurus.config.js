@@ -174,10 +174,10 @@ async function createConfig() {
                 {
                   label: 'Z3 on GitHub',
                   href: 'https://github.com/Z3Prover/z3'
-		    },
+                },
                 {
-		    label: 'Acknowledgements',
-		    href: 'https://github.com/microsoft/z3guide/blob/main/Acknowledgments.md'
+                  label: 'Acknowledgments',
+                  to: '/Acknowledgments',
                 }
               ],
             },

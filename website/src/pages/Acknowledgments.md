@@ -1,3 +1,7 @@
+---
+title: Acknowledgements
+---
+
 # Acknowledgments
 
 The z3guide was created by 
@@ -10,4 +14,4 @@ It relies on extensive help and use of the JavaScript bindings created by
 
 * Kevin Bakkot, Olaf Tomalka
 
-with earlier wasm bindings by Leonardo Alt, Phillip Zucker, and Clément Pit-Claudel.
+with earlier wasm bindings by Leonardo Alt, Phillip Zucker, and ClÃ©ment Pit-Claudel.

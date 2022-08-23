@@ -96,6 +96,7 @@ export default async function runZ3DuoWeb(user_input: string, secret_input: stri
         if (timeEnd - startTime >= timeout) {
             return toAppend + '\nZ3 timeout\n';
         }
+        return toAppend;
     }
 
     if (unknownOutput) {

@@ -197,6 +197,8 @@ function CustomCodeEditor(props: {
             code={input}
             onChange={onChange}
             readonly={readonly}
+            githubRepo={githubRepo}
+            className={codeBlockContentStyles.codeBlockContent}
           /> :
           <CodeEditor
             code={input}

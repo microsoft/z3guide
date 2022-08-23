@@ -116,10 +116,13 @@ export function CodeEditor(props: {
         fontSize: '15px'
     };
 
+    const numLines = code.split('\n').length;
+    const height = `${numLines + 4}em`;
+
     return (
         <div className={props.className} style={props.style}>
             <Editor
-                height='15vh'
+                height={height}
                 language={props.lang}
                 value={code}
                 onChange={handleEditorChange}

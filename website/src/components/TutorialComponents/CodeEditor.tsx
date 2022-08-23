@@ -102,6 +102,23 @@ export function CodeEditor(props: {
         }
     }, [code]);
 
+    const onClickReset = () => {
+        setTmpCode(code.slice()); // use copy not reference
+        setCode(props.code);
+        // setDisabled(true);
+        // setHasFocus(false);
+        setAllowUndo(true);
+        setTimeout(() => {
+            // setDisabled(props.disabled);
+            // setHasFocus(true);
+            setAllowUndo(false);
+        }, 3000);
+    }
+
+    const onClickUndo = () => {
+        setCode(tmpCode);
+    }
+
     const options = {
         readOnly: disabled,
         minimap: { enabled: false },
@@ -112,15 +129,15 @@ export function CodeEditor(props: {
         <div className={props.className} style={props.style}>
             <Editor
                 height='15vh'
-                defaultLanguage={props.lang}
-                defaultValue={props.code}
+                language={props.lang}
+                value={code}
                 onChange={handleEditorChange}
                 options={options}
             />
             <div className={codeBlockContentStyles.buttonGroup}>
                 <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
-                {/* {!props.readonly && !allowUndo && <ResetBtn resetCode={onClickReset} />} */}
-                {/* {!props.readonly && allowUndo && <UndoBtn undoCode={onClickUndo} />} */}
+                {!props.readonly && !allowUndo && <ResetBtn resetCode={onClickReset} />}
+                {!props.readonly && allowUndo && <UndoBtn undoCode={onClickUndo} />}
                 {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}
             </div>
         </div>

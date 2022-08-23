@@ -35,14 +35,28 @@ async function loadZ3() {
 export default async function runZ3JSWeb(input: string): Promise<string> {
     let output = '';
     let error = '';
+    let timeStart, timeEnd: number = undefined;
+
+    const Z3 = await loadZ3();
+    const timeout = 10000;
+
     try {
-        const Z3 = await loadZ3();
+        Z3.Z3.global_param_set('timeout', String(timeout));
+        timeStart = (new Date()).getTime();
         const evalZ3JS = await loadEvalZ3();
         output = await evalZ3JS(Z3, input) ?? '';
     } catch (e) {
         // error with running z3
         error = e.message ?? 'Error message is empty';
-    } 
+        if (timeStart) {
+            timeEnd = (new Date()).getTime();
+            console.log({timeStart})
+            console.log({timeEnd})
+            if (timeEnd - timeStart >= timeout) {
+                error = error + '\nZ3 timeout\n'
+            }
+        }
+    }
     // we are guaranteed to have non-undefined output and error
     return JSON.stringify({ output: String(output), error: error });
 }

@@ -253,7 +253,6 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
     const runProcess = clientConfig[lang];
 
     let input = currCode;
-    setLastSnippet(input);
     let process = isZ3Duo ? runProcess(input, result.output) : runProcess(input);
 
     // `z3.interrupt` -- set the cancel status of an ongoing execution, potentially with a timeout (soft? hard? we should use hard)
@@ -287,6 +286,7 @@ export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
       newResult.status = `${lang}-web-failed`;
       throw new Error(errorMsg);
     } finally {
+      setLastSnippet(input);
       setOutput(newResult);
       setRunFinished(true);
       if (!outputRendered) {

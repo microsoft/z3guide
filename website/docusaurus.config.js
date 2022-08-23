@@ -177,7 +177,7 @@ async function createConfig() {
 		    },
                 {
 		    label: 'Acknowledgements',
-		    href: 'https://github.com/microsoft/z3guide/Acknowledgments.md'
+		    href: 'https://github.com/microsoft/z3guide/blob/main/Acknowledgments.md'
                 }
               ],
             },

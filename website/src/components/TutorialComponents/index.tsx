@@ -180,6 +180,7 @@ function CustomCodeEditor(props: {
   // despite that we have imported the language highlighting at the beginning
   const isBrowser = useIsBrowser();
 
+  console.log({language})
   const component = (
     <Container
       as="div"
@@ -190,31 +191,28 @@ function CustomCodeEditor(props: {
         language && `language-${language}`,
       )}
     >
-      {
-        language === 'lisp' ?
-          <MonacoEditor 
-            lang={language}
-            code={input}
-            disabled={!editable}
-            onChange={onChange}
-            readonly={readonly}
-            githubRepo={githubRepo}
-            className={codeBlockContentStyles.codeBlockContent}
-          /> :
-          <CodeEditor
-            code={input}
-            theme={prismTheme}
-            disabled={!editable}
-            key={String(isBrowser)}
-            className={codeBlockContentStyles.codeBlockContent}
-            onChange={onChange}
-            language={language}
-            prism={Prism}
-            githubRepo={githubRepo}
-            readonly={readonly}
-            showLineNumbers={showLineNumbers}
-          />
-      }
+      <MonacoEditor
+        lang={language}
+        code={input}
+        disabled={!editable}
+        onChange={onChange}
+        readonly={readonly}
+        githubRepo={githubRepo}
+        className={codeBlockContentStyles.codeBlockContent}
+      />
+      {/* <CodeEditor
+        code={input}
+        theme={prismTheme}
+        disabled={!editable}
+        key={String(isBrowser)}
+        className={codeBlockContentStyles.codeBlockContent}
+        onChange={onChange}
+        language={language}
+        prism={Prism}
+        githubRepo={githubRepo}
+        readonly={readonly}
+        showLineNumbers={showLineNumbers}
+      /> */}
     </Container>
   );
 

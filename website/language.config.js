@@ -6,7 +6,7 @@ async function createConfig() {
             {
                 name: 'Z3', // your language name
                 label: 'z3', // label for the language in markdown code blocks
-                highlight: 'lisp', // syntax highlighting provided by prism for the language
+                highlight: 'clojure', // syntax highlighting provided by prism for the language
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
                 buildConfig: {
                     version: '1',
@@ -26,7 +26,7 @@ async function createConfig() {
             {
                 name: 'Z3 JavaScript Bindings',
                 label: 'z3-js',
-                highlight: 'js',
+                highlight: 'javascript',
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
                 buildConfig: {
                     version: '1',
@@ -54,7 +54,7 @@ async function createConfig() {
             {
                 name: 'Z3 Secret Formula Guessing',
                 label: 'z3-duo',
-                highlight: 'lisp',
+                highlight: 'clojure',
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
                 githubRepo: 'Z3Prover/z3',
                 githubDiscussion: true,

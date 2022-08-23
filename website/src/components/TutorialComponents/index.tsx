@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { ThemeClassNames, usePrismTheme } from "@docusaurus/theme-common";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import Container from "@theme/CodeBlock/Container";
-import CodeEditor from './CodeBlock';
+import { CodeEditor as MonacoEditor } from './CodeEditor';
 import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css';
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import styles from "./styles.module.css";
@@ -189,7 +189,16 @@ function CustomCodeEditor(props: {
         language && `language-${language}`,
       )}
     >
-      <CodeEditor
+      <MonacoEditor
+        lang={language}
+        code={input}
+        disabled={!editable}
+        onChange={onChange}
+        readonly={readonly}
+        githubRepo={githubRepo}
+        className={codeBlockContentStyles.codeBlockContent}
+      />
+      {/* <CodeEditor
         code={input}
         theme={prismTheme}
         disabled={!editable}
@@ -201,7 +210,7 @@ function CustomCodeEditor(props: {
         githubRepo={githubRepo}
         readonly={readonly}
         showLineNumbers={showLineNumbers}
-      />
+      /> */}
     </Container>
   );
 

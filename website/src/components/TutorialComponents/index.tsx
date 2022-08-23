@@ -195,6 +195,7 @@ function CustomCodeEditor(props: {
           <MonacoEditor 
             lang={language}
             code={input}
+            disabled={!editable}
             onChange={onChange}
             readonly={readonly}
             githubRepo={githubRepo}

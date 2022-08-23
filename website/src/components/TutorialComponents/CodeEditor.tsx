@@ -74,6 +74,7 @@ export function UndoBtn(props: { undoCode: () => void }) {
 export function CodeEditor(props: {
     lang: string;
     code: string;
+    disabled: boolean;
     readonly: boolean;
     className: string;
     style?: React.CSSProperties;
@@ -84,6 +85,12 @@ export function CodeEditor(props: {
     //TODO: use state for props.code
 
     const [code, setCode] = useState(props.code);
+    const [allowUndo, setAllowUndo] = useState(false);
+    const [tmpCode, setTmpCode] = useState("");
+    // const [hasFocus, setHasFocus] = useState(false);
+
+    // const disabled = props.disabled || !hasFocus;
+    const disabled = props.disabled;
 
     const handleEditorChange = (value: string) => {
         setCode(value);
@@ -96,7 +103,7 @@ export function CodeEditor(props: {
     }, [code]);
 
     const options = {
-        readOnly: props.readonly,
+        readOnly: disabled,
         minimap: { enabled: false },
         fontSize: '15px'
     };

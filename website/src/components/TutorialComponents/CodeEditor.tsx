@@ -27,5 +27,12 @@ export function CodeEditor(props: {
             onChange={onChange}
             options={options}
         />
+            <div className={codeBlockContentStyles.buttonGroup}>
+                <CopyButton className={codeBlockContentStyles.codeButton} code={props.code} /> 
+                {/* {!props.readonly && !allowUndo && <ResetBtn resetCode={onClickReset} />} */}
+                {/* {!props.readonly && allowUndo && <UndoBtn undoCode={onClickUndo} />} */}
+                {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}
+            </div>
+        </div>
     );
 }

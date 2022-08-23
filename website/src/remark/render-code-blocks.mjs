@@ -230,6 +230,7 @@ export default function plugin() {
                 }
 
 
+                // z3-js and z3 reach here
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
                     const buildConfig = langConfig.buildConfig;
@@ -244,7 +245,8 @@ export default function plugin() {
                         code: value,
                         result: result,
                         githubRepo: githubRepo,
-                        editable: alwaysEditable,
+                        // editable: alwaysEditable,
+                        editable: true, // make all blocks editable because the readonly monaco is annoying
                         readonly: false,
                         showLineNumbers: showLineNumbers,
                         langVersion: buildConfig.langVersion,

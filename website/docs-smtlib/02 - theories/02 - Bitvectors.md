@@ -70,6 +70,20 @@ Let us illustrate a simple property of bit-wise arithmetic. There is a fast way 
 (check-sat)
 ```
 
+
+### Word operations
+
+```z3
+(declare-const a (_ BitVec 4))
+(simplify (concat a #x0 #x1 #x2))
+(simplify ((_ zero_extend 4) #xF))
+(simplify ((_ sign_extend 4) #xF))
+(simplify ((_ extract 15 8) #xABCD1234))
+(simplify ((_ rotate_left 4) #xABCD))
+(simplify ((_ rotate_right 4) #xABCD))
+(simplify ((_ repeat 3) #xABC))
+```
+
 ### Predicates over Bitvectors
 
 ```z3

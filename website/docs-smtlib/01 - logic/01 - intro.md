@@ -12,7 +12,7 @@ The main objective of the tutorial is to introduce the reader on how to use Z3 e
  
  > For an understanding of computational logic from the foundations of first-order logic to state-of-the-art decision procedures for arithmetic, data structures, and combination theories, refer to  [The Calculus of Computation by Aaron Bradley and Zohar Manna](https://theory.stanford.edu/~arbrad/book.html)
 
- > For an understanding decision procedures, algorithms that, given a decision problem, terminate with a correct yes or no answer, refer to [Decision Procedures by Daniel Kroening and Ofer Strichman](http://www.decision-procedures.org/)
+ > For an understanding of decision procedures, algorithms that, given a decision problem, terminate with a correct yes or no answer, refer to [Decision Procedures by Daniel Kroening and Ofer Strichman](http://www.decision-procedures.org/)
  
  > For an overview of Satisfiability modulo theories (SMT) and Boolean satisfiability problem (SAT) solvers, examples of their theoretical application, and questions to work through, refer to [SAT/SMT by Example by Dennis Yurichev](https://sat-smt.codes/SAT_SMT_by_example.pdf) 
 

@@ -2,7 +2,7 @@
 title: Quantifiers
 sidebar_position: 5
 ---
-Z3 is a _decision procedure_ for the combination of the previous quantifier-free theories. That is, it can answer whether a quantifier-free formula, modulo the theories referenced by the formula, is satisfiable or whether it is unsatisfiable. Z3 also accepts and can work with formulas that use quantifiers. It is no longer a decision procedure for such formulas in general (and for good reasons, as there can be no decision procedure for first-order logic).
+Z3 is a [_decision procedure_](http://www.decision-procedures.org/) for the combination of the previous quantifier-free theories. That is, it can answer whether a quantifier-free formula, modulo the theories referenced by the formula, is satisfiable or whether it is unsatisfiable. Z3 also accepts and can work with formulas that use quantifiers. It is no longer a decision procedure for such formulas in general (and for good reasons, as there can be no decision procedure for first-order logic).
 
 Nevertheless, Z3 is often able to handle formulas involving quantifiers. It uses several approaches to handle quantifiers. The most prolific approach is using _pattern-based_ quantifier instantiation. This approach allows instantiating quantified formulas with ground terms that appear in the current search context based on _pattern annotations_ on quantifiers. The pattern-based instantiation method is quite effective, even though it is inherently incomplete. 
 

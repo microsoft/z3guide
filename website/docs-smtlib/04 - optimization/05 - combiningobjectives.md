@@ -43,7 +43,7 @@ The first tag group `A` is given precedence over the second group `B` that is in
 
 ## Pareto Fronts
 
-To override lexicographic priorities, set the option opt.priority to Pareto.
+To override lexicographic priorities, set the option opt.priority to [Pareto](https://en.wikipedia.org/wiki/Pareto_front).
 
 ```z3
 (declare-const x Int)

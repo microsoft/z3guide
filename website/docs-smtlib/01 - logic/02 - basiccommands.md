@@ -48,7 +48,7 @@ states that the value of a in the model is [val]. The definition
 >    ...
 > )
 
-is very similar to a function definition used in programming languages. In this example, x1 and x2 are the arguments of the function interpretation created by Z3. For this simple example, the definition of f is based on ite's (aka if-then-elses or conditional expressions). For example, the expression
+is very similar to a function definition used in programming languages. In this example, x!1 and x!2 are the arguments of the function interpretation created by Z3. For this simple example, the definition of f is based on ite's (aka if-then-elses or conditional expressions). For example, the expression
 
 > (ite (and (= x!1 11) (= x!2 false)) 21 0)
 

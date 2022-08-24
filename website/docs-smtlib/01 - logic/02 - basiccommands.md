@@ -99,7 +99,7 @@ The option print-success true is particularly useful when Z3 is being controlled
 
 ### Additional commands
 
-The command (display t) just applies the Z3 pretty printer to the given expression. The command (simplify t) displays a possibly simpler expression equivalent to t. This command accepts many different options, (help simplify) will display all available options.
+The command `(display t)` just applies the Z3 pretty printer to the given expression. The command `(simplify t)` displays a possibly simpler expression equivalent to t. This command accepts many different options, `(help simplify)` will display all available options.
 
 ```z3
 (declare-const a (Array Int Int))

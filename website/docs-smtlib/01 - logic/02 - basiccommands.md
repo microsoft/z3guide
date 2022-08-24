@@ -40,7 +40,7 @@ When the command check-sat returns sat, the command get-model can be used to ret
 
 The interpretation is provided using definitions. For example, the definition
 
->  define-fun a () Int [val])
+>  (define-fun a () Int [val])
 
 states that the value of a in the model is [val]. The definition
 

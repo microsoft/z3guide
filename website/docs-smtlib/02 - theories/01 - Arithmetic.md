@@ -189,7 +189,15 @@ Z3 also has support for division, integer division, modulo and remainder operato
 (get-model)
 ```
 
-In Z3, division by zero is allowed, but the result is not specified. Division is not a partial function. Actually, in Z3 all functions are total, although the result may be under-specified in some cases like division by zero.
+In Z3, division by zero is allowed, but the result is not specified. Division is not a partial function.
+Actually, in Z3 all functions are total, although the result may be under-specified in some cases like division by zero.
+
+:::info
+We say that an interpreted function (such as `/`) is _under-specified_ when the meaning of the function is not fixed on all values
+of arguments. The division, modulus and remainder functions are _under-specified_ when the second argument is 0. Constraints that
+allow the second arguments to these functions to be 0 can still be satisfiable when there are interepretations of the functions
+at 0 that satisfy the constraints.
+:::
 
 ```z3
 (declare-const a Real)

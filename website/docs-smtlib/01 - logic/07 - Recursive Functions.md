@@ -38,7 +38,7 @@ class of formulas.
 ## Mutually Recursive Functions
 
 You can also define functions that are mutually recursive.
-The syntaix requires to declare all functions first in one block, and then
+The syntax requires to declare all functions first in one block, and then
 define the bodies of the recursive functions in a second block.
 
 ```z3

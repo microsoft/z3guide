@@ -97,7 +97,7 @@ The command set-option is used to configure Z3. Z3 has several options to contro
 
 The option print-success true is particularly useful when Z3 is being controlled by another application using pipes. In this mode, commands, that otherwise would not print any output, will print success.
 
-> A full list of options is summarized on the page #Parameters
+> There is a [summary of all parameters](../../programming/Parameters)
 
 ### Additional commands
 

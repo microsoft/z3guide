@@ -366,7 +366,7 @@ The stratified sorts fragment is another decidable fragment of many sorted first
 
 #### Array Property Fragment
 
-The array property fragment can encode properties about uni-dimensional, and is strong enough to say an array is sorted. More information about this fragment can be found in the paper [What's Decidable About Arrays](httpacademic.research.microsoft.comPaper1843442.aspx).
+The array property fragment can encode properties about uni-dimensional, and is strong enough to say an array is sorted. More information about this fragment can be found in the paper [What's Decidable About Arrays](https://theory.stanford.edu/~arbrad/papers/arrays.pdf).
 
 (set-option :smt.mbqi true)
 (set-option :model.compact true)

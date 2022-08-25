@@ -97,6 +97,8 @@ The command set-option is used to configure Z3. Z3 has several options to contro
 
 The option print-success true is particularly useful when Z3 is being controlled by another application using pipes. In this mode, commands, that otherwise would not print any output, will print success.
 
+> A full list of options is summarized on the page #Parameters
+
 ### Additional commands
 
 The command `(display t)` just applies the Z3 pretty printer to the given expression. The command `(simplify t)` displays a possibly simpler expression equivalent to t. This command accepts many different options, `(help simplify)` will display all available options.

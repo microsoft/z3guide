@@ -15,3 +15,5 @@ It relies on extensive help and use of the JavaScript bindings created by
 * Kevin Bakkot, Olaf Tomalka
 
 with earlier wasm bindings by Leonardo Alt, Phillip Zucker, and Clément Pit-Claudel.
+
+Material is based on an earlier rise4fun tutorial by Leonardo de Moura and Christoph Wintersteiger.

@@ -9,12 +9,18 @@ const katex = require('rehype-katex');
 
 async function createConfig() {
 
-  const repo = process.env.Z3GUIDE_GITHUB_REPOSITORY;
-  const sha = process.env.Z3GUIDE_GITHUB_SHA;
+  const repo = process.env.GITHUB_REPOSITORY;
+  const sha = process.env.GITHUB_SHA;
+  const releaseTag = process.env.RELEASE_VERSION;
 
   let linkToCommit = '';
   if (repo && sha) {
     linkToCommit = `<a href=https://github.com/${repo}/commit/${sha} target="_blank" rel="noopener noreferrer">${sha.slice(0, 8)}</a> | `
+  }
+
+  let linkToRelease = '';
+  if (repo && releaseTag) {
+    linkToRelease = `<a href=https://github.com/${repo}/releases/tag/${releaseTag} target="_blank" rel="noopener noreferrer">version: ${releaseTag}</a> | `
   }
 
   const languageConfig = await ((await import('./language.config.js')).default)();

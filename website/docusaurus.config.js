@@ -17,6 +17,21 @@ async function createConfig() {
     linkToCommit = `<a href=https://github.com/${repo}/commit/${sha} target="_blank" rel="noopener noreferrer">${sha.slice(0, 8)}</a> | `
   }
 
+  const languageConfig = await ((await import('./language.config.js')).default)();
+
+  let langVerInfo = '';
+  for (const lang of languageConfig.languages) {
+    if (lang.buildConfig && lang.buildConfig.npmPackage) {
+      const pkg = lang.buildConfig.npmPackage;
+      const ver = lang.buildConfig.langVersion;
+      if (!ver) {
+        throw new Error (`buggy code: no langVersion for ${pkg}`);
+      }
+      
+      langVerInfo += `${pkg} ${ver} | `;
+    }
+  }
+
   /** @type {import('@docusaurus/types').Config} */
   // where information such as course title, description etc. are configured
   const config = {
@@ -233,7 +248,7 @@ async function createConfig() {
               ]
             }
           ],
-          copyright: `${linkToCommit}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
+          copyright: `${linkToCommit}${langVerInfo}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
         },
         prism: {
           theme: lightCodeTheme,

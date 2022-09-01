@@ -258,7 +258,7 @@ async function createConfig() {
               ]
             }
           ],
-          copyright: `${linkToRelease}${linkToCommit}${langVerInfo}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
+          copyright: `${linkToCommit}${langVerInfo}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
         },
         prism: {
           theme: lightCodeTheme,

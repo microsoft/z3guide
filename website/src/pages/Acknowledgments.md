@@ -6,7 +6,7 @@ title: Acknowledgements
 
 The z3guide was created by 
 
-* Ruanqianqian (Lisa) Huang, UCSD, MSR Intern
+* [Ruanqianqian (Lisa) Huang](https://rlisahuang.com), UCSD, MSR Intern
 * Ayana Monroe, UNC, MSR Intern
 * Nikolaj Bj&oslash;rner, Peli de Halleux, Microsoft Research
 

@@ -20,6 +20,7 @@ async function createConfig() {
   const languageConfig = await ((await import('./language.config.js')).default)();
 
   let langVerInfo = '';
+  let allLangs = new Set();
   for (const lang of languageConfig.languages) {
     if (lang.buildConfig && lang.buildConfig.npmPackage) {
       const pkg = lang.buildConfig.npmPackage;
@@ -28,7 +29,10 @@ async function createConfig() {
         throw new Error (`buggy code: no langVersion for ${pkg}`);
       }
       
-      langVerInfo += `${pkg} ${ver} | `;
+      if (!allLangs.has(pkg)) {
+        allLangs.add(pkg);
+        langVerInfo += `<a href=https://www.npmjs.com/package/${pkg}/v/${ver} target="_blank" rel="noopener noreferrer">${pkg} ${ver}</a> | `;
+      }
     }
   }
 

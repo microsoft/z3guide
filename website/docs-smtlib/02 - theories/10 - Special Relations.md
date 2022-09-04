@@ -8,7 +8,7 @@ Binary relations that are partial orders, linear orders, tree orders, and piece-
 can be axiomatized using first order quantifiers. However, reasoning with these quantified axioms involves
 non-linear overhead, up to a quadratic number of quantifier instantiations.
 The decision procedures for partial, linear, tree and piece-wise linear orders in z3 
-use variants of Ford-Fulkerson push relabeling graphs.
+use variants of Bellman-Ford push relabeling graphs.
 
 
 ### Partial Order

@@ -63,3 +63,7 @@ An always editable snippet
 ```z3 always-editable
 (echo "I am editable")
 ```
+
+Some math $x^y$... 
+
+$$x^y$$

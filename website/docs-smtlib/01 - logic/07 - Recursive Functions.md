@@ -34,3 +34,25 @@ bound restriction, it increases the fixed bound incrementally. Note that this ap
 involve reasoning by induction that is often required to prove deeper properties of recursive functions.
 This scheme allows to decide satisfiability and unsatisfiability for a limited, but often useful,
 class of formulas.
+
+## Mutually Recursive Functions
+
+You can also define functions that are mutually recursive.
+The syntax requires to declare all functions first in one block, and then
+define the bodies of the recursive functions in a second block.
+
+```z3
+(define-funs-rec 
+   ((ping ((x Int) (y Bool)) Int)
+    (pong ((a Int) (b Bool)) Int))
+
+   ((if y (pong (+ x 1) (not y)) (- x 1))
+    (if b (ping (- a 1) (not b)) a)))
+
+(declare-const x Int)
+(assert (> x 0))
+(assert (> (ping x true) x))
+(check-sat)
+(get-model)
+```
+

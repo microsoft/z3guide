@@ -9,12 +9,37 @@ const katex = require('rehype-katex');
 
 async function createConfig() {
 
-  const repo = process.env.Z3GUIDE_GITHUB_REPOSITORY;
-  const sha = process.env.Z3GUIDE_GITHUB_SHA;
+  const repo = process.env.GITHUB_REPOSITORY;
+  const sha = process.env.GITHUB_SHA;
+  const releaseTag = process.env.RELEASE_VERSION;
 
   let linkToCommit = '';
   if (repo && sha) {
     linkToCommit = `<a href=https://github.com/${repo}/commit/${sha} target="_blank" rel="noopener noreferrer">${sha.slice(0, 8)}</a> | `
+  }
+
+  let linkToRelease = '';
+  if (repo && releaseTag) {
+    linkToRelease = `<a href=https://github.com/${repo}/releases/tag/${releaseTag} target="_blank" rel="noopener noreferrer">version: ${releaseTag}</a> | `
+  }
+
+  const languageConfig = await ((await import('./language.config.js')).default)();
+
+  let langVerInfo = '';
+  let allLangs = new Set();
+  for (const lang of languageConfig.languages) {
+    if (lang.buildConfig && lang.buildConfig.npmPackage) {
+      const pkg = lang.buildConfig.npmPackage;
+      const ver = lang.buildConfig.langVersion;
+      if (!ver) {
+        throw new Error (`buggy code: no langVersion for ${pkg}`);
+      }
+      
+      if (!allLangs.has(pkg)) {
+        allLangs.add(pkg);
+        langVerInfo += `<a href=https://www.npmjs.com/package/${pkg}/v/${ver} target="_blank" rel="noopener noreferrer">${pkg} ${ver}</a> | `;
+      }
+    }
   }
 
   /** @type {import('@docusaurus/types').Config} */
@@ -233,7 +258,7 @@ async function createConfig() {
               ]
             }
           ],
-          copyright: `${linkToCommit}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
+          copyright: `${linkToCommit}${langVerInfo}Copyright © ${new Date().getFullYear()} Microsoft Corporation.`,
         },
         prism: {
           theme: lightCodeTheme,

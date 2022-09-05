@@ -16,12 +16,15 @@ jobs:
     name: Build and Deployment
     runs-on: ubuntu-latest
     env:
-      Z3GUIDE_GITHUB_REPOSITORY: ${{ github.repository }}
-      Z3GUIDE_GITHUB_REF: ${{ github.ref }}
-      Z3GUIDE_GITHUB_SHA: ${{ github.sha }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      GITHUB_REF: ${{ github.ref }}
+      GITHUB_SHA: ${{ github.sha }}
       
     steps:
       - uses: actions/checkout@v3
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x

@@ -11,6 +11,7 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
 2. [Development](#development)
     1. [Contributing to Existing Materials](#contributing-to-existing-tutorial-materials)
     2. [Creating New Tutorial Materials](#creating-new-tutorial-materials)
+    3. [Testing the Website](#testing-the-website)
 3. [Manually Updating `z3-solver`](#manually-updating-z3-solver)
 4. [Code of Conduct](#microsoft-open-source-code-of-conduct)
 5. [Trademarks](#trademarks)
@@ -149,6 +150,19 @@ The process of creating new tutorial materials is similar to the above, except f
 1. You will need to create a new `docs-*` directory under `website`. E.g., `website/docs-api`.
 2. You will need a JavaScript file for configuring the sidebar for your docs under `website/sidebars`. The sidebar can be generated automatically. You may simply make a renamed copy of `programmingSidebars.js` for such automation.
 3. You will need to go to `docusaurus.config.js` to add additional configurations so that the build process can pick up the new directories. Search for comments beginning with `[NEW DOCS]` within the file for more instructions.
+
+
+### Testing the Website
+We provided a test file that contains all kinds of Z3 (SMTLIB and JavaScript) code snippets, `docs-playground/_03.test.md`.
+To test if the interactivity with Z3 snippets works as expected, you may remove the underscord at the beginning of the file name, and run
+```
+yarn start
+```
+to access the file at `https://localhost:[PORT]/z3guide/playground/test`, where `[PORT]` is 3000 by default or the port number you specified in `docusaurus.config.js`.
+
+You may add more code snippets to this test file, or create your own test file under any `docs-*` directory your prefer. We recommend putting the test files under `docs-playground`.
+
+When you are done testing, make sure to add the underscore back to the test file name, so that the content will not be included in rendering the website.
 
 
 ## Manually Updating `z3-solver`

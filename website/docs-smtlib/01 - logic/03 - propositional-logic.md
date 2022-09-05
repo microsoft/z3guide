@@ -52,3 +52,44 @@ Dually, if at most one of the arguments should be true, you can express it as
 (check-sat)
 (get-model)
 ```
+
+## Pseudo Boolean Constraints
+
+A generalization of cardinality constraints are Pseudo-Boolean formulas where
+the sum of Boolean variables with coefficients are bounded.
+
+The sum `2p + q + 3r + 3s + 2t` as at least `4`.
+```z3
+(declare-const p Bool)
+(declare-const q Bool)
+(declare-const r Bool)
+(declare-const s Bool)
+(declare-const t Bool)
+(assert ((_ pbge 4 2 1 3 3 2) p q r s t))
+(check-sat)
+(get-model)
+```
+
+The sum `2p + q + 3r + 3s + 2t` as at most `5`.
+```z3
+(declare-const p Bool)
+(declare-const q Bool)
+(declare-const r Bool)
+(declare-const s Bool)
+(declare-const t Bool)
+(assert ((_ pble 5 2 1 3 3 2) p q r s t))
+(check-sat)
+(get-model)
+```
+
+The sum `2p + q + 3r + 3s + 2t` equals `5`.
+```z3
+(declare-const p Bool)
+(declare-const q Bool)
+(declare-const r Bool)
+(declare-const s Bool)
+(declare-const t Bool)
+(assert ((_ pbeq 5 2 1 3 3 2) p q r s t))
+(check-sat)
+(get-model)
+```

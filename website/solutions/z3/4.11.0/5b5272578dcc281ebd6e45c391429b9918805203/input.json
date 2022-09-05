@@ -1,0 +1,1 @@
+{"input":"(declare-const p Bool)\n(declare-const q Bool)\n(declare-const r Bool)\n(declare-const s Bool)\n(declare-const t Bool)\n(assert ((_ pb-eq 5 2 1 3 3 2) p q r s t))\n(check-sat)\n(get-model)"}

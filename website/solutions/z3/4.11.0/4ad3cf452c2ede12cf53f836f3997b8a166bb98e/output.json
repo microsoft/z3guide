@@ -1,0 +1,1 @@
+{"output":"(error \"line 6 column 40: unknown constant pb-le (Bool Bool Bool Bool Bool) \")\nsat\n(\n  (define-fun p () Bool\n    false)\n  (define-fun q () Bool\n    false)\n  (define-fun s () Bool\n    false)\n  (define-fun t () Bool\n    false)\n  (define-fun r () Bool\n    false)\n)\n","error":"","status":"z3-ran","hash":"4ad3cf452c2ede12cf53f836f3997b8a166bb98e"}

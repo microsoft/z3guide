@@ -28,3 +28,27 @@ A formula F is valid if F always evaluates to true for any assignment of appropr
 (assert (not demorgan))
 (check-sat)
 ```
+
+## Cardinality Constraints
+
+Logical disjunction `(or p q r)` is true when at least one of the arguments `p`, `q`, `r` is true. If you want to express that at least two of the arguments hold, then
+it is possible to encode using formulas such as `(or (and p q) (and p r) (and q r))`. However, you can also express the constraint directly using a _cardinality_ constraint.
+
+```z3
+(declare-const p Bool)
+(declare-const q Bool)
+(declare-const r Bool)
+(assert ((_ at-least 2) p q r))
+(check-sat)
+(get-model)
+```
+
+Dually, if at most one of the arguments should be true, you can express it as
+```z3
+(declare-const p Bool)
+(declare-const q Bool)
+(declare-const r Bool)
+(assert ((_ at-most 1) p q r))
+(check-sat)
+(get-model)
+```

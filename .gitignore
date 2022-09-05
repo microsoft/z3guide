@@ -1,0 +1,11 @@
+*~
+rebase.cmd
+*.pyc
+*.pyo
+debug/*
+*.bak
+.vs
+# Editor temp files
+*.swp
+.DS_Store
+dbg/**

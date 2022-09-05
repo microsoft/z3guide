@@ -93,3 +93,27 @@ The sum `2p + q + 3r + 3s + 2t` equals `5`.
 (check-sat)
 (get-model)
 ```
+
+
+Cardinality, and Pseudo-Boolean, constraints can be 
+much more succinct than CNF versions. Can you guess the secret
+formula? Hint: you can block clauses one by one for models
+of your failed guess, and see if you can find a pattern by counting
+the number of variables that are true and false.
+
+```z3-duo
+(declare-const a0 Bool)
+(declare-const a1 Bool)
+(declare-const a2 Bool)
+(declare-const a3 Bool)
+(declare-const a4 Bool)
+(declare-const a5 Bool)
+------
+(declare-const a0 Bool)
+(declare-const a1 Bool)
+(declare-const a2 Bool)
+(declare-const a3 Bool)
+(declare-const a4 Bool)
+(declare-const a5 Bool)
+(assert ((_ pbeq 3 1 1 1 1 1 1) a0 a1 a2 a3 a4 a5))
+```

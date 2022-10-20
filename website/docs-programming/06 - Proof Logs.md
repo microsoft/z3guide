@@ -229,3 +229,96 @@ We defer a detailed documentation of proof hints but summarize some of the main 
 * _bound_ - An inequality is derived using a combination of inequalities and cuts
 * _implied-eq_ - An implied inequality can be derived from a set of inequalities and equalities.
 
+## A sample session with proof logs
+
+We have the following formula
+
+```
+(set-option :sat.euf true)
+(set-option :tactic.default_tactic smt)
+(set-option :sat.smt.proof=proof_log.smt2)
+(declare-fun d (Int Int) Int)
+(declare-fun t (Int Int Real) (Array Int (Array Int Real)))
+(assert (forall ((u Int) (v Real)) (= v (select (select (t v (d 1 0) (d 0 u)) 0) 0))))
+(check-sat)
+```
+
+It produces a proof log of the form
+```
+(declare-fun t (Int Int Real) (Array Int (Array Int Real)))
+(declare-fun d (Int Int) Int)
+(define-const $33 Bool (forall ((u Int) (v Real))
+  (let ((a!1 (select (t (to_int v) (d 1 0) (to_real (d 0 u))) 0)))
+    (= v (select a!1 0)))))
+(assume $33)
+(assume true)
+(define-const $63 Int (d 0 0))
+(define-const $64 Real (to_real $63))
+(define-const $25 Int (d 1 0))
+(define-const $72 (Array Int (Array Int Real)) (t (- 1) $25 $64))
+(define-const $73 (Array Int Real) (select $72 0))
+(define-const $74 Real (select $73 0))
+(define-const $75 Bool (= (- 1.0) $74))
+(declare-fun inst (Bool Bool Proof) Proof)
+(declare-fun bind (Int Real) Proof)
+(define-const $61 Proof (bind 0 (- 1.0)))
+(define-const $76 Bool (not $75))
+(define-const $65 Proof (inst $33 $76 $61))
+(infer $75 $65)
+(define-const $105 Int (d 0 $63))
+(define-const $106 Real (to_real $105))
+(define-const $113 (Array Int (Array Int Real)) (t (- 1) $25 $106))
+(define-const $114 (Array Int Real) (select $113 0))
+(define-const $115 Real (select $114 0))
+(define-const $116 Bool (= (- (/ 1.0 2.0)) $115))
+(define-const $109 Proof (bind $63 (- (/ 1.0 2.0))))
+(define-const $117 Bool (not $116))
+(define-const $57 Proof (inst $33 $117 $109))
+(infer $116 $57)
+(define-const $123 Bool (= (- (/ 3.0 4.0)) $115))
+(define-const $110 Proof (bind $63 (- (/ 3.0 4.0))))
+(define-const $124 Bool (not $123))
+(define-const $102 Proof (inst $33 $124 $110))
+(infer $123 $102)
+(declare-fun euf (Bool Bool) Proof)
+(define-const $41 Proof (euf $123 $116))
+(infer $41)
+(declare-fun rup () Proof)
+(infer rup)
+```
+
+The log is mildly speaking not human readable. But you can use scripts to read the log.
+
+```python
+from z3 import *
+set_param("solver.proof.check", False)
+s = Solver()
+onc = OnClause(s, print)
+s.from_file("proof_log.smt2")
+```
+
+The result is easier to digest
+```
+assumption [ForAll([u, v],
+        v == t(ToInt(v), d(1, 0), ToReal(d(0, u)))[0][0])]
+assumption [True]
+inst(ForAll([u, v],
+            v == t(ToInt(v), d(1, 0), ToReal(d(0, u)))[0][0]),
+     Not(-1 == t(-1, d(1, 0), ToReal(d(0, 0)))[0][0]),
+     bind(0, -1)) [-1 == t(-1, d(1, 0), ToReal(d(0, 0)))[0][0]]
+inst(ForAll([u, v],
+            v == t(ToInt(v), d(1, 0), ToReal(d(0, u)))[0][0]),
+     Not(-(1/2) ==
+         t(-1, d(1, 0), ToReal(d(0, d(0, 0))))[0][0]),
+     bind(d(0, 0), -(1/2))) [-(1/2) == t(-1, d(1, 0), ToReal(d(0, d(0, 0))))[0][0]]
+inst(ForAll([u, v],
+            v == t(ToInt(v), d(1, 0), ToReal(d(0, u)))[0][0]),
+     Not(-(3/4) ==
+         t(-1, d(1, 0), ToReal(d(0, d(0, 0))))[0][0]),
+     bind(d(0, 0), -(3/4))) [-(3/4) == t(-1, d(1, 0), ToReal(d(0, d(0, 0))))[0][0]]
+euf(-(3/4) == t(-1, d(1, 0), ToReal(d(0, d(0, 0))))[0][0],
+    -(1/2) == t(-1, d(1, 0), ToReal(d(0, d(0, 0))))[0][0]) []
+rup []
+```
+
+SMT proofs are of course generally much larger.

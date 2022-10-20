@@ -1,0 +1,1 @@
+{"output":"(define-fun mouse () Int\n  56)\n(define-fun cat () Int\n  41)\n(define-fun dog () Int\n  3)","error":"","status":"z3-ran","hash":"a3c2fbc7de4c7f7571bdb9c90c40e51f9c858ea2"}

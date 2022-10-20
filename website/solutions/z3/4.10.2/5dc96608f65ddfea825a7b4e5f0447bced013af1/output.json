@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun t22 () Int\n    5)\n  (define-fun t12 () Int\n    7)\n  (define-fun t11 () Int\n    5)\n  (define-fun t31 () Int\n    0)\n  (define-fun t21 () Int\n    2)\n  (define-fun t32 () Int\n    2)\n)\n","error":"","status":"z3-ran","hash":"5dc96608f65ddfea825a7b4e5f0447bced013af1"}

@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # Inference logs and proofs
 
-Z3 version 12.0 exposes new functionality to capture inferences.
+Z3 version 4.12.0 exposes new functionality to capture inferences.
 There is an API extension to register a callback that is invoked
 whenever the main SMT engine infers a clause. It is also possible to 
 save inferred clauses together with proof _hints_ that justify them.
@@ -201,6 +201,9 @@ To save proof logs, but not check them, use
 ```
 z3 <file.smt2> sat.euf=true tactic.default_tactic=smt sat.smt.proof=<logfile.smt2>
 ```
+
+## Inferences
+
 Inferences are printed in a mild extension of SMTLIB2. The extension has three new commands
 
 ```
@@ -211,3 +214,18 @@ Inferences are printed in a mild extension of SMTLIB2. The extension has three n
 where a proof hint is a proof term that is either a detailed set of inference steps or a 
 generic inference that requires a proof checker that understands more than a set of simple
 syntactic inferences.
+
+### Proof Hints
+
+The format of proof hints is set up so it can be extended when new features are added.
+Common to proof hints is that every proof hint encodes a claim in the form of a clause.
+A proof hint should justify the clause. 
+We defer a detailed documentation of proof hints but summarize some of the main hints in use:
+
+* _tseitin_ - The claim is justified by a Tseitin transformation.
+* _euf_ - The claim follows from equality reasoning.
+* _inst_ - A quantifier is instantiated using a binding given in the hint.
+* _farkas_ - The negation of the claim is a conjunction of inequalities. The farkas hint contains coefficients such that the inequalities, when added modulo multiplying with coefficients, sum up to a tight and inconsistent inequality.
+* _bound_ - An inequality is derived using a combination of inequalities and cuts
+* _implied-eq_ - An implied inequality can be derived from a set of inequalities and equalities.
+

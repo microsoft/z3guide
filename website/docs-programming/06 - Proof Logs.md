@@ -21,7 +21,7 @@ including for replaying tactics in Isabelle, for generation of interpolants, and
 separating hyper-planes from linear programming proofs (Farkas lemma). A separate format
 is used to trace inference steps for proof mining. Proof logs allow to simplify some of the
 infrastructure around proof reconstruction during search and for proof mining. The same logs
-can be targetted for the different use cases. 
+can be targetted for the different use cases. The survey [ProofsForSMT](https://z3prover.github.io/slides/proofs.html) discusses proof formats in use by SMT solvers and includes some additional technical details on proof logs.
 
 
 
@@ -58,7 +58,7 @@ based on the name of the proof hint.
 ```z3-python
 def log_instance(pr, clause):
     if pr.decl().name() == "inst":
-        q = pr.arg(0).arg(0) # first argument is Not(q)
+        q = pr.arg(0)
         for ch in pr.children():
             if ch.decl().name() == "bind":
                 print("Binding")

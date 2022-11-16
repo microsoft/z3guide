@@ -91,14 +91,16 @@ describe_tactics()
 Z3Py comes equipped with the following tactic combinators (aka tacticals):
 
 
-                          |
---------------------------|--------------------------------
- `Then(t, s)`             | applies `t` to the input goal and `s` to every subgoal produced by `t`.
- `OrElse(t, s)`           | first applies `t` to the given goal, if it fails then returns the result of `s` applied to the given goal.
- `Repeat(t)`              | Keep applying the given tactic until no subgoal is modified by it.
- `Repeat(t, n)`           | Keep applying the given tactic until no subgoal is modified by it, or the number of iterations is greater than `n`.
- `TryFor(t, ms)`          | Apply tactic `t` to the input goal, if it does not return in `ms` millisenconds, it fails.
- `With(t, params)`        | Apply the given tactic using the given parameters.
+|                          |
+|--------------------------|-------------------------------------------------------------------------------------------|
+| `Then(t, s)`             | applies `t` to the input goal and `s` to every subgoal produced by `t`.                   |
+| `OrElse(t, s)`           | first applies `t` to the given goal, if it fails then returns the result of `s` applied to the given  goal. |
+| `Repeat(t)`              | Keep applying the given tactic until no subgoal is modified by it. |
+| `Repeat(t, n)`           | Keep applying the given tactic until no subgoal is modified by it, or the number of iterations is greater than `n`. |
+| `TryFor(t, ms)`          | Apply tactic `t` to the input goal, if it does not return in `ms` millisenconds, it fails. |
+| `With(t, params)`        | Apply the given tactic using the given parameters.                                         |
+
+
 
 The following example demonstrate how to use these combinators.
 

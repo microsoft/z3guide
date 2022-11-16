@@ -1,0 +1,1 @@
+{"input":"(simplify (bv2int #xa0))\n(simplify ((_ int2bv 32) -3))"}

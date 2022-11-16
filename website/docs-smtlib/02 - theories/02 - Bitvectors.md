@@ -106,3 +106,21 @@ Signed comparison, such as bvsle, takes the sign bit of bitvectors into account 
 (check-sat)
 (get-model)
 ```
+
+
+### BitVectors and Integers
+
+You can mix integers and bit-vectors.
+Note that reasoning in the combination has significant overhead so you 
+will be better off if you can model your problems entirely only using bit-vectors
+or entirely using integers (reals).
+In the conversion function from bit-vectors to integers, bit-vectors correspond to non-negative integers.
+For the conversion function that maps integers to bit-vectors you have to supply the bit-width $n$. Then the
+bit-vector corresponding to the integer argument represents the unsigned number obtained by taking the modulus
+with respect to $2^n$.
+
+
+```z3
+(simplify (bv2int #xa0))
+(simplify ((_ int2bv 32) -3))
+```

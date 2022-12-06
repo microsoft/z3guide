@@ -64,7 +64,8 @@ const sidebars = {
         'strategies/intro',
         'strategies/goals',
         'strategies/tactics',
-        'strategies/probes']
+        'strategies/probes',
+        'strategies/summary']
     },
 
     {

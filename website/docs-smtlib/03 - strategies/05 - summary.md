@@ -74,6 +74,38 @@ It generates
 * does not support fine-grained proofs
 
 
+## Tactic der
+
+### Short Description:
+
+The tactic performs _destructive equality resolution_.
+
+### Long Description
+
+Destructive equality resolution replaces bound variables that are
+_solved_ by their solutions in formulas. In short, the destructive
+equality resolution rule takes the form:
+
+```
+   (forall (X Y) (or X /= s C[X])) --> (forall (Y) C[Y])
+```
+
+
+### Example
+ 
+```z3
+  (declare-fun f (Int) Int)
+  (declare-fun p (Int Int) Bool)
+  (assert (forall ((x Int) (y Int)) (or (not (= x (f y))) (p x y))))
+  (apply der)
+```
+
+### Notes
+
+* supports unsat cores, proof terms
+
+
+
 ## Tactic elim-uncnstr
 
 ### Short Description
@@ -251,7 +283,7 @@ It also allows solving for uninterpreted constants that only appear in a single 
 
 ### Example
 
-```z3
+```
 (declare-const x Int)
 (declare-const y Int)
 (declare-const z Int)

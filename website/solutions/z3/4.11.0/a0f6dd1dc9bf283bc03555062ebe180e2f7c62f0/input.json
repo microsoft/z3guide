@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(declare-const u Int)\n(assert (or (and (= x (+ 5 y)) (> u z)) (= y (+ u z))))\n(apply solve-eqs)"}

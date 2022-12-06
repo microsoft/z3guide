@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (or (= y (+ u z)) (and (= x (+ 5 y)) (not (<= u z))))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"a0f6dd1dc9bf283bc03555062ebe180e2f7c62f0"}

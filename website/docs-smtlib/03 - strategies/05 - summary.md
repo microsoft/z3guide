@@ -163,6 +163,37 @@ In addition there are conversions for shift and bit-wise or and signed compariso
 * does not support fine-grained proofs
 
 
+## Tactic simplify
+
+### Short Description:
+
+The tactic performs algebraic simplifcations on formulas
+
+### Long Description
+
+The simplify tactic invokes z3's main rewriting engine. 
+The rewriting engine contains support for theory specific simplifications.
+The set of simplifications invoked is open ended. Useful algebraic simplifications
+are added to the rewrite engine as they are discovered to be useful.
+
+Note that the simplifier does not ensure that equivalent formulas are simplified to the same form.
+In other words it does not guarantee canonicity. This contrasts with BDD packages where BDDs constructed
+from two equivalent formulas are guaranteed to be equal.
+
+### Example
+ 
+```z3
+  (declare-const x Int)
+  (declare-const y Int)
+  (assert (> x (+ x y)))
+  (apply simplify)
+```
+
+### Notes
+
+* supports unsat cores, proof terms
+
+
 ## Tactic solve-eqs
 
 ### Short Description

@@ -73,11 +73,6 @@ It generates
 * supports unsat cores
 * does not support fine-grained proofs
 
-### Parameters
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
-
 
 ## Tactic der
 
@@ -110,11 +105,6 @@ equality resolution rule takes the form:
 * supports unsat cores, proof terms
 
 
-### Parameters
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
-
 
 ## Tactic distribute-forall
 
@@ -136,11 +126,6 @@ Distribute $\forall$ over conjunctions (and distribute $\exists$ over disjunctio
 
 * supports unsat cores, proof terms
 
-
-### Parameters
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
 
 
 ## Tactic elim-uncnstr
@@ -470,11 +455,6 @@ This transformation should work in the following way:
 
 * supports unsat cores
 * does not support proof terms
-
-### Parameters
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
 
 
 ## Tactic simplify

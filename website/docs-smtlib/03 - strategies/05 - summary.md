@@ -116,6 +116,33 @@ equality resolution rule takes the form:
  ----------|------|-------------|--------
 
 
+## Tactic distribute-forall
+
+### Short Description:
+
+Distribute $\forall$ over conjunctions (and distribute $\exists$ over disjunctions)
+
+### Example
+ 
+```z3
+  (declare-const x Int)
+  (declare-fun p (Int) Bool)
+  (declare-fun q (Int) Bool)
+  (assert (forall ((x Int)) (and (p x) (q x))))
+  (apply distribute-forall)
+```
+
+### Notes
+
+* supports unsat cores, proof terms
+
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+
+
 ## Tactic elim-uncnstr
 
 ### Short Description

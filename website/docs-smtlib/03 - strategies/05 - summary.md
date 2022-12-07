@@ -3,6 +3,77 @@ title: Tactics Summary
 sidebar_position: 5
 ---
 
+## Tactic blast-term-ite
+
+### Short Description:
+
+Blast term if-then-else by hoisting them up.
+This is expensive but useful in some cases, such as
+for enforcing constraints being in difference logic.
+Use `elim-term-ite` elsewhere when possible.
+
+### Example
+ 
+```z3
+(declare-fun f (Int) Int)
+(declare-fun p (Int) Bool)
+(declare-const c1 Bool)
+(declare-const c2 Bool)
+(declare-const c3 Bool)
+(declare-const e1 Int) 
+(declare-const e2 Int) 
+(declare-const e3 Int)
+(declare-const e4 Int)
+(assert (p (f (if c1 (if c2 e1 (if c3 e2 e3)) e4))))
+(apply blast-term-ite) 
+```
+
+### Notes
+
+
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_inflation | unsigned int  |  (default: infinity) multiplicative factor of initial term size. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
+
+
+## Tactic ctx-simplify
+
+### Short Description:
+
+The tactic performs simplifies sub-formulas using context built up by walking assertions and sub-formulas.
+
+### Example
+ 
+```z3
+  (declare-const p Bool)
+  (declare-const q Bool)
+  (declare-const r Bool)
+  (declare-fun f (Bool) Bool)
+  (assert p)
+  (assert (or (f p) (and r (or (not r) q))))
+  (apply ctx-simplify)
+```
+
+### Notes
+
+* supports proof terms with limited features
+
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_depth | unsigned int  |  (default: 1024) maximum term depth. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
+propagate_eq | bool  |  (default: false) enable equality propagation from bounds. | 
+
+
 ## Tactic demodulator
 
 ### Short Description:
@@ -126,6 +197,43 @@ Distribute $\forall$ over conjunctions (and distribute $\exists$ over disjunctio
 
 * supports unsat cores, proof terms
 
+
+
+## Tactic elim-term-ite
+
+### Short Description:
+
+Eliminate term if-then-else by adding 
+new fresh auxiliary variables.
+
+
+### Example
+ 
+```z3
+(declare-fun f (Int) Int)
+(declare-fun p (Int) Bool)
+(declare-const c1 Bool)
+(declare-const c2 Bool)
+(declare-const c3 Bool)
+(declare-const e1 Int) 
+(declare-const e2 Int) 
+(declare-const e3 Int)
+(declare-const e4 Int)
+(assert (p (f (if c1 (if c2 e1 (if c3 e2 e3)) e4))))
+(apply elim-term-ite) 
+```
+
+### Notes
+
+* supports proof terms and unsat cores
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_args | unsigned int  |  (default: 128) maximum number of arguments (per application) that will be considered by the greedy (quadratic) heuristic. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
 
 
 ## Tactic elim-uncnstr

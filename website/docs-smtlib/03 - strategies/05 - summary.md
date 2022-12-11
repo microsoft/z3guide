@@ -36,9 +36,9 @@ Use `elim-term-ite` elsewhere when possible.
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-max_inflation | unsigned int  |  (default: infinity) multiplicative factor of initial term size. | 
-max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
-max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
+max_inflation | unsigned int  |  (default: infinity) multiplicative factor of initial term size. | 4294967295
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
 ## Tactic card2bv
@@ -120,10 +120,10 @@ The tactic performs simplifies sub-formulas using context built up by walking as
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-max_depth | unsigned int  |  (default: 1024) maximum term depth. | 
-max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
-max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
-propagate_eq | bool  |  (default: false) enable equality propagation from bounds. | 
+max_depth | unsigned int  |  maximum term depth. | 1024
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
+propagate_eq | bool  |  enable equality propagation from bounds. | false
 
 
 ## Tactic demodulator
@@ -284,8 +284,8 @@ new fresh auxiliary variables.
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
 max_args | unsigned int  |  (default: 128) maximum number of arguments (per application) that will be considered by the greedy (quadratic) heuristic. | 
-max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
-max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
 ## Tactic elim-uncnstr
@@ -380,8 +380,8 @@ In addition there are conversions for shift and bit-wise or and signed compariso
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
-max_steps | unsigned int  |  (default: infty) maximum number of steps. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
 ## Tactic injectivity
@@ -413,8 +413,8 @@ max_steps | unsigned int  |  (default: infty) maximum number of steps. |
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 
-produce_models | bool  |  (default: false) model generation. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+produce_models | bool  |  model generation. | false
 
 
 ## Tactic nnf
@@ -535,7 +535,7 @@ local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
 local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
 max_degree | unsigned int  |  max degree of algebraic numbers (and power operators) processed by simplifier. | 64
 max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
-max_rounds | unsigned int  |  (default: 4) maximum number of rounds. | 
+max_rounds | unsigned int  |  maximum number of rounds. | 4
 max_steps | unsigned int  |  maximum number of steps | 4294967295
 mul2concat | bool  |  replace multiplication by a power of two into a concatenation | false
 mul_to_power | bool  |  collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. | false
@@ -759,8 +759,8 @@ where `x` was solved as `(+ 5 y)`.
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-context_solve | bool  |  (default: false) solve equalities under disjunctions. | 
-ite_solver | bool  |  (default: true) use if-then-else solver. | 
-solve_eqs_max_occs | unsigned int  |  (default: infty) maximum number of occurrences for considering a variable for gaussian eliminations. | 
-theory_solver | bool  |  (default: true) use theory solvers. | 
+context_solve | bool  |  solve equalities under disjunctions. | false
+ite_solver | bool  |  use if-then-else solver. | true
+solve_eqs_max_occs | unsigned int  |  (default: infty) maximum number of occurrences for considering a variable for gaussian eliminations. | 4294967295
+theory_solver | bool  |  theory solvers. | true
 

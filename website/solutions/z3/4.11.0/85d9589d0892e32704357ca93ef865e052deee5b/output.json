@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (or (= z!0 #b101) (> y 3))\n  (or (= z!0 #b100) (= y 2))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"85d9589d0892e32704357ca93ef865e052deee5b"}

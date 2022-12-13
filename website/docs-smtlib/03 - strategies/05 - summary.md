@@ -510,6 +510,231 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
+## Tactic eq2bv
+
+### Short Description
+
+Extract integer variables that are used as finite domain indicators.
+The integer variables can only occur in equalities.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(assert (or (= x 5) (> y 3)))
+(assert (or (= x 4) (= y 2)))
+(apply eq2bv)
+```
+
+### Notes
+
+* does not support proofs
+
+
+## Tactic factor
+
+### Short Description
+
+Factor polynomials in equalities and inequalities.
+
+### Example
+```z3
+(declare-const x Real)
+(declare-const y Real)
+(assert (> (* x x) (* x y)))
+(apply factor)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_prime | unsigned int  |  (default: infty) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter limits the maximum prime number p to be used in the first step. | 
+max_search_size | unsigned int  |  (default: infty) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter can be used to limit the search space. | 
+num_primes | unsigned int  |  (default: 1) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. The search space may be reduced by factoring the polynomial in different GF(p)'s. This parameter specify the maximum number of finite factorizations to be considered, before lifiting and searching. | 
+split_factors | bool  |  apply simplifications such as (= (* p1 p2) 0) --&gt; (or (= p1 0) (= p2 0)). | true
+
+
+## Tactic fix-dl-var
+
+### Short Description
+
+Fix a difference logic variable to `0`.
+If the problem is in the difference logic fragment, that is, all arithmetic terms
+are of the form `(x + k)`, and the arithmetic atoms are of the
+form `x - y <= k` or `x - y = k`. Then, we can set one variable to `0`.
+
+This is useful because, many bounds can be exposed after this operation is performed.
+
+### Example
+
+```z3
+(declare-const x Real)
+(declare-const y Real)
+(declare-const z Real)
+(assert (<= (+ x (* -1.0 y)) 3.0))
+(assert (<= (+ x (* -1.0 z)) 5.0))
+(apply fix-dl-var)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+algebraic_number_evaluator | bool  |  simplify/evaluate expressions containing (algebraic) irrational numbers. | true
+arith_ineq_lhs | bool  |  rewrite inequalities so that right-hand-side is a constant. | false
+arith_lhs | bool  |  all monomials are moved to the left-hand-side, and the right-hand-side is just a constant. | false
+bit2bool | bool  |  try to convert bit-vector terms of size 1 into Boolean terms | true
+blast_distinct | bool  |  expand a distinct predicate into a quadratic number of disequalities | false
+blast_distinct_threshold | unsigned int  |  when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted | 4294967295
+blast_eq_value | bool  |  blast (some) Bit-vector equalities into bits | false
+blast_select_store | bool  |  eagerly replace all (select (store ..) ..) term by an if-then-else term | false
+bv_extract_prop | bool  |  attempt to partially propagate extraction inwards | false
+bv_ineq_consistency_test_max | unsigned int  |  max size of conjunctions on which to perform consistency test based on inequalities on bitvectors. | 0
+bv_ite2id | bool  |  rewrite ite that can be simplified to identity | false
+bv_le2extract | bool  |  disassemble bvule to extract | true
+bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
+bv_not_simpl | bool  |  apply simplifications for bvnot | false
+bv_sort_ac | bool  |  sort the arguments of all AC operators | false
+cache_all | bool  |  cache all intermediate results. | false
+elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
+elim_ite | bool  |  eliminate ite in favor of and/or | true
+elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x y))). | false
+elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
+elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
+eq2ineq | bool  |  expand equalities into two inequalities | false
+expand_nested_stores | bool  |  replace nested stores by a lambda expression | false
+expand_power | bool  |  expand (^ t k) into (* t ... t) if  1 &lt; k &lt;= max_degree. | false
+expand_select_ite | bool  |  expand select over ite expressions | false
+expand_select_store | bool  |  conservatively replace a (select (store ...) ...) term by an if-then-else term | false
+expand_store_eq | bool  |  reduce (store ...) = (store ...) with a common base into selects | false
+expand_tan | bool  |  replace (tan x) with (/ (sin x) (cos x)). | false
+flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
+flat_and_or | bool  |  create nary applications for and,or | true
+gcd_rounding | bool  |  use gcd rounding on integer arithmetic atoms. | false
+hi_div0 | bool  |  use the 'hardware interpretation' for division by zero (for bit-vector terms) | true
+hoist_ite | bool  |  hoist shared summands under ite expressions | false
+hoist_mul | bool  |  hoist multiplication over summation to minimize number of multiplications | false
+ignore_patterns_on_ground_qbody | bool  |  ignores patterns on quantifiers that don't mention their bound variables. | true
+ite_extra_rules | bool  |  extra ite simplifications, these additional simplifications may reduce size locally but increase globally | true
+local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
+local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
+max_degree | unsigned int  |  max degree of algebraic numbers (and power operators) processed by simplifier. | 64
+max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
+max_steps | unsigned int  |  maximum number of steps | 4294967295
+mul2concat | bool  |  replace multiplication by a power of two into a concatenation | false
+mul_to_power | bool  |  collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. | false
+pull_cheap_ite | bool  |  pull if-then-else terms when cheap. | false
+push_ite_arith | bool  |  push if-then-else over arithmetic terms. | false
+push_ite_bv | bool  |  push if-then-else over bit-vector terms. | false
+push_to_real | bool  |  distribute to_real over * and +. | true
+rewrite_patterns | bool  |  rewrite patterns. | false
+som | bool  |  put polynomials in sum-of-monomials form | false
+som_blowup | unsigned int  |  maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form | 10
+sort_store | bool  |  sort nested stores when the indices are known to be different | false
+sort_sums | bool  |  sort the arguments of + application. | false
+split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
+
+
+## Tactic fm
+
+### Short Description
+
+Use Fourier-Motzkin to eliminate variables.
+This strategy can handle conditional bounds
+(i.e., clauses with at most one constraint).
+
+The strategy mk_occf can be used to put the
+formula in OCC form.
+
+### Example
+
+```z3
+(declare-const x Real)
+(declare-const y Real)
+(declare-const z Real)
+(declare-const u Real)
+(declare-const v Real)
+(declare-const w Real)
+(declare-fun P (Real) Bool)
+(assert (<= x (+ y (* 2.0 z))))
+(assert (>= x (- y z)))
+(assert (>= x (- y 3 (* 3 z))))
+(assert (>= x 5))
+(assert (<= x u))
+(assert (>= x v))
+(assert (P u))
+(assert (P v))
+(apply fm)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+algebraic_number_evaluator | bool  |  simplify/evaluate expressions containing (algebraic) irrational numbers. | true
+arith_ineq_lhs | bool  |  rewrite inequalities so that right-hand-side is a constant. | false
+arith_lhs | bool  |  all monomials are moved to the left-hand-side, and the right-hand-side is just a constant. | false
+bit2bool | bool  |  try to convert bit-vector terms of size 1 into Boolean terms | true
+blast_distinct | bool  |  expand a distinct predicate into a quadratic number of disequalities | false
+blast_distinct_threshold | unsigned int  |  when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted | 4294967295
+blast_eq_value | bool  |  blast (some) Bit-vector equalities into bits | false
+blast_select_store | bool  |  eagerly replace all (select (store ..) ..) term by an if-then-else term | false
+bv_extract_prop | bool  |  attempt to partially propagate extraction inwards | false
+bv_ineq_consistency_test_max | unsigned int  |  max size of conjunctions on which to perform consistency test based on inequalities on bitvectors. | 0
+bv_ite2id | bool  |  rewrite ite that can be simplified to identity | false
+bv_le2extract | bool  |  disassemble bvule to extract | true
+bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
+bv_not_simpl | bool  |  apply simplifications for bvnot | false
+bv_sort_ac | bool  |  sort the arguments of all AC operators | false
+cache_all | bool  |  cache all intermediate results. | false
+elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
+elim_ite | bool  |  eliminate ite in favor of and/or | true
+elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x y))). | false
+elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
+elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
+eq2ineq | bool  |  expand equalities into two inequalities | false
+expand_nested_stores | bool  |  replace nested stores by a lambda expression | false
+expand_power | bool  |  expand (^ t k) into (* t ... t) if  1 &lt; k &lt;= max_degree. | false
+expand_select_ite | bool  |  expand select over ite expressions | false
+expand_select_store | bool  |  conservatively replace a (select (store ...) ...) term by an if-then-else term | false
+expand_store_eq | bool  |  reduce (store ...) = (store ...) with a common base into selects | false
+expand_tan | bool  |  replace (tan x) with (/ (sin x) (cos x)). | false
+flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
+flat_and_or | bool  |  create nary applications for and,or | true
+fm_cutoff1 | unsigned int  |  first cutoff for FM based on maximum number of lower/upper occurrences. | 8
+fm_cutoff2 | unsigned int  |  second cutoff for FM based on num_lower * num_upper occurrences. | 256
+fm_extra | unsigned int  |  max. increase on the number of inequalities for each FM variable elimination step. | 0
+fm_limit | unsigned int  |  maximum number of constraints, monomials, clauses visited during FM. | 5000000
+fm_occ | bool  |  consider inequalities occurring in clauses for FM. | false
+fm_real_only | bool  |  consider only real variables for fourier-motzkin elimination. | true
+gcd_rounding | bool  |  use gcd rounding on integer arithmetic atoms. | false
+hi_div0 | bool  |  use the 'hardware interpretation' for division by zero (for bit-vector terms) | true
+hoist_ite | bool  |  hoist shared summands under ite expressions | false
+hoist_mul | bool  |  hoist multiplication over summation to minimize number of multiplications | false
+ignore_patterns_on_ground_qbody | bool  |  ignores patterns on quantifiers that don't mention their bound variables. | true
+ite_extra_rules | bool  |  extra ite simplifications, these additional simplifications may reduce size locally but increase globally | true
+local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
+local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
+max_degree | unsigned int  |  max degree of algebraic numbers (and power operators) processed by simplifier. | 64
+max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
+max_steps | unsigned int  |  maximum number of steps | 4294967295
+mul2concat | bool  |  replace multiplication by a power of two into a concatenation | false
+mul_to_power | bool  |  collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. | false
+produce_models | bool  |  model generation. | false
+pull_cheap_ite | bool  |  pull if-then-else terms when cheap. | false
+push_ite_arith | bool  |  push if-then-else over arithmetic terms. | false
+push_ite_bv | bool  |  push if-then-else over bit-vector terms. | false
+push_to_real | bool  |  distribute to_real over * and +. | true
+rewrite_patterns | bool  |  rewrite patterns. | false
+som | bool  |  put polynomials in sum-of-monomials form | false
+som_blowup | unsigned int  |  maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form | 10
+sort_store | bool  |  sort nested stores when the indices are known to be different | false
+sort_sums | bool  |  sort the arguments of + application. | false
+split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
+
+
 ## Tactic injectivity
 
 ### Short Description:

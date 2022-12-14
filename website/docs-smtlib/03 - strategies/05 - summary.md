@@ -768,6 +768,71 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 produce_models | bool  |  model generation. | false
 
 
+## Tactic lia2card
+
+### Short Description
+
+Extract 0-1 integer variables used in 
+cardinality and pseudo-Boolean constraints and replace them by Booleans.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(declare-const z Int)
+(assert (<= 0 x))
+(assert (<= 0 y))
+(assert (<= 0 z))
+(assert (>= 1 x))
+(assert (>= 1 y))
+(assert (>= 1 z))
+(assert (>= (+ (* 5 x) (* -2 z) (* 3 y) 1) 4))
+(apply lia2card)
+```
+
+### Notes
+
+* The tactic does not (properly) support proofs or cores.
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+compile_equality | bool  |  (default:false) compile equalities into pseudo-Boolean equality | 
+
+
+## Tactic nla2bv
+
+### Short Description
+
+Convert quantified NIA problems to bounded bit-vector arithmetic problems.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(declare-const z Int)
+(assert (= (* x x y) (*  2 z y y)))
+(apply nla2bv)
+```
+
+### Notes
+
+* The tactic creates an under-approximation (a stronger set of formulas)
+
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+nla2bv_bv_size | unsigned int  |  (default: 4) default bit-vector size used by nla2bv tactic. | 
+nla2bv_divisor | unsigned int  |  (default: 2) nla2bv tactic parameter. | 
+nla2bv_max_bv_size | unsigned int  |  (default: inf) maximum bit-vector size used by nla2bv tactic | 
+nla2bv_root | unsigned int  |  (default: 2) nla2bv tactic encodes reals into bit-vectors using expressions of the form a+b*sqrt(c), this parameter sets the value of c used in the encoding. | 
+
+
 ## Tactic nnf
 
 ### Short Description:
@@ -811,6 +876,37 @@ ignore_labels | bool  |  remove/ignore labels in the input formula, this option 
 max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
 mode | symbol  |  NNF translation mode: skolem (skolem normal form), quantifiers (skolem normal form + quantifiers in NNF), full | skolem
 sk_hack | bool  |  hack for VCC | false
+
+
+## Tactic normalize-bounds
+
+### Short Description
+
+Replace $x$ with $x' + l$, when $l \leq x$
+where $x'$ is a fresh variable.
+Note that, after the transformation $0 \leq x'$.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(declare-const z Int)
+(assert (<= 3 x))
+(assert (<= (+ x y) z))
+(apply normalize-bounds)
+```
+
+### Notes
+
+* supports proofs and cores
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+norm_int_only | bool  |  (default: true) normalize only the bounds of integer constants. | 
+produce_models | bool  |  model generation. | false
 
 
 ## Tactic propagate-values

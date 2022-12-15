@@ -909,6 +909,50 @@ norm_int_only | bool  |  (default: true) normalize only the bounds of integer co
 produce_models | bool  |  model generation. | false
 
 
+## Tactic pb2bv
+
+### Short Description
+
+Convert pseudo-boolean constraints to bit-vectors
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(declare-const z Int)
+(declare-const u Int)
+(assert (<= 0 x))
+(assert (<= 0 y))
+(assert (<= 0 z))
+(assert (<= 0 u))
+(assert (<= x 1))
+(assert (<= y 1))
+(assert (<= z 1))
+(assert (<= u 1))
+(assert (>= (+ (* 3 x) (* 2 y) (* 2 z) (* 2 u)) 4))
+(apply pb2bv)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+blast_distinct | bool  |  expand a distinct predicate into a quadratic number of disequalities | false
+blast_distinct_threshold | unsigned int  |  when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted | 4294967295
+cardinality.encoding | symbol  |  encoding used for cardinality constraints: grouped, bimander, ordered, unate, circuit | none
+elim_ite | bool  |  eliminate ite in favor of and/or | true
+flat_and_or | bool  |  create nary applications for and,or | true
+ite_extra_rules | bool  |  extra ite simplifications, these additional simplifications may reduce size locally but increase globally | true
+keep_cardinality_constraints | bool  |  retain cardinality constraints (don't bit-blast them) and use built-in cardinality solver | false
+local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
+local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+pb.solver | symbol  |  encoding used for Pseudo-Boolean constraints: totalizer, sorting, binary_merge, bv, solver. PB constraints are retained if set to 'solver' | solver
+pb2bv_all_clauses_limit | unsigned int  |  (default: 8) maximum number of literals for using equivalent CNF encoding of PB constraint. | 
+pb2bv_cardinality_limit | unsigned int  |  (default: inf) limit for using arc-consistent cardinality constraint encoding. | 
+
+
 ## Tactic propagate-ineqs
 
 ### Short Description

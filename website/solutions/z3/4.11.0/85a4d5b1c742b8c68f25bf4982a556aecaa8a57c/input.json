@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(assert (<= 0 x))\n(assert (<= x 1))\n(assert (<= 0 y))\n(assert (<= y 1))\n(assert (not (= (+ x (* -1 y)) -1)))\n(assert (not (= (+ x (* -1 y)) 1)))\n(assert (not (= (+ x (* -1 y)) 0)))\n(apply diff-neq)"}

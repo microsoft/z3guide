@@ -909,6 +909,44 @@ norm_int_only | bool  |  (default: true) normalize only the bounds of integer co
 produce_models | bool  |  model generation. | false
 
 
+## Tactic propagate-ineqs
+
+### Short Description
+
+Propagate ineqs/bounds, remove subsumed inequalities
+
+### Long Description
+
+This tactic performs the following tasks:
+
+- Propagate bounds using the bound_propagator.
+- Eliminate subsumed inequalities.
+  - For example:
+    `x - y >= 3` can be replaced with true if we know that `x >= 3` and `y <= 0`
+
+ - Convert inequalities of the form `p <= k` and `p >= k` into `p = k`,
+   where `p` is a polynomial and `k` is a constant.
+
+This strategy assumes the input is in arith LHS mode.
+This can be achieved by using option :arith-lhs true in the simplifier.
+
+### Example
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(declare-const z Int)
+(declare-const u Int)
+(declare-const v Int)
+(declare-const w Int)
+(assert (>= x 3))
+(assert (<= y 0))
+(assert (>= (- x y) 3))
+(assert (>= (* u v w) 2))
+(assert (<= (* v u w) 2))
+(apply (and-then simplify propagate-ineqs))
+```
+
+
 ## Tactic propagate-values
 
 ### Short Description:

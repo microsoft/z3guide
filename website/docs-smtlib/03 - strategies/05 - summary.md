@@ -3,6 +3,33 @@ title: Tactics Summary
 sidebar_position: 5
 ---
 
+## Tactic bit-blast
+
+### Short Description
+
+Apply bit-blasting to a given goal.
+
+### Example
+
+```z3
+(declare-const x (_ BitVec 8))
+(declare-const y (_ BitVec 8))
+(assert (bvule x y))
+(apply bit-blast)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+blast_add | bool  |  bit-blast adders. | true
+blast_full | bool  |  bit-blast any term with bit-vector sort, this option will make E-matching ineffective in any pattern containing bit-vector terms. | false
+blast_mul | bool  |  bit-blast multipliers (and dividers, remainders). | true
+blast_quant | bool  |  bit-blast quantified variables. | false
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
+
+
 ## Tactic blast-term-ite
 
 ### Short Description:
@@ -827,10 +854,10 @@ Convert quantified NIA problems to bounded bit-vector arithmetic problems.
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-nla2bv_bv_size | unsigned int  |  (default: 4) default bit-vector size used by nla2bv tactic. | 
-nla2bv_divisor | unsigned int  |  (default: 2) nla2bv tactic parameter. | 
+nla2bv_bv_size | unsigned int  |  default bit-vector size used by nla2bv tactic. | 4
+nla2bv_divisor | unsigned int  |  nla2bv tactic parameter. | 2
 nla2bv_max_bv_size | unsigned int  |  (default: inf) maximum bit-vector size used by nla2bv tactic | 
-nla2bv_root | unsigned int  |  (default: 2) nla2bv tactic encodes reals into bit-vectors using expressions of the form a+b*sqrt(c), this parameter sets the value of c used in the encoding. | 
+nla2bv_root | unsigned int  |  nla2bv tactic encodes reals into bit-vectors using expressions of the form a+b*sqrt(c), this parameter sets the value of c used in the encoding. | 2
 
 
 ## Tactic nnf
@@ -905,7 +932,7 @@ Note that, after the transformation $0 \leq x'$.
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-norm_int_only | bool  |  (default: true) normalize only the bounds of integer constants. | 
+norm_int_only | bool  |  normalize only the bounds of integer constants. | true
 produce_models | bool  |  model generation. | false
 
 
@@ -1121,12 +1148,12 @@ bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
 bv_not_simpl | bool  |  apply simplifications for bvnot | false
 bv_sort_ac | bool  |  sort the arguments of all AC operators | false
 cache_all | bool  |  cache all intermediate results. | false
-complete | bool  |  (default: true) add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, 0^0, neg-root | 
+complete | bool  |  add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, 0^0, neg-root | true
 elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
-elim_inverses | bool  |  (default: true) eliminate inverse trigonometric functions (asin, acos, atan). | 
+elim_inverses | bool  |  eliminate inverse trigonometric functions (asin, acos, atan). | true
 elim_ite | bool  |  eliminate ite in favor of and/or | true
 elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x y))). | false
-elim_root_objects | bool  |  (default: true) eliminate root objects. | 
+elim_root_objects | bool  |  eliminate root objects. | true
 elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
 elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
 eq2ineq | bool  |  expand equalities into two inequalities | false
@@ -1262,7 +1289,7 @@ pull_cheap_ite | bool  |  pull if-then-else terms when cheap. | false
 push_ite_arith | bool  |  push if-then-else over arithmetic terms. | false
 push_ite_bv | bool  |  push if-then-else over bit-vector terms. | false
 push_to_real | bool  |  distribute to_real over * and +. | true
-recover_01_max_bits | unsigned int  |  (default: 10) maximum number of bits to consider in a clause. | 
+recover_01_max_bits | unsigned int  |  maximum number of bits to consider in a clause. | 10
 rewrite_patterns | bool  |  rewrite patterns. | false
 som | bool  |  put polynomials in sum-of-monomials form | false
 som_blowup | unsigned int  |  maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form | 10

@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 32))\n(assert (bvsle (bvneg (_ bv2 32)) x))\n(assert (bvsle x (_ bv2 32)))\n(assert (= (bvmul x x) (_ bv9 32)))\n(apply (and-then simplify reduce-bv-size))"}

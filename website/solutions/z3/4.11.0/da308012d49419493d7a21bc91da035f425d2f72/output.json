@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  k!2\n  (p y)\n  :precision precise :depth 1)\n)\n(goals\n(goal\n  (>= (+ y k!3) y)\n  (p y)\n  (p k!3)\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"da308012d49419493d7a21bc91da035f425d2f72"}

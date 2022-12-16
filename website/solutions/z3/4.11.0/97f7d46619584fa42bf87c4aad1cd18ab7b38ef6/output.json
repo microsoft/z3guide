@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (= (f_t!!0 b) c)\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"97f7d46619584fa42bf87c4aad1cd18ab7b38ef6"}

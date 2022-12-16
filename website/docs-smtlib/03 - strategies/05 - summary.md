@@ -462,6 +462,47 @@ Distribute $\forall$ over conjunctions (and distribute $\exists$ over disjunctio
 
 
 
+## Tactic dt2bv
+
+### Short Description
+
+Tactic that eliminates finite domain data-types.
+
+### Example
+
+```z3
+(declare-datatypes ((Color 0)) (((Red) (Blue) (Green) (DarkBlue) (MetallicBlack) (MetallicSilver) (Silver) (Black))))
+(declare-const x Color)
+(declare-const y Color)
+(assert (not (= x y)))
+(assert (not (= x Red)))
+(apply dt2bv)
+```
+
+
+## Tactic elim-small-bv
+
+### Short Description
+
+Eliminate small, quantified bit-vectors by expansion
+
+### Example
+
+```z3
+(declare-fun p ((_ BitVec 2)) Bool)
+(assert (forall ((x (_ BitVec 2))) (p x)))
+(apply elim-small-bv)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_bits | unsigned int  |  (default: 4) maximum bit-vector size of quantified bit-vectors to be eliminated. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
+
+
 ## Tactic elim-term-ite
 
 ### Short Description:
@@ -885,6 +926,20 @@ cardinality and pseudo-Boolean constraints and replace them by Booleans.
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
 compile_equality | bool  |  (default:false) compile equalities into pseudo-Boolean equality | 
+
+
+## Tactic max-bv-sharing
+
+### Short Description
+
+Use heuristics to maximize the sharing of bit-vector expressions such as adders and multipliers
+
+### Long Description
+
+Rewriter for "maximing" the number of shared terms.
+The idea is to rewrite AC terms to maximize sharing.
+This rewriter is particularly useful for reducing
+the number of Adders and Multipliers before "bit-blasting".
 
 
 ## Tactic nla2bv

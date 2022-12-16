@@ -102,40 +102,6 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
-## Tactic reduce-bv-size
-
-### Short Description
-
-Rry to reduce bit-vector sizes using inequalities.
-
-### Long Description
-
-Reduce the number of bits used to encode constants, by using signed bounds.
-Example: suppose $x$ is a bit-vector of size 8, and we have
-signed bounds for $x$ such that:
-
-```
-        -2 <= x <= 2
-```
-
-Then, $x$ can be replaced by  `((sign-extend 5) k)`
-where `k` is a fresh bit-vector constant of size 3.
-
-### Example
-
-```z3
-(declare-const x (_ BitVec 32))
-(assert (bvsle (bvneg (_ bv2 32)) x))
-(assert (bvsle x (_ bv2 32)))
-(assert (= (bvmul x x) (_ bv9 32)))
-(apply (and-then simplify reduce-bv-size))
-```
-
-### Notes
-
-* does not support proofs, nor unsat cores
-
-
 ## Tactic card2bv
 
 ### Short Description
@@ -1430,6 +1396,40 @@ This transformation should work in the following way:
 
 * supports unsat cores
 * does not support proof terms
+
+
+## Tactic reduce-bv-size
+
+### Short Description
+
+Rry to reduce bit-vector sizes using inequalities.
+
+### Long Description
+
+Reduce the number of bits used to encode constants, by using signed bounds.
+Example: suppose $x$ is a bit-vector of size 8, and we have
+signed bounds for $x$ such that:
+
+```
+        -2 <= x <= 2
+```
+
+Then, $x$ can be replaced by  `((sign-extend 5) k)`
+where `k` is a fresh bit-vector constant of size 3.
+
+### Example
+
+```z3
+(declare-const x (_ BitVec 32))
+(assert (bvsle (bvneg (_ bv2 32)) x))
+(assert (bvsle x (_ bv2 32)))
+(assert (= (bvmul x x) (_ bv9 32)))
+(apply (and-then simplify reduce-bv-size))
+```
+
+### Notes
+
+* does not support proofs, nor unsat cores
 
 
 ## Tactic simplify

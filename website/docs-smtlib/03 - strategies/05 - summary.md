@@ -102,6 +102,30 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
+## Tactic bvarray2uf
+
+### Short Description
+
+Tactic that rewrites bit-vector arrays into bit-vector
+(uninterpreted) functions.
+
+### Example
+
+```z3
+(declare-const a (Array (_ BitVec 32) (_ BitVec 32)))
+(declare-const b (_ BitVec 32))
+(declare-const c (_ BitVec 32))
+(assert (= (select a b) c))
+(apply bvarray2uf)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+produce_models | bool  |  model generation. | false
+
+
 ## Tactic card2bv
 
 ### Short Description
@@ -1012,6 +1036,38 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 pb.solver | symbol  |  encoding used for Pseudo-Boolean constraints: totalizer, sorting, binary_merge, bv, solver. PB constraints are retained if set to 'solver' | solver
 pb2bv_all_clauses_limit | unsigned int  |  (default: 8) maximum number of literals for using equivalent CNF encoding of PB constraint. | 
 pb2bv_cardinality_limit | unsigned int  |  (default: inf) limit for using arc-consistent cardinality constraint encoding. | 
+
+
+## Tactic propagate-bv-bounds
+
+### Short Description
+
+Contextual bounds simplification tactic.
+
+### Example
+
+```z3
+(declare-const x (_ BitVec 32))
+(declare-const y (_ BitVec 32))
+(declare-const z (_ BitVec 32))
+(assert (bvule (_ bv4 32) x))
+(assert (bvule x (_ bv24 32)))
+(assert (or (bvule x (_ bv100 32)) (bvule (_ bv32 32) x)))
+(apply propagate-bv-bounds)
+```
+
+### Notes
+
+* assumes that bit-vector inequalities have been simplified to use bvule/bvsle
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_depth | unsigned int  |  maximum term depth. | 1024
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
+propagate_eq | bool  |  enable equality propagation from bounds. | false
 
 
 ## Tactic propagate-ineqs

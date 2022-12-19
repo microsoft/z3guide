@@ -221,6 +221,8 @@ solve_using(s, 3*y + 2*x == z)
 ```
 
 
+### Combining tactics with solvers
+
 Tactics can be combined with solvers. For example, we can apply a tactic to a goal, produced a set of subgoals, 
 then select one of the subgoals and solve it using a solver. The next example demonstrates how to do that, and how to
 use model converters to convert a model for a subgoal into a model for the original goal.
@@ -245,6 +247,29 @@ print s.check()
 print s.model()
 # Model for the original goal
 print r.convert_model(s.model())
+```
+
+### Using tactics to simplify benchmarks
+
+You can also use tactics to transform SMTLIB problems. Some simplifications eliminate variables so they 
+will not appear in the simplified formulas.
+
+```z3-python
+fml = """(declare-const x Int)
+(declare-const y Int)
+(assert (or (< (+ 3 x y) 1) (< x y)))
+(assert (= x (+ y 1)))
+"""
+
+s = Solver()
+s.from_string(fml)
+g = Goal()
+g.add(s.assertions())
+t = Then('simplify', 'solve-eqs')
+r = t(g)
+s = Solver()
+s.add(Or([g.as_expr() for g in r]))
+print(s.sexpr())
 ```
 
 ## Probes 

@@ -136,8 +136,8 @@ drat.activity | bool  |  dump variable activities | false
 drat.binary | bool  |  use Binary DRAT output format | false
 drat.check_sat | bool  |  build up internal trace, check satisfying model | false
 drat.check_unsat | bool  |  build up internal proof and check | false
+drat.disable | bool  |  override anything that enables DRAT | false
 drat.file | symbol  |  file to dump DRAT proofs | 
-drup.trim | bool  |  build and trim drup proof | false
 dyn_sub_res | bool  |  dynamic subsumption resolution for minimizing learned clauses | true
 elim_vars | bool  |  enable variable elimination using resolution during simplification | true
 elim_vars_bdd | bool  |  enable variable elimination using BDD recompilation during simplification | true
@@ -221,6 +221,9 @@ scc.tr | bool  |  apply transitive reduction, eliminate redundant binary clauses
 search.sat.conflicts | unsigned int  |  period for solving for sat (in number of conflicts) | 400
 search.unsat.conflicts | unsigned int  |  period for solving for unsat (in number of conflicts) | 400
 simplify.delay | unsigned int  |  set initial delay of simplification by a conflict count | 0
+smt | bool  |  use the SAT solver based incremental SMT core | false
+smt.proof.check | bool  |  check SMT proof while it is created | false
+smt.proof.check_rup | bool  |  apply forward RUP proof checking | true
 subsumption | bool  |  eliminate subsumed clauses | true
 subsumption.limit | unsigned int  |  approx. maximum number of literals visited during subsumption (and subsumption resolution) | 100000000
 threads | unsigned int  |  number of parallel threads to use | 1
@@ -234,7 +237,12 @@ solver parameters
  ----------|------|-------------|--------
 axioms2files | bool  |  print negated theory axioms to separate files during search | false
 cancel_backup_file | symbol  |  file to save partial search state if search is canceled | 
+instantiations2console | bool  |  print quantifier instantiations to the console | false
 lemmas2console | bool  |  print lemmas during search | false
+proof.check | bool  |  check proof logs | true
+proof.log | symbol  |  log clause proof trail into a file | 
+proof.save | bool  |  save proof log into a proof object that can be extracted using (get-proof) | false
+proof.trim | bool  |  trim and save proof into a proof object that an be extracted using (get-proof) | false
 smtlib2_log | symbol  |  file to save solver interaction | 
 timeout | unsigned int  |  timeout on the solver object; overwrites a global timeout | 4294967295
 
@@ -412,6 +420,11 @@ spacer.dump_benchmarks | bool  |  Dump SMT queries as benchmarks | false
 spacer.dump_threshold | double  |  Threshold in seconds on dumping benchmarks | 5.0
 spacer.elim_aux | bool  |  Eliminate auxiliary variables in reachability facts | true
 spacer.eq_prop | bool  |  Enable equality and bound propagation in arithmetic | true
+spacer.expand_bnd | bool  |  Enable expand-bound lemma generalization | false
+spacer.gg.concretize | bool  |  Enable global guidance concretize | true
+spacer.gg.conjecture | bool  |  Enable global guidance conjecture | true
+spacer.gg.subsume | bool  |  Enable global guidance subsume | true
+spacer.global | bool  |  Enable global guidance | false
 spacer.gpdr | bool  |  Use GPDR solving strategy for non-linear CHC | false
 spacer.gpdr.bfs | bool  |  Use BFS exploration strategy for expanding model search | true
 spacer.ground_pobs | bool  |  Ground pobs by using values from a model | true
@@ -431,7 +444,6 @@ spacer.native_mbp | bool  |  Use native mbp of Z3 | true
 spacer.order_children | unsigned int  |  SPACER: order of enqueuing children in non-linear rules : 0 (original), 1 (reverse), 2 (random) | 0
 spacer.p3.share_invariants | bool  |  Share invariants lemmas | false
 spacer.p3.share_lemmas | bool  |  Share frame lemmas | false
-spacer.print_json | symbol  |  Print pobs tree in JSON format to a given file | 
 spacer.propagate | bool  |  Enable propagate/pushing phase | true
 spacer.push_pob | bool  |  push blocked pobs to higher level | false
 spacer.push_pob_max_depth | unsigned int  |  Maximum depth at which push_pob is enabled | 4294967295
@@ -454,6 +466,7 @@ spacer.use_derivations | bool  |  SPACER: using derivation mechanism to cache in
 spacer.use_euf_gen | bool  |  Generalize lemmas and pobs using implied equalities | false
 spacer.use_inc_clause | bool  |  Use incremental clause to represent trans | true
 spacer.use_inductive_generalizer | bool  |  generalize lemmas using induction strengthening | true
+spacer.use_iuc | bool  |  Enable Interpolating Unsat Core(IUC) for lemma generalization | true
 spacer.use_lemma_as_cti | bool  |  SPACER: use a lemma instead of a CTI in flexible_trace | false
 spacer.use_lim_num_gen | bool  |  Enable limit numbers generalizer to get smaller numbers | false
 spacer.validate_lemmas | bool  |  Validate each lemma after generalization | false
@@ -534,7 +547,7 @@ arith.solver | unsigned int  |  arithmetic solver: 0 - no solver, 1 - bellman-fo
 array.extensional | bool  |  extensional array theory | true
 array.weak | bool  |  weak array theory | false
 auto_config | bool  |  automatically configure solver | true
-bv.delay | bool  |  delay internalize expensive bit-vector operations | true
+bv.delay | bool  |  delay internalize expensive bit-vector operations | false
 bv.enable_int2bv | bool  |  enable support for int2bv and bv2int operators | true
 bv.eq_axioms | bool  |  enable redundant equality axioms for bit-vectors | true
 bv.reflect | bool  |  create enode for every bit-vector term | true
@@ -596,6 +609,7 @@ restart_factor | double  |  when using geometric (or inner-outer-geometric) prog
 restart_strategy | unsigned int  |  0 - geometric, 1 - inner-outer-geometric, 2 - luby, 3 - fixed, 4 - arithmetic | 1
 restricted_quasi_macros | bool  |  try to find universally quantified formulas that are restricted quasi-macros | false
 seq.max_unfolding | unsigned int  |  maximal unfolding depth for checking string equations and regular expressions | 1000000000
+seq.min_unfolding | unsigned int  |  initial bound for strings whose lengths are bounded by iterative deepening. Set this to a higher value if there are only models with larger string lengths | 1
 seq.split_w_len | bool  |  enable splitting guided by length constraints | true
 seq.validate | bool  |  enable self-validation of theory axioms created by seq theory | false
 str.aggressive_length_testing | bool  |  prioritize testing concrete length values over generating more options | false

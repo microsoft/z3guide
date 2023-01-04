@@ -42,7 +42,7 @@ Create the rule that a follows from b. In general you can create a rule with mul
 The name is optional. It is used for tracking the rule in derivation proofs. Continuing with the example, a is false unless b is established.
 
 ```
- (query r)
+ (query a)
 ```
 
 Asks if relation `a` can be derived. The rules so far say that a follows if `b` is established and that `b` follows if `c` is established. But nothing establishes `c` and `b` is also not established, so `a` cannot be derived.

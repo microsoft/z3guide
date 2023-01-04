@@ -381,6 +381,20 @@ t1, t2, t3 = Consts('t1 t2 t3', TreeList)
 solve(Distinct(t1, t2, t3))
 ```
 
+The following example shows how to nest algebraic datatypes with
+sequences
+```z3-python
+SomeType = Datatype('SomeType')
+SomeTypeSort = DatatypeSort('SomeType')
+SomeType.declare('nil')
+SomeType.declare('some', ('someof', SeqSort(SomeTypeSort), ))
+SomeTypeSort = SomeType.create()
+```
+
+It illustrates how to access the sort `SomeTypeSort`
+before it is fully constructed
+by using the function `DatatypeSort`.
+
 ## Uninterpreted Sorts
 
 

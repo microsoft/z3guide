@@ -33,6 +33,34 @@ produces a pure bit-vector benchmark, it allows Z3 to use a specialized SAT solv
 
 
 
+## Tactic add-bounds
+
+### Short Description
+
+Tactic for bounding unbounded variables.
+
+### Long Description
+
+The tactic creates a stronger sub-goal by adding bounds to variables.
+The new goal may not be satisfiable even if the original goal is.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(assert (> (+ x y) 10))
+(apply add-bounds)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+add_bound_lower | rational  |  (default: -2) lower bound to be added to unbounded variables. | 
+add_bound_upper | rational  |  (default: 2) upper bound to be added to unbounded variables. | 
+
+
 ## Tactic bit-blast
 
 ### Short Description
@@ -296,7 +324,7 @@ Then, replace $x^n$ with a new fresh variable $y$.
 ```z3
 (declare-const x Real)
 (declare-const y Real)
-(assert (> (+ (* x x x 4) (* x x 3) 0)))
+(assert (> (+ (* x x x 4) (* x x 3)) 0))
 (assert (= (* x x) (* y y)))
 (apply degree-shift)
 ```
@@ -1017,6 +1045,34 @@ cardinality and pseudo-Boolean constraints and replace them by Booleans.
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
 compile_equality | bool  |  (default:false) compile equalities into pseudo-Boolean equality | 
+
+
+## Tactic lia2pb
+
+### Short Description
+
+Reduce bounded LIA benchmark into 0-1 LIA benchmark.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+(assert (<= 0 x))
+(assert (<= x 5))
+(assert (<= 0 y))
+(assert (<= y 5))
+(assert (>= (+ (* 2 x) y) 5))
+(apply lia2pb)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+lia2pb_max_bits | unsigned int  |  (default: 32) maximum number of bits to be used (per variable) in lia2pb. | 
+lia2pb_partial | bool  |  (default: false) partial lia2pb conversion. | 
+lia2pb_total_bits | unsigned int  |  (default: 2048) total number of bits to be used (per problem) in lia2pb. | 
 
 
 ## Tactic max-bv-sharing

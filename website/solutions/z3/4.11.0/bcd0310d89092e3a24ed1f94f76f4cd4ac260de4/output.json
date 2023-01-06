@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (p (* (+ x y) (+ z u)))\n  :precision precise :depth 1)\n)\n(goals\n(goal\n  (p (+ (* x z) (* y z) (* u x) (* u y)))\n  :precision precise :depth 1)\n)\n(* (+ x y) (+ z u))\n(+ (* x z) (* y z) (* u x) (* u y))\n","error":"","status":"z3-ran","hash":"bcd0310d89092e3a24ed1f94f76f4cd4ac260de4"}

@@ -3,6 +3,36 @@ title: Tactics Summary
 sidebar_position: 5
 ---
 
+## Tactic ackernannize_bv
+
+### Short Description
+
+A tactic for performing Ackermann reduction for bit-vector formulas
+
+### Long Description
+
+The Ackermann reduction replaces uninterpreted functions $f(t_1), f(t_2)$
+by fresh variables $f_1, f_2$ and addes axioms $t_1 \simeq t_2 \implies f_1 \simeq f_2$.
+The reduction has the effect of eliminating uninterpreted functions. When the reduction
+produces a pure bit-vector benchmark, it allows Z3 to use a specialized SAT solver.
+
+### Example
+
+```z3
+(declare-const x (_ BitVec 32))
+(declare-const y (_ BitVec 32))
+(declare-fun f ((_ BitVec 32)) (_ BitVec 8))
+
+(assert (not (= (f x) (f y))))
+(apply ackermannize_bv)
+```
+
+### Notes
+
+* does not support proofs, does not support unsatisfiable cores
+
+
+
 ## Tactic bit-blast
 
 ### Short Description
@@ -68,6 +98,33 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
+## Tactic bv-slice
+
+### Short Description
+
+Slices bit-vectors into sub-ranges to allow simplifying sub-ranges.
+
+### Long Description
+
+It rewrites a state using bit-vector slices. 
+Slices are extracted from bit-vector equality assertions.
+An equality assertion may equate a sub-range of a bit-vector
+with a constant. The tactic ensures that all occurrences of the
+subrange are replaced by the constants to allow additional 
+simplification
+
+### Example
+
+```z3
+(declare-const x (_ BitVec 32))
+(declare-const y (_ BitVec 32))
+        (assert (= ((_ extract 31 16) x) (_ bv123 16)))
+(assert (= ((_ extract 15 0) x) ((_ extract 16 1) y)))
+(assert (= (bvadd x x) y))
+(apply bv-slice)
+```
+
+
 ## Tactic bv1-blast
 
 ### Short Description
@@ -100,6 +157,17 @@ the simplifiers.
  ----------|------|-------------|--------
 max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
+
+
+## Tactic bv_bound_chk
+
+### Short Description
+
+Attempts to detect inconsistencies of bounds on bv expressions.
+
+### Notes 
+
+* does not support proofs, does not support cores
 
 
 ## Tactic bvarray2uf

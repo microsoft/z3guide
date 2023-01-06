@@ -115,7 +115,7 @@ simplification
 
 ### Example
 
-```z3
+```z3 ignore-errors
 (declare-const x (_ BitVec 32))
 (declare-const y (_ BitVec 32))
         (assert (= ((_ extract 31 16) x) (_ bv123 16)))

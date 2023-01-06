@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (or k!0 (= x y))\n  (or k!1 (= x y))\n  (or (not k!0) (> x (- y)))\n  (or (not k!1) (< x (- y)))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"f4a4eba6259cc3fbcaf439bc46cd595a53c6bc76"}

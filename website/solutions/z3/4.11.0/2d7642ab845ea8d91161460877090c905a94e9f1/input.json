@@ -1,0 +1,1 @@
+{"input":"(declare-const a Bool)\n(declare-const b Bool)\n(assert (and a (or a b)))\n(apply dom-simplify)"}

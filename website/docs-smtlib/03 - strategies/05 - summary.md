@@ -530,6 +530,29 @@ Distribute $\forall$ over conjunctions (and distribute $\exists$ over disjunctio
 
 
 
+## Tactic dom-simplify
+
+### Short Description
+
+Apply dominator simplification rules
+
+### Long Description
+
+Dominator-based simplification is a context dependent simplification function that uses a dominator tree to control the number of paths it 
+visits during simplification. The expression DAG may have an exponential number of paths, but only paths corresponding to a dominator
+tree are visited. Since the paths selected by the dominator trees are limited, the simplifier may easily fail to simplify within a context. 
+
+### Example
+
+```z3
+(declare-const a Bool)
+(declare-const b Bool)
+(assert (and a (or a b)))
+(apply dom-simplify)
+```
+
+
+
 ## Tactic dt2bv
 
 ### Short Description
@@ -1115,6 +1138,38 @@ Note that, after the transformation $0 \leq x'$.
  ----------|------|-------------|--------
 norm_int_only | bool  |  normalize only the bounds of integer constants. | true
 produce_models | bool  |  model generation. | false
+
+
+## Tactic occf
+
+### Short Description
+
+Put goal in one constraint per clause normal form 
+
+### Long Description
+
+Put clauses in the assertion set in
+OOC (one constraint per clause) form.
+Constraints occurring in formulas that
+are not clauses are ignored.
+The formula can be put into CNF by
+using `mk_sat_preprocessor` strategy.
+
+### Example
+
+```z3
+(declare-const x Int)
+(declare-const y Int)
+
+(assert (or (= x y) (> x (- y))))
+(assert (or (= x y) (< x (- y))))
+(apply occf)
+```
+
+### Notes
+
+* Does not support proofs
+* only clauses are considered
 
 
 ## Tactic pb2bv
@@ -1774,4 +1829,131 @@ context_solve | bool  |  solve equalities under disjunctions. | false
 ite_solver | bool  |  use if-then-else solver. | true
 solve_eqs_max_occs | unsigned int  |  (default: infty) maximum number of occurrences for considering a variable for gaussian eliminations. | 4294967295
 theory_solver | bool  |  theory solvers. | true
+
+
+## Tactic symmetry-reduce
+
+### Short Description
+
+Apply symmetry reduction
+
+### Long Description
+
+The tactic applies symmetry reduction for uninterpreted functions and equalities.
+It applies a straight-forward adaption of an algorithm proposed for veriT.
+
+
+
+## Tactic tseitin-cnf
+
+### Short Description
+
+Convert goal into CNF using tseitin-like encoding (note: quantifiers are ignored).
+
+### Long Description
+
+Puts an assertion set in CNF.
+Auxiliary variables are used to avoid blowup.
+
+Features:
+    
+- Efficient encoding is used for commonly used patterns such as:
+       `(iff a (iff b c))`
+       `(or (not (or a b)) (not (or a c)) (not (or b c)))`
+
+- Efficient encoding is used for chains of if-then-elses 
+
+- Distributivity is applied to non-shared nodes if the blowup is acceptable.
+    
+- The features above can be disabled/enabled using parameters.
+
+- The assertion-set is only modified if the resultant set of clauses is "acceptable".
+
+Notes: 
+    
+- Term-if-then-else expressions are not handled by this strategy. 
+This kind of expression should be processed by other strategies.
+
+- Quantifiers are treated as "theory" atoms. They are viewed
+as propositional variables by this strategy.
+    
+- The assertion set may contain free variables. 
+
+- This strategy assumes the assertion_set_rewriter was used before invoking it.
+In particular, it is more effective when "and" operators
+were eliminated.
+
+### Example
+
+```z3
+(declare-const a Bool)
+(declare-const b Bool)
+(declare-const c Bool)
+
+(assert (= a (= b c)))
+(apply tseitin-cnf)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+algebraic_number_evaluator | bool  |  simplify/evaluate expressions containing (algebraic) irrational numbers. | true
+arith_ineq_lhs | bool  |  rewrite inequalities so that right-hand-side is a constant. | false
+arith_lhs | bool  |  all monomials are moved to the left-hand-side, and the right-hand-side is just a constant. | false
+bit2bool | bool  |  try to convert bit-vector terms of size 1 into Boolean terms | true
+blast_distinct | bool  |  expand a distinct predicate into a quadratic number of disequalities | false
+blast_distinct_threshold | unsigned int  |  when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted | 4294967295
+blast_eq_value | bool  |  blast (some) Bit-vector equalities into bits | false
+blast_select_store | bool  |  eagerly replace all (select (store ..) ..) term by an if-then-else term | false
+bv_extract_prop | bool  |  attempt to partially propagate extraction inwards | false
+bv_ineq_consistency_test_max | unsigned int  |  max size of conjunctions on which to perform consistency test based on inequalities on bitvectors. | 0
+bv_ite2id | bool  |  rewrite ite that can be simplified to identity | false
+bv_le2extract | bool  |  disassemble bvule to extract | true
+bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
+bv_not_simpl | bool  |  apply simplifications for bvnot | false
+bv_sort_ac | bool  |  sort the arguments of all AC operators | false
+cache_all | bool  |  cache all intermediate results. | false
+common_patterns | bool  |  (default: true) minimize the number of auxiliary variables during CNF encoding by identifing commonly used patterns | 
+distributivity | bool  |  (default: true) minimize the number of auxiliary variables during CNF encoding by applying distributivity over unshared subformulas | 
+distributivity_blowup | unsigned int  |  (default: 32) maximum overhead for applying distributivity during CNF encoding | 
+elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
+elim_ite | bool  |  eliminate ite in favor of and/or | true
+elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x y))). | false
+elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
+elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
+eq2ineq | bool  |  expand equalities into two inequalities | false
+expand_nested_stores | bool  |  replace nested stores by a lambda expression | false
+expand_power | bool  |  expand (^ t k) into (* t ... t) if  1 &lt; k &lt;= max_degree. | false
+expand_select_ite | bool  |  expand select over ite expressions | false
+expand_select_store | bool  |  conservatively replace a (select (store ...) ...) term by an if-then-else term | false
+expand_store_eq | bool  |  reduce (store ...) = (store ...) with a common base into selects | false
+expand_tan | bool  |  replace (tan x) with (/ (sin x) (cos x)). | false
+flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
+flat_and_or | bool  |  create nary applications for and,or | true
+gcd_rounding | bool  |  use gcd rounding on integer arithmetic atoms. | false
+hi_div0 | bool  |  use the 'hardware interpretation' for division by zero (for bit-vector terms) | true
+hoist_ite | bool  |  hoist shared summands under ite expressions | false
+hoist_mul | bool  |  hoist multiplication over summation to minimize number of multiplications | false
+ignore_patterns_on_ground_qbody | bool  |  ignores patterns on quantifiers that don't mention their bound variables. | true
+ite_chaing | bool  |  (default: true) minimize the number of auxiliary variables during CNF encoding by identifing if-then-else chains | 
+ite_extra | bool  |  (default: true) add redundant clauses (that improve unit propagation) when encoding if-then-else formulas | 
+ite_extra_rules | bool  |  extra ite simplifications, these additional simplifications may reduce size locally but increase globally | true
+local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
+local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
+max_degree | unsigned int  |  max degree of algebraic numbers (and power operators) processed by simplifier. | 64
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+max_steps | unsigned int  |  maximum number of steps | 4294967295
+mul2concat | bool  |  replace multiplication by a power of two into a concatenation | false
+mul_to_power | bool  |  collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. | false
+pull_cheap_ite | bool  |  pull if-then-else terms when cheap. | false
+push_ite_arith | bool  |  push if-then-else over arithmetic terms. | false
+push_ite_bv | bool  |  push if-then-else over bit-vector terms. | false
+push_to_real | bool  |  distribute to_real over * and +. | true
+rewrite_patterns | bool  |  rewrite patterns. | false
+som | bool  |  put polynomials in sum-of-monomials form | false
+som_blowup | unsigned int  |  maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form | 10
+sort_store | bool  |  sort nested stores when the indices are known to be different | false
+sort_sums | bool  |  sort the arguments of + application. | false
+split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
 

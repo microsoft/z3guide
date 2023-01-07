@@ -61,6 +61,37 @@ add_bound_lower | rational  |  (default: -2) lower bound to be added to unbounde
 add_bound_upper | rational  |  (default: 2) upper bound to be added to unbounded variables. | 
 
 
+## Tactic aig
+
+### Short Description
+
+Simplify Boolean structure using AIGs (And-inverter graphs).
+
+### Long Description
+
+And-inverter graphs (AIGs) uses just the Boolean connectives `and` and `not` to encode Boolean
+formulas. The circuit representation using AIGs first converts formulas using other connectives to this normal form, 
+then performs local simplification steps to minimize the circuit representation.
+Note that the simplification steps used by this tactic are heuristic, trading speed for power, 
+and do not represent a high-quality circuit minimization approach.
+
+### Example
+
+```z3
+(declare-const a Bool)
+(declare-const b Bool)
+(declare-const c Bool)
+(assert (or (and a b) (and b a c)))
+(apply aig)
+```
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+
+
 ## Tactic bit-blast
 
 ### Short Description
@@ -597,6 +628,41 @@ Tactic that eliminates finite domain data-types.
 (assert (not (= x Red)))
 (apply dt2bv)
 ```
+
+
+## Tactic elim-predicates
+
+### Short Description
+Eliminates predicates and macros from a formula.
+
+### Long Description
+The tactic subsumes the functionality of `macro-finder` and `quasi-macros`.
+Besides finding macros, it eliminates predicates using Davis-Putnam
+resolution.
+
+### Example
+
+the predicate `p` occurs once positively. All negative occurrences of `p` are resolved against this positive occurrence.
+The result of resolution is a set of equalities between arguments to `p`. The function `f` is replaced by a partial solution.
+
+```
+(declare-fun f (Int Int Int) Int)
+(declare-fun p (Int) Bool)
+(declare-const a Int)
+(declare-const b Int)
+
+(assert (forall ((x Int) (y Int)) (= (f x y (+ x y)) (* 2 x y))))
+(assert (p (f 8 a (+ a 8))))
+(assert (not (p (f 0 a (+ a 8)))))
+(assert (not (p (f 2 a (+ a 8)))))
+(assert (not (p (f 1 a (+ a b)))))
+(apply elim-predicates)
+```
+
+### Notes
+
+* support unsat cores
+* does not support proofs
 
 
 ## Tactic elim-small-bv

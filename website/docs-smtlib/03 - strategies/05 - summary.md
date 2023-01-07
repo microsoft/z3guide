@@ -1046,6 +1046,153 @@ sort_sums | bool  |  sort the arguments of + application. | false
 split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
 
 
+## Tactic horn
+
+### Short Description
+
+Solve a set of Horn clauses using the SPACER engine.
+
+### Long Description
+
+The SPACER engine is specialized to solving Constrained Horn Clauses.
+This tactic instructs 
+
+## Tactic horn-simplify
+
+### Short Description
+
+Apply pre-processing simplification rules to a set of Horn clauses
+
+### Long Description
+This tactic exposes pre-processing simplification rules for Constrained Horn Clauses.
+They include a repertoire of simplification options that can be controlled by toggling
+the `fp` parameters.
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+bmc.linear_unrolling_depth | unsigned int  |  Maximal level to explore | 4294967295
+ctrl_c | bool  |  enable interrupts from ctrl-c | true
+datalog.all_or_nothing_deltas | bool  |  compile rules so that it is enough for the delta relation in union and widening operations to determine only whether the updated relation was modified or not | false
+datalog.check_relation | symbol  |  name of default relation to check. operations on the default relation will be verified using SMT solving | null
+datalog.compile_with_widening | bool  |  widening will be used to compile recursive rules | false
+datalog.dbg_fpr_nonempty_relation_signature | bool  |  if true, finite_product_relation will attempt to avoid creating inner relation with empty signature by putting in half of the table columns, if it would have been empty otherwise | false
+datalog.default_relation | symbol  |  default relation implementation: external_relation, pentagon | pentagon
+datalog.default_table | symbol  |  default table implementation: sparse, hashtable, bitvector, interval | sparse
+datalog.default_table_checked | bool  |  if true, the default table will be default_table inside a wrapper that checks that its results are the same as of default_table_checker table | false
+datalog.default_table_checker | symbol  |  see default_table_checked | null
+datalog.explanations_on_relation_level | bool  |  if true, explanations are generated as history of each relation, rather than per fact (generate_explanations must be set to true for this option to have any effect) | false
+datalog.generate_explanations | bool  |  produce explanations for produced facts when using the datalog engine | false
+datalog.initial_restart_timeout | unsigned int  |  length of saturation run before the first restart (in ms), zero means no restarts | 0
+datalog.magic_sets_for_queries | bool  |  magic set transformation will be used for queries | false
+datalog.output_profile | bool  |  determines whether profile information should be output when outputting Datalog rules or instructions | false
+datalog.print.tuples | bool  |  determines whether tuples for output predicates should be output | true
+datalog.profile_timeout_milliseconds | unsigned int  |  instructions and rules that took less than the threshold will not be printed when printed the instruction/rule list | 0
+datalog.similarity_compressor | bool  |  rules that differ only in values of constants will be merged into a single rule | true
+datalog.similarity_compressor_threshold | unsigned int  |  if similarity_compressor is on, this value determines how many similar rules there must be in order for them to be merged | 11
+datalog.subsumption | bool  |  if true, removes/filters predicates with total transitions | true
+datalog.timeout | unsigned int  |  Time limit used for saturation | 0
+datalog.unbound_compressor | bool  |  auxiliary relations will be introduced to avoid unbound variables in rule heads | true
+datalog.use_map_names | bool  |  use names from map files when displaying tuples | true
+engine | symbol  |  Select: auto-config, datalog, bmc, spacer | auto-config
+generate_proof_trace | bool  |  trace for 'sat' answer as proof object | false
+print_aig | symbol  |  Dump clauses in AIG text format (AAG) to the given file name | 
+print_answer | bool  |  print answer instance(s) to query | false
+print_boogie_certificate | bool  |  print certificate for reachability or non-reachability using a format understood by Boogie | false
+print_certificate | bool  |  print certificate for reachability or non-reachability | false
+print_fixedpoint_extensions | bool  |  use SMT-LIB2 fixedpoint extensions, instead of pure SMT2, when printing rules | true
+print_low_level_smt2 | bool  |  use (faster) low-level SMT2 printer (the printer is scalable but the result may not be as readable) | false
+print_statistics | bool  |  print statistics | false
+print_with_variable_declarations | bool  |  use variable declarations when displaying rules (instead of attempting to use original names) | true
+spacer.arith.solver | unsigned int  |  arithmetic solver: 0 - no solver, 1 - bellman-ford based solver (diff. logic only), 2 - simplex based solver, 3 - floyd-warshall based solver (diff. logic only) and no theory combination 4 - utvpi, 5 - infinitary lra, 6 - lra solver | 2
+spacer.blast_term_ite_inflation | unsigned int  |  Maximum inflation for non-Boolean ite-terms expansion: 0 (none), k (multiplicative) | 3
+spacer.ctp | bool  |  Enable counterexample-to-pushing | true
+spacer.dump_benchmarks | bool  |  Dump SMT queries as benchmarks | false
+spacer.dump_threshold | double  |  Threshold in seconds on dumping benchmarks | 5.0
+spacer.elim_aux | bool  |  Eliminate auxiliary variables in reachability facts | true
+spacer.eq_prop | bool  |  Enable equality and bound propagation in arithmetic | true
+spacer.expand_bnd | bool  |  Enable expand-bound lemma generalization | false
+spacer.gg.concretize | bool  |  Enable global guidance concretize | true
+spacer.gg.conjecture | bool  |  Enable global guidance conjecture | true
+spacer.gg.subsume | bool  |  Enable global guidance subsume | true
+spacer.global | bool  |  Enable global guidance | false
+spacer.gpdr | bool  |  Use GPDR solving strategy for non-linear CHC | false
+spacer.gpdr.bfs | bool  |  Use BFS exploration strategy for expanding model search | true
+spacer.ground_pobs | bool  |  Ground pobs by using values from a model | true
+spacer.iuc | unsigned int  |  0 = use old implementation of unsat-core-generation, 1 = use new implementation of IUC generation, 2 = use new implementation of IUC + min-cut optimization | 1
+spacer.iuc.arith | unsigned int  |  0 = use simple Farkas plugin, 1 = use simple Farkas plugin with constant from other partition (like old unsat-core-generation),2 = use Gaussian elimination optimization (broken), 3 = use additive IUC plugin | 1
+spacer.iuc.debug_proof | bool  |  prints proof used by unsat-core-learner for debugging purposes (debugging) | false
+spacer.iuc.old_hyp_reducer | bool  |  use old hyp reducer instead of new implementation, for debugging only | false
+spacer.iuc.print_farkas_stats | bool  |  prints for each proof how many Farkas lemmas it contains and how many of these participate in the cut (for debugging) | false
+spacer.iuc.split_farkas_literals | bool  |  Split Farkas literals | false
+spacer.keep_proxy | bool  |  keep proxy variables (internal parameter) | true
+spacer.logic | symbol  |  SMT-LIB logic to configure internal SMT solvers | 
+spacer.max_level | unsigned int  |  Maximum level to explore | 4294967295
+spacer.max_num_contexts | unsigned int  |  maximal number of contexts to create | 500
+spacer.mbqi | bool  |  Enable mbqi | true
+spacer.min_level | unsigned int  |  Minimal level to explore | 0
+spacer.native_mbp | bool  |  Use native mbp of Z3 | true
+spacer.order_children | unsigned int  |  SPACER: order of enqueuing children in non-linear rules : 0 (original), 1 (reverse), 2 (random) | 0
+spacer.p3.share_invariants | bool  |  Share invariants lemmas | false
+spacer.p3.share_lemmas | bool  |  Share frame lemmas | false
+spacer.propagate | bool  |  Enable propagate/pushing phase | true
+spacer.push_pob | bool  |  push blocked pobs to higher level | false
+spacer.push_pob_max_depth | unsigned int  |  Maximum depth at which push_pob is enabled | 4294967295
+spacer.q3 | bool  |  Allow quantified lemmas in frames | true
+spacer.q3.instantiate | bool  |  Instantiate quantified lemmas | true
+spacer.q3.qgen.normalize | bool  |  normalize cube before quantified generalization | true
+spacer.q3.use_qgen | bool  |  use quantified lemma generalizer | false
+spacer.random_seed | unsigned int  |  Random seed to be used by SMT solver | 0
+spacer.reach_dnf | bool  |  Restrict reachability facts to DNF | true
+spacer.reset_pob_queue | bool  |  SPACER: reset pob obligation queue when entering a new level | true
+spacer.restart_initial_threshold | unsigned int  |  Initial threshold for restarts | 10
+spacer.restarts | bool  |  Enable resetting obligation queue | false
+spacer.simplify_lemmas_post | bool  |  simplify derived lemmas after inductive propagation | false
+spacer.simplify_lemmas_pre | bool  |  simplify derived lemmas before inductive propagation | false
+spacer.simplify_pob | bool  |  simplify pobs by removing redundant constraints | false
+spacer.trace_file | symbol  |  Log file for progress events | 
+spacer.use_array_eq_generalizer | bool  |  SPACER: attempt to generalize lemmas with array equalities | true
+spacer.use_bg_invs | bool  |  Enable external background invariants | false
+spacer.use_derivations | bool  |  SPACER: using derivation mechanism to cache intermediate results for non-linear rules | true
+spacer.use_euf_gen | bool  |  Generalize lemmas and pobs using implied equalities | false
+spacer.use_inc_clause | bool  |  Use incremental clause to represent trans | true
+spacer.use_inductive_generalizer | bool  |  generalize lemmas using induction strengthening | true
+spacer.use_iuc | bool  |  Enable Interpolating Unsat Core(IUC) for lemma generalization | true
+spacer.use_lemma_as_cti | bool  |  SPACER: use a lemma instead of a CTI in flexible_trace | false
+spacer.use_lim_num_gen | bool  |  Enable limit numbers generalizer to get smaller numbers | false
+spacer.validate_lemmas | bool  |  Validate each lemma after generalization | false
+spacer.weak_abs | bool  |  Weak abstraction | true
+tab.selection | symbol  |  selection method for tabular strategy: weight (default), first, var-use | weight
+timeout | unsigned int  |  (default: infty) timeout in milliseconds. | 4294967295
+validate | bool  |  validate result (by proof checking or model checking) | false
+xform.array_blast | bool  |  try to eliminate local array terms using Ackermannization -- some array terms may remain | false
+xform.array_blast_full | bool  |  eliminate all local array variables by QE | false
+xform.bit_blast | bool  |  bit-blast bit-vectors | false
+xform.coalesce_rules | bool  |  coalesce rules | false
+xform.coi | bool  |  use cone of influence simplification | true
+xform.compress_unbound | bool  |  compress tails with unbound variables | true
+xform.elim_term_ite | bool  |  Eliminate term-ite expressions | false
+xform.elim_term_ite.inflation | unsigned int  |  Maximum inflation for non-Boolean ite-terms blasting: 0 (none), k (multiplicative) | 3
+xform.fix_unbound_vars | bool  |  fix unbound variables in tail | false
+xform.inline_eager | bool  |  try eager inlining of rules | true
+xform.inline_linear | bool  |  try linear inlining method | true
+xform.inline_linear_branch | bool  |  try linear inlining method with potential expansion | false
+xform.instantiate_arrays | bool  |  Transforms P(a) into P(i, a[i] a) | false
+xform.instantiate_arrays.enforce | bool  |  Transforms P(a) into P(i, a[i]), discards a from predicate | false
+xform.instantiate_arrays.nb_quantifier | unsigned int  |  Gives the number of quantifiers per array | 1
+xform.instantiate_arrays.slice_technique | symbol  |  &lt;no-slicing&gt;=&gt; GetId(i) = i, &lt;smash&gt; =&gt; GetId(i) = true | no-slicing
+xform.instantiate_quantifiers | bool  |  instantiate quantified Horn clauses using E-matching heuristic | false
+xform.magic | bool  |  perform symbolic magic set transformation | false
+xform.quantify_arrays | bool  |  create quantified Horn clauses from clauses with arrays | false
+xform.scale | bool  |  add scaling variable to linear real arithmetic clauses | false
+xform.slice | bool  |  simplify clause set using slicing | true
+xform.subsumption_checker | bool  |  Enable subsumption checker (no support for model conversion) | true
+xform.tail_simplifier_pve | bool  |  propagate_variable_equivalences | true
+xform.transform_arrays | bool  |  Rewrites arrays equalities and applies select over store | false
+xform.unfold_rules | unsigned int  |  unfold rules statically using iterative squaring | 0
+
+
 ## Tactic injectivity
 
 ### Short Description:

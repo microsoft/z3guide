@@ -1,1 +1,0 @@
-{"input":"(set-option :smt.mbqi true)\n(declare-sort S)\n(declare-fun g (S) S)\n(declare-fun f (S) S)\n(declare-const a S)\n(assert (forall ((x S)) (= (g (f x)) x)))\n(assert (forall ((x S)) (not (= a (f x)))))\n(check-sat)\n(get-model)"}

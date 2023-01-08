@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int Int Int) Int)\n(declare-fun p (Int) Bool)\n(declare-const a Int)\n\n(assert (forall ((x Int) (y Int)) (= (f x y 1) (* 2 x y))))\n(assert (p (f 8 a (+ a 8))))\n(apply quasi-macros)"}

@@ -1288,6 +1288,54 @@ lia2pb_partial | bool  |  (default: false) partial lia2pb conversion. |
 lia2pb_total_bits | unsigned int  |  (default: 2048) total number of bits to be used (per problem) in lia2pb. | 
 
 
+## Tactic macro-finder
+
+### Short Description 
+
+Identifies and applies macros.
+
+### Long Description
+
+It finds implicit macro definitions in quantifiers. 
+A main instance of a macro an equality that defines a function `f` using some term `t` that does not contain `f`.
+Other instances of macros are also recognized by the macro finder.
+
+* `(forall (x) (= (f x) t))`
+
+* `not (= (p x) t)` is recognized as `(p x) = (not t)`
+
+* `(iff (= (f x) t) cond)`  rewrites to `(f x) = (if cond t else (k x))`
+   * add clause `(not (= (k x) t))`
+
+* `(= (+ (f x) s) t)` becomes `(= (f x) (- t s))`
+
+* `(= (+ (* -1 (f x)) x) t)`  becomes `(= (f x) (- (- t s)))`
+
+### Example
+
+```z3
+(declare-fun f (Int) Int)
+(declare-fun p (Int) Bool)
+
+(assert (forall ((x Int)) (= (+ (f x) x) 3)))
+(assert (p (f 8)))
+(apply macro-finder)
+```
+
+### Notes
+
+* Supports proofs, unsat cores, but not goals with recursive function definitions.
+
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+elim_and | bool  |  (default: false) eliminate conjunctions during (internal) calls to the simplifier. | 
+max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
+produce_models | bool  |  model generation. | false
+produce_proofs | bool  |  proof generation. | false
+
+
 ## Tactic max-bv-sharing
 
 ### Short Description
@@ -1728,6 +1776,34 @@ som_blowup | unsigned int  |  maximum increase of monomials generated when putti
 sort_store | bool  |  sort nested stores when the indices are known to be different | false
 sort_sums | bool  |  sort the arguments of + application. | false
 split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
+
+
+## Tactic quasi-macro-finder
+
+### Short Description
+dentifies and applies quasi-macros.
+
+### Long Description
+
+A quasi macro defines a function symbol that contains more arguments than the number of bound variables it defines.
+The additional arguments are functions of the bound variables.
+ 
+### Example
+
+```z3
+(declare-fun f (Int Int Int) Int)
+(declare-fun p (Int) Bool)
+(declare-const a Int)
+
+(assert (forall ((x Int) (y Int)) (= (f x y 1) (* 2 x y))))
+(assert (p (f 8 a (+ a 8))))
+(apply quasi-macros)
+```
+
+### Notes
+
+* Supports proofs and cores
+
 
 
 ## Tactic recover-01

@@ -1,0 +1,1 @@
+{"input":"(declare-const p Bool)\n(declare-const q Bool)\n(assert (or p q))\n(apply split-clause)"}

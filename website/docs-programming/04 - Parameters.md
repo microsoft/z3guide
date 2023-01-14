@@ -551,7 +551,7 @@ bv.delay | bool  |  delay internalize expensive bit-vector operations | false
 bv.enable_int2bv | bool  |  enable support for int2bv and bv2int operators | true
 bv.eq_axioms | bool  |  enable redundant equality axioms for bit-vectors | true
 bv.reflect | bool  |  create enode for every bit-vector term | true
-bv.size_reduce | bool  |  turn assertions that set the upper bits of a bit-vector to constants into a substitution that replaces the bit-vector with constant bits. Useful for minimizing circuits as many input bits to circuits are constant | false
+bv.size_reduce | bool  |  pre-processing; turn assertions that set the upper bits of a bit-vector to constants into a substitution that replaces the bit-vector with constant bits. Useful for minimizing circuits as many input bits to circuits are constant | false
 bv.watch_diseq | bool  |  use watch lists instead of eager axioms for bit-vectors | false
 candidate_models | bool  |  create candidate models even when quantifier or theory reasoning is incomplete | false
 case_split | unsigned int  |  0 - case split based on variable activity, 1 - similar to 0, but delay case splits created during the search, 2 - similar to 0, but cache the relevancy, 3 - case split based on relevancy (structural splitting), 4 - case split on relevancy and activity, 5 - case split on relevancy and current goal, 6 - activity-based case split with theory-aware branching activity | 1
@@ -571,6 +571,7 @@ dack.threshold | unsigned int  |   number of times the congruence rule must be u
 delay_units | bool  |  if true then z3 will not restart when a unit clause is learned | false
 delay_units_threshold | unsigned int  |  maximum number of learned unit clauses before restarting, ignored if delay_units is false | 32
 dt_lazy_splits | unsigned int  |  How lazy datatype splits are performed: 0- eager, 1- lazy for infinite types, 2- lazy | 1
+elim_unconstrained | bool  |  pre-processing: eliminate unconstrained subterms | true
 ematching | bool  |  E-Matching based quantifier instantiation | true
 induction | bool  |  enable generation of induction lemmas | false
 lemma_gc_strategy | unsigned int  |  lemma garbage collection strategy: 0 - fixed, 1 - geometric, 2 - at restart, 3 - none | 0
@@ -589,7 +590,8 @@ pb.learn_complements | bool  |  learn complement literals for Pseudo-Boolean the
 phase_caching_off | unsigned int  |  number of conflicts while phase caching is off | 100
 phase_caching_on | unsigned int  |  number of conflicts while phase caching is on | 400
 phase_selection | unsigned int  |  phase selection heuristic: 0 - always false, 1 - always true, 2 - phase caching, 3 - phase caching conservative, 4 - phase caching conservative 2, 5 - random, 6 - number of occurrences, 7 - theory | 3
-pull_nested_quantifiers | bool  |  pull nested quantifiers | false
+propagate_values | bool  |  pre-processing: propagate values | true
+pull_nested_quantifiers | bool  |  pre-processing: pull nested quantifiers | false
 q.lift_ite | unsigned int  |  0 - don not lift non-ground if-then-else, 1 - use conservative ite lifting, 2 - use full lifting of if-then-else under quantifiers | 0
 q.lite | bool  |  Use cheap quantifier elimination during pre-processing | false
 qi.cost | string  |  expression specifying what is the cost of a given quantifier instantiation | (+ weight generation)
@@ -602,7 +604,7 @@ qi.profile_freq | unsigned int  |  how frequent results are reported by qi.profi
 qi.quick_checker | unsigned int  |  specify quick checker mode, 0 - no quick checker, 1 - using unsat instances, 2 - using both unsat and no-sat instances | 0
 quasi_macros | bool  |  try to find universally quantified formulas that are quasi-macros | false
 random_seed | unsigned int  |  random seed for the smt solver | 0
-refine_inj_axioms | bool  |  refine injectivity axioms | true
+refine_inj_axioms | bool  |  pre-processing: refine injectivity axioms | true
 relevancy | unsigned int  |  relevancy propagation heuristic: 0 - disabled, 1 - relevancy is tracked by only affects quantifier instantiation, 2 - relevancy is tracked, and an atom is only asserted if it is relevant | 2
 restart.max | unsigned int  |  maximal number of restarts. | 4294967295
 restart_factor | double  |  when using geometric (or inner-outer-geometric) progression of restarts, it specifies the constant used to multiply the current restart threshold | 1.1
@@ -612,6 +614,7 @@ seq.max_unfolding | unsigned int  |  maximal unfolding depth for checking string
 seq.min_unfolding | unsigned int  |  initial bound for strings whose lengths are bounded by iterative deepening. Set this to a higher value if there are only models with larger string lengths | 1
 seq.split_w_len | bool  |  enable splitting guided by length constraints | true
 seq.validate | bool  |  enable self-validation of theory axioms created by seq theory | false
+solve_eqs | bool  |  pre-processing: solve equalities | true
 str.aggressive_length_testing | bool  |  prioritize testing concrete length values over generating more options | false
 str.aggressive_unroll_testing | bool  |  prioritize testing concrete regex unroll counts over generating more options | true
 str.aggressive_value_testing | bool  |  prioritize testing concrete string constant values over generating more options | false

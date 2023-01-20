@@ -1,1 +1,0 @@
-{"input":"const x = Z3.Int.const('x')\nconst y = Z3.Int.const('y')\nx.toString()"}

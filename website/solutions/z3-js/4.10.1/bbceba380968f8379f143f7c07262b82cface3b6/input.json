@@ -1,1 +1,0 @@
-{"input":"// AstVector\nconst solver = new Z3.Solver();\n\nconst vector = new Z3.AstVector<Z3.Arith>() as AstVector<string, Arith>;\nfor (let i = 0; i < 5; i++) {\n    vector.push(Z3.Int.const(`int__${i}`));\n}\n\nconst length = vector.length();\nfor (let i = 0; i < length; i++) {\n    solver.add((vector.get(i) as Arith).gt(1));\n}\n\nawait solver.check(); // sat"}

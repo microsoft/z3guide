@@ -1,1 +1,0 @@
-{"input":"const x = Z3.Int.const('x');\nZ3.solve(Z3.And(x.ge(10), x.le(9)));"}

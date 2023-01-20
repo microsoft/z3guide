@@ -1,1 +1,0 @@
-{"input":"x = Z3.Int.const('x')\ny = Z3.Int.const('y')\nZ3.simplify(x.add(y).add(x.mul(2)).add(3)).sexpr()"}

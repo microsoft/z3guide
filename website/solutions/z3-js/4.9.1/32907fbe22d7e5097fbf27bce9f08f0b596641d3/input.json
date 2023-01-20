@@ -1,1 +1,0 @@
-{"input":"const x = Z3.Int.const('x');\nconst y = Z3.Int.const('y');\n// TODO - simplify isn't yet exposed over JS: await Z3.simplify(x.add(y).add(x.mul(2)).add(3))\ny"}

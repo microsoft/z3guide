@@ -1,1 +1,0 @@
-{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const a1 (Array Int Int))\n(declare-const a2 (Array Int Int))\n(assert (= (select a1 x) x))\n(assert (= (store a1 x y) a1))\n(assert (not (= x y)))\n(check-sat)"}

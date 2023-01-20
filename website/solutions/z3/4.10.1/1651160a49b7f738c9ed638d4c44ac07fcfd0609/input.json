@@ -1,1 +1,0 @@
-{"input":"(declare-const a String)\n(declare-const b String)\n(assert (= (str.++ b a) (str.++ \"abc\" b)))\n(check-sat)\n(get-model)"}

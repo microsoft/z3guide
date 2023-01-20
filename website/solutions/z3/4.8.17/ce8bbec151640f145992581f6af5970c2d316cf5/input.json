@@ -1,1 +1,0 @@
-{"input":"(declare-const l1 (List Int))\n(declare-const l2 (List Int))\n(declare-const l3 (List Int))\n(declare-const x Int)\n(assert (not (= l1 nil)))\n(assert (not (= l2 nil)))\n(assert (= (head l1) (head l2)))\n(assert (not (= l1 l2)))\n(assert (= l3 (insert x l2)))\n(assert (< x 100))\n(check-sat)\n(get-model)\n(assert (= (tail l1) (tail l2)))\n(check-sat)"}

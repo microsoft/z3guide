@@ -1,1 +1,0 @@
-{"input":"(declare-sort A 0)\n(declare-fun R (A A) Bool)\n(declare-fun b () A)\n(declare-fun a () A)\n(declare-fun c () A)\n(assert (R a b))\n(assert (R b c))\n(assert (not ((_ transitive-closure R) a c)))\n(check-sat)"}

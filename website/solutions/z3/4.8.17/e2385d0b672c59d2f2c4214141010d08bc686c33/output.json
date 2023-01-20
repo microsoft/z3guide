@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun b () Int\n    0)\n  (define-fun a () Int\n    (- 1))\n  (define-fun f ((x!0 Int) (x!1 Int)) Int\n    (ite (and (= x!0 (- 1)) (= x!1 0)) (- 2)\n      (+ (- 1) x!0)))\n)\nevaluating (f (+ a 10) 20)...\n8\n","error":"","status":"z3-ran","hash":"e2385d0b672c59d2f2c4214141010d08bc686c33"}

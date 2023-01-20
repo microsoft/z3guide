@@ -1,1 +1,0 @@
-{"input":"(declare-const x Real)\n(declare-const y Real)\n(assert (< x 4))\n(assert (< y 5))\n(maximize (+ x y))\n(check-sat)\n(get-objectives)"}

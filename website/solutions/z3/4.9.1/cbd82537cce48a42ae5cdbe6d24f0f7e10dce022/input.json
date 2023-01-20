@@ -1,1 +1,0 @@
-{"input":"(simplify (str.to_code \"a\"))\n(simplify (str.from_code 1214))"}

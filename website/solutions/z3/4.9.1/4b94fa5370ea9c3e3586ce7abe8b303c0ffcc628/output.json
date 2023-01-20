@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun a () Int\n    1)\n  (define-fun all1 () (Array Int Int)\n    ((as const (Array Int Int)) 1))\n  (define-fun i () Int\n    0)\n)\nunsat\n","error":"","status":"z3-ran","hash":"4b94fa5370ea9c3e3586ce7abe8b303c0ffcc628"}

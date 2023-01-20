@@ -1,1 +1,0 @@
-{"input":"(simplify (str.is_digit \"1\"))   ; true\n(simplify (str.is_digit \"10\"))  ; false - it is not a single character\n(simplify (str.is_digit \"a\"))   ; false - there aren't even any digits"}

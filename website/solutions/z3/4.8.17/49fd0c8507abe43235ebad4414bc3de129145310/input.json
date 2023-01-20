@@ -1,1 +1,0 @@
-{"input":"(simplify (str.indexof \"abcabc\" \"a\"))\n(simplify (str.indexof \"abcabc\" \"a\" 1))\n(simplify (str.indexof \"abcabc\" \"a\" 4))"}

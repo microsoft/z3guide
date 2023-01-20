@@ -1,1 +1,0 @@
-{"input":"(set-option :smt.arith.solver 1) ; enables difference logic solver for sparse constraints\n(set-option :smt.arith.solver 3) ; enables difference logic solver for dense constraints\n(declare-const x Int)\n(declare-const y Int)\n(assert (>= 10 x))\n(assert (>= x (+ y 7)))\n(maximize (+ x y))\n(check-sat)\n(get-objectives)"}

@@ -1,1 +1,0 @@
-{"input":"(simplify (str.++ (str.at \"abc\" 1) (str.at \"abc\" 0)))\n(simplify (str.indexof \"abcabc\" \"a\"))\n(simplify (str.indexof \"abcabc\" \"a\" 1))\n(simplify (str.substr \"xxabcyy\" 2 3))"}

@@ -1,1 +1,0 @@
-{"input":"(define-sort A () (Array Int Int Int))\n(define-fun bag-union ((x A) (y A)) A\n  ((_ map (+ (Int Int) Int)) x y))\n(declare-const s1 A)\n(declare-const s2 A)\n(declare-const s3 A)\n(assert (= s3 (bag-union s1 s2)))\n(assert (= (select s1 0 0) 5))\n(assert (= (select s2 0 0) 3))\n(assert (= (select s2 1 2) 4))\n(check-sat)\n(get-model)"}

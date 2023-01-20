@@ -1,1 +1,0 @@
-{"input":"(declare-const p Bool)\n(declare-const q Bool)\n(declare-const r Bool)\n(define-fun conjecture () Bool\n\t(=> (and (= p q) (= q r))\n\t\t(= p r)))\n(assert (not conjecture))\n(check-sat)"}

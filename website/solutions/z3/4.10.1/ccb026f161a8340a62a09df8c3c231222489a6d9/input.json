@@ -1,1 +1,0 @@
-{"input":"(declare-datatypes (T1 T2) ((Pair (mk-pair (first T1) (second T2)))))\n(declare-const p1 (Pair Int Int))\n(declare-const p2 (Pair Int Int))\n(assert (not (= p1 p2)))\n(assert (= p1 ((_ update-field first) p2 1)))\n(check-sat)\n(get-model)"}

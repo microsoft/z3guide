@@ -1,1 +1,0 @@
-{"input":"(simplify (str.++ (str.at \"abc\" 1) (str.at \"abc\" 0)))\n(simplify (str.at \"abcd\" 4))"}

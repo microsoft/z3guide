@@ -1,1 +1,0 @@
-{"input":"(declare-sort A 0)\n(declare-fun R (A A) Bool)\n(assert (forall ((x A)) (R x x)))\n(assert (forall ((x A) (y A)) (=> (and (R x y) (R y x)) (= x y))))\n(assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))\n(assert (forall ((x A) (y A)) (or (R x y) (R y x))))\n\n"}

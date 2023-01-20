@@ -1,0 +1,1 @@
+{"output":"sat\n(objectives\n ((+ x y) (+ 9.0 (* (- 2.0) epsilon)))\n)\n","error":"","status":"z3-ran","hash":"c78c626eead92d60c74647e5757036f4109eb2a3"}

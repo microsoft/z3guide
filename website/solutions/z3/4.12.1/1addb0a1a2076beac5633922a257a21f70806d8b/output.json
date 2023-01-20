@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun t1 () (Tree Int)\n    (node 0 (as nil (TreeList Int))))\n  (define-fun t2 () (Tree Bool)\n    (node false (as nil (TreeList Bool))))\n)\n","error":"","status":"z3-ran","hash":"1addb0a1a2076beac5633922a257a21f70806d8b"}

@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun b () (_ BitVec 4)\n    #x6)\n  (define-fun a () (_ BitVec 4)\n    #x8)\n)\n","error":"","status":"z3-ran","hash":"216e910e4ce7a9f0338553fe1a08d0be3587f1fb"}

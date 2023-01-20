@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (or a b c)\n  (or a (not b) (not c))\n  (or b (not a) (not c))\n  (or c (not a) (not b))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"cfdebff0e3e1c5c6130879a17ea36c3d3f86d23b"}

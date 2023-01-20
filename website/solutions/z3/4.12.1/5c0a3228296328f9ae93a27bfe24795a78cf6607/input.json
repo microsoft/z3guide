@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\n(declare-const y Real)\n(assert (> (+ (* x x x 4) (* x x 3)) 0))\n(assert (= (* x x) (* y y)))\n(apply degree-shift)"}

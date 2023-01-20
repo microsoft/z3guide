@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(declare-const u Int)\n(declare-fun p (Int) Bool)\n(assert (p (* (+ x y) (+ z u))))\n(apply simplify)\n(apply (with simplify :som true))\n\n(simplify (* (+ x y) (+ z u)) :som false)\n(simplify (* (+ x y) (+ z u)) :som true)"}

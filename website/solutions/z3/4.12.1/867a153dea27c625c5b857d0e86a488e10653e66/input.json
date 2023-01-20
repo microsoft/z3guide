@@ -1,0 +1,1 @@
+{"input":"(declare-datatypes (T) ((Lst nil (cons (hd T) (tl Lst)))))\n(declare-const l1 (Lst Int))\n(declare-const l2 (Lst Bool))"}

@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (p (f k!2))\n  (or (not c3) (= k!0 e2))\n  (or c3 (= k!0 e3))\n  (or (not c2) (= k!1 e1))\n  (or c2 (= k!1 k!0))\n  (or (not c1) (= k!2 k!1))\n  (or c1 (= k!2 e4))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"a2770dd3049d6f94a03e86ad29ae2a89d0eebda4"}

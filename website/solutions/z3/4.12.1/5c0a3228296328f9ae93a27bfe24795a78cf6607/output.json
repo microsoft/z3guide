@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (let ((a!1 (<= (+ (* 4.0 (^ x 3.0)) (* 3.0 (^ x 2.0))) 0.0)))\n    (not a!1))\n  (= (^ x 2.0) k!0)\n  (>= k!0 0.0)\n  :precision precise :depth 2)\n)\n","error":"","status":"z3-ran","hash":"5c0a3228296328f9ae93a27bfe24795a78cf6607"}

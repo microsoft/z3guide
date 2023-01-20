@@ -1,0 +1,1 @@
+{"output":"xx 2\nxx 2\nxx 2\nxx 2\nxx 2\nxx 2\nsat\nxx 2\nxx 2\nxx 2\nxx 2\nxx 2\nxx 2\nunsat\nxx 2\nxx 2\nxx 2\nxx 2\nxx 2\nxx 2\nsat\n(or (= (:var 0) #b010) (= (:var 0) #b100) (= (:var 0) #b011))\n","error":"","status":"z3-ran","hash":"150c419eabbf43e952c6950f3d8da8852854f378"}

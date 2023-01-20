@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun b () Int\n    670)\n  (define-fun a () Int\n    670)\n  (define-fun c () Int\n    330)\n  (define-fun e () Real\n    0.0)\n  (define-fun d () Real\n    0.0)\n)\n","error":"","status":"z3-ran","hash":"d8aff7daba3c4900cac142c61a83fb1950c10b34"}

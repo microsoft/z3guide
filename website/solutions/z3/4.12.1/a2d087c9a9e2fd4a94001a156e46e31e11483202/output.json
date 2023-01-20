@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun x () Int\n    1)\n  (define-fun z () Int\n    5)\n  (define-fun y () Int\n    1)\n)\nunknown\n(:reason-unknown \"goal is in a fragment not supported by pb2bv. Offending expression: y\")\n","error":"","status":"z3-ran","hash":"a2d087c9a9e2fd4a94001a156e46e31e11483202"}

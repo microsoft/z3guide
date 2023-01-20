@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int) Int)\n(declare-fun p (Int) Bool)\n(declare-const c1 Bool)\n(declare-const c2 Bool)\n(declare-const c3 Bool)\n(declare-const e1 Int) \n(declare-const e2 Int) \n(declare-const e3 Int)\n(declare-const e4 Int)\n(assert (p (f (if c1 (if c2 e1 (if c3 e2 e3)) e4))))\n(apply elim-term-ite) "}

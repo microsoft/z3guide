@@ -11362,10 +11362,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-z3-solver@4.11.0:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.11.0.tgz#4ea3353f3536e222818b357101e83e3b039a2b70"
-  integrity sha512-tqa+j8TZchuhZMHeMf9k2vS6ObgarQiwPwasWQGFKx+qX1WxvKnZTTYBm9dbT2rrbJZEgSxzTQOHvPj0+d5vlA==
+z3-solver@4.12.1:
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.12.1.tgz#9515bb3eca1a1ef1441a9e8dda147f9f0d8a0029"
+  integrity sha512-aeC+KXMVGcFhnd3FKktybZx+zaVlAZ9D0Ew5cB9LwWp/ofOmtd/DiGywaJ3MN+ljfJRQumveA26poUsg1Hh+lA==
   dependencies:
     async-mutex "^0.3.2"
 

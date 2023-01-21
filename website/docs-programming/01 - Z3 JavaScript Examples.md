@@ -361,7 +361,7 @@ const is_eq = (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
 
 The following example illustrates the use of AstVector
 
-```z3-js
+```
 const solver = new Z3.Solver();
 
 const vector = new Z3.AstVector<Arith>() as AstVector<string, Arith>;

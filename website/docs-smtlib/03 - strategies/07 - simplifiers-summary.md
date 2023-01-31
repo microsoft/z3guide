@@ -56,6 +56,9 @@ pull nested quantifiers to top-level.
 ## Simplifier [push-app-ite-conservative](../summary/#tactic-push-app-ite-conservative)
 ### Description
 Push functions over if-then else.
+## Simplifier [qe-light](../summary/#tactic-qe-light)
+### Description
+apply light-weight quantifier elimination.
 ## Simplifier [reduce-args](../summary/#tactic-reduce-args)
 ### Description
 reduce the number of arguments of function applications, when for all occurrences of a function f the i-th is a value.

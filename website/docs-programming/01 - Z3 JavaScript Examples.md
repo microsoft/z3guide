@@ -87,6 +87,64 @@ Z3.solve(
 
 ```
 
+## Arrays
+
+Arrays use the methods `select` and `store` to access and update elements. Note that
+arrays are static and these operations return new arrays.
+
+### Prove `Store(arr, idx, val)[idx] == val`
+
+```z3-js
+const arr = Z3.Array.const('arr', Z3.Int.sort(), Z3.Int.sort());
+const [idx, val] = Z3.Int.consts('idx val');
+const conjecture = arr.store(idx, val).select(idx).eq(val);
+Z3.solve(Z3.Not(conjecture));
+```
+
+### Find unequal arrays with the same sum
+
+We illustrate how to use the solver in finding assignments of array values that
+satisfy a given predicate. In this example, we want to find two arrays of length 4
+that have the same sum, but are not equal.
+
+```z3-js
+const { Array, BitVec } = Z3;
+const mod = 1n << 32n;
+const arr1 = Array.const('arr', BitVec.sort(2), BitVec.sort(32));
+const arr2 = Array.const('arr2', BitVec.sort(2), BitVec.sort(32));
+const same_sum = arr1.select(0)
+    .add(arr1.select(1))
+    .add(arr1.select(2))
+    .add(arr1.select(3))
+    .eq(
+      arr2.select(0)
+        .add(arr2.select(1))
+        .add(arr2.select(2))
+        .add(arr2.select(3))
+    );
+const different = arr1.select(0).neq(arr2.select(0))
+    .or(arr1.select(1).neq(arr2.select(1)))
+    .or(arr1.select(2).neq(arr2.select(2)))
+    .or(arr1.select(3).neq(arr2.select(3)));
+    
+const model = await Z3.solve(same_sum.and(different)) as Model;
+const arr1Vals = [0, 1, 2, 3].map(i => model.eval(arr1.select(i)).value());
+const arr2Vals = [0, 1, 2, 3].map(i => model.eval(arr2.select(i)).value());
+
+var buffer = ""
+for (let i = 0; i < 4; i++) {
+    buffer += arr1Vals[i];
+    buffer += " "
+}
+buffer += "\n";
+for (let i = 0; i < 4; i++) {
+    buffer += arr2Vals[i];
+    buffer += " "
+}
+buffer += "\n";
+buffer
+```
+
 ## Uninterpreted Functions
 
 The method `call` is used to build expressions by applying the function node to arguments.
@@ -235,15 +293,15 @@ for (let i = 0; i < 9; i++) {
 }
 
 const is_sat = await solver.check(); // sat
-const model = solver.model() as Model
-var buffer = ""
+const model = solver.model() as Model;
+var buffer = "";
 
 for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
-        const v = model.eval(cells[i][j])
-        buffer += `${v}`
+        const v = model.eval(cells[i][j]);
+        buffer += `${v}`;
     }
-    buffer += "\n"
+    buffer += "\n";
 }
 buffer
 ```
@@ -361,10 +419,10 @@ const is_eq = (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
 
 The following example illustrates the use of AstVector
 
-```
+```z3-js
 const solver = new Z3.Solver();
 
-const vector = new Z3.AstVector<Arith>() as AstVector<string, Arith>;
+const vector = new Z3.AstVector<Arith>();
 for (let i = 0; i < 5; i++) {
     vector.push(Z3.Int.const(`int__${i}`));
 }

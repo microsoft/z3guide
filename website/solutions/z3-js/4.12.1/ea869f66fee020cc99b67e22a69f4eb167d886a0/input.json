@@ -1,0 +1,1 @@
+{"input":"const arr = Z3.Array.const('arr', Z3.Int.sort(), Z3.Int.sort());\nconst [idx, val] = Z3.Int.consts('idx val');\nconst conjecture = arr.store(idx, val).select(idx).eq(val);\nZ3.solve(Z3.Not(conjecture));"}

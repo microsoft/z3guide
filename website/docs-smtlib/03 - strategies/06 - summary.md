@@ -1,6 +1,6 @@
 ---
 title: Tactics Summary
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 ## Tactic ackernannize_bv
@@ -155,6 +155,19 @@ Use `elim-term-ite` elsewhere when possible.
 max_inflation | unsigned int  |  (default: infinity) multiplicative factor of initial term size. | 4294967295
 max_memory | unsigned int  |  (default: infty) maximum amount of memory in megabytes. | 4294967295
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
+
+
+## Tactic bound-simplifier
+
+### Short Description
+
+Tactic for simplifying arithmetical expressions modulo bounds
+
+### Long Description
+
+The tactic is used to eliminate occurrences of modulus expressions when it is known that terms are within the bounds
+of the modulus.
+
 
 
 ## Tactic bv-slice
@@ -1831,6 +1844,13 @@ This can be achieved by using option :arith-lhs true in the simplifier.
 (apply (and-then simplify propagate-ineqs))
 ```
 
+### Parameters
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+bound_max_refinements | unsigned int  |  (default: 16) maximum number of bound refinements (per round) for unbounded variables. | 
+bound_threshold | double  |  (default: 0.05) bound propagation improvement threshold ratio. | 
+
 
 ## Tactic propagate-values
 
@@ -2206,6 +2226,7 @@ elim_unconstrained | bool  |  pre-processing: eliminate unconstrained subterms |
 elim_vars | bool  |  enable variable elimination using resolution during simplification | true
 elim_vars_bdd | bool  |  enable variable elimination using BDD recompilation during simplification | true
 elim_vars_bdd_delay | unsigned int  |  delay elimination of variables using BDDs until after simplification round | 3
+eliminate_mod | bool  |  eliminate modulus from equations | true
 ematching | bool  |  E-Matching based quantifier instantiation | true
 enable_pre_simplify | bool  |  enable pre simplifications before the bounded search | false
 eq2ineq | bool  |  expand equalities into two inequalities | false
@@ -2472,6 +2493,7 @@ elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x 
 elim_root_objects | bool  |  eliminate root objects. | true
 elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
 elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
+eliminate_mod | bool  |  eliminate modulus from equations | true
 eq2ineq | bool  |  expand equalities into two inequalities | false
 expand_nested_stores | bool  |  replace nested stores by a lambda expression | false
 expand_power | bool  |  expand (^ t k) into (* t ... t) if  1 &lt; k &lt;= max_degree. | false
@@ -3085,6 +3107,7 @@ where `x` was solved as `(+ 5 y)`.
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
 context_solve | bool  |  solve equalities under disjunctions. | false
+eliminate_mod | bool  |  eliminate modulus from equations | true
 ite_solver | bool  |  use if-then-else solver. | true
 solve_eqs_max_occs | unsigned int  |  (default: infty) maximum number of occurrences for considering a variable for gaussian eliminations. | 4294967295
 theory_solver | bool  |  theory solvers. | true

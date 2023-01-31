@@ -5,6 +5,12 @@ sidebar_position: 6
 ## Simplifier [bit-blaster](../summary/#tactic-bit-blaster)
 ### Description
 reduce bit-vector expressions into SAT.
+## Simplifier [pull-nested-quantifiers](../summary/#tactic-pull-nested-quantifiers)
+### Description
+pull nested quantifiers to top-level.
+## Simplifier [refine-injectivity](../summary/#tactic-refine-injectivity)
+### Description
+refine injectivity axioms.
 ## Simplifier [simplify](../summary/#tactic-simplify)
 ### Description
 apply simplification rules.
@@ -29,6 +35,9 @@ eliminate predicates.
 ## Simplifier [elim-unconstrained](../summary/#tactic-elim-unconstrained)
 ### Description
 eliminate unconstrained variables.
+## Simplifier [euf-completion](../summary/#tactic-euf-completion)
+### Description
+simplify modulo congruence closure.
 ## Simplifier [propagate-bv-bounds](../summary/#tactic-propagate-bv-bounds)
 ### Description
 propagate bit-vector bounds by simplifying implied or contradictory bounds.

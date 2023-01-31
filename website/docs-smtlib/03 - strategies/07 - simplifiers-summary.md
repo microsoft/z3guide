@@ -56,6 +56,15 @@ pull nested quantifiers to top-level.
 ## Simplifier [push-app-ite-conservative](../summary/#tactic-push-app-ite-conservative)
 ### Description
 Push functions over if-then else.
+## Simplifier [push-app-ite](../summary/#tactic-push-app-ite)
+### Description
+Push functions over if-then else.
+## Simplifier [ng-push-app-ite-conservative](../summary/#tactic-ng-push-app-ite-conservative)
+### Description
+Push functions over if-then-else within non-ground terms only.
+## Simplifier [ng-push-app-ite](../summary/#tactic-ng-push-app-ite)
+### Description
+Push functions over if-then-else within non-ground terms only.
 ## Simplifier [qe-light](../summary/#tactic-qe-light)
 ### Description
 apply light-weight quantifier elimination.

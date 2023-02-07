@@ -31,6 +31,13 @@ to create a unit sequence and the empty sequence over any base sort.
 | `(seq.fold_left fn b s)`        | Fold function (an expression of sort `(Array T S T)`) on initial value `b` of sort `T` and sequence `s` of sort `(Seq S)` |
 | `(seq.fold_lefti fn o b s)`     | Fold function (an expression of sort `(Array Int T S T)`) on offset `o`, initial value `b` of sort `T` and sequence `s` of sort `(Seq S)` |
 
+A few operations are also overloaded.
+
+ Overloaded operations            |  Base form
+|---------------------------------|----------------------------|
+| `seq.foldl`                     | `seq.fold_left`            |
+| `seq.foldli`                    | `seq.fold_lefti`           |
+
 
 ## Sequence Examples
 

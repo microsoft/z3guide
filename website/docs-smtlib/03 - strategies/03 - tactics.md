@@ -18,7 +18,7 @@ Z3 comes equipped with the following tactic combinators (aka tacticals):
 - `(repeat t)` Keep applying the given tactic until no subgoal is modified by it.
 - `(repeat t n)` Keep applying the given tactic until no subgoal is modified by it, or the number of iterations is greater than /n.
 - `(try-for t ms)` Apply tactic /t to the input goal, if it does not return in /ms milliseconds, it fails.
-(using-params t params) Apply the given tactic using the given parameters. `(! t params)` is a shorthand for `(using-params t params)`.
+- `(using-params t params)` Apply the given tactic using the given parameters. `(! t params)` is a shorthand for `(using-params t params)`.
 
 The combinators `then`, `par-then`, `or-else` and `par-or` accept arbitrary number of arguments. The following example demonstrate how to use these combinators.
 

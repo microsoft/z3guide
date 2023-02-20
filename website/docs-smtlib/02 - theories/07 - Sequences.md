@@ -27,7 +27,7 @@ to create a unit sequence and the empty sequence over any base sort.
 | `(seq.suffixof suf s)`          | Is `suf` a suffix of `s`? |
 | `(seq.replace s src dst)`       | Replace the first occurrence of `src` by `dst` in `s` |
 | `(seq.map fn s)`                | Map function (an expression of sort `(Array S T)`) on sequence `s` of sort `(Seq S)` |
-| `(seq.mapi fn s)`               | Map function (an expression of sort `(Array Int S T)`) on sequence `s` of sort `(Seq S)` |
+| `(seq.mapi fn o s)`             | Map function (an expression of sort `(Array Int S T)`) on offset `o` and sequence `s` of sort `(Seq S)` |
 | `(seq.fold_left fn b s)`        | Fold function (an expression of sort `(Array T S T)`) on initial value `b` of sort `T` and sequence `s` of sort `(Seq S)` |
 | `(seq.fold_lefti fn o b s)`     | Fold function (an expression of sort `(Array Int T S T)`) on offset `o`, initial value `b` of sort `T` and sequence `s` of sort `(Seq S)` |
 

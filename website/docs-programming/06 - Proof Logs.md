@@ -116,7 +116,7 @@ end up using different solvers.
     set_param("tactic.default_tactic", "sat")
 
     # Set a log file to trace inferences
-    set_param("sat.smt.proof", "proof_log.smt2")
+    set_param("solver.proof.log", "proof_log.smt2")
     s = Solver()
     s.from_string(example1)
     print(s.check())
@@ -163,7 +163,7 @@ are not simple substitutions and therefore a simple syntactic check does not suf
 ### Verify and self-validate on the fly
 Proof checking (self-validation) is on by default. In case someone turned it off we force it to be on in the following.
 ```z3-python
-    set_param("sat.smt.proof.check", True)
+    set_param("solver.proof.check", True)
     s = Solver()
     s.from_string(example1)
     print(s.check())
@@ -174,8 +174,8 @@ Self-validation checks all inferences. Inferences that use theory lemmas can be 
 selectively to speed up validation for theory lemmas.
 
 ```z3-python
-    set_param("sat.smt.proof.check", True)
-    set_param("sat.smt.proof.check_rup", False)
+    set_param("solver.proof.check", True)
+    set_param("solver.proof.check_rup", False)
     s = Solver()
     s.from_string(example1)
     print(s.check())
@@ -186,7 +186,7 @@ selectively to speed up validation for theory lemmas.
 From the command-line you can enable self-validation using the parameters
 
 ```
-   z3 <file.smt2> sat.euf=true tactic.default_tactic=smt sat.smt.proof.check=true
+   z3 <file.smt2> sat.euf=true tactic.default_tactic=smt solver.proof.check=true
 ```
 
 You can disable `rup` checking 
@@ -199,7 +199,7 @@ You can disable `rup` checking
 To save proof logs, but not check them, use
 
 ```
-z3 <file.smt2> sat.euf=true tactic.default_tactic=smt sat.smt.proof=<logfile.smt2>
+z3 <file.smt2> sat.euf=true tactic.default_tactic=smt solver.proof.log=<logfile.smt2>
 ```
 
 ## Inferences
@@ -236,7 +236,7 @@ We have the following formula
 ```
 (set-option :sat.euf true)
 (set-option :tactic.default_tactic smt)
-(set-option :sat.smt.proof=proof_log.smt2)
+(set-option :solver.proof.log proof_log.smt2)
 (declare-fun d (Int Int) Int)
 (declare-fun t (Int Int Real) (Array Int (Array Int Real)))
 (assert (forall ((u Int) (v Real)) (= v (select (select (t v (d 1 0) (d 0 u)) 0) 0))))

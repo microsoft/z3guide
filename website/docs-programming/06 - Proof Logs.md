@@ -175,7 +175,7 @@ selectively to speed up validation for theory lemmas.
 
 ```z3-python
     set_param("solver.proof.check", True)
-    set_param("solver.proof.check_rup", False)
+    set_param("sat.smt.proof.check_rup", False)
     s = Solver()
     s.from_string(example1)
     print(s.check())

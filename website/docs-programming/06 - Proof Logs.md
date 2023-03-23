@@ -175,7 +175,7 @@ selectively to speed up validation for theory lemmas.
 
 ```z3-python
     set_param("solver.proof.check", True)
-    set_param("solver.proof.check_rup", False)
+    set_param("sat.smt.proof.check_rup", False)
     s = Solver()
     s.from_string(example1)
     print(s.check())
@@ -193,7 +193,7 @@ You can disable `rup` checking
 
 
 ```
-   z3 <file.smt2> sat.euf=true tactic.default_tactic=smt solver.proof.check=true solver.proof.check_rup=false
+   z3 <file.smt2> sat.euf=true tactic.default_tactic=smt solver.proof.check=true sat.smt.proof.check_rup=false
 ```
 
 To save proof logs, but not check them, use

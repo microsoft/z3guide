@@ -157,19 +157,6 @@ max_memory | unsigned int  |  (default: infty) maximum amount of memory in megab
 max_steps | unsigned int  |  (default: infty) maximum number of steps. | 4294967295
 
 
-## Tactic bound-simplifier
-
-### Short Description
-
-Tactic for simplifying arithmetical expressions modulo bounds
-
-### Long Description
-
-The tactic is used to eliminate occurrences of modulus expressions when it is known that terms are within the bounds
-of the modulus.
-
-
-
 ## Tactic bv-slice
 
 ### Short Description
@@ -424,6 +411,7 @@ arith.solver | unsigned int  |  arithmetic solver: 0 - no solver, 1 - bellman-fo
 array.extensional | bool  |  extensional array theory | true
 array.weak | bool  |  weak array theory | false
 auto_config | bool  |  automatically configure solver | true
+bound_simplifier | bool  |  apply bounds simplification during pre-processing | true
 bv.delay | bool  |  delay internalize expensive bit-vector operations | false
 bv.enable_int2bv | bool  |  enable support for int2bv and bv2int operators | true
 bv.eq_axioms | bool  |  enable redundant equality axioms for bit-vectors | true
@@ -822,7 +810,7 @@ resolution.
 the predicate `p` occurs once positively. All negative occurrences of `p` are resolved against this positive occurrence.
 The result of resolution is a set of equalities between arguments to `p`. The function `f` is replaced by a partial solution.
 
-```
+```z3
 (declare-fun f (Int Int Int) Int)
 (declare-fun p (Int) Bool)
 (declare-const a Int)
@@ -2146,6 +2134,7 @@ blast_mul | bool  |  bit-blast multipliers (and dividers, remainders). | true
 blast_quant | bool  |  bit-blast quantified variables. | false
 blast_select_store | bool  |  eagerly replace all (select (store ..) ..) term by an if-then-else term | false
 blocked_clause_limit | unsigned int  |  maximum number of literals visited during blocked clause elimination | 100000000
+bound_simplifier | bool  |  apply bounds simplification during pre-processing | true
 branching.anti_exploration | bool  |  apply anti-exploration heuristic for branch selection | false
 branching.heuristic | symbol  |  branching heuristic vsids, chb | vsids
 burst_search | unsigned int  |  number of conflicts before first global simplification | 100
@@ -2327,7 +2316,7 @@ pb.lemma_format | symbol  |  generate either cardinality or pb lemmas | cardinal
 pb.min_arity | unsigned int  |  minimal arity to compile pb/cardinality constraints to CNF | 9
 pb.resolve | symbol  |  resolution strategy for boolean algebra solver: cardinality, rounding | cardinality
 pb.solver | symbol  |  method for handling Pseudo-Boolean constraints: circuit (arithmetical circuit), sorting (sorting circuit), totalizer (use totalizer encoding), binary_merge, segmented, solver (use native solver) | solver
-phase | symbol  |  phase selection strategy: always_false, always_true, basic_caching, random, caching | caching
+phase | symbol  |  phase selection strategy: always_false, always_true, basic_caching, random, caching, local_search | caching
 phase.sticky | bool  |  use sticky phase caching | true
 phase_caching_off | unsigned int  |  number of conflicts while phase caching is off | 100
 phase_caching_on | unsigned int  |  number of conflicts while phase caching is on | 400
@@ -2403,8 +2392,7 @@ simplify.delay | unsigned int  |  set initial delay of simplification by a confl
 simplify_conflicts | bool  |  simplify conflicts using equalities before resolving them in nlsat solver. | true
 sk_hack | bool  |  hack for VCC | false
 smt | bool  |  use the SAT solver based incremental SMT core | false
-smt.proof.check | bool  |  check SMT proof while it is created | false
-smt.proof.check_rup | bool  |  apply forward RUP proof checking | true
+smt.proof.check | bool  |  check proofs on the fly during SMT search | false
 solve_eqs | bool  |  pre-processing: solve equalities | true
 solve_eqs_max_occs | unsigned int  |  (default: infty) maximum number of occurrences for considering a variable for gaussian eliminations. | 4294967295
 som | bool  |  put polynomials in sum-of-monomials form | false
@@ -2899,7 +2887,7 @@ pb.lemma_format | symbol  |  generate either cardinality or pb lemmas | cardinal
 pb.min_arity | unsigned int  |  minimal arity to compile pb/cardinality constraints to CNF | 9
 pb.resolve | symbol  |  resolution strategy for boolean algebra solver: cardinality, rounding | cardinality
 pb.solver | symbol  |  method for handling Pseudo-Boolean constraints: circuit (arithmetical circuit), sorting (sorting circuit), totalizer (use totalizer encoding), binary_merge, segmented, solver (use native solver) | solver
-phase | symbol  |  phase selection strategy: always_false, always_true, basic_caching, random, caching | caching
+phase | symbol  |  phase selection strategy: always_false, always_true, basic_caching, random, caching, local_search | caching
 phase.sticky | bool  |  use sticky phase caching | true
 prob_search | bool  |  use probsat local search instead of CDCL | false
 probing | bool  |  apply failed literal detection during simplification | true
@@ -2939,8 +2927,7 @@ search.sat.conflicts | unsigned int  |  period for solving for sat (in number of
 search.unsat.conflicts | unsigned int  |  period for solving for unsat (in number of conflicts) | 400
 simplify.delay | unsigned int  |  set initial delay of simplification by a conflict count | 0
 smt | bool  |  use the SAT solver based incremental SMT core | false
-smt.proof.check | bool  |  check SMT proof while it is created | false
-smt.proof.check_rup | bool  |  apply forward RUP proof checking | true
+smt.proof.check | bool  |  check proofs on the fly during SMT search | false
 subsumption | bool  |  eliminate subsumed clauses | true
 subsumption.limit | unsigned int  |  approx. maximum number of literals visited during subsumption (and subsumption resolution) | 100000000
 threads | unsigned int  |  number of parallel threads to use | 1

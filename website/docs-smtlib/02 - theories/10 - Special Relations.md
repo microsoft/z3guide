@@ -73,7 +73,7 @@ Use instead
 (assert (forall ((x A)) (R x x)))
 (assert (forall ((x A) (y A)) (=> (and (R x y) (R y x)) (= x y))))
 (assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R y z)) (R x z))))
-(assert (forall ((x A) (y A) (z A)) (=> (and (R x y) (R x z)) (or (R y z) (R z y)))))
+(assert (forall ((x A) (y A) (z A)) (=> (and (R y x) (R z x)) (or (R y z) (R z y)))))
 
 ```
 

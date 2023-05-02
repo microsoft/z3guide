@@ -102,7 +102,7 @@ search for the question.
 
 ### Patterns
 
-The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneered the use of pattern-based quantifier instantiation. The basic idea behind pattern-based quantifier instantiation is in a sense straight-forward Annotate a quantified formula using a _pattern_ that contains all the bound variables. So a pattern is an expression (that does not contain binding operations, such as quantifiers) that contains variables bound by a quantifier. Then instantiate the quantifier whenever a term that matches the pattern is created during search. This is a conceptually easy starting point, but there are several subtleties that are important.
+The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneered the use of pattern-based quantifier instantiation. The basic idea behind pattern-based quantifier instantiation is in a sense straight-forward. Annotate a quantified formula using a _pattern_ that contains all the bound variables. So a pattern is an expression (that does not contain binding operations, such as quantifiers) that contains variables bound by a quantifier. Then instantiate the quantifier whenever a term that matches the pattern is created during search. This is a conceptually easy starting point, but there are several subtleties that are important.
 
 In the following example, the first two options make sure that Model-based quantifier instantiation and saturation engines are disabled. We also annotate the quantified formula with the pattern (f (g x)). Since there is no ground instance of this pattern, the quantifier is not instantiated, and Z3 fails to show that the formula is unsatisfiable.
 
@@ -152,7 +152,7 @@ Some patterns may also create long instantiation chains. Consider the following 
 
 The axiom gets instantiated whenever there is some ground term of the form (subtype s t). The instantiation causes a fresh ground term (subtype (array-of s) (array-of t)), which enables a new instantiation. This undesirable situation is called a matching loop. Z3 uses many heuristics to break matching loops.
 
-Before elaborating on the subtleties, we should address an important first question. What defines the terms that are created during search In the context of most SMT solvers, and of the Simplify theorem prover, terms exist as part of the input formula, they are of course also created by instantiating quantifiers, but terms are also implicitly created when equalities are asserted. The last point means that terms are considered up to congruence and pattern matching takes place modulo ground equalities. We call the matching problem E-matching. For example, if we have the following equalities
+Before elaborating on the subtleties, we should address an important first question. What defines the terms that are created during search? In the context of most SMT solvers, and of the Simplify theorem prover, terms exist as part of the input formula, they are of course also created by instantiating quantifiers, but terms are also implicitly created when equalities are asserted. The last point means that terms are considered up to congruence and pattern matching takes place modulo ground equalities. We call the matching problem E-matching. For example, if we have the following equalities
 
 ```z3
 (set-option :smt.auto-config false) ; disable automatic self configuration
@@ -422,7 +422,7 @@ The array property fragment can encode properties about uni-dimensional, and is 
 
 #### List Fragment
 
-The list fragment can encode properties about data-structures such as lists. For each quantified axiom q in this fragment, there is an easy way to satisfy q. More information about this fragment can be found in the paper [Data Structure Specifications via Local Equality Axioms](httpw://ww.cs.berkeley.edu/~necula/Papers/verifier-cav05.pdf).
+The list fragment can encode properties about data-structures such as lists. For each quantified axiom q in this fragment, there is an easy way to satisfy q. More information about this fragment can be found in the paper [Data Structure Specifications via Local Equality Axioms](https://people.eecs.berkeley.edu/~necula/Papers/verifier-cav05.pdf).
 
 ```z3
 (set-option :smt.mbqi true)
@@ -525,7 +525,7 @@ The list fragment can encode properties about data-structures such as lists. For
 
 #### Essentially (Almost) Uninterpreted Fragment
 
-The essentially almost uninterpreted fragment subsumes the previous fragments, and uses a more relaxed notion of stratification. More information about this fragment can be found in the paper [Complete instantiation for quantified formulas in Satisfiabiliby Modulo Theories.](httpresearch.microsoft.comen-usumpeopleleonardoci.pdf) The model based quantifier instantiation approach used in Z3 is also described in this paper. Stratified data-structures (such as arrays of pointers) can be encoded in this fragment.
+The essentially almost uninterpreted fragment subsumes the previous fragments, and uses a more relaxed notion of stratification. More information about this fragment can be found in the paper [Complete instantiation for quantified formulas in Satisfiability Modulo Theories.](https://leodemoura.github.io/files/ci.pdf) The model based quantifier instantiation approach used in Z3 is also described in this paper. Stratified data-structures (such as arrays of pointers) can be encoded in this fragment.
 
 ```z3
 (set-option :smt.mbqi true)
@@ -651,7 +651,7 @@ Shifts on streams (or arrays) can also be encoded.
 ```
 #### Quantified Bit-Vector Formulas
 
-A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formula where the sort of every variable is a bit-vector sort. The QBVF satisfiability problem, is the problem of deciding whether a QBVF is satisfiable modulo the theory of bit-vectors. This problem is decidable because every universal (existential) quantifier can be expanded into a conjunction (disjunction) of potentially exponential, but finite size. A distinguishing feature in QBVF is the support for uninterpreted function and predicate symbols. More information about this fragment can be found in the paper [Efficiently Solving Quantified Bit-Vector Formulas](httpresearch.microsoft.comen-usumpeopleleonardofmcad10.pdf).
+A quantified bit-Vector formula (QBVF) is a many sorted first-order logic formula where the sort of every variable is a bit-vector sort. The QBVF satisfiability problem, is the problem of deciding whether a QBVF is satisfiable modulo the theory of bit-vectors. This problem is decidable because every universal (existential) quantifier can be expanded into a conjunction (disjunction) of potentially exponential, but finite size. A distinguishing feature in QBVF is the support for uninterpreted function and predicate symbols. More information about this fragment can be found in the paper [Efficiently Solving Quantified Bit-Vector Formulas](https://www.winterstiger.at/christoph/papers/whd10.pdf).
 
 ```z3
 (set-option :smt.mbqi true)

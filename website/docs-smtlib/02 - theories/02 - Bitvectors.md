@@ -5,7 +5,7 @@ sidebar_position: 2
 
 >  **SMTLIB2** standard [The Theory of fixed sized bit-vectors](http://smtlib.cs.uiowa.edu/theories-FixedSizeBitVectors.shtml)
 
-Modern CPUs and main-stream programming languages use arithmetic over fixed-size bit-vectors. The theory of bit-vectors allows modeling the precise semantics of unsigned and of signed two-complements arithmetic. There are a large number of supported functions and relations over bit-vectors. They are summarized on Z3's documentation link here! of the binary APIs and they are summarized on the SMT-LIB link here!  web-site. We will not try to give a comprehensive overview here, but touch on some of the main features.
+Modern CPUs and main-stream programming languages use arithmetic over fixed-size bit-vectors. The theory of bit-vectors allows modeling the precise semantics of unsigned and of signed two-complements arithmetic. There are a large number of supported functions and relations over bit-vectors. They are summarized on Z3's documentation [link](https://z3prover.github.io/api/html/z3__api_8h.html). We will not try to give a comprehensive overview here, but touch on some of the main features.
 
 In contrast to programming languages, such as C, C++, C#, Java, there is no distinction between signed and unsigned bit-vectors as numbers. Instead, the theory of bit-vectors provides special signed versions of arithmetical operations where it makes a difference whether the bit-vector is treated as signed or unsigned.
 

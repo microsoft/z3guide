@@ -93,6 +93,7 @@ counter-examples.
 
 ```z3-duo
 (declare-const x (_ BitVec 32))
+(declare-const y (_ BitVec 32))
 ------
 
 ; count number of 1's in a bit-vector

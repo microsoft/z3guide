@@ -871,7 +871,7 @@ def DependsOn(pack, deps):
 ```
 
 
-Thus, `Depends(a, [b, c, z])` generates the constraint
+Thus, `DependsOn(a, [b, c, z])` generates the constraint
 
 
 ```

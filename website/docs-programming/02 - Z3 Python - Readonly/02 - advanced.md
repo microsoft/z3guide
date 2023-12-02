@@ -90,7 +90,7 @@ print ("\n")
 # f is a function from (Int, Real) to Bool
 f   = Function('f', IntSort(), RealSort(), BoolSort())
 print ("f.name():         ", f.name())
-print "f.range():        ", f.range()
+print ("f.range():        ", f.range())
 print ("f.arity():        ", f.arity())
 for i in range(f.arity()):
     print ("domain(", i, "): ", f.domain(i))
@@ -271,7 +271,7 @@ List.declare('cons', ('car', IntSort()), ('cdr', List))
 List.declare('nil')
 # Create the datatype
 List = List.create()
-print is_sort(List)
+print (is_sort(List))
 cons = List.cons
 car  = List.car
 cdr  = List.cdr
@@ -741,14 +741,14 @@ s.add(Implies(p1, x > 10),
       Implies(p1, y > x),
       Implies(p2, y < 5),
       Implies(p3, y > 0))
-print s
+print (s)
 # Check satisfiability assuming p1, p2, p3 are true
 print (s.check(p1, p2, p3))
 print (s.unsat_core())
 
 # Try again retracting p2
-print s.check(p1, p3)
-print s.model()
+print (s.check(p1, p3))
+print (s.model())
 ```
 
 The example above also shows that a Boolean variable (<tt>p1</tt>) can be used to track

@@ -114,7 +114,7 @@ y = Real('y')
 solve(x**2 + y**2 == 3, x**3 == 2)
 
 set_option(precision=30)
-print "Solving, and displaying result with 30 decimal places"
+print ("Solving, and displaying result with 30 decimal places")
 solve(x**2 + y**2 == 3, x**3 == 2)
 ```
 
@@ -131,9 +131,9 @@ Z3 rational where `num` is the numerator and `den` is the denominator. The `Real
 representing the number `1`.
 
 ```z3-python
-print 1/3
-print RealVal(1)/3
-print Q(1,3)
+print (1/3)
+print (RealVal(1)/3)
+print (Q(1,3))
 
 x = Real('x')
 print (x + 1/3)
@@ -219,7 +219,7 @@ x = Int('x')
 y = Int('y')
 
 s = Solver()
-print s
+print (s)
 
 s.add(x > 10, y == x + 2)
 print (s)
@@ -354,10 +354,10 @@ The command `simplify` applies simple transformations on Z3 expressions.
 x, y = Reals('x y')
 # Put expression in sum-of-monomials form
 t = simplify((x + y)**3, som=True)
-print t
+print (t)
 # Use power operator
 t = simplify(t, mul_to_power=True)
-print t
+print (t)
 ```
 
 The command `help_simplify()` prints all available options.

@@ -55,7 +55,7 @@ Thus, in z3 arrays are synonymous with function spaces. You can transition betwe
 functions using `as-array` to convert a function to an array and using function macros to treat an array as a function. 
 The example also illustrates a subtle use of recursive function declarations.
 Functions declared using `define-fun-rec` are expanded on demand and therefore the function symbols are available as arguments to `as-array`.
-This contrasts functinos declared using `define-fun` that are treated as macros that are expanded at parse time. Their function symbols cannot be passed to `as-array`.
+This contrasts with functions declared using `define-fun` that are treated as macros that are expanded at parse time. Their function symbols cannot be passed to `as-array`.
 
 ```z3
 (declare-fun f (Int) Int)

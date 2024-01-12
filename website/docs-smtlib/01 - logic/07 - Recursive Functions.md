@@ -28,7 +28,7 @@ You can define recursive functions
 ```
 
 Z3 unfolds the definition of recursive functions incrementally by iterative deepening:
-it attempts first to establish satisfiabiltiy modulo a fixed bound on number of unfoldings; 
+it attempts first to establish satisfiability modulo a fixed bound on number of unfoldings; 
 if the resulting formula is unsatisfiable _and_ the reason for unsatisfiability is due to the 
 bound restriction, it increases the fixed bound incrementally. Note that this approach does not 
 involve reasoning by induction that is often required to prove deeper properties of recursive functions.

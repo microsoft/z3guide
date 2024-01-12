@@ -40,7 +40,7 @@ Floating point and integer weights can be mixed; internally weights are converte
 (get-model)
 ```
 
-You can use identifiers to group soft constraints. You can also repeat the same soft constraint. Every repetition counts independently. In the example we add the soft constrsaint `a` twice and force it to be false. The penalty for group `x` is therefore 2. The penalty for group `y` is because there is only one soft constraint that is impossible to satisfy.
+You can use identifiers to group soft constraints. You can also repeat the same soft constraint. Every repetition counts independently. In the example we add the soft constraint `a` twice and force it to be false. The penalty for group `x` is therefore 2. The penalty for group `y` is because there is only one soft constraint that is impossible to satisfy.
 
 ```z3
 (declare-const a Bool)

@@ -9,7 +9,7 @@ You can run and modify the examples locally in your browser.
 
 :::info
 The bindings do not support all features of z3. For example, you cannot (yet) create array expressions in the same way
-that you can create arithmetic expressions. The JavaScript bindings have the distinct advantage that they allow to use 
+that you can create arithmetic expressions. The JavaScript bindings have the distinct advantage that they let you use 
 z3 directly in your browser with minimal extra dependencies.
 :::
 
@@ -105,7 +105,7 @@ Z3.solve(Z3.Not(conjecture));
 
 We illustrate how to use the solver in finding assignments of array values that
 satisfy a given predicate. In this example, we want to find two arrays of length 4
-that have the same sum, but are not equal.
+that have the same sum, but are not equal:
 
 ```z3-js
 const { Array, BitVec } = Z3;
@@ -164,7 +164,7 @@ Z3.solve(Z3.Not(conjecture));
 
 we illustrate the use of the `Solver` object in the following example. Instead of calling `Z3.solve` 
 we here create a solver object and add assertions to it. The `solver.check()` method is used to check
-satisfiability (we expect the result to be `sat` for this example). The method `solver.model()` is used to retrieve a model.
+satisfiability (we expect the result to be `sat` for this example). The method `solver.model()` is used to retrieve a model:
 
 ```z3-js
 const solver = new Z3.Solver();
@@ -364,7 +364,7 @@ signed and unsigned bit-vectors. Instead the API supports operations
 that have different meaning depending on whether a bit-vector is treated
 as a signed or unsigned numeral. These are signed comparison and signed division, remainder operations.
 
-In the following we illustrate the use of signed and unsigned less-than-or-equal.
+In the following we illustrate the use of signed and unsigned less-than-or-equal:
 
 ```z3-js
 const x = Z3.BitVec.const('x', 32);
@@ -417,7 +417,7 @@ const is_eq = (xv ^ yv) - 103n === (xv * yv) % 2n ** 32n; // true
 
 ## Using Z3 objects wrapped in JavaScript
 
-The following example illustrates the use of AstVector
+The following example illustrates the use of AstVector:
 
 ```z3-js
 const solver = new Z3.Solver();

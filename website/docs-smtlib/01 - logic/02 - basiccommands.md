@@ -7,7 +7,9 @@ sidebar_position: 2
 The Z3 input format is an extension of the one defined by the [SMT-LIB format](http://www.smtlib.org).
 ::: 
 
-A Z3 script is a sequence of commands. As an extension of the SMT-LIB format, this means that Z3 is not technically a programming language in the same way that Java, Python, or Javascript are - meaning  there are no loops or variables as they are commonly understood on the whole. The help command displays a list of all available commands. The command `echo` displays a message. Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command `declare-const` declares a constant of a given type (aka sort). The command `declare-fun` declares a function. In the following example, we declared a function that receives an integer and a Boolean and returns an integer.
+A Z3 script is a sequence of commands. As an extension of the SMT-LIB format, this means that Z3 is not technically a programming language in the same way that Java, Python, or Javascript are; there are no loops or variables as they are commonly understood, for example. The `help` command displays a list of all available commands. The command `echo` displays a message.
+
+Internally, Z3 maintains a stack of user provided formulas and declarations. We say these are the assertions provided by the user. The command `declare-const` declares a constant of a given type (aka sort). The command `declare-fun` declares a function. In the following example, we declare a function `f` that receives an integer and a Boolean and returns an integer.
 
 ```z3
 (echo "starting Z3...")
@@ -15,7 +17,7 @@ A Z3 script is a sequence of commands. As an extension of the SMT-LIB format, th
 (declare-fun f (Int Bool) Int)
 ```
 
-The command assert adds a formula into the Z3 internal stack. We say that the set of formulas in the Z3 stack is *satisfiable* if there is an interpretation (for the user declared constants and functions) that makes all asserted formulas true.
+The `assert` command adds a formula to the Z3 internal stack. We say that the set of formulas in the Z3 stack is *satisfiable* if there is an interpretation (for the user declared constants and functions) that makes all asserted formulas true.
 
 ```z3
 (declare-const a Int)
@@ -114,7 +116,7 @@ Here is a [summary of all parameters](../../programming/Parameters)
 
 ### Additional commands
 
-The command `(display t)` just applies the Z3 pretty printer to the given expression. The command `(simplify t)` displays a possibly simpler expression equivalent to t. This command accepts many different options, `(help simplify)` will display all available options.
+The command `(display t)` just applies the Z3 pretty printer to the given expression. The command `(simplify t)` displays a possibly simpler expression equivalent to t. This command accepts many different options, and `(help simplify)` will display all available options.
 
 ```z3
 (declare-const a (Array Int Int))
@@ -137,7 +139,7 @@ The define-sort command defines a new sort symbol that is an abbreviation for a 
 
 > (define-sort [symbol] ([symbol]+) [sort])
 
-The following example defines several abbreviations for sort expressions.
+The following example defines several abbreviations for sort expressions:
 
 ```z3
 (define-sort IList () (List Int))

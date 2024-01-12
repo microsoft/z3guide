@@ -4,14 +4,14 @@ This website is built using [Docusaurus 2](https://docusaurus.io/), a modern sta
 
 ### Installation
 
-```
-$ npm install
+```sh
+$ npm install 
 $ yarn
 ```
 
 ### Local Development
 
-```
+```sh
 $ yarn start
 ```
 
@@ -19,7 +19,7 @@ This command starts a local development server and opens up a browser window. Mo
 
 ### Build
 
-```
+```sh
 $ yarn build
 ```
 
@@ -29,13 +29,13 @@ This command generates static content into the `build` directory and can be serv
 
 Using SSH:
 
-```
+```sh
 $ USE_SSH=true yarn deploy
 ```
 
 Not using SSH:
 
-```
+```sh
 $ GIT_USER=<Your GitHub username> yarn deploy
 ```
 

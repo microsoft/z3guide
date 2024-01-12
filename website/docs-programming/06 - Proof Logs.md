@@ -21,17 +21,20 @@ including for replaying tactics in Isabelle, for generation of interpolants, and
 separating hyper-planes from linear programming proofs (Farkas lemma). A separate format
 is used to trace inference steps for proof mining. Proof logs allow to simplify some of the
 infrastructure around proof reconstruction during search and for proof mining. The same logs
-can be targetted for the different use cases. The survey [ProofsForSMT](https://z3prover.github.io/slides/proofs.html) discusses proof formats in use by SMT solvers and includes some additional technical details on proof logs.
+can be targeted for the different use cases. The survey [ProofsForSMT](https://z3prover.github.io/slides/proofs.html) discusses proof formats in use by SMT solvers and includes some additional technical details on proof logs.
 
 
 
 ## Callbacks for clause inferences
 
 The API exposes a function `Z3_solver_register_on_clause` 
-that is first exposed for C, C++, .Net and Python. We here illustrate using
-it from Python. The function lets a client register a callback function that is 
-invoked whenever the main SMT search engine makes an inference. The main inference
-steps are (1) introducing an _assumption_, that is, a clause that is entained from the
+that is first exposed for C, C++, .Net and Python.
+Here we illustrate using it from Python.
+This function lets a client register a callback that is 
+invoked whenever the main SMT search engine makes an inference.
+The main inference
+steps are (1) introducing an _assumption_,
+that is, a clause that is entailed by the
 input formula (formally, the clause is satisfiability preserving when added to the input formula),
 (2) _deleting_ a clause from the set of active clauses,
 (3) _rup_, inferring a clause through propositional reasoning, the clause can be justified using
@@ -77,7 +80,7 @@ def monitor_instances():
 ### Monitor clauses annotated with detailed justifications
 If you set proof mode to _true_, then the inferred clauses 
 are annotated by more detailed proof terms. The detailed proof terms
-use a repetorire or low level inference rules.
+use a repertoire or low level inference rules.
 
 ```z3-python
 def monitor_with_proofs():
@@ -150,7 +153,7 @@ encodings.
 The pair `-inst 2` indicates that two quantifier instantiations were not self-validated
 They were instead validated using a call to SMT solving. A log for an smt invocation
 is exemplified in the next line.
-Note that the pair `+inst 6` indicates that 6 quantifier instantations were validated
+Note that the pair `+inst 6` indicates that 6 quantifier instantiations were validated
 using a syntactic (cheap) check. Some quantifier instantiations based on quantifier elimination
 are not simple substitutions and therefore a simple syntactic check does not suffice.
 

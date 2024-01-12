@@ -203,7 +203,7 @@ Z3.solve(Z3.Not(conjecture));
 
 ## Solve sudoku
 
-The popular Sudoko can be solved. 
+The popular Sudoku can be solved. 
 
 ```z3-js
 function toSudoku(data: string): (number | null)[][] {

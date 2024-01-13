@@ -466,7 +466,7 @@ The list fragment can encode properties about data-structures such as lists. For
                          (= (state p) RUN))
                     (= (prio p) (prio (next p))))))
 
-;; Verifying Verification Conditions (VCs) for remove procdure
+;; Verifying Verification Conditions (VCs) for remove procedure
 (declare-const x Ptr)
 ;; new-state, new-next, new-prev and new-prio represent the state 
 ;; of the system after executing the remove procedure.
@@ -569,7 +569,7 @@ The essentially almost uninterpreted fragment subsumes the previous fragments, a
                          (= (state p) RUN))
                     (>= (prio p) (prio (next p))))))
 
-;; Verifying Verification Conditions (VCs) for remove procdure
+;; Verifying Verification Conditions (VCs) for remove procedure
 (declare-const x Ptr)
 ;; new-state, new-next, new-prev and new-prio represent the state 
 ;; of the system after executing the remove procedure.

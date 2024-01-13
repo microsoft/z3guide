@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Z3 is a state-of-the art theorem prover from Microsoft Research. It can be used to check the satisfiability of logical formulas over one or more theories. Z3 offers a compelling match for software analysis and verification tools, since several common software constructs map directly into supported theories.
 
-The main objective of the tutorial is to introduce the reader on how to use Z3 effectively for logical modeling and solving. The tutorial provides some general background on logical modeling, but we have to defer a full introduction to first-order logic and decision procedures to text-books in order to develop an in depth understanding of the underlying concepts. To clarify: a deep understanding of logical modeling is not necessarily required to understand this tutorial and modeling with Z3, but it is necessary to understand for writing complex models.
+The main objective of the tutorial is to introduce the reader on how to use Z3 effectively for logical modeling and solving. The tutorial provides some general background on logical modeling, but we defer a full introduction to first-order logic and decision procedures to text-books, if you want to develop an in-depth understanding of the underlying concepts. To clarify: a deep understanding of logical modeling is not required to understand this tutorial and modeling with Z3, but it is necessary for writing complex models.
 
 :::info
  
@@ -18,16 +18,16 @@ The main objective of the tutorial is to introduce the reader on how to use Z3 e
 
 :::
 
-Z3 is a low level tool. It is best used as a component in the context of other tools that require solving logical formulas. Consequently, Z3 exposes a number of API facilities to make it convenient for tools to map into Z3, but there are no stand-alone editors or user-centric facilities for interacting with Z3. The language syntax used in the front ends favor simplicity in contrast to linguistic convenience.
+Z3 is a low-level tool. It is best used as a component in the context of other tools that require solving logical formulas. Consequently, Z3 exposes a number of API facilities to make it convenient for tools to map into Z3, but there are no stand-alone editors or user-centric facilities for interacting with Z3. The language syntax used in the front ends favor simplicity in contrast to linguistic convenience.
 
 ## SMTLIB Format
 
 > This tutorial uses Z3's frontend for the [SMTLIB format](http://smtlib.cs.uiowa.edu/).
 
-The format is a community standard used by several SMT solvers. 
-It uses LISP like syntax to make it easy for tools to serialize and de-serialize models. 
-On the flip-side it is not optimized for human readability. 
-The SMTLIB initiative defines several theories and z3 supports all main theories in the SMTLIB2 format.
+The SMTLIB format is a community standard used by several SMT solvers. 
+It uses LISP-like syntax to make it easy for tools to serialize and de-serialize models. 
+On the flip-side, it is not optimized for human readability. 
+The SMTLIB initiative defines several theories, and Z3 supports all main theories in the SMTLIB2 format.
 This tutorial cross-references the definitions of theories in relevant sections.
 
 :::tip

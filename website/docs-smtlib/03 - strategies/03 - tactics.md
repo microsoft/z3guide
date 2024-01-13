@@ -59,7 +59,7 @@ A tactic can be used to decide whether a set of assertions has a solution (i.e.,
 
 In the example above, the tactic used implements a basic bit-vector solver using equation solving, bit-blasting, and a propositional SAT solver.
 
-In the following example, we use the combinator using-params to configure our little solver. We also include the tactic aig which tries to compress Boolean formulas using And-Inverted Graphs.
+In the following example, we use the combinator using-params to configure our little solver. We also include the tactic `aig` which tries to compress Boolean formulas using And-Inverted Graphs.
 
 ```z3
 (declare-const x (_ BitVec 16))
@@ -78,7 +78,7 @@ In the following example, we use the combinator using-params to configure our li
 (get-value ((bvand x y)))
 ```
 
-The tactic `smt` wraps the main solver in Z3 as a tactic.
+The tactic `smt` wraps the main solver in Z3 as a tactic:
 
 ```z3
 (declare-const x Int)
@@ -90,7 +90,7 @@ The tactic `smt` wraps the main solver in Z3 as a tactic.
 (get-model)
 ```
 
-Now, we show how to implement a solver for integer arithmetic using SAT. The solver is complete only for problems where every variable has a lower and upper bound.
+We now show how to implement a solver for integer arithmetic using SAT. The solver is complete only for problems where every variable has a lower and upper bound:
 
 ```z3
 (declare-const x Int)

@@ -17,7 +17,7 @@ Z3 supports the theory of arithmetic described in the following places.
 
 ## Basics
 
-Z3 has builtin support for integer and real constants. This two types should not be confused with machine integers (32-bit or 64-bit) and floating point numbers. These two types (sorts) represent the mathematical integers and reals. The command declare-const is used to declare integer and real constants.
+Z3 has built-in support for integer and real constants. These two types should not be confused with machine integers (32-bit or 64-bit) and floating point numbers. These two types (sorts) represent the mathematical integers and reals. The command `declare-const` is used to declare integer and real constants.
 
 ```z3
 (declare-const a Int)
@@ -28,7 +28,7 @@ Z3 has builtin support for integer and real constants. This two types should not
 ```
 
 
-After constants are declared, the user can assert.smt formulas containing these constants. The formulas contain arithmetic operators such as +, -, *, and so on. The command check-sat will instruct Z3 to try to find an interpretation for the declared constants that makes all formulas true. The interpretation is basically assigning a number to each constant. If such interpretation exists, we say it is a model for the asserted formulas. The command get-model displays the model built by Z3.
+After constants are declared, the user can assert formulas containing that use these constants and arithmetic operators such as +, -, *, etc. The `check-sat` command instructs Z3 to try to find an interpretation for the declared constants that makes all formulas true. The interpretation is basically assigning a number to each constant. If such interpretation exists, we say it is a model for the asserted formulas. The command `get-model` displays the model built by Z3.
 
 ```z3
 (declare-const a Int)
@@ -124,7 +124,7 @@ of _difference arithmetic_ constraints.
 In the  example we model three jobs, each job has two tasks 
 to be completed by two workers. Thus, there are six variables for every task/worker combination. 
 The start time of job 1 on worker 2 is given by `t12`. It has duration 1, so has to start at least one unit before 
-the completion deadline 8. It follows task `t11` which has duration 2 adn cannot overlap with other tasks on work station 2.
+the completion deadline 8. It follows task `t11` which has duration 2 and cannot overlap with other tasks on work station 2.
 
 ## Non-linear arithmetic
 
@@ -143,7 +143,7 @@ We say a formula is nonlinear if it contains expressions of the form (* t s) whe
 (assert (= (+ (* b b b) (sin (* b c))) 7))
 (check-sat)
 
-(echo "yet it can show unsatisfiabiltiy for some nontrivial nonlinear problems...")
+(echo "yet it can show unsatisfiability for some nontrivial nonlinear problems...")
 (declare-const x Real)
 (declare-const y Real)
 (declare-const z Real)
@@ -195,7 +195,7 @@ Actually, in Z3 all functions are total, although the result may be under-specif
 :::info
 We say that an interpreted function (such as `/`) is _under-specified_ when the meaning of the function is not fixed on all values
 of arguments. The division, modulus and remainder functions are _under-specified_ when the second argument is 0. Constraints that
-allow the second arguments to these functions to be 0 can still be satisfiable when there are interepretations of the functions
+allow the second arguments to these functions to be 0 can still be satisfiable when there are interpretations of the functions
 at 0 that satisfy the constraints.
 :::
 
@@ -207,12 +207,12 @@ at 0 that satisfy the constraints.
 (get-model)
 
 ; Although division by zero is not specified, division is still a function.
-; So, (/ a 0.0) cannot evaluated to 10.0 and 2.0.
+; Therefore, (/ a 0.0) cannot evaluate to both 10.0 and 2.0.
 (assert (= (/ a 0.0) 2.0)) 
 (check-sat)
 ```
 
-If you are not happy with this behavior, you may use ite (if-then-else) operator to guard every division, and assign whatever interpretation you like to the division by zero. This example uses define-fun constructor to create a new operator mydiv. This is essentially a macro, and Z3 will expand its definition for every application of mydiv.
+If you are not happy with this behavior, you may use the `ite` (if-then-else) operator to guard every division, and assign whatever interpretation you like to the division by zero. This example uses define-fun constructor to create a new operator mydiv. This is essentially a macro, and Z3 will expand its definition for every application of mydiv.
 
 ```z3
 ; defining my own division operator where x0.0 == 0.0 for every x.
@@ -232,9 +232,9 @@ If you are not happy with this behavior, you may use ite (if-then-else) operator
 Z3 contains a combination of several engines for solving arithmetic formulas.
 The engines are invoked based on the shape of arithmetic formulas. 
 For linear real arithmetic formulas it uses dual simplex to determine feasibility.
-For linear integer arithmetic formulas it uses thechniques from integer programming: cuts and branch and bound.
+For linear integer arithmetic formulas it uses techniques from integer programming: cuts and branch and bound.
 There are specialized solvers for different arithmetic fragments and, finally, for non-linear arithmetic
-constraints z3 contains several small hammers that integrate Grobner basis simplificaitons, bounds propagation, 
+constraints z3 contains several small hammers that integrate Grobner basis simplifications, bounds propagation, 
 non-linear cylindric algebraic decomposition and reducing non-linear constraints to linear form by sampling at tangent points.
 
   Logic| Fragment                          | Solver                    | Example                   

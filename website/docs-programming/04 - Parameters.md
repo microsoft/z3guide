@@ -55,7 +55,7 @@ default_tactic | symbol  |  overwrite default tactic in strategic solver |
 propagate_values.max_rounds | unsigned int  |  maximal number of rounds to propagate values. | 4
 solve_eqs.context_solve | bool  |  solve equalities within disjunctions. | true
 solve_eqs.ite_solver | bool  |  use if-then-else solvers. | true
-solve_eqs.max_occs | unsigned int  |  maximum number of occurrences for considering a variable for gaussian eliminations. | 4294967295
+solve_eqs.max_occs | unsigned int  |  maximum number of occurrences for considering a variable for Gaussian eliminations. | 4294967295
 solve_eqs.theory_solver | bool  |  use theory solvers. | true
 
 ## pp
@@ -117,7 +117,7 @@ cce | bool  |  eliminate covered clauses | false
 core.minimize | bool  |  minimize computed core | false
 core.minimize_partial | bool  |  apply partial (cheap) core minimization | false
 cut | bool  |  enable AIG based simplification in-processing | false
-cut.aig | bool  |  extract aigs (and ites) from cluases for cut simplification | false
+cut.aig | bool  |  extract aigs (and ites) from clauses for cut simplification | false
 cut.delay | unsigned int  |  delay cut simplification by in-processing round | 2
 cut.dont_cares | bool  |  integrate dont cares with cuts | true
 cut.force | bool  |  force redoing cut-enumeration until a fixed-point | false
@@ -127,7 +127,7 @@ cut.redundancies | bool  |  integrate redundancy checking of cuts | true
 cut.xor | bool  |  extract xors from clauses for cut simplification | false
 ddfw.init_clause_weight | unsigned int  |  initial clause weight for DDFW local search | 8
 ddfw.reinit_base | unsigned int  |  increment basis for geometric backoff scheme of re-initialization of weights | 10000
-ddfw.restart_base | unsigned int  |  number of flips used a starting point for hessitant restart backoff | 100000
+ddfw.restart_base | unsigned int  |  number of flips used a starting point for hesitant restart backoff | 100000
 ddfw.threads | unsigned int  |  number of ddfw threads to run in parallel with sat solver | 0
 ddfw.use_reward_pct | unsigned int  |  percentage to pick highest reward variable when it has reward 0 | 15
 ddfw_search | bool  |  use ddfw local search instead of CDCL | false
@@ -166,7 +166,7 @@ lookahead.cube.psat.clause_base | double  |  clause base for PSAT cutoff | 2
 lookahead.cube.psat.trigger | double  |  trigger value to create lookahead cubes for PSAT cutoff. Used when lookahead.cube.cutoff is psat | 5
 lookahead.cube.psat.var_exp | double  |  free variable exponent for PSAT cutoff | 1
 lookahead.delta_fraction | double  |  number between 0 and 1, the smaller the more literals are selected for double lookahead | 1.0
-lookahead.double | bool  |  enable doubld lookahead | true
+lookahead.double | bool  |  enable double lookahead | true
 lookahead.global_autarky | bool  |  prefer to branch on variables that occur in clauses that are reduced | false
 lookahead.preselect | bool  |  use pre-selection of subset of variables for branching | false
 lookahead.reward | symbol  |  select lookahead heuristic: ternary, heule_schur (Heule Schur), heuleu (Heule Unit), unit, or march_cu | march_cu
@@ -262,7 +262,7 @@ enable_sls | bool  |  enable SLS tuning during weighted maxsat | false
 incremental | bool  |  set incremental mode. It disables pre-processing and enables adding constraints in model event handler | false
 lns_conflicts | unsigned int  |  initial conflict count for LNS search | 1000
 maxlex.enable | bool  |  enable maxlex heuristic for lexicographic MaxSAT problems | true
-maxres.add_upper_bound_block | bool  |  restict upper bound with constraint | false
+maxres.add_upper_bound_block | bool  |  restrict upper bound with constraint | false
 maxres.hill_climb | bool  |  give preference for large weight cores | true
 maxres.max_core_size | unsigned int  |  break batch of generated cores if size reaches this number | 3
 maxres.max_correction_set_size | unsigned int  |  allow generating correction set constraints up to maximal size | 3
@@ -272,10 +272,10 @@ maxres.pivot_on_correction_set | bool  |  reduce soft constraints if the current
 maxres.wmax | bool  |  use weighted theory solver to constrain upper bounds | false
 maxsat_engine | symbol  |  select engine for maxsat: 'core_maxsat', 'wmax', 'maxres', 'pd-maxres', 'maxres-bin', 'rc2' | maxres
 optsmt_engine | symbol  |  select optimization engine: 'basic', 'symba' | basic
-pb.compile_equality | bool  |  compile arithmetical equalities into pseudo-Boolean equality (instead of two inequalites) | false
+pb.compile_equality | bool  |  compile arithmetical equalities into pseudo-Boolean equality (instead of two inequalities) | false
 pp.neat | bool  |  use neat (as opposed to less readable, but faster) pretty printer when displaying context | true
 pp.wcnf | bool  |  print maxsat benchmark into wcnf format | false
-priority | symbol  |  select how to priortize objectives: 'lex' (lexicographic), 'pareto', 'box' | lex
+priority | symbol  |  select how to prioritize objectives: 'lex' (lexicographic), 'pareto', 'box' | lex
 rc2.totalizer | bool  |  use totalizer for rc2 encoding | true
 rlimit | unsigned int  |  resource limit (0 means no limit) | 0
 solution_prefix | symbol  |  path prefix to dump intermediary, but non-optimal, solutions | 
@@ -294,7 +294,7 @@ conquer.restart.max | unsigned int  |  maximal number of restarts during conquer
 enable | bool  |  enable parallel solver by default on selected tactics (for QF_BV) | false
 simplify.exp | double  |  restart and inprocess max is multiplied by simplify.exp ^ depth | 1
 simplify.inprocess.max | unsigned int  |  maximal number of inprocessing steps during simplification | 2
-simplify.max_conflicts | unsigned int  |  maximal number of conflicts during simplifcation phase | 4294967295
+simplify.max_conflicts | unsigned int  |  maximal number of conflicts during simplification phase | 4294967295
 simplify.restart.max | unsigned int  |  maximal number of restarts during simplification phase | 5000
 threads.max | unsigned int  |  caps maximal number of threads below the number of processors | 10000
 
@@ -317,7 +317,7 @@ real algebraic number package. Non-default parameter settings are not supported
  ----------|------|-------------|--------
 factor | bool  |  use polynomial factorization to simplify polynomials representing algebraic numbers | true
 factor_max_prime | unsigned int  |  parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter limits the maximum prime number p to be used in the first step | 31
-factor_num_primes | unsigned int  |  parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. The search space may be reduced by factoring the polynomial in different GF(p)'s. This parameter specify the maximum number of finite factorizations to be considered, before lifiting and searching | 1
+factor_num_primes | unsigned int  |  parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. The search space may be reduced by factoring the polynomial in different GF(p)'s. This parameter specify the maximum number of finite factorizations to be considered, before lifting and searching | 1
 factor_search_size | unsigned int  |  parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter can be used to limit the search space | 5000
 min_mag | unsigned int  |  Z3 represents algebraic numbers using a (square-free) polynomial p and an isolating interval (which contains one and only one root of p). This interval may be refined during the computations. This parameter specifies whether to cache the value of a refined interval or not. It says the minimal size of an interval for caching purposes is 1/2^16 | 16
 zero_accuracy | unsigned int  |  one of the most time-consuming operations in the real algebraic number module is determining the sign of a polynomial evaluated at a sample point with non-rational algebraic number values. Let k be the value of this option. If k is 0, Z3 uses precise computation. Otherwise, the result of a polynomial evaluation is considered to be 0 if Z3 can show it is inside the interval (-1/2^k, 1/2^k) | 0
@@ -563,7 +563,7 @@ core.minimize | bool  |  minimize unsat core produced by SMT context | false
 core.validate | bool  |  [internal] validate unsat core produced by SMT context. This option is intended for debugging | false
 cube_depth | unsigned int  |  cube depth. | 1
 dack | unsigned int  |  0 - disable dynamic ackermannization, 1 - expand Leibniz's axiom if a congruence is the root of a conflict, 2 - expand Leibniz's axiom if a congruence is used during conflict resolution | 1
-dack.eq | bool  |  enable dynamic ackermannization for transtivity of equalities | false
+dack.eq | bool  |  enable dynamic ackermannization for transitivity of equalities | false
 dack.factor | double  |  number of instance per conflict | 0.1
 dack.gc | unsigned int  |  Dynamic ackermannization garbage collection frequency (per conflict) | 2000
 dack.gc_inv_decay | double  |  Dynamic ackermannization garbage collection decay | 0.8

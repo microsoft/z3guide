@@ -4,12 +4,12 @@ sidebar_position: 8
 ---
 
 
-> **SMTLIB2 standard** [The theory of unicode strings and regular expressions](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml)
+> **SMTLIB2 standard** [The theory of unicode strings and regular expressions](https://smt-lib.org/theories-UnicodeStrings.shtml)
 
 
 The sort constructor `RegEx` takes as argument a sequence type.
 The set of regular expressions over strings is thus `(RegEx String)`; 
-it is synonymous with the sort `RegLan` defined in the [SMTLIB2 format](http://smtlib.cs.uiowa.edu/theories-UnicodeStrings.shtml).
+it is synonymous with the sort `RegLan` defined in the [SMTLIB2 format](https://smt-lib.org/theories-UnicodeStrings.shtml).
 
 # Summary of Operations
 

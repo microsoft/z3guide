@@ -22,7 +22,7 @@ Z3 is a low-level tool. It is best used as a component in the context of other t
 
 ## SMTLIB Format
 
-> This tutorial uses Z3's frontend for the [SMTLIB format](http://smtlib.cs.uiowa.edu/).
+> This tutorial uses Z3's frontend for the [SMTLIB format](https://smt-lib.org/).
 
 The SMTLIB format is a community standard used by several SMT solvers. 
 It uses LISP-like syntax to make it easy for tools to serialize and de-serialize models. 

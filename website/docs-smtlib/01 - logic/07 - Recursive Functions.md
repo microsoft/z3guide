@@ -4,7 +4,7 @@ sidebar_position: 7
 ---
 
 
->  **SMTLIB2** standard: [Page 62](http://smtlib.cs.uiowa.edu/papers/smt-lib-reference-v2.6-r2021-05-12.pdf)
+>  **SMTLIB2** standard: [Page 62](https://smt-lib.org/papers/smt-lib-reference-v2.6-r2021-05-12.pdf)
 
 
 You can define recursive functions

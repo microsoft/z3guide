@@ -3,7 +3,7 @@ title: Arrays
 sidebar_position: 4
 ---
 
-> **SMTLIB2 standard** [Arrays](http://smtlib.cs.uiowa.edu/theories-ArraysEx.shtml)
+> **SMTLIB2 standard** [Arrays](https://smt-lib.org/theories-ArraysEx.shtml)
 
 
 As part of formulating a programme of a mathematical theory of computation McCarthy proposed a _basic_ theory of arrays as characterized by the select-store axioms. The expression (select a i) returns the value stored at position i of the array a; and (store a i v) returns a new array identical to a, but on position i it contains the value v.

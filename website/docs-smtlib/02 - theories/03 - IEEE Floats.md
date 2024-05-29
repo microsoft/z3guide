@@ -4,7 +4,7 @@ sidebar_position: 3
 ---
 
 
-> **SMTLIB2 standard** [IEEE Floating Point Numbers](http://smtlib.cs.uiowa.edu/theories-FloatingPoint.shtml)
+> **SMTLIB2 standard** [IEEE Floating Point Numbers](https://smt-lib.org/theories-FloatingPoint.shtml)
 
 
 

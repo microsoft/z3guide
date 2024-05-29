@@ -3,7 +3,7 @@ title: Arithmetical Optimization
 sidebar_position: 3
 ---
 
-Z3 extends the The [SMTLIB format](http://smtlib.cs.uiowa.edu/) with the following commands for working with optimization objectives:
+Z3 extends the The [SMTLIB format](https://smt-lib.org/) with the following commands for working with optimization objectives:
 
 Command                                | Meaning
 ---------------------------------------|-------------------------------------------------------------------

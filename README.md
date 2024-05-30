@@ -20,7 +20,7 @@ The rest of this page is for developers contributing to the tutorial docs of Z3.
 
 ### Local Setup (not using Codespaces)
 
-- install node.js >= 16.15.1
+- install node.js >= 20
 - install yarn globally if needed
 
 ```

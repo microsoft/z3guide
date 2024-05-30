@@ -23,13 +23,13 @@ jobs:
       GITHUB_SHA: ${{ github.sha }}
       
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20.x
           cache: yarn
           cache-dependency-path: website/yarn.lock
 
@@ -37,12 +37,12 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build website
         run: yarn build
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: website/solutions/*
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

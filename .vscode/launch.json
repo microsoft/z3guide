@@ -6,14 +6,13 @@
     "configurations": [
         {
             "cwd": "${workspaceFolder}/website",
-            "command": "nvm use 16 && yarn start",
+            "command": "nvm use 20 && yarn start",
             "name": "Run",
             "request": "launch",
             "type": "node-terminal",
         },
         {
             "type": "pwa-node",
-            "runtimeVersion": "16.15.1",
             "request": "launch",
             "name": "Build",
             "skipFiles": [

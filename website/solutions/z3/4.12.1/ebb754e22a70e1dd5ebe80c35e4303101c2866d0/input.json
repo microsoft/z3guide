@@ -1,0 +1,1 @@
+{"input":"(define-fun popcount32 ((v (_ BitVec 32))) (_ BitVec 32)\n   (let ((v (bvsub v (bvand (bvlshr v (_ bv1 32)) #x55555555))))\n   (let ((v (bvadd (bvand v #x33333333) (bvand (bvlshr v (_ bv2 32)) #x33333333))))\n   (bvlshr (bvmul (bvand (bvadd v (bvlshr v (_ bv4 32))) #x0F0F0F0F) #x01010101) (_ bv24 32)))\n   )\n)\n\n(simplify (popcount32 #x01234100))"}

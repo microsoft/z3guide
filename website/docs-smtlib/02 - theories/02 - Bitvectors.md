@@ -124,3 +124,72 @@ with respect to $2^n$.
 (simplify (bv2int #xa0))
 (simplify ((_ int2bv 32) -3))
 ```
+
+### Pop-count
+
+We claim that the following program computes the number of bits that are set in $v$:
+
+```C
+int popcount32 (unsigned int v) { 
+  v = v - ((v >> 1) & 0x55555555); 
+  v = (v & 0x33333333) + ((v >> 2) & 0x33333333); 
+  v = ((v + (v >> 4) & 0xF0F0F0F) * 0x1010101) >> 24; 
+  return(v); 
+} 
+```
+
+To check this claim, let us first reformulate popcount32 using definitions in SMTLIB2
+
+```z3
+(define-fun popcount32 ((v (_ BitVec 32))) (_ BitVec 32)
+   (let ((v (bvsub v (bvand (bvlshr v (_ bv1 32)) #x55555555))))
+   (let ((v (bvadd (bvand v #x33333333) (bvand (bvlshr v (_ bv2 32)) #x33333333))))
+   (bvlshr (bvmul (bvand (bvadd v (bvlshr v (_ bv4 32))) #x0F0F0F0F) #x01010101) (_ bv24 32)))
+   )
+)
+
+(simplify (popcount32 #x01234100))
+```
+
+The brute force way to compute a popcount is to add all bits together.
+We can define the brute-force method for 4, 8 and 16 bits before writing down the 32 bit version.
+
+```z3
+(define-fun popcount4 ((v (_ BitVec 4))) (_ BitVec 32)
+    (bvadd
+      ((_ zero_extend 31) ((_ extract 0 0) v))
+      ((_ zero_extend 31) ((_ extract 1 1) v))
+      ((_ zero_extend 31) ((_ extract 2 2) v))
+      ((_ zero_extend 31) ((_ extract 3 3) v))
+    )
+)
+
+(define-fun popcount8 ((v (_ BitVec 8))) (_ BitVec 32)
+   (bvadd (popcount4 ((_ extract 7 4) v)) (popcount4 ((_ extract 3 0) v)))
+)
+
+(define-fun popcount16 ((v (_ BitVec 16))) (_ BitVec 32)
+   (bvadd (popcount8 ((_ extract 15 8) v)) 
+          (popcount8 ((_ extract 7 0) v)))
+)
+
+(define-fun popcount32_b ((v (_ BitVec 32))) (_ BitVec 32)
+   (bvadd (popcount16 ((_ extract 31 16) v))
+          (popcount16 ((_ extract 15 0) v)))
+)
+
+(define-fun popcount32_a ((v (_ BitVec 32))) (_ BitVec 32)
+   (let ((v (bvsub v (bvand (bvlshr v (_ bv1 32)) #x55555555))))
+   (let ((v (bvadd (bvand v #x33333333) (bvand (bvlshr v (_ bv2 32)) #x33333333))))
+   (bvlshr (bvmul (bvand (bvadd v (bvlshr v (_ bv4 32))) #x0F0F0F0F) #x01010101) (_ bv24 32)))
+   )
+)
+
+
+(declare-const x (_ BitVec 32))
+
+(assert (not (= (popcount32_a x) (popcount32_b x))))
+
+(check-sat)
+
+```

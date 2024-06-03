@@ -117,3 +117,22 @@ the number of variables that are true and false.
 (declare-const a5 Bool)
 (assert ((_ pbeq 3 1 1 1 1 1 1) a0 a1 a2 a3 a4 a5))
 ```
+
+## Unsatisfiable cores
+
+You can created _named_ assertions that are tracked when unsatisfiable core extraction is enabled. The unsatisfiable core is returned as a subset of named assertions that cannot be satisfied.
+
+```z3
+(set-option :produce-unsat-cores true)
+(declare-const p Bool)
+(declare-const q Bool)
+(declare-const r Bool)
+(declare-const s Bool)
+(declare-const t Bool)
+(assert (! p :named +p))
+(assert (! q :named +q))
+(assert (! r :named +r))
+(assert (! (not (or p q)) :named -p-or-q))
+(check-sat)
+(get-unsat-core)
+```

@@ -149,3 +149,220 @@ ranges of arrays.
 (assert (= s (Seq (seq.unit s))))
 (check-sat)
 ```
+
+## Using Datatypes for solving type constraints
+
+In the following we use algebraic datatypes to represent type constraints
+for simply typed lambda calculus.
+Terms and types over simply typed lambda calculus are of the form
+
+- $M ::= x \mid M M \mid \lambda x \ . \ M$
+- $\tau ::= int \mid string \mid \tau \rightarrow \tau$
+
+where $x$ is bound variable, $M M'$ applies the function $M$ to argument $M'$, and $\lambda x \ . \ M$ is a lambda abstraction.
+The $int$ and $string$ types are type constants.
+
+A type judgemnt is
+
+* $\Gamma \vdash M : \tau$
+
+where $\Gamma$ is a type environment that provides types to free variables in $M$.
+An expression $M$ has a type $\tau$ if there is a derivation using the rules:
+
+* $\Gamma, x : \tau \vdash x : \tau$
+* $\Gamma \vdash M : \tau \rightarrow \tau'$, $\Gamma \vdash M' : \tau$, $\Gamma \vdash M M' : \tau'$.
+* $\Gamma, x : \tau \vdash M : \tau'$, $\Gamma \vdash \lambda x : M : \tau \rightarrow \tau'$.
+
+We can use constraints over algebraic data-types to determine if expressions can be typed. 
+
+* $type(M M') = Y$,  $type(M) = X \rightarrow Y$, $type(M') = X$, for fresh $X, Y$.
+* $type(\lambda x . M) = type(x) \rightarrow type(M)$
+
+#### Checking if terms have principal types
+
+We define types and expressions as algebraic data-types.
+The types of applications produces three constraints for
+applications and the single constraint for lambda abstraction.
+The encoding into SMTLIB uses several features. Besides algebraic
+data-types it uses uninterpreted functions instead of introducing
+fresh variables. It defines a recursive function that extracts
+type constraints from an expression. 
+
+```z3
+(declare-datatypes () ((Type 
+  int 
+  string 
+  (arrow (dom Type) (rng Type)))))
+(declare-sort Var)
+(declare-datatypes () ((M 
+  (lam (bound Var) (body M)) 
+  (var (v Var)) 
+  (app (fn M) (arg M)))))
+(declare-fun type (M) Type)
+(define-fun dom ((M M)) Type (dom (type M)))
+(define-fun rng ((M M)) Type (rng (type M)))
+(define-fun type ((x Var)) Type (type (var x)))
+(declare-const x Var)
+(declare-const y Var)
+(define-fun app-constraint ((M1 M) (M2 M)) Bool
+  (and (= (dom M1) (type M2))
+       (is-arrow (type M1))
+       (= (type (app M1 M2)) (rng M1)))
+)
+(define-fun lam-constraint ((x Var) (M M)) Bool
+  (= (type (lam x M)) (arrow (type x) (type M)))
+)
+
+(define-fun-rec type-constraints ((M M)) Bool
+    (match M
+     (case (var x) true)
+     (case (app M1 M2)
+         (if (app-constraint M1 M2)
+             (and (type-constraints M1) (type-constraints M2)) 
+             false))
+     (case (lam x M1)
+         (if (lam-constraint x M1)
+             (type-constraints M1) 
+             false))
+    )
+)
+
+; the identity function can be typed.
+(push)
+(assert (type-constraints (lam x (var x))))
+(check-sat)
+(pop)
+
+; there is no simple type for x such that (x x) is well typed.
+; the type constraints are unsat due to the semantics of algebraic
+; data-types: it is not possible to create an instance of an
+; algebraic data-type that is a sub-term of itself.
+(push)
+(assert (type-constraints (lam x (app (var x) (var x)))))
+(check-sat)
+(pop)
+
+; Applying a function that takes an integer to a string is not well-typed
+(push)
+(declare-const plus M)
+(assert (= (type plus) (arrow int (arrow int int))))
+(declare-fun ofint (Int) M)
+(assert (= (type (ofint 3)) int))
+(declare-fun ofstring (String) M)
+(assert (= (type (ofstring "a")) string))
+(assert (type-constraints (app (lam x (app (app plus (var x)) (ofint 3))) (ofstring "a"))))
+(check-sat)
+(pop)
+```
+
+### Using UNSAT cores to identify mutually inconsistent type constraints
+We can track each sub-expression and use unsatisfiable cores to 
+identify a set of mutually inconsistent type constraints. 
+When the core is minimial, it means that modifying any one of the 
+subterms from the corresponding violated constraints can fix the type error. This provides some indication of error location, but isn't 
+great for diagnostics. In the next section we use MaxSAT for more
+targeted diagnostics. 
+
+```z3
+(set-option :produce-unsat-cores true)
+(set-option :smt.core.minimize true)
+(declare-datatypes () ((Type 
+  int 
+  string 
+  (arrow (dom Type) (rng Type)))))
+(declare-sort Var)
+(declare-datatypes () ((M 
+  (lam (bound Var) (body M)) 
+  (var (v Var)) 
+  (app (fn M) (arg M)))))
+(declare-fun type (M) Type)
+(declare-const x Var)
+(declare-const y Var)
+(define-fun dom ((M M)) Type (dom (type M)))
+(define-fun rng ((M M)) Type (rng (type M)))
+(define-fun type ((x Var)) Type (type (var x)))
+(define-fun app-constraint ((M1 M) (M2 M)) Bool
+  (and (= (dom M1) (type M2))
+       (is-arrow (type M1))
+       (= (type (app M1 M2)) (rng M1))
+  )
+)
+(define-fun lam-constraint ((x Var) (M M)) Bool
+  (= (type (lam x M)) (arrow (type x) (type M)))
+)
+
+(declare-const plus M)
+(assert (= (type plus) (arrow int (arrow int int))))
+(declare-fun ofint (Int) M)
+(declare-fun ofstring (String) M)
+(define-const x_plus_3 M (app (app plus (var x)) (ofint 3)))
+
+(assert (= (type (ofint 3)) int))
+(assert (= (type (ofstring "a")) string))
+
+(assert (! (app-constraint (lam x x_plus_3) (ofstring "a")) :named t1))
+(assert (! (lam-constraint x x_plus_3)                      :named t2))
+(assert (! (app-constraint (app plus (var x)) (ofint 3))    :named t3))
+(assert (! (app-constraint plus (var x))                    :named t4))
+(check-sat)
+(get-unsat-core)
+```
+
+### Using optimization to local type errors
+
+By asserting each type checking condition as a soft constraint and seeking an optimized solution to satisfy as many type constraints as possible, we obtain targeted information of what sub-terms could not
+be type checked.
+
+We can read off the type annotations for remaining sub-terms using 
+the current model. Albeit, it is not a user-friendly format. 
+
+```z3
+(declare-datatypes () ((Type 
+  int 
+  string 
+  (arrow (dom Type) (rng Type)))))
+(declare-sort Var)
+(declare-datatypes () ((M 
+  (lam (bound Var) (body M)) 
+  (var (v Var)) 
+  (app (fn M) (arg M)))))
+(declare-fun type (M) Type)
+(declare-const x Var)
+(declare-const y Var)
+(define-fun dom ((M M)) Type (dom (type M)))
+(define-fun rng ((M M)) Type (rng (type M)))
+(define-fun type ((x Var)) Type (type (var x)))
+(define-fun app-constraint ((M1 M) (M2 M)) Bool
+  (and (= (dom M1) (type M2))
+          (is-arrow (type M1))
+          (= (type (app M1 M2)) (rng M1))
+  )
+)
+(define-fun lam-constraint ((x Var) (M M)) Bool
+  (= (type (lam x M)) (arrow (type x) (type M)))
+)
+
+(declare-const plus M)
+(assert (= (type plus) (arrow int (arrow int int))))
+(declare-fun ofint (Int) M)
+(assert (= (type (ofint 3)) int))
+(declare-fun ofstring (String) M)
+(declare-const t1 Bool)
+(declare-const t2 Bool)
+(declare-const t3 Bool)
+(declare-const t4 Bool)
+(assert (= (type (ofstring "a")) string))
+(define-const x_plus_3 M (app (app plus (var x)) (ofint 3)))
+(assert (= t1 (app-constraint (lam x x_plus_3) (ofstring "a"))))
+(assert (= t2 (lam-constraint x x_plus_3)))
+(assert (= t3 (app-constraint (app plus (var x)) (ofint 3))))
+(assert (= t4 (app-constraint plus (var x))))
+(assert-soft t1)
+(assert-soft t2)
+(assert-soft t3)
+(assert-soft t4)
+(check-sat)
+(get-objectives)
+(get-value (t1 t2 t3 t4))
+(get-model)
+```

@@ -308,7 +308,7 @@ targeted diagnostics.
 (get-unsat-core)
 ```
 
-### Using optimization to local type errors
+### Using optimization to localize type errors
 
 By asserting each type checking condition as a soft constraint and seeking an optimized solution to satisfy as many type constraints as possible, we obtain targeted information of what sub-terms could not
 be type checked.

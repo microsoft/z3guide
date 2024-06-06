@@ -170,8 +170,8 @@ where $\Gamma$ is a type environment that provides types to free variables in $M
 An expression $M$ has a type $\tau$ if there is a derivation using the rules:
 
 * $\Gamma, x : \tau \vdash x : \tau$
-* $\Gamma \vdash M : \tau \rightarrow \tau'$, $\Gamma \vdash M' : \tau$, $\Gamma \vdash M M' : \tau'$.
-* $\Gamma, x : \tau \vdash M : \tau'$, $\Gamma \vdash \lambda x : M : \tau \rightarrow \tau'$.
+* If $\Gamma \vdash M : \tau \rightarrow \tau'$, $\Gamma \vdash M' : \tau$ then $\Gamma \vdash M M' : \tau'$.
+* If $\Gamma, x : \tau \vdash M : \tau'$ then $\Gamma \vdash \lambda x : M : \tau \rightarrow \tau'$.
 
 We can use constraints over algebraic data-types to determine if expressions can be typed. 
 

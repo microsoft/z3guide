@@ -9,7 +9,6 @@ import codeBlockContainerStyles from '@docusaurus/theme-classic/src/theme/CodeBl
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
 import styles from "./styles.module.css";
 
-
 import Prism from "prism-react-renderer/prism";
 
 (typeof global !== "undefined" ? global : window).Prism = Prism;
@@ -21,12 +20,15 @@ require("prismjs/components/prism-lisp");
 import runZ3Web from "./runZ3Web";
 import runZ3JSWeb from "./runZ3JSWeb";
 import runZ3DuoWeb from "./runZ3DuoWeb";
+import runZ3PYWeb from "./runZ3PYWeb";
+
 
 // [CONFIG HERE] language-process mapping
 const clientConfig = {
   'z3': runZ3Web,
   'z3-js': runZ3JSWeb,
   'z3-duo': runZ3DuoWeb,
+  'z3-py': runZ3PYWeb,
 };
 
 interface CodeBlockProps {

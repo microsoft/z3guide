@@ -48,16 +48,11 @@ async function createConfig() {
                 label: 'z3-py',
                 highlight: 'clojure',
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
-                buildConfig: {
-                    version: '1',
-                    timeout: 30000, // timeout for execution of each code snippet in milliseconds during build
-                    processToExecute: './src/remark/run-z3-js.js', // TODO fix this
-                    statusCodes: {
-                        success: 'z3-ran',
-                        timeout: 'z3-timed-out',
-                        runError: 'z3-failed',
-                        runtimeError: 'z3-runtime-error',
-                    },
+                statusCodes: {
+                    success: 'z3-ran',
+                    timeout: 'z3-timed-out',
+                    runError: 'z3-failed',
+                    runtimeError: 'z3-runtime-error',
                 },
                 githubRepo: 'Z3Prover/z3',
                 githubDiscussion: true,

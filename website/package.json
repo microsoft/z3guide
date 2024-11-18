@@ -43,7 +43,8 @@
     "remark-math": "3",
     "semantic-release": "^19.0.3",
     "use-editable": "^2.3.3",
-    "z3-solver": "4.12.1"
+    "z3-solver": "4.12.1",
+    "pyodide": "^0.18.1"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "2.0.1",

@@ -36,7 +36,7 @@ The Python bindings are available from pypi. You can install them using the foll
 
 Let us start with the following simple example:
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 solve(x > 2, y < 10, x + 2*y == 7)

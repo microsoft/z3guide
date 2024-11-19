@@ -56,6 +56,7 @@ async function createConfig() {
                 },
                 githubRepo: 'Z3Prover/z3',
                 githubDiscussion: true,
+                readonly: false,
             },
             {
                 name: 'Z3 Python Bindings',

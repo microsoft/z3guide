@@ -124,7 +124,7 @@ function Output(props: {
     ) : timeout ?
       <span style={{ color: "red" }}>
         {`--${language} timeout--`}
-      </span> : !result.output ? "Press 'Run' to run the sample" :
+      </span> : !result.output && !result.error ? "Press 'Run' to run the sample" :
       (
         <span style={{ color: "red" }}>
           <b>Script contains one or more errors: </b>

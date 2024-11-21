@@ -2,7 +2,7 @@ let _loadPyodideScriptPromise: Promise<any> | null = null;
 
 async function loadPyodideScript(): Promise<any> {
   return new Promise((resolve, reject) => {
-    console.log(`loading pyodide script`);
+    console.log(`loading pyodide`);
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
     script.onload = () => resolve(globalThis.loadPyodide);
@@ -32,6 +32,11 @@ async function loadZ3Pyodide() {
   }));
 }
 
+async function clearZ3Pyodide() {
+  console.log(`clearing pyodide`);
+  _loadPyodideScriptPromise = null;
+}
+
 async function runZ3PYWeb(input: string): Promise<string> {
   const pyodide = await loadZ3Pyodide();
 
@@ -56,6 +61,7 @@ async function runZ3PYWeb(input: string): Promise<string> {
     });
     pyodide.runPython(input);
   } catch (e) {
+    clearZ3Pyodide()
     console.error(e);
     error = e.message ?? "Error message is empty";
   }

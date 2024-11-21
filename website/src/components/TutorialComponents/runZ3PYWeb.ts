@@ -48,6 +48,12 @@ async function runZ3PYWeb(input: string): Promise<string> {
         console.debug(msg)
       },
     });
+    pyodide.setStderr({
+      batched: (msg) => {
+        output += msg + "\n";
+        console.debug(msg)
+      },
+    });
     pyodide.runPython(input);
   } catch (e) {
     console.error(e);

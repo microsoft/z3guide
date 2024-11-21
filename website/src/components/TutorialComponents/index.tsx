@@ -59,7 +59,7 @@ function RunButton(props: { onClick: () => Promise<void>, runFinished: boolean, 
   const { onClick, runFinished, isZ3Duo } = props;
   const text = isZ3Duo ? "Check" : "Run";
   return (
-    <button className="button button--primary" onClick={async () => await onClick()}>
+    <button className="button button--primary" onClick={onClick}>
       {runFinished ? text : "Running..."}
     </button>
   );
@@ -124,7 +124,7 @@ function Output(props: {
     ) : timeout ?
       <span style={{ color: "red" }}>
         {`--${language} timeout--`}
-      </span> :
+      </span> : !result.output ? "Press 'Run' to run the sample" :
       (
         <span style={{ color: "red" }}>
           <b>Script contains one or more errors: </b>

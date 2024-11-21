@@ -56,7 +56,7 @@ Z3 can solve and crunch formulas.
 
 The next examples show how to use the Z3 formula/expression simplifier.
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 print (simplify(x + y + 2*x + 3))
@@ -70,7 +70,7 @@ The command `set_option(html_mode=False)` makes all formulas and expressions to 
 displayed in Z3Py notation. This is also the default mode for the offline version of Z3Py that
 comes with the Z3 distribution.
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 print (x**2 + y**2 >= 1)
@@ -81,7 +81,7 @@ print (x**2 + y**2 >= 1)
 
 Z3 provides functions for traversing expressions.
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 n = x + y >= 3
@@ -96,7 +96,7 @@ print ("op name:  ", n.decl().name())
 Z3 provides all basic mathematical operations. Z3Py uses the same operator precedence of the Python language.
 Like Python, `**` is the power operator. Z3 can solve nonlinear _polynomial_ constraints.
 
-```z3-python
+```z3-py
 x = Real('x')
 y = Real('y')
 solve(x**2 + y**2 > 3, x**3 + y < 5)
@@ -108,7 +108,7 @@ and irrational algebraic numbers. An irrational algebraic number is a root of a 
 Internally, Z3 represents all these numbers precisely. 
 Irrational numbers are displayed in decimal notation for making it easy to read the results.
 
-```z3-python
+```z3-py
 x = Real('x')
 y = Real('y')
 solve(x**2 + y**2 == 3, x**3 == 2)
@@ -130,7 +130,7 @@ The example also shows different ways to create rational numbers in Z3Py. The pr
 Z3 rational where `num` is the numerator and `den` is the denominator. The `RealVal(1)` creates a Z3 real number
 representing the number `1`.
 
-```z3-python
+```z3-py
 print (1/3)
 print (RealVal(1)/3)
 print (Q(1,3))
@@ -146,7 +146,7 @@ print (x + 0.25)
 Rational numbers can also be displayed in decimal notation.
 
 
-```z3-python
+```z3-py
 x = Real('x')
 solve(3*x == 1)
 
@@ -160,7 +160,7 @@ solve(3*x == 1)
 
 A system of constraints may not have a solution. In this case, we say the system is **unsatisfiable**.
 
-```z3-python
+```z3-py
 x = Real('x')
 solve(x > 4, x < 0)
 ```
@@ -169,7 +169,7 @@ solve(x > 4, x < 0)
 Like in Python, comments begin with the hash character `#` and are terminated by the end of line. 
 Z3Py does not support comments that span more than one line.
 
-```z3-python
+```z3-py
 # This is a comment
 x = Real('x') # comment: creating x
 print (x**2 + 2*x + 2)  # comment: printing polynomial
@@ -182,7 +182,7 @@ Z3 supports Boolean operators: `And`, `Or`, `Not`, `Implies` (implication),
 `If` (if-then-else). Bi-implications are represented using equality `==`.
 The following example shows how to solve a simple set of Boolean constraints.
 
-```z3-python
+```z3-py
 p = Bool('p')
 q = Bool('q')
 r = Bool('r')
@@ -192,7 +192,7 @@ solve(Implies(p, q), r == Not(q), Or(Not(p), r))
 
 The Python Boolean constants `True` and `False` can be used to build Z3 Boolean expressions.
 
-```z3-python
+```z3-py
 p = Bool('p')
 q = Bool('q')
 print (And(p, q, True))
@@ -202,7 +202,7 @@ print (simplify(And(p, False)))
 
 The following example uses a combination of polynomial and Boolean constraints. 
 
-```z3-python
+```z3-py
 p = Bool('p')
 x = Real('x')
 solve(Or(x < 5, x > 10), Or(p, x**2 == 2), Not(p))
@@ -214,7 +214,7 @@ Z3 provides different solvers. The command `solve`, used in the previous example
 The implementation can be found in the file `z3.py` in the Z3 distribution.
 The following example demonstrates the basic Solver API.
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 
@@ -256,7 +256,7 @@ The `check` method always operates on the content of solver assertion stack.
 The following example shows an example that Z3 cannot solve. The solver returns `unknown` in this case.
 Recall that Z3 can solve nonlinear polynomial constraints, but `2**x` is not a polynomial.
 
-```z3-python
+```z3-py
 x = Real('x')
 s = Solver()
 s.add(2**x == 3)
@@ -266,7 +266,7 @@ print (s.check())
 The following example shows how to traverse the constraints asserted into a solver, and how to collect performance statistics for
 the `check` method.
 
-```z3-python
+```z3-py
 x = Real('x')
 y = Real('y')
 s = Solver()
@@ -288,7 +288,7 @@ We say Z3 **satisfied** the set of constraints. We say the solution is a **model
 constraints. A model is an **interpretation** that makes each asserted constraint **true**.
 The following example shows the basic methods for inspecting models. 
 
-```z3-python
+```z3-py
 x, y, z = Reals('x y z')
 s = Solver()
 s.add(x > 1, y > 1, x + y > 3, z - x < 10)
@@ -297,7 +297,7 @@ print (s.check())
 m = s.model()
 print ("x = %s" % m[x])
 
-print "traversing model..."
+print ("traversing model...")
 for d in m.decls():
     print ("%s = %s" % (d.name(), m[d]))
 
@@ -306,7 +306,7 @@ for d in m.decls():
 In the example above, the function `Reals('x y z')` creates the variables. `x`, `y` and `z`.
 It is shorthand for:
 
-```z3-python
+```z3-py
 x = Real('x')
 y = Real('y')
 z = Real('z')
@@ -326,7 +326,7 @@ Z3 supports real and integer variables. They can be mixed in a single problem.
 Like most programming languages, Z3Py will automatically add coercions converting integer expressions to real ones when needed.
 The following example demonstrates different ways to declare integer and real variables.
 
-```z3-python
+```z3-py
 x = Real('x')
 y = Int('y')
 a, b, c = Reals('a b c')
@@ -339,7 +339,7 @@ The function `ToReal` casts an integer expression into a real expression.
 
 Z3Py supports all basic arithmetic operations.
 
-```z3-python
+```z3-py
 a, b, c = Ints('a b c')
 d, e = Reals('d e')
 solve(a > b + 2,
@@ -350,7 +350,7 @@ solve(a > b + 2,
 
 The command `simplify` applies simple transformations on Z3 expressions.
 
-```z3-python
+```z3-py
 x, y = Reals('x y')
 # Put expression in sum-of-monomials form
 t = simplify((x + y)**3, som=True)
@@ -366,7 +366,7 @@ These options can be used in Z3Py. Z3Py also supports Python-like names,
 where `:` is suppressed and `-` is replaced with `_`.
 The following example demonstrates how to use both styles.
 
-```z3-python
+```z3-py
 x, y = Reals('x y')
 # Using Z3 native option names
 print (simplify(x == y + 2, ':arith-lhs', True))
@@ -382,7 +382,7 @@ Z3Py only supports [algebraic irrational numbers](http://en.wikipedia.org/wiki/A
 Z3Py will always display irrational numbers in decimal notation since it  is more convenient to read. The internal representation can be extracted using the method `sexpr()`.
 It displays Z3 internal representation for mathematical formulas and expressions in [s-expression](http://en.wikipedia.org/wiki/S-expression) (Lisp-like) notation.
 
-```z3-python
+```z3-py
 x, y = Reals('x y')
 solve(x + 10000000000000000000000 == y, y > 20000000000000000)
 
@@ -409,7 +409,7 @@ The function `BitVec('x', 16)` creates a bit-vector variable in Z3 named `x` wit
 For convenience, integer constants can be used to create bit-vector expressions in Z3Py.
 The function `BitVecVal(10, 32)` creates a bit-vector of size `32` containing the value `10`.
 
-```z3-python
+```z3-py
 x = BitVec('x', 16)
 y = BitVec('y', 16)
 print (x + 2)
@@ -440,7 +440,7 @@ In Z3Py, the operators
 The corresponding unsigned operators are
 `ULT`, `ULE`, `UGT`, `UGE`, `UDiv`, `URem` and `LShR`.
 
-```z3-python
+```z3-py
 # Create to bit-vectors of size 32
 x, y = BitVecs('x y', 32)
 
@@ -462,7 +462,7 @@ solve(ULT(x, 0))
 The operator `>>` is the arithmetic shift right, and 
 `<<` is the shift left. The logical shift right is the operator `LShR`.
 
-```z3-python
+```z3-py
 # Create to bit-vectors of size 32
 x, y = BitVecs('x y', 32)
 
@@ -497,7 +497,7 @@ and results in an integer value.
 The example illustrates how one can force an interpretation where `f`
 applied twice to `x` results in `x` again, but `f` applied once to `x` is different from `x`.
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 f = Function('f', IntSort(), IntSort())
@@ -510,7 +510,7 @@ is `1` for all `a` different from `0` and `1`.
 In Z3, we can also evaluate expressions in the model for a system of constraints. The following example shows how to 
 use the `evaluate` method.
 
-```z3-python
+```z3-py
 x = Int('x')
 y = Int('y')
 f = Function('f', IntSort(), IntSort())
@@ -543,7 +543,7 @@ The following example redefines the Z3Py function `prove` that receives a formul
 This function creates a solver, adds/asserts the negation of the formula, and check if the negation is unsatisfiable.
 The implementation of this function is a simpler version of the Z3Py command `prove`.
 
-```z3-python
+```z3-py
 p, q = Bools('p q')
 demorgan = And(p, q) == Not(Or(Not(p), Not(q)))
 print (demorgan)
@@ -566,7 +566,7 @@ Python supports [list comprehensions](http://docs.python.org/tutorial/datastruct
 List comprehensions provide a concise way to create lists. They can be used to create Z3 expressions and problems in Z3Py.
 The following example demonstrates how to use Python list comprehensions in Z3Py.
 
-```z3-python
+```z3-py
 # Create list [1, ..., 5] 
 print ([ x + 1 for x in range(5) ])
 
@@ -598,7 +598,7 @@ The command `pp` is similar to `print`, but it uses Z3Py formatter for lists and
 Z3Py also provides functions for creating vectors of Boolean, Integer and Real variables. These functions
 are implemented using list comprehensions. 
  
-```z3-python
+```z3-py
 X = IntVector('x', 5)
 Y = RealVector('y', 5)
 P = BoolVector('p', 5)
@@ -629,7 +629,7 @@ The light turns yellow, and Ima applies the brakes and skids to a stop.
 If Ima's acceleration is `-8.00` m/s<sup>2</sup>, then determine the displacement of the
 car during the skidding process. 
 
-```z3-python
+```z3-py
 d, a, t, v_i, v_f = Reals('d a t v__i v__f')
 
 equations = [
@@ -693,7 +693,7 @@ This hack is frequently used in C programs (Z3 included) to test whether a machi
 We can use Z3 to prove it really works. The claim is that `x != 0 && !(x & (x - 1))` is true if and only if `x`
 is a power of two.
 
-```z3-python
+```z3-py
 x      = BitVec('x', 32)
 powers = [ 2**i for i in range(32) ]
 fast   = And(x != 0, x & (x - 1) == 0)
@@ -710,7 +710,7 @@ prove(fast == slow)
 
 The following simple hack can be used to test whether two machine integers have opposite signs.
 
-```z3-python
+```z3-py
 x      = BitVec('x', 32)
 y      = BitVec('y', 32)
 
@@ -865,7 +865,7 @@ DependsOn(a, [b, c, z])
 depends clause semantics.
 
 
-```z3-python
+```z3-py
 def DependsOn(pack, deps):
    return And([ Implies(pack, dep) for dep in deps ])
 ```
@@ -896,7 +896,7 @@ def Conflict(p1, p2):
 With these two functions, we can easily encode the example in the 
 [Opium article](http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf) (Section 2) in Z3Py as:
 
-```z3-python
+```z3-py
 def DependsOn(pack, deps):
     return And([ Implies(pack, dep) for dep in deps ])
 

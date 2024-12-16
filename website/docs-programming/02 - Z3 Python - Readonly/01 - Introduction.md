@@ -46,9 +46,9 @@ The function `Int('x')` creates an integer variable in Z3 named `x`.
 The `solve` function solves a system of constraints. The example above uses
 two variables `x` and `y`, and three constraints:
 
-> x must be greater than 2 
-> y must be less than 10
-> when x is added to twice the value of y, it must equal 7
+* x must be greater than 2
+* y must be less than 10
+* when x is added to twice the value of y, it must equal 7
 
 Z3Py like Python uses `=` for assignment. The operators `<`, `<=`, `>`, `>=`, `==` and `!=` for comparison.
 In the example above, the expression `x + 2*y  == 7` is a Z3 constraint.
@@ -441,7 +441,7 @@ The corresponding unsigned operators are
 `ULT`, `ULE`, `UGT`, `UGE`, `UDiv`, `URem` and `LShR`.
 
 ```z3-py
-# Create to bit-vectors of size 32
+# Create two bit-vectors of size 32
 x, y = BitVecs('x y', 32)
 
 solve(x + y == 2, x > 0, y > 0)
@@ -463,7 +463,7 @@ The operator `>>` is the arithmetic shift right, and
 `<<` is the shift left. The logical shift right is the operator `LShR`.
 
 ```z3-py
-# Create to bit-vectors of size 32
+# Create two bit-vectors of size 32
 x, y = BitVecs('x y', 32)
 
 solve(x >> 2 == 3)
@@ -480,7 +480,7 @@ or never return, functions in Z3 have no side-effects and are **total**.
 That is, they are defined on all input values. This includes functions, such
 as division. Z3 is based on [first-order logic](http://en.wikipedia.org/wiki/First-order_logic).
 
-Given a constraints such as `x + y > 3`, we have been saying that `x` and `y`
+Given a constraint such as `x + y > 3`, we have been saying that `x` and `y`
 are variables. In many textbooks, `x` and `y` are called uninterpreted constants.
 That is, they allow any interpretation that is consistent with the constraint `x + y > 3`.
 
@@ -491,8 +491,8 @@ such as arithmetic where the function `+` has a fixed standard interpretation
 (it adds two numbers). Uninterpreted functions and constants are maximally flexible;
 they allow any interpretation that is consistent with the constraints over the function or constant.
 
-To illustrate uninterpreted functions and constants let us the uninterpreted integer constants (aka variables)
-`x`, `y`. Finally let `f` be an uninterpreted function that takes one argument of type (aka sort) integer
+To illustrate uninterpreted functions and constants let us define the uninterpreted integer constants (aka variables)
+`x`, `y`. Finally, let `f` be an uninterpreted function that takes one argument of type (aka sort) integer
 and results in an integer value.
 The example illustrates how one can force an interpretation where `f`
 applied twice to `x` results in `x` again, but `f` applied once to `x` is different from `x`.
@@ -540,7 +540,7 @@ Alternately,
 The following example proves the deMorgan's law.
 
 The following example redefines the Z3Py function `prove` that receives a formula as a parameter.
-This function creates a solver, adds/asserts the negation of the formula, and check if the negation is unsatisfiable.
+This function creates a solver, adds/asserts the negation of the formula, and checks if the negation is unsatisfiable.
 The implementation of this function is a simpler version of the Z3Py command `prove`.
 
 ```z3-py
@@ -562,7 +562,7 @@ prove(demorgan)
 
 ## List Comprehensions
 
-Python supports [list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions)
+Python supports [list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions).
 List comprehensions provide a concise way to create lists. They can be used to create Z3 expressions and problems in Z3Py.
 The following example demonstrates how to use Python list comprehensions in Z3Py.
 
@@ -570,7 +570,7 @@ The following example demonstrates how to use Python list comprehensions in Z3Py
 # Create list [1, ..., 5] 
 print ([ x + 1 for x in range(5) ])
 
-# Create two lists containg 5 integer variables
+# Create two lists containing 5 integer variables
 X = [ Int('x%s' % i) for i in range(5) ]
 Y = [ Int('y%s' % i) for i in range(5) ]
 print (X)
@@ -844,7 +844,7 @@ This application is based on the article
 [OPIUM: Optimal Package Install/Uninstall Manager](http://cseweb.ucsd.edu/~rjhala/papers/opium.pdf).
 Many packages depend on other packages to provide some functionality. 
 Each distribution contains a meta-data file that
-explicates the requirements of each package of the distribution
+explicates the requirements of each package of the distribution.
 The meta-data contains details like the name, version, etc. More importantly, it contains 
 **depends** and **conflicts**
 clauses that stipulate which other packages should be on the

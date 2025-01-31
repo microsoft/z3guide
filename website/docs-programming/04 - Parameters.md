@@ -638,8 +638,7 @@ threads.cube_frequency | unsigned int  |  frequency for using cubing | 2
 threads.max_conflicts | unsigned int  |  maximal number of conflicts between rounds of cubing for parallel SMT | 400
 
 ## sls
-
-Experimental Stochastic Local Search Solver (for QFBV only).
+Stochastic Local Search Solver (invoked by sls-qfbv and sls-smt tactics or enabled by smt.sls.enable=true)
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------

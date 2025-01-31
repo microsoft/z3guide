@@ -46,7 +46,7 @@ async function createConfig() {
             {
                 name: 'Z3 Python Bindings',
                 label: 'z3-py',
-                highlight: 'clojure',
+                highlight: 'python',
                 showLineNumbers: true, // whether to show line numbers in all code block of this language
                 statusCodes: {
                     success: 'z3-ran',

@@ -18,6 +18,16 @@ sidebar_position: 7
 
 The sequential and parallel solvers synchronize learned units, candidate value assignments,
 phase and branching priorities. 
-THe local search solver parameters can be fine-tuned by setting parameters in the [sls](Parameters#sls) namespace.
+The local search solver parameters can be fine-tuned by setting parameters in the [sls](Parameters#sls) namespace.
 
+Typical settings:
+
+* z3 smt.sls.enable=true _file_
+  - enable SLS to run in parallel with the default solver
+* z3 smt.sls.enable=true tactic.default_tactic="(then simplify propagate-values solve-eqs elim-uncnstr2 smt)" _file_
+  - force to use the SMT solver, necessary for benchmarks such as bit-vectors 
+* z3 smt.sls.enable=true smt.sls.parallel=false _file_
+  - use sequential mode integration of local search, CDCL and SLS take turns
+* z3 tactic.default_tactic="(then simplify propagate-values solve-eqs elim-uncnstr2 sls-smt)" _file_
+  - run only the SLS solver
 

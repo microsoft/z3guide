@@ -170,128 +170,133 @@ export default async function plugin() {
     const languageConfig = await getLangConfig();
     const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
-    console.log(`z3 code blocks plugin: ${SOLUTIONS_DIR}`);
-    console.log(`configs: ${languageConfig.languages.map((l) => l.label).join(", ")}`);
-    // console.log({ options });
-    const transformer = async (ast) => {
-        ensureDirSync(SOLUTIONS_DIR);
+    return () => {
+        console.log(
+            `z3 code blocks plugin: ${SOLUTIONS_DIR}, configs: ${languageConfig.languages
+                .map((l) => l.label)
+                .join(", ")}`
+        );
+        // console.log({ options });
+        const transformer = async (ast) => {
+            ensureDirSync(SOLUTIONS_DIR);
 
-        const promises = [];
+            const promises = [];
 
-        /** @type {import("unified").Transformer} */
-        visit(ast, "root", (node) => {
-            node.children.unshift({
-                type: "import",
-                value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'",
+            /** @type {import("unified").Transformer} */
+            visit(ast, "root", (node) => {
+                node.children.unshift({
+                    type: "import",
+                    value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'",
+                });
             });
-        });
 
-        visit(ast, "code", (node, index, parent) => {
-            const { value, lang, meta } = node;
+            visit(ast, "code", (node, index, parent) => {
+                const { value, lang, meta } = node;
 
-            console.log(`visit code block: ${lang} ${meta}`);
-            const skipRegex = /(no-build)|(ignore-errors)/;
-            const skipErr = skipRegex.test(meta);
-            const editableRegex = /(always-editable)/;
-            const alwaysEditable = editableRegex.test(meta);
-            const lineNumRegex = /(show-line-numbers)/i;
-            const splitterRegex = /------/;
+                console.log(`visit code block: ${lang} ${meta}`);
+                const skipRegex = /(no-build)|(ignore-errors)/;
+                const skipErr = skipRegex.test(meta);
+                const editableRegex = /(always-editable)/;
+                const alwaysEditable = editableRegex.test(meta);
+                const lineNumRegex = /(show-line-numbers)/i;
+                const splitterRegex = /------/;
 
-            for (const langConfig of languageConfig.languages) {
-                const label = langConfig.label;
-                const highlight = langConfig.highlight;
+                for (const langConfig of languageConfig.languages) {
+                    const label = langConfig.label;
+                    const highlight = langConfig.highlight;
 
-                console.log(`rendering ${label} code blocks`);
+                    console.log(`rendering ${label} code blocks`);
 
-                // line numbers can be shown for all blocks through `language.config.js`,
-                // or for a specific block through `show-line-numbers`
-                // e.g. ```z3 show-line-numbers
-                const showLineNumbers =
-                    langConfig.showLineNumbers || lineNumRegex.test(meta);
+                    // line numbers can be shown for all blocks through `language.config.js`,
+                    // or for a specific block through `show-line-numbers`
+                    // e.g. ```z3 show-line-numbers
+                    const showLineNumbers =
+                        langConfig.showLineNumbers || lineNumRegex.test(meta);
 
-                if (lang !== label) {
-                    continue; // onto the next lang config available until we are out
-                }
-
-                const githubRepo = getGithubRepo(lang, langConfig);
-
-                if (!langConfig.buildConfig) {
-                    // there is no runtime configured,
-                    // so just add the syntax highlighting and github discussion button (if configured)
-
-                    let code = value;
-                    let result = {};
-
-                    const isZ3Duo = lang === "z3-duo";
-                    const splitter = splitterRegex.test(value);
-
-                    if (isZ3Duo && splitter) {
-                        const [starter, solution] = value
-                            .split(splitterRegex)
-                            .map((s) => s.trim());
-                        code = starter;
-                        result = { output: solution };
+                    if (lang !== label) {
+                        continue; // onto the next lang config available until we are out
                     }
 
-                    const val = JSON.stringify({
-                        lang: lang,
-                        highlight: highlight,
-                        statusCodes: langConfig.statusCodes ?? {},
-                        code,
-                        result: result,
-                        githubRepo: githubRepo,
-                        editable: isZ3Duo,
-                        readonly: langConfig.readonly ?? true,
-                        showLineNumbers: showLineNumbers,
+                    const githubRepo = getGithubRepo(lang, langConfig);
+
+                    if (!langConfig.buildConfig) {
+                        // there is no runtime configured,
+                        // so just add the syntax highlighting and github discussion button (if configured)
+
+                        let code = value;
+                        let result = {};
+
+                        const isZ3Duo = lang === "z3-duo";
+                        const splitter = splitterRegex.test(value);
+
+                        if (isZ3Duo && splitter) {
+                            const [starter, solution] = value
+                                .split(splitterRegex)
+                                .map((s) => s.trim());
+                            code = starter;
+                            result = { output: solution };
+                        }
+
+                        const val = JSON.stringify({
+                            lang: lang,
+                            highlight: highlight,
+                            statusCodes: langConfig.statusCodes ?? {},
+                            code,
+                            result: result,
+                            githubRepo: githubRepo,
+                            editable: isZ3Duo,
+                            readonly: langConfig.readonly ?? true,
+                            showLineNumbers: showLineNumbers,
+                        });
+                        parent.children.splice(index, 1, {
+                            type: "jsx",
+                            value: `<CustomCodeBlock input={${val}} />`,
+                        });
+                        continue;
+                    }
+
+                    promises.push(async () => {
+                        // console.log(`num promises: ${promises.length}; `);
+                        const buildConfig = langConfig.buildConfig;
+                        const result = await getOutput(
+                            buildConfig,
+                            value,
+                            lang,
+                            skipErr
+                        );
+
+                        // console.log({ node, index, parent });
+
+                        const val = JSON.stringify({
+                            lang: lang,
+                            highlight: highlight,
+                            statusCodes: buildConfig.statusCodes,
+                            code: value,
+                            result: result,
+                            githubRepo: githubRepo,
+                            editable: alwaysEditable,
+                            readonly: false,
+                            showLineNumbers: showLineNumbers,
+                            langVersion: buildConfig.langVersion,
+                            tool: buildConfig.npmPackage,
+                        });
+                        parent.children.splice(index, 1, {
+                            type: "jsx",
+                            // TODO: encode the source into jsx tree to avoid XSS?
+                            // TODO: create a generic <CodeBlock and pass lang={lang} />
+                            // TODO: pass syntax highlighting to CodeBlock
+                            value: `<CustomCodeBlock input={${val}} />`,
+                        });
                     });
-                    parent.children.splice(index, 1, {
-                        type: "jsx",
-                        value: `<CustomCodeBlock input={${val}} />`,
-                    });
-                    continue;
                 }
+            });
 
-                promises.push(async () => {
-                    // console.log(`num promises: ${promises.length}; `);
-                    const buildConfig = langConfig.buildConfig;
-                    const result = await getOutput(
-                        buildConfig,
-                        value,
-                        lang,
-                        skipErr
-                    );
-
-                    // console.log({ node, index, parent });
-
-                    const val = JSON.stringify({
-                        lang: lang,
-                        highlight: highlight,
-                        statusCodes: buildConfig.statusCodes,
-                        code: value,
-                        result: result,
-                        githubRepo: githubRepo,
-                        editable: alwaysEditable,
-                        readonly: false,
-                        showLineNumbers: showLineNumbers,
-                        langVersion: buildConfig.langVersion,
-                        tool: buildConfig.npmPackage,
-                    });
-                    parent.children.splice(index, 1, {
-                        type: "jsx",
-                        // TODO: encode the source into jsx tree to avoid XSS?
-                        // TODO: create a generic <CodeBlock and pass lang={lang} />
-                        // TODO: pass syntax highlighting to CodeBlock
-                        value: `<CustomCodeBlock input={${val}} />`,
-                    });
-                });
+            for (const p of promises) {
+                // need to run sync according to Kevin
+                await p();
+                // console.log(`num promises: ${promises.length}`);
             }
-        });
-
-        for (const p of promises) {
-            // need to run sync according to Kevin
-            await p();
-            // console.log(`num promises: ${promises.length}`);
-        }
+        };
+        return transformer;
     };
-    return transformer;
 }

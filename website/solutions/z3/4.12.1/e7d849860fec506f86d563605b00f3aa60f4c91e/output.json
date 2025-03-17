@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun s () (Seq Int)\n    (seq.++ (seq.unit 5) (seq.unit 6) (seq.unit 7) (seq.unit 8)))\n  (define-fun t () (Seq Int)\n    (seq.++ (seq.unit 10) (seq.unit 12) (seq.unit 14) (seq.unit 16)))\n)\n","error":"","status":"z3-ran","hash":"e7d849860fec506f86d563605b00f3aa60f4c91e"}

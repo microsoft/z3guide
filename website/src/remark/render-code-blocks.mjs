@@ -184,10 +184,9 @@ ${hash}
 
             const promises = [];
 
-            /** @type {import("unified").Transformer} */
             visit(ast, "root", (node) => {
                 node.children.unshift({
-                    type: "import",
+                    type: "mdxjsEsm",
                     value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'",
                 });
             });

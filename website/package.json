@@ -46,7 +46,7 @@
     "remark-math": "6",
     "semantic-release": "^24.2.3",
     "use-editable": "^2.3.3",
-    "z3-solver": "4.14.1",
+    "z3-solver": "4.12.1",
     "pyodide": "^0.27.3"
   },
   "devDependencies": {

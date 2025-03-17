@@ -185,9 +185,47 @@ ${hash}
             const promises = [];
 
             visit(ast, "root", (node) => {
+                // use https://mdxjs.com/playground/#playground
                 node.children.unshift({
                     type: "mdxjsEsm",
                     value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'",
+                    data: {
+                        estree: {
+                            type: "Program",
+                            body: [
+                                {
+                                    type: "ImportDeclaration",
+                                    specifiers: [
+                                        {
+                                            type: "ImportDefaultSpecifier",
+                                            local: {
+                                                type: "Identifier",
+                                                name: "CustomCodeBlock",
+                                            },
+                                        },
+                                        {
+                                            type: "ImportSpecifier",
+                                            imported: {
+                                                type: "Identifier",
+                                                name: "GithubDiscussionBtn",
+                                            },
+                                            local: {
+                                                type: "Identifier",
+                                                name: "GithubDiscussionBtn",
+                                            },
+                                        },
+                                    ],
+                                    source: {
+                                        type: "Literal",
+                                        value: "@site/src/components/TutorialComponents",
+                                        raw: "'@site/src/components/TutorialComponents'",
+                                    },
+                                },
+                            ],
+                            sourceType: "module",
+                            comments: [],
+                        },
+                    },
                 });
             });
 

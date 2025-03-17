@@ -267,8 +267,11 @@ function CustomCodeEditor(props: {
     return <>{isBrowser ? component : <></>}</>;
 }
 
-export default function CustomCodeBlock(props: { input: CodeBlockProps }) {
-    const { input } = props;
+export default function CustomCodeBlock(props: { input: CodeBlockProps | string }) {
+    let { input } = props;
+    if (typeof input === "string") input = JSON.parse(input);    
+    if (typeof input !== "object") throw new Error("Invalid input");
+
     const {
         lang,
         highlight,

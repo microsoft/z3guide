@@ -3,7 +3,7 @@
  */
 
 // TODO: factor into an independent plugin
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 import fs_extra_pkg from "fs-extra";
 import { spawnSync } from "child_process";
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;

@@ -324,7 +324,7 @@ When `x` is fixed to value `v`, we check if it immediately
 triggers a conflict. If it doesn't we add it to a trail
 that is checked on final. It is assumed that during final
 `check_conflict` is conclusive (returns True) as all equatlities
-are known between arguments to <=Sort and <=SortSyntax.
+are known between arguments to `<=Sort` and `<=SortSyntax`.
     
 
 ```z3-python

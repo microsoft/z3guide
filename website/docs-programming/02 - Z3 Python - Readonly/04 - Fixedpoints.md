@@ -10,11 +10,10 @@ sidebar_position: 4
 
 This tutorial illustrates uses of Z3's fixedpoint engine.
 The following papers
-<a href="http://research.microsoft.com/en-us/people/nbjorner/z3fix.pdf">
-&mu;Z - An Efficient Engine for Fixed-Points with Constraints.</a>
+<a href="http://research.microsoft.com/en-us/people/nbjorner/z3fix.pdf">&mu;Z - An Efficient Engine for Fixed-Points with Constraints.</a>
 (CAV 2011) and
-<a href="http://research.microsoft.com/en-us/people/nbjorner/z3pdr.pdf">
-Generalized Property Directed Reachability</a> (SAT 2012)
+<a href="http://research.microsoft.com/en-us/people/nbjorner/z3pdr.pdf">Generalized Property Directed Reachability</a> 
+(SAT 2012)
 describe some of the main features of the engine.
 
 

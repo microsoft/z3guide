@@ -170,6 +170,8 @@ export default async function plugin() {
     const languageConfig = await getLangConfig();
     const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
+    console.log(`z3 code blocks plugin: ${SOLUTIONS_DIR}`);
+    console.log(`configs: ${languageConfig.languages.map((l) => l.label).join(", ")}`);
     // console.log({ options });
     const transformer = async (ast) => {
         ensureDirSync(SOLUTIONS_DIR);
@@ -187,6 +189,7 @@ export default async function plugin() {
         visit(ast, "code", (node, index, parent) => {
             const { value, lang, meta } = node;
 
+            console.log(`visit code block: ${lang} ${meta}`);
             const skipRegex = /(no-build)|(ignore-errors)/;
             const skipErr = skipRegex.test(meta);
             const editableRegex = /(always-editable)/;
@@ -197,6 +200,8 @@ export default async function plugin() {
             for (const langConfig of languageConfig.languages) {
                 const label = langConfig.label;
                 const highlight = langConfig.highlight;
+
+                console.log(`rendering ${label} code blocks`);
 
                 // line numbers can be shown for all blocks through `language.config.js`,
                 // or for a specific block through `show-line-numbers`

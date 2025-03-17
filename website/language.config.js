@@ -93,9 +93,9 @@ export default async function createConfig() {
         const npmPackage = langConfig.buildConfig.npmPackage;
         if (npmPackage) {
             const pkgJson = `${npmPackage}/package.json`;
-            console.log(`${npmPackage} -> ${pkgJson}`)
             // @ts-ignore
             const langVersion = (await import(pkgJson)).default.version;
+            console.log(`${npmPackage} -> ${pkgJson} -> ${langVersion}`);
             langConfig.buildConfig.langVersion = langVersion;
         }
     }

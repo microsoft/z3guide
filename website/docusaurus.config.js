@@ -299,10 +299,9 @@ export default async function createConfig() {
             }),
     };
 
-    const renderCodeBlocksFactory = (
+    const renderCodeBlocks = await (
         await import("./src/remark/render-code-blocks.mjs")
-    ).default;
-    const renderCodeBlocks = await renderCodeBlocksFactory()
+    ).default();
 
     // add custom codeblocks to the default docs
     config.presets[0][1].docs.remarkPlugins.push(renderCodeBlocks);

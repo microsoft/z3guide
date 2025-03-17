@@ -19,23 +19,27 @@ const VERSION = sitePkg.version.replace(/(\..)*$/g, "");
 // language configs
 import getLangConfig from "../../language.config.js";
 
-function checkRuntimeError(
-    lang,
-    langVersion,
-    input,
-    output,
-    hash,
-    errRegex,
-    skipErr
-) {
-    if (skipErr) {
-        return output;
-    }
+export default async function () {
+    const languageConfig = await getLangConfig();
+    const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
-    const hasError = output.match(errRegex);
-    if (hasError !== null) {
-        throw new Error(
-            `\n******************************************
+    function checkRuntimeError(
+        lang,
+        langVersion,
+        input,
+        output,
+        hash,
+        errRegex,
+        skipErr
+    ) {
+        if (skipErr) {
+            return output;
+        }
+
+        const hasError = output.match(errRegex);
+        if (hasError !== null) {
+            throw new Error(
+                `\n******************************************
 ${lang} (version ${langVersion}) Runtime Error
 
 - Snippet: 
@@ -47,130 +51,128 @@ ${output}
 - Hash: 
 ${hash}
 ******************************************\n`
-        );
+            );
+        }
+
+        return "";
     }
 
-    return "";
-}
+    async function getOutput(config, input, lang, skipErr) {
+        const { timeout, langVersion, processToExecute, statusCodes } = config;
+        const hashObj = createHash("sha1");
 
-async function getOutput(config, input, lang, skipErr) {
-    const { timeout, langVersion, processToExecute, statusCodes } = config;
-    const hashObj = createHash("sha1");
+        // TODO: add rise4fun engine version to the hash
 
-    // TODO: add rise4fun engine version to the hash
+        const hash = hashObj
+            .update(VERSION)
+            .update(input)
+            .update(lang)
+            .update(langVersion)
+            .update(String(timeout))
+            .digest("hex");
+        const dir = `${SOLUTIONS_DIR}/${lang}/${langVersion}/${hash}`;
+        ensureDirSync(dir);
+        const pathIn = `${dir}/input.json`;
+        const pathOut = `${dir}/output.json`;
+        // console.log(hash);
 
-    const hash = hashObj
-        .update(VERSION)
-        .update(input)
-        .update(lang)
-        .update(langVersion)
-        .update(String(timeout))
-        .digest("hex");
-    const dir = `${SOLUTIONS_DIR}/${lang}/${langVersion}/${hash}`;
-    ensureDirSync(dir);
-    const pathIn = `${dir}/input.json`;
-    const pathOut = `${dir}/output.json`;
-    // console.log(hash);
+        // TODO: error handling for z3-js etc?
+        const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
+        const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
+        if (data !== null) {
+            //console.log(`cache hit ${hash}`)
+            const errorToReport = checkRuntimeError(
+                lang,
+                langVersion,
+                input,
+                data.output,
+                hash,
+                errRegex,
+                skipErr
+            ); // if this call fails an error will be thrown
+            if (errorToReport !== "") {
+                // we had erroneous code with ignore-error / no-build meta
+                data.error = errorToReport;
+                data.status = statusCodes.runtimeError;
+                writeJsonSync(pathOut, data); // update old cache
+            }
+            return data;
+        }
 
-    // TODO: error handling for z3-js etc?
-    const errRegex = /(\(error)|(unsupported)|([eE]rror:)/;
-    const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
-    if (data !== null) {
-        //console.log(`cache hit ${hash}`)
+        let output = "";
+        let error = "";
+        let status = "success"; // default to be success
+
+        const inputObj = { input: input };
+        writeJsonSync(pathIn, inputObj);
+
+        try {
+            let result = spawnSync("node", [processToExecute, pathIn], {
+                timeout: timeout,
+            });
+            output = result.stdout.length > 0 ? result.stdout.toString() : "";
+            // when running lang does fail
+            error = result.stderr.length > 0 ? result.stderr.toString() : "";
+
+            status = error === "" ? statusCodes.success : statusCodes.runError;
+        } catch (e) {
+            error = `${lang} timed out after ${timeout}ms.`;
+            output = "";
+
+            status = statusCodes.timeout;
+        }
+
+        if (status === statusCodes.runError && !skipErr) {
+            throw new Error(
+                `${lang} runtime error: ${hash}, ${status}, ${input}, ${error}`
+            );
+        }
+
+        console.log(
+            `${lang} finished: ${hash}, ${status}, ${output}, ${error}`
+        );
+
         const errorToReport = checkRuntimeError(
-            lang,
             langVersion,
             input,
-            data.output,
+            output,
             hash,
             errRegex,
             skipErr
         ); // if this call fails an error will be thrown
+
         if (errorToReport !== "") {
             // we had erroneous code with ignore-error / no-build meta
-            data.error = errorToReport;
-            data.status = statusCodes.runtimeError;
-            writeJsonSync(pathOut, data); // update old cache
+            error = errorToReport;
+            status = statusCodes.runtimeError;
         }
-        return data;
+
+        const result = {
+            output: output,
+            error: error,
+            status: status,
+            hash: hash,
+        };
+
+        // write to file
+        writeJsonSync(pathOut, result);
+
+        return result;
     }
 
-    let output = "";
-    let error = "";
-    let status = "success"; // default to be success
-
-    const inputObj = { input: input };
-    writeJsonSync(pathIn, inputObj);
-
-    try {
-        let result = spawnSync("node", [processToExecute, pathIn], {
-            timeout: timeout,
-        });
-        output = result.stdout.length > 0 ? result.stdout.toString() : "";
-        // when running lang does fail
-        error = result.stderr.length > 0 ? result.stderr.toString() : "";
-
-        status = error === "" ? statusCodes.success : statusCodes.runError;
-    } catch (e) {
-        error = `${lang} timed out after ${timeout}ms.`;
-        output = "";
-
-        status = statusCodes.timeout;
-    }
-
-    if (status === statusCodes.runError && !skipErr) {
-        throw new Error(
-            `${lang} runtime error: ${hash}, ${status}, ${input}, ${error}`
-        );
-    }
-
-    console.log(`${lang} finished: ${hash}, ${status}, ${output}, ${error}`);
-
-    const errorToReport = checkRuntimeError(
-        langVersion,
-        input,
-        output,
-        hash,
-        errRegex,
-        skipErr
-    ); // if this call fails an error will be thrown
-
-    if (errorToReport !== "") {
-        // we had erroneous code with ignore-error / no-build meta
-        error = errorToReport;
-        status = statusCodes.runtimeError;
-    }
-
-    const result = {
-        output: output,
-        error: error,
-        status: status,
-        hash: hash,
-    };
-
-    // write to file
-    writeJsonSync(pathOut, result);
-
-    return result;
-}
-
-function getGithubRepo(lang, langConfig) {
-    if (langConfig.githubDiscussion) {
-        if (!langConfig.githubRepo) {
-            throw new Error(
-                `Cannot create GithubDiscussionBtn for ${lang} without githubRepo configured in language.config.js`
-            );
+    function getGithubRepo(lang, langConfig) {
+        if (langConfig.githubDiscussion) {
+            if (!langConfig.githubRepo) {
+                throw new Error(
+                    `Cannot create GithubDiscussionBtn for ${lang} without githubRepo configured in language.config.js`
+                );
+            }
+            return langConfig.githubRepo;
         }
-        return langConfig.githubRepo;
+        return undefined;
     }
-    return undefined;
-}
 
-export default async function plugin() {
-    const languageConfig = await getLangConfig();
-    const SOLUTIONS_DIR = languageConfig.solutionsDir;
-
-    return () => {
+    return function plugin() {
         console.log(
             `z3 code blocks plugin: ${SOLUTIONS_DIR}, configs: ${languageConfig.languages
                 .map((l) => l.label)
@@ -193,7 +195,6 @@ export default async function plugin() {
             visit(ast, "code", (node, index, parent) => {
                 const { value, lang, meta } = node;
 
-                console.log(`visit code block: ${lang} ${meta}`);
                 const skipRegex = /(no-build)|(ignore-errors)/;
                 const skipErr = skipRegex.test(meta);
                 const editableRegex = /(always-editable)/;
@@ -204,8 +205,6 @@ export default async function plugin() {
                 for (const langConfig of languageConfig.languages) {
                     const label = langConfig.label;
                     const highlight = langConfig.highlight;
-
-                    console.log(`rendering ${label} code blocks`);
 
                     // line numbers can be shown for all blocks through `language.config.js`,
                     // or for a specific block through `show-line-numbers`

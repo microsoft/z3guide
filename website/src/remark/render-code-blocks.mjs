@@ -248,8 +248,15 @@ ${hash}
                             showLineNumbers: showLineNumbers,
                         });
                         parent.children.splice(index, 1, {
-                            type: "jsx",
-                            value: `<CustomCodeBlock input={${val}} />`,
+                            type: "mdxJsxFlowElement",
+                            name: "CustomCodeBlock",
+                            attributes: [
+                                {
+                                    type: "mdxJsxAttribute",
+                                    name: "input",
+                                    value: val,
+                                },
+                            ],
                         });
                         continue;
                     }
@@ -280,11 +287,15 @@ ${hash}
                             tool: buildConfig.npmPackage,
                         });
                         parent.children.splice(index, 1, {
-                            type: "jsx",
-                            // TODO: encode the source into jsx tree to avoid XSS?
-                            // TODO: create a generic <CodeBlock and pass lang={lang} />
-                            // TODO: pass syntax highlighting to CodeBlock
-                            value: `<CustomCodeBlock input={${val}} />`,
+                            type: "mdxJsxFlowElement",
+                            name: "CustomCodeBlock",
+                            attributes: [
+                                {
+                                    type: "mdxJsxAttribute",
+                                    name: "input",
+                                    value: val,
+                                },
+                            ],
                         });
                     });
                 }

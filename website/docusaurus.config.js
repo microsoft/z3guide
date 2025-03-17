@@ -7,7 +7,7 @@ const darkCodeTheme = themes.dracula;
 import math from "remark-math";
 import katex from "rehype-katex";
 
-async function createConfig() {
+export default async function createConfig() {
     const repo = process.env.GITHUB_REPOSITORY;
     const sha = process.env.GITHUB_SHA;
     const releaseTag = process.env.RELEASE_VERSION;
@@ -331,5 +331,3 @@ async function createConfig() {
 
     return config;
 }
-
-module.exports = createConfig;

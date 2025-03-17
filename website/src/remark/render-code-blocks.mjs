@@ -3,27 +3,31 @@
  */
 
 // TODO: factor into an independent plugin
-import visit from 'unist-util-visit';
-import fs_extra_pkg from 'fs-extra';
-import { spawnSync } from 'child_process';
+import visit from "unist-util-visit";
+import fs_extra_pkg from "fs-extra";
+import { spawnSync } from "child_process";
 const { readJsonSync, writeJsonSync, ensureDirSync } = fs_extra_pkg;
-import { createHash } from 'crypto';
+import { createHash } from "crypto";
 
 // site version
-import sitePkg from '../../package.json' assert {type: 'json'};
+import sitePkg from "../../package.json";
 // for version `x.y.z`, only recompute hashes if `x` changes
 // to avoid recomputation over minor changes on the website
 // (so we only recompute for every major release)
-const VERSION = sitePkg.version.replace(/(\..)*$/g, '');
+const VERSION = sitePkg.version.replace(/(\..)*$/g, "");
 
 // language configs
-import getLangConfig from '../../language.config.js';
-const languageConfig = await getLangConfig();
+import getLangConfig from "../../language.config.js";
 
-const SOLUTIONS_DIR = languageConfig.solutionsDir;
-
-
-function checkRuntimeError(lang, langVersion, input, output, hash, errRegex, skipErr) {
+function checkRuntimeError(
+    lang,
+    langVersion,
+    input,
+    output,
+    hash,
+    errRegex,
+    skipErr
+) {
     if (skipErr) {
         return output;
     }
@@ -42,16 +46,16 @@ ${output}
 
 - Hash: 
 ${hash}
-******************************************\n`);
+******************************************\n`
+        );
     }
 
     return "";
 }
 
 async function getOutput(config, input, lang, skipErr) {
-
     const { timeout, langVersion, processToExecute, statusCodes } = config;
-    const hashObj = createHash('sha1');
+    const hashObj = createHash("sha1");
 
     // TODO: add rise4fun engine version to the hash
 
@@ -61,7 +65,7 @@ async function getOutput(config, input, lang, skipErr) {
         .update(lang)
         .update(langVersion)
         .update(String(timeout))
-        .digest('hex');
+        .digest("hex");
     const dir = `${SOLUTIONS_DIR}/${lang}/${langVersion}/${hash}`;
     ensureDirSync(dir);
     const pathIn = `${dir}/input.json`;
@@ -73,8 +77,17 @@ async function getOutput(config, input, lang, skipErr) {
     const data = readJsonSync(pathOut, { throws: false }); // don't throw an error if file not exist
     if (data !== null) {
         //console.log(`cache hit ${hash}`)
-        const errorToReport = checkRuntimeError(lang, langVersion, input, data.output, hash, errRegex, skipErr); // if this call fails an error will be thrown
-        if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
+        const errorToReport = checkRuntimeError(
+            lang,
+            langVersion,
+            input,
+            data.output,
+            hash,
+            errRegex,
+            skipErr
+        ); // if this call fails an error will be thrown
+        if (errorToReport !== "") {
+            // we had erroneous code with ignore-error / no-build meta
             data.error = errorToReport;
             data.status = statusCodes.runtimeError;
             writeJsonSync(pathOut, data); // update old cache
@@ -90,7 +103,9 @@ async function getOutput(config, input, lang, skipErr) {
     writeJsonSync(pathIn, inputObj);
 
     try {
-        let result = spawnSync('node', [processToExecute, pathIn], { timeout: timeout });
+        let result = spawnSync("node", [processToExecute, pathIn], {
+            timeout: timeout,
+        });
         output = result.stdout.length > 0 ? result.stdout.toString() : "";
         // when running lang does fail
         error = result.stderr.length > 0 ? result.stderr.toString() : "";
@@ -104,16 +119,24 @@ async function getOutput(config, input, lang, skipErr) {
     }
 
     if (status === statusCodes.runError && !skipErr) {
-        throw new Error(`${lang} runtime error: ${hash}, ${status}, ${input}, ${error}`);
+        throw new Error(
+            `${lang} runtime error: ${hash}, ${status}, ${input}, ${error}`
+        );
     }
-
 
     console.log(`${lang} finished: ${hash}, ${status}, ${output}, ${error}`);
 
+    const errorToReport = checkRuntimeError(
+        langVersion,
+        input,
+        output,
+        hash,
+        errRegex,
+        skipErr
+    ); // if this call fails an error will be thrown
 
-    const errorToReport = checkRuntimeError(langVersion, input, output, hash, errRegex, skipErr); // if this call fails an error will be thrown
-
-    if (errorToReport !== "") { // we had erroneous code with ignore-error / no-build meta
+    if (errorToReport !== "") {
+        // we had erroneous code with ignore-error / no-build meta
         error = errorToReport;
         status = statusCodes.runtimeError;
     }
@@ -122,9 +145,8 @@ async function getOutput(config, input, lang, skipErr) {
         output: output,
         error: error,
         status: status,
-        hash: hash
-    }
-
+        hash: hash,
+    };
 
     // write to file
     writeJsonSync(pathOut, result);
@@ -135,36 +157,34 @@ async function getOutput(config, input, lang, skipErr) {
 function getGithubRepo(lang, langConfig) {
     if (langConfig.githubDiscussion) {
         if (!langConfig.githubRepo) {
-            throw new Error(`Cannot create GithubDiscussionBtn for ${lang} without githubRepo configured in language.config.js`);
+            throw new Error(
+                `Cannot create GithubDiscussionBtn for ${lang} without githubRepo configured in language.config.js`
+            );
         }
         return langConfig.githubRepo;
     }
     return undefined;
 }
 
-
-export default function plugin() {
-
+export default async function plugin() {
+    const languageConfig = await getLangConfig();
+    const SOLUTIONS_DIR = languageConfig.solutionsDir;
 
     // console.log({ options });
     const transformer = async (ast) => {
-
         ensureDirSync(SOLUTIONS_DIR);
 
         const promises = [];
 
         /** @type {import("unified").Transformer} */
-        visit(ast, 'root', (node) => {
-
-            node.children.unshift(
-                {
-                    type: 'import',
-                    value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'"
-                }
-            )
+        visit(ast, "root", (node) => {
+            node.children.unshift({
+                type: "import",
+                value: "import CustomCodeBlock, { GithubDiscussionBtn } from '@site/src/components/TutorialComponents'",
+            });
         });
 
-        visit(ast, 'code', (node, index, parent) => {
+        visit(ast, "code", (node, index, parent) => {
             const { value, lang, meta } = node;
 
             const skipRegex = /(no-build)|(ignore-errors)/;
@@ -174,17 +194,16 @@ export default function plugin() {
             const lineNumRegex = /(show-line-numbers)/i;
             const splitterRegex = /------/;
 
-
             for (const langConfig of languageConfig.languages) {
-
                 const label = langConfig.label;
                 const highlight = langConfig.highlight;
 
                 // line numbers can be shown for all blocks through `language.config.js`,
                 // or for a specific block through `show-line-numbers`
                 // e.g. ```z3 show-line-numbers
-                const showLineNumbers = langConfig.showLineNumbers || lineNumRegex.test(meta);
-                
+                const showLineNumbers =
+                    langConfig.showLineNumbers || lineNumRegex.test(meta);
+
                 if (lang !== label) {
                     continue; // onto the next lang config available until we are out
                 }
@@ -202,9 +221,11 @@ export default function plugin() {
                     const splitter = splitterRegex.test(value);
 
                     if (isZ3Duo && splitter) {
-                        const [starter, solution] = value.split(splitterRegex).map(s => s.trim());
+                        const [starter, solution] = value
+                            .split(splitterRegex)
+                            .map((s) => s.trim());
                         code = starter;
-                        result = {output: solution};
+                        result = { output: solution };
                     }
 
                     const val = JSON.stringify({
@@ -216,24 +237,24 @@ export default function plugin() {
                         githubRepo: githubRepo,
                         editable: isZ3Duo,
                         readonly: langConfig.readonly ?? true,
-                        showLineNumbers: showLineNumbers
+                        showLineNumbers: showLineNumbers,
                     });
-                    parent.children.splice(
-                        index,
-                        1,
-                        {
-                            type: 'jsx',
-                            value: `<CustomCodeBlock input={${val}} />`
-                        }
-                    );
+                    parent.children.splice(index, 1, {
+                        type: "jsx",
+                        value: `<CustomCodeBlock input={${val}} />`,
+                    });
                     continue;
                 }
-
 
                 promises.push(async () => {
                     // console.log(`num promises: ${promises.length}; `);
                     const buildConfig = langConfig.buildConfig;
-                    const result = await getOutput(buildConfig, value, lang, skipErr);
+                    const result = await getOutput(
+                        buildConfig,
+                        value,
+                        lang,
+                        skipErr
+                    );
 
                     // console.log({ node, index, parent });
 
@@ -248,22 +269,17 @@ export default function plugin() {
                         readonly: false,
                         showLineNumbers: showLineNumbers,
                         langVersion: buildConfig.langVersion,
-                        tool: buildConfig.npmPackage
+                        tool: buildConfig.npmPackage,
                     });
-                    parent.children.splice(
-                        index,
-                        1,
-                        {
-                            type: 'jsx',
-                            // TODO: encode the source into jsx tree to avoid XSS?
-                            // TODO: create a generic <CodeBlock and pass lang={lang} />
-                            // TODO: pass syntax highlighting to CodeBlock
-                            value: `<CustomCodeBlock input={${val}} />`
-                        }
-                    );
+                    parent.children.splice(index, 1, {
+                        type: "jsx",
+                        // TODO: encode the source into jsx tree to avoid XSS?
+                        // TODO: create a generic <CodeBlock and pass lang={lang} />
+                        // TODO: pass syntax highlighting to CodeBlock
+                        value: `<CustomCodeBlock input={${val}} />`,
+                    });
                 });
             }
-
         });
 
         for (const p of promises) {

@@ -1,0 +1,1 @@
+{"input":"(declare-const a String)\r\n(assert (= (str.++ a \"b\") (str.++ \"a\" a)))\r\n(check-sat)"}

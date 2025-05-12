@@ -756,7 +756,7 @@ The goal is to insert the numbers in the boxes to satisfy only one condition: ea
 
 
 
-The following example encodes the suduko problem in Z3. Different sukudo instances can be solved
+The following example encodes the sudoku problem in Z3. Different sudoku instances can be solved
 by modifying the matrix `instance`. This example makes heavy use of 
 [list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions)
 available in the Python programming language.

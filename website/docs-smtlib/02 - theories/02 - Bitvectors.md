@@ -29,6 +29,8 @@ Z3 supports Bitvectors of arbitrary size. (\_ BitVec n) is the sort of bitvector
 (simplify (bvsub #x07 #x03)) ; subtraction
 (simplify (bvneg #x07)) ; unary minus
 (simplify (bvmul #x07 #x03)) ; multiplication
+(simplify (bvudiv #x07 #x03)) ; unsigned division
+(simplify (bvsdiv #x07 #x03)) ; signed division
 (simplify (bvurem #x07 #x03)) ; unsigned remainder
 (simplify (bvsrem #x07 #x03)) ; signed remainder
 (simplify (bvsmod #x07 #x03)) ; signed modulo

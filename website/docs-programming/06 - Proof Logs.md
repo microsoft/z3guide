@@ -325,3 +325,74 @@ rup []
 ```
 
 SMT proofs are of course generally much larger.
+
+
+## Proof trimming
+
+You can trim proofs. Consider the following example:
+
+```
+(set-option :sat.euf true)
+(set-option :tactic.default_tactic smt)
+(set-option :solver.proof.log log.smt2)
+(declare-const a Bool)
+(declare-const b Bool)
+(declare-const c Bool)
+(declare-const d Bool)
+
+(assert (or a (not b)))
+(assert (or b (not c)))
+(assert (or c (not d)))
+(assert (or d (not a)))
+(assert a)
+(assert (not c))
+(check-sat)
+```
+
+The contents of log.smt2:
+
+```
+(declare-fun a () Bool)
+(declare-fun b () Bool)
+(assume a (not b))
+(declare-fun c () Bool)
+(assume b (not c))
+(declare-fun d () Bool)
+(assume c (not d))
+(assume (not a) d)
+(assume a)
+(assume (not c))
+(declare-fun rup () Proof)
+(infer d rup)
+(infer rup)
+```
+
+Let us trim the proof.
+
+```
+z3 log.smt2 solver.proof.trim=true
+```
+
+The trimmed proof is printed to standard output.
+A side-effect of trimming is a collection of dependencies that are included as arguments to a term that justifies
+assumptions or inferences. Assumptions have a single number in the dependency. The number is used to identify the assumption.
+Inferences list a fresh number followed by premises used by unit propagation to infer the clause.
+
+```
+(declare-fun c () Bool)
+(declare-fun d () Bool)
+(declare-fun deps (Int) Proof)
+(define-const $32 Proof (deps 2))
+(assume c (not d) $32)
+(declare-fun a () Bool)
+(define-const $34 Proof (deps 3))
+(assume (not a) d $34)
+(define-const $36 Proof (deps 4))
+(assume a $36)
+(define-const $38 Proof (deps 5))
+(assume (not c) $38)
+(declare-fun rup () Proof)
+(declare-fun deps (Int Int Int Int Int) Proof)
+(define-const $40 Proof (deps 7 2 3 4 5))
+(infer rup $40)
+```

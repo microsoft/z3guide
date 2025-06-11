@@ -1,0 +1,1 @@
+{"output":"(+ a (* b c))\n","error":"","status":"z3-ran","hash":"178a9d176db79a8f9db5586146c597fef02d10da"}

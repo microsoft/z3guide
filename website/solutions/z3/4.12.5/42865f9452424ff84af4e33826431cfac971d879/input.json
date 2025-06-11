@@ -1,0 +1,1 @@
+{"input":"(declare-const m (Array Int Int))\n(declare-const m1 (Array Int Int))\n(declare-const z Int)\n(define-fun memset ((lo Int) (hi Int) (y Int) (m (Array Int Int))) \n                   (Array Int Int) \n           (lambda ((x Int)) (if (and (<= lo x) (<= x hi)) y (m x))))\n(assert (= m1 (memset 1 700 z m)))\n(assert (not (= (select m1 6) z)))\n(check-sat)"}

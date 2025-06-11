@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (= 1 (f (+ 2 y)))\n  (= 2 x)\n  (not (<= 1 y))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"968d9562a6d7457655d28e79e7c9148472b39de7"}

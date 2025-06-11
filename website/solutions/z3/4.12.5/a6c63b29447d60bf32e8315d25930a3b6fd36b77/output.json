@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  true\n  true\n  true\n  true\n  true\n  true\n  true\n  true\n  (or k!0 k!1 k!2)\n  (or k!0 k!1 k!3)\n  (or k!0 k!2 k!3)\n  (or k!1 k!2 k!3)\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"a6c63b29447d60bf32e8315d25930a3b6fd36b77"}

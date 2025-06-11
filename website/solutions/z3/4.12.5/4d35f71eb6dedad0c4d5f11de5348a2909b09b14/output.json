@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (= k!7 k!15)\n  (= k!6 k!14)\n  (= k!5 k!13)\n  (= k!4 k!12)\n  (= k!3 k!11)\n  (= k!2 k!10)\n  (= k!1 k!9)\n  (= k!0 k!8)\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"4d35f71eb6dedad0c4d5f11de5348a2909b09b14"}

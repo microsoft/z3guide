@@ -1,0 +1,1 @@
+{"input":"(declare-const a String)\r\n(declare-const b String)\r\n(declare-const c String)\r\n(assert (= (str.++ a \"ab\" b) (str.++ b \"ba\" c)))\r\n(assert (= c (str.++ a b)))\r\n(assert (not (= (str.++ a \"a\") (str.++ \"a\" a))))\r\n(check-sat)\r\n(get-model)"}

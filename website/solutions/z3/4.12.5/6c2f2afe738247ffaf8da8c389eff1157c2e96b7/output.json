@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (forall ((x!1 Int)) (= (g (f x!1)) x!1))\n  (not (= x (f y)))\n  :precision precise :depth 0)\n)\n","error":"","status":"z3-ran","hash":"6c2f2afe738247ffaf8da8c389eff1157c2e96b7"}

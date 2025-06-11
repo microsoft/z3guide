@@ -14220,10 +14220,10 @@ yoctocolors@^2.0.0:
   resolved "https://registry.yarnpkg.com/yoctocolors/-/yoctocolors-2.1.1.tgz#e0167474e9fbb9e8b3ecca738deaa61dd12e56fc"
   integrity sha512-GQHQqAopRhwU8Kt1DDM8NjibDXHC8eoh1erhGAJPEyveY9qqVeXvVikNKrDz69sHowPMorbPUrH/mx8c50eiBQ==
 
-z3-solver@4.12.1:
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.12.1.tgz#9515bb3eca1a1ef1441a9e8dda147f9f0d8a0029"
-  integrity sha512-aeC+KXMVGcFhnd3FKktybZx+zaVlAZ9D0Ew5cB9LwWp/ofOmtd/DiGywaJ3MN+ljfJRQumveA26poUsg1Hh+lA==
+z3-solver@4.12.5:
+  version "4.12.5"
+  resolved "https://registry.yarnpkg.com/z3-solver/-/z3-solver-4.12.5.tgz#ec8d4b17aa07b8792b9ab8b8f61dc8b0ea30d7b0"
+  integrity sha512-uh6zoe+ErxG2qLjWyOcZE41eb6CHUZ3IT7VYTh1SDswPaoe7I1mvC7ujA36TROdBdPm59UUFToDmRbfiyjdA1Q==
   dependencies:
     async-mutex "^0.3.2"
 

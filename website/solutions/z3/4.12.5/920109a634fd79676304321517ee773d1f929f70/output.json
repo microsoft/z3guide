@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (forall ((x!1 Int)) (q x!1))\n  (forall ((x!1 Int)) (p x!1))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"920109a634fd79676304321517ee773d1f929f70"}

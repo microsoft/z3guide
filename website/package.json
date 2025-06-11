@@ -47,7 +47,7 @@
     "remark-math": "6",
     "semantic-release": "^24.2.3",
     "use-editable": "^2.3.3",
-    "z3-solver": "4.12.5"
+    "z3-solver": "4.15.1"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "3.7.0",

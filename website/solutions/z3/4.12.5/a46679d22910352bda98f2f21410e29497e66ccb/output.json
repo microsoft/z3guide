@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun l1 () (List Int)\n    (insert 2 nil))\n  (define-fun x () Int\n    99)\n  (define-fun l2 () (List Int)\n    (insert 2 (insert 3 nil)))\n  (define-fun l3 () (List Int)\n    (insert 99 (insert 2 (insert 3 nil))))\n)\nunsat\n","error":"","status":"z3-ran","hash":"a46679d22910352bda98f2f21410e29497e66ccb"}

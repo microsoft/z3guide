@@ -1,1 +1,0 @@
-{"output":"(goals\n(goal\n  (let ((a!1 (ite c2 (p (f e1)) (ite c3 (p (f e2)) (p (f e3))))))\n    (ite c1 a!1 (p (f e4))))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"8ab4008225601893d335c31bab6b83bff8e24036"}

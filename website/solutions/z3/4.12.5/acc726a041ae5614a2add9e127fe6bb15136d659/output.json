@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun a () Real\n    7719.0)\n  (define-fun /0 ((x!0 Real) (x!1 Real)) Real\n    10.0)\n)\nunsat\n","error":"","status":"z3-ran","hash":"acc726a041ae5614a2add9e127fe6bb15136d659"}

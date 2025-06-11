@@ -1,1 +1,0 @@
-{"output":"(goals\n(goal\n  true\n  true\n  true\n  true\n  true\n  true\n  ((_ pble 5 5 2 3) (not x!0) z!2 (not y!1))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"b6cade6b21103038a9e613a308ecffab85d62206"}

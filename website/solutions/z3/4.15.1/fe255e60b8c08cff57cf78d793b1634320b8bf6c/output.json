@@ -1,0 +1,1 @@
+{"output":"unsat\nunsat\nsat\n(\n  (define-fun x () Int\n    2)\n  (define-fun b () (Set Int)\n    ((as const (Set Int)) true))\n  (define-fun a () (Set Int)\n    ((as const (Set Int)) false))\n  (define-fun c () (Set Int)\n    ((as const (Set Int)) false))\n)\nunsat\n","error":"","status":"z3-ran","hash":"fe255e60b8c08cff57cf78d793b1634320b8bf6c"}

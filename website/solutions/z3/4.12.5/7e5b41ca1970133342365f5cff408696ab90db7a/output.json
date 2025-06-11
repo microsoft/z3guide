@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun list2 () (List Int)\n    (insert (- 1) nil))\n  (define-fun list1 () (List Int)\n    (insert 0 (insert 12456 nil)))\n)\n","error":"","status":"z3-ran","hash":"7e5b41ca1970133342365f5cff408696ab90db7a"}

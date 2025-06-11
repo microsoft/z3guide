@@ -1,1 +1,0 @@
-{"output":"(goals\n(goal\n  (let ((a!1 (and (<= (+ (* 3 x) (* (- 2) y)) 0) (= 0 (mod x 2)))))\n    (or (<= (+ (* 3 x) (* (- 2) y)) (- 2)) a!1))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"17a674c4b381f025e13f2a9d4f630138c7f440c1"}

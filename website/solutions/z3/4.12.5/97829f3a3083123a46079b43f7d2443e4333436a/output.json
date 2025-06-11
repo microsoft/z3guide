@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun a1 () (Array Int Int)\n    (store ((as const (Array Int Int)) 2) 3 3))\n  (define-fun x () Int\n    3)\n  (define-fun y () Int\n    3)\n  (define-fun a2 () (Array Int Int)\n    ((as const (Array Int Int)) 0))\n)\n","error":"","status":"z3-ran","hash":"97829f3a3083123a46079b43f7d2443e4333436a"}

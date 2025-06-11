@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun a () Float32\n    (fp #b0 #xba #b11111111111111111110100))\n  (define-fun c () Float32\n    (fp #b0 #x94 #b00000010010000000000000))\n  (define-fun b () Float32\n    (fp #b1 #xbb #b00000000000000000000010))\n)\n","error":"","status":"z3-ran","hash":"444c10aa6b9177c269cc24ae66146caf1074e26f"}

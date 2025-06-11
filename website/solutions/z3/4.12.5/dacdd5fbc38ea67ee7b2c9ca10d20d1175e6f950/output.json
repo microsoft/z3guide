@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun n () Int\n    0)\n  (define-fun a () Int\n    11)\n  (define-fun f ((x!0 Int)) Int\n    2)\n  (define-fun g ((x!0 Int)) Int\n    (ite (= x!0 3) (- 10)\n      (f (+ 11 x!0))))\n)\n","error":"","status":"z3-ran","hash":"dacdd5fbc38ea67ee7b2c9ca10d20d1175e6f950"}

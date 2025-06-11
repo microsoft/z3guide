@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (>= y (- 3.0))\n  (>= z (- 5.0))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"67411f901aaf2e2f666f243e76178be61d994883"}

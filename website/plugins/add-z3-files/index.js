@@ -5,31 +5,54 @@ async function addZ3Files(context, options) {
         name: 'add-z3-files',
         async contentLoaded({ content, actions }) {
 
-            const inFiles = [
-                './node_modules/coi-serviceworker/coi-serviceworker.js',
-                './node_modules/z3-solver/build/z3-built.js',
-                './node_modules/z3-solver/build/z3-built.wasm',
-                './node_modules/z3-solver/build/z3-built.worker.js',
-
+            const filesToCopy = [
+                {
+                    input: './node_modules/coi-serviceworker/coi-serviceworker.js',
+                    output: './static/coi-serviceworker.js',
+                    required: true
+                },
+                {
+                    input: './node_modules/z3-solver/build/z3-built.js',
+                    output: './static/z3-built.js',
+                    required: true
+                },
+                {
+                    input: './node_modules/z3-solver/build/z3-built.wasm',
+                    output: './static/z3-built.wasm',
+                    required: true
+                },
+                {
+                    input: './node_modules/z3-solver/build/z3-built.worker.js',
+                    output: './static/z3-built.worker.js',
+                    required: false,
+                    fallback: './node_modules/z3-solver/build/z3-built.js'
+                }
             ];
 
-            const outFiles = [
-                './static/coi-serviceworker.js',
-                './static/z3-built.js',
-                './static/z3-built.wasm',
-                './static/z3-built.worker.js',
-            ];
+            fs.ensureDir('./static');
 
-            for (let i = 0; i < inFiles.length; i++) {
-                const inFile = inFiles[i];
-                const outFile = outFiles[i];
-                fs.ensureDir('./static');
-                await fs.copy(inFile,
-                    outFile,
+            for (const file of filesToCopy) {
+                let sourceFile = file.input;
+                
+                // Check if the file exists, if not and we have a fallback, use it
+                if (!fs.existsSync(file.input)) {
+                    if (file.fallback && fs.existsSync(file.fallback)) {
+                        sourceFile = file.fallback;
+                        console.log(`${file.input} not found, using fallback ${file.fallback}`);
+                    } else if (file.required) {
+                        throw new Error(`Required file ${file.input} not found and no fallback available`);
+                    } else {
+                        console.log(`Optional file ${file.input} not found, skipping`);
+                        continue;
+                    }
+                }
+
+                await fs.copy(sourceFile,
+                    file.output,
                     { overwrite: true },
                     err => {
                         if (err) throw err;
-                        console.log(`${inFile} copied to ${outFile} success!`);
+                        console.log(`${sourceFile} copied to ${file.output} success!`);
                     });
             }
         },

@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun x () Int\n    1)\n)\n","error":"","status":"z3-ran","hash":"b7eb21ec9b1862b9632df83a50f5989422c1a24e"}

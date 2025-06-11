@@ -1,1 +1,0 @@
-{"output":"sat\n(\n  (define-fun p2 () (Pair Int Int)\n    (mk-pair 0 19))\n  (define-fun p1 () (Pair Int Int)\n    (mk-pair 0 19))\n)\nunsat\n","error":"","status":"z3-ran","hash":"e2f023d1fa997cca83646c48af67bc88c1c1b753"}

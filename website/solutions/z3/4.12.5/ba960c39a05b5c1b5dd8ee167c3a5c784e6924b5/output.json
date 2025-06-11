@@ -1,1 +1,0 @@
-{"output":"sat\nunsat\n(error \"line 15 column 8: unknown constant p\")\n","error":"sat\nunsat\n(error \"line 15 column 8: unknown constant p\")\n","status":"z3-runtime-error","hash":"ba960c39a05b5c1b5dd8ee167c3a5c784e6924b5"}

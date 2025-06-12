@@ -1,0 +1,1 @@
+{"input":"(set-logic HORN)\n(declare-fun mc (Int Int) Bool)\n\n(assert (forall ((m Int)) (=> (> m 100) (mc m (- m 10)))))\n(assert (forall ((m Int) (n Int) (p Int)) \n           (=> (and (<= m 100) (mc (+ m 11) p) (mc p n)) (mc m n))))\n\n(assert (forall ((m Int) (n Int))\n       (=> (and (mc m n) (<= m 101)) (= n 91))))\n(check-sat)\n(get-model)"}

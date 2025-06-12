@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 32))\n(declare-const y (_ BitVec 32))\n(declare-fun f ((_ BitVec 32)) (_ BitVec 8))\n\n(assert (not (= (f x) (f y))))\n(apply ackermannize_bv)"}

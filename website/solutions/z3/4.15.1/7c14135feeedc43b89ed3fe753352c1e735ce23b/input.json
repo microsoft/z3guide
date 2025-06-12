@@ -1,0 +1,1 @@
+{"input":"(simplify (str.from_int 10))\r\n(simplify (str.from_int -1))  ; results in the empty string because -1 is not non-negative\r\n(simplify (str.to_int \"10\"))\r\n(simplify (str.to_int \"010\")) ; leading 0s are ignored\r\n(simplify (str.to_int \"000\"))\r\n(simplify (str.to_int \"-10\")) ; results in -1 because -10 is not non-negative"}

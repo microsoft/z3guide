@@ -37,6 +37,7 @@
     "hast-util-is-element": "3.0.0",
     "p-map": "^7.0.3",
     "prism-react-renderer": "^2.4.1",
+    "pyodide": "^0.27.3",
     "react": "^19.0.0",
     "react-contenteditable": "^3.3.7",
     "react-dom": "^19.0.0",
@@ -46,8 +47,7 @@
     "remark-math": "6",
     "semantic-release": "^24.2.3",
     "use-editable": "^2.3.3",
-    "z3-solver": "4.12.1",
-    "pyodide": "^0.27.3"
+    "z3-solver": "4.15.1"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "3.7.0",

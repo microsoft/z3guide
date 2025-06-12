@@ -1,0 +1,1 @@
+{"input":"(declare-datatypes ((Color 0)) (((Red) (Blue) (Green) (DarkBlue) (MetallicBlack) (MetallicSilver) (Silver) (Black))))\n(declare-const x Color)\n(declare-const y Color)\n(assert (not (= x y)))\n(assert (not (= x Red)))\n(apply dt2bv)"}

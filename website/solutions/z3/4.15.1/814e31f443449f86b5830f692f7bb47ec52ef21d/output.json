@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (p #b00)\n  (p #b01)\n  (p #b10)\n  (p #b11)\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"814e31f443449f86b5830f692f7bb47ec52ef21d"}

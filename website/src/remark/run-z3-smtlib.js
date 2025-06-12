@@ -24,7 +24,15 @@ async function runZ3File(inputFile) {
     } finally {
         // try {
         Z3.del_context(ctx);
-        em.PThread.terminateAllThreads();
+        // Safely terminate threads if available
+        try {
+            if (em.PThread && typeof em.PThread.terminateAllThreads === 'function') {
+                em.PThread.terminateAllThreads();
+            }
+        } catch (threadError) {
+            // Ignore thread termination errors in newer Z3 versions
+            stderr.write(`Warning: Thread cleanup failed: ${threadError.message}\n`);
+        }
     }
 }
 

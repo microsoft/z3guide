@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 32))\n(declare-const y (_ BitVec 32))\n(declare-const z (_ BitVec 32))\n(assert (bvule (_ bv4 32) x))\n(assert (bvule x (_ bv24 32)))\n(assert (or (bvule x (_ bv100 32)) (bvule (_ bv32 32) x)))\n(apply propagate-bv-bounds)"}

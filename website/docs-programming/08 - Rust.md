@@ -2,7 +2,7 @@
 
 title: Rust
 
-sidebar\_position: 8
+sidebar_position: 8
 
 ---
 

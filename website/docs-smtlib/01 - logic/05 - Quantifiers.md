@@ -249,7 +249,7 @@ MBQI is a decision procedure for several useful fragments. It may find models ev
 
 The effectively propositional class of formulas (aka The Bernays-Schonfinkel class) is a decidable fragment of first-order logic formulas. It corresponds to formulas which, when written in prenex normal form contain only constants, universal quantifiers, and functions that return Boolean values (aka predicates).
 
-Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if x and y are subtypes of z, then x is a subtype of y or y is a subtype of x. The option (set-option :model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
+Problems arising from program verification often involve establishing facts of quantifier-free formulas, but the facts themselves use relations and functions that are conveniently axiomatized using a background theory that uses quantified formulas. One set of examples of this situation comprise of formulas involving partial-orders. The following example axiomatizes a subtype partial order relation that has the tree property. That is, if z is a subtype of x and y, then x is a subtype of y or y is a subtype of x. The option (set-option :model.compact true) instructs Z3 to eliminate trivial redundancies from the generated model. In this example, Z3 also creates a finite interpretation for the uninterpreted sort T.
 
 ```z3
 (set-option :smt.mbqi true)
@@ -272,8 +272,8 @@ Problems arising from program verification often involve establishing facts of q
                                              (subtype y z))
                                              (subtype x z))))
 ;; subtype has the tree-property
-(assert (forall ((x T) (y T) (z T)) (=> (and (subtype x z)
-                                             (subtype y z))
+(assert (forall ((x T) (y T) (z T)) (=> (and (subtype z x)
+                                             (subtype z y))
                                         (or (subtype x y)
                                             (subtype y x)))))
 

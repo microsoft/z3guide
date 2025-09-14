@@ -41,8 +41,8 @@ The update-field function is not part of the SMTLIB standard. Z3 assumes the fol
 
 * Given `y := ((_ update-field acc) x value)`
 * The field is an accessor function from one of the constructors of the datatype associated with `x`.
-* If `x` is a constructor value associated with `acc`, then only the field associated with `acc` is updated (to value).
-* If `x` is not a constructor value associated with `acc`, then `y` is equal to `x`.
+* If `x` was constructed using the constructor that defines accessor `acc`, then only the field associated with `acc` is updated (to value).
+* If `x` was not constructed using the constructor that defines accessor `acc`, then `y` is equal to `x`.
 
 ### Scalars (enumeration types)
 

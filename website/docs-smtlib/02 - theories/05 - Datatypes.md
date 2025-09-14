@@ -37,6 +37,13 @@ You can create variants of records by updating selected fields.
 (get-model)
 ```
 
+The update-field function is not part of the SMTLIB standard. Z3 assumes the following semantics:
+
+* Given `y := ((_ update-field acc) x value)`
+* The field is an accessor function from one of the constructors of the datatype associated with `x`.
+* If `x` is a constructor value associated with `acc`, then only the field associated with `acc` is updated (to value).
+* If `x` is not a constructor value associated with `acc`, then `y` is equal to `x`.
+
 ### Scalars (enumeration types)
 
 A scalar sort is a finite domain sort. The elements of the finite domain are enumerated as distinct constants. For example, the sort S is a scalar type with three values A, B and C. It is possible for three constants of sort S to be distinct, but not for four constants.

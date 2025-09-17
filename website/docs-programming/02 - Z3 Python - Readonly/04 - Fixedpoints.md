@@ -308,7 +308,6 @@ class TransitionSystem():
 	print query
 	print self.fp.query(query)
 	print self.fp.get_answer()
-#	print self.fp.statistics()
 
 
 L = Datatype('L')

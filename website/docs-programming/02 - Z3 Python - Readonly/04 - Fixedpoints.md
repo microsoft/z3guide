@@ -50,13 +50,13 @@ fp.rule(a,b)
 fp.rule(b,c)
 fp.set(engine='datalog')
 
-print "current set of rules\n", fp
-print fp.query(a)
+print ("current set of rules\n", fp)
+print (fp.query(a))
 
 fp.fact(c)
-print "updated set of rules\n", fp
-print fp.query(a)
-print fp.get_answer()
+print ("updated set of rules\n", fp)
+print (fp.query(a))
+print (fp.get_answer())
 ```
 
 The example illustrates some of the basic constructs.
@@ -124,8 +124,8 @@ fp.rule(a,b)
 fp.rule(b,c)
 fp.fact(c)
 fp.set(generate_explanations=True, engine='datalog')
-print fp.query(a)
-print fp.get_answer()
+print (fp.query(a))
+print (fp.get_answer())
 
 ```
 
@@ -159,12 +159,12 @@ fp.fact(edge(v1,v2))
 fp.fact(edge(v1,v3))
 fp.fact(edge(v2,v4))
 
-print "current set of rules", fp
+print ("current set of rules", fp)
 
 
-print fp.query(path(v1,v4)), "yes we can reach v4 from v1"
+print (fp.query(path(v1,v4)), "yes we can reach v4 from v1")
 
-print fp.query(path(v3,v4)), "no we cannot reach v4 from v3"
+print (fp.query(path(v3,v4)), "no we cannot reach v4 from v3")
 
 ```
 
@@ -206,14 +206,14 @@ fp.register_relation(mc)
 fp.rule(mc(m, m-10), m > 100)
 fp.rule(mc(m, n), [m <= 100, mc(m+11,p),mc(p,n)])
     
-print fp.query(And(mc(m,n),n < 90))
-print fp.get_answer()
+print (fp.query(And(mc(m,n),n < 90)))
+print (fp.get_answer())
 
-print fp.query(And(mc(m,n),n < 91))
-print fp.get_answer()
+print (fp.query(And(mc(m,n),n < 91)))
+print (fp.get_answer())
 
-print fp.query(And(mc(m,n),n < 92))
-print fp.get_answer()
+print (fp.query(And(mc(m,n),n < 92)))
+print (fp.get_answer())
 ```
 
 The first two queries are unsatisfiable. The PDR engine produces the same proof of unsatisfiability.
@@ -304,10 +304,10 @@ class TransitionSystem():
 	self.declare_reachability()
 	self.declare_transitions()
 	query = And(self.state0(), self.abstract(query))
-	print self.fp
-	print query
-	print self.fp.query(query)
-	print self.fp.get_answer()
+	print (self.fp)
+	print (query)
+	print (self.fp.query(query))
+	print (self.fp.get_answer())
 
 
 L = Datatype('L')
@@ -404,10 +404,10 @@ fp.rule(Eval(App(App(App(Max,max),x),y), z, r2),
 fp.rule(Eval(App(f,I(xi)),I(yi),I(xi)),xi >= yi)
 fp.rule(Eval(App(f,I(xi)),I(yi),I(yi)),xi < yi)
 
-print fp.query(And(Eval(App(App(App(Max,f),x),y),z,r1),
+print (fp.query(And(Eval(App(App(App(Max,f),x),y),z,r1),
 		   Eval(App(f,x),r1,r2),
-		   r1 != r2))
+		   r1 != r2)))
 
-print fp.get_answer()
+print (fp.get_answer())
 ```
 

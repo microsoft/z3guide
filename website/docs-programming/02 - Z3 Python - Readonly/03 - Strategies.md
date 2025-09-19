@@ -53,12 +53,12 @@ and `solve-eqs` to each subgoal produced by `simplify`. In this example, only on
 x, y = Reals('x y')
 g  = Goal()
 g.add(x > 0, y > 0, x == y + 2)
-print g
+print (g)
 
 t1 = Tactic('simplify')
 t2 = Tactic('solve-eqs')
 t  = Then(t1, t2)
-print t(g)
+print (t(g))
 ```
 
 In the example above, variable `x` is eliminated, and is not present the resultant goal.
@@ -76,7 +76,7 @@ g.add(Or(x < 0, x > 0), x == y + 1, y < 0)
 t = Tactic('split-clause')
 r = t(g)
 for g in r: 
-    print g
+    print (g)
 ```
 
 ## Tactics 
@@ -115,7 +115,7 @@ g.add(Or(x == 0, x == 1),
 # Split all clauses"
 split_all = Repeat(OrElse(Tactic('split-clause'),
                           Tactic('skip')))
-print split_all(g)
+print (split_all(g))
 
 split_at_most_2 = Repeat(OrElse(Tactic('split-clause'),
                           Tactic('skip')),
@@ -127,7 +127,7 @@ split_solve = Then(Repeat(OrElse(Tactic('split-clause'),
                                  Tactic('skip'))),
                    Tactic('solve-eqs'))
 
-print split_solve(g)
+print (split_solve(g))
 ```
 
 In the tactic `split_solver`, the tactic `solve-eqs` discharges all but one goal.
@@ -147,7 +147,7 @@ g.add(Or(x == 0, x == 1),
 split_all = Repeat(OrElse(Tactic('split-clause'),
                           Tactic('skip')))
 for s in split_all(g):
-    print s
+    print (s)
 ```
 
 A tactic can be converted into a solver object using the method `solver()`.
@@ -186,9 +186,9 @@ x, y = BitVecs('x y', 16)
 bv_solver.add(x*32 + y == 13, x & y < 10, y > -100)
 print bv_solver.check()
 m = bv_solver.model()
-print m
-print x*32 + y, "==", m.evaluate(x*32 + y)
-print x & y, "==", m.evaluate(x & y)
+print (m)
+print (x*32 + y, "==", m.evaluate(x*32 + y))
+print (x & y, "==", m.evaluate(x & y))
 ```
 
 
@@ -198,8 +198,8 @@ The tactic `smt` wraps the main solver in Z3 as a tactic.
 x, y = Ints('x y')
 s = Tactic('smt').solver()
 s.add(x > y + 1)
-print s.check()
-print s.model()
+print s(.check())
+print (s.model())
 ```
 
 Now, we show how to implement a solver for integer arithmetic using SAT. The solver is complete
@@ -238,15 +238,15 @@ g.add(x > 10, y == x + 3, z > y)
 
 r = t(g)
 # r contains only one subgoal
-print r
+print (r)
 
 s = Solver()
 s.add(r[0])
-print s.check()
+print (s.check())
 # Model for the subgoal
-print s.model()
+print (s.model())
 # Model for the original goal
-print r.convert_model(s.model())
+print (r.convert_model(s.model()))
 ```
 
 ### Using tactics to simplify benchmarks
@@ -331,7 +331,7 @@ g.add(x**2 - y**2 >= 0)
 p = Probe('num-consts')
 t = If(p > 2, 'simplify', 'factor')
 
-print t(g)
+print (t(g))
 
 g = Goal()
 g.add(x + x + y + z >= 0, x**2 - y**2 >= 0)

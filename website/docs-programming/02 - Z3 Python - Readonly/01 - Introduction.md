@@ -857,12 +857,13 @@ package. This variable is true if the package must be in the system. If package 
 packages `b`, `c` and `z`, we write:
 
 
-```z3-python
+```
 DependsOn(a, [b, c, z])
 ```
 
 `DependsOn` is a simple Python function that creates Z3 constraints that capture the 
 depends clause semantics.
+
 
 
 ```z3-py
@@ -871,7 +872,7 @@ def DependsOn(pack, deps):
 ```
 
 
-Thus, `DependsOn(a, [b, c, z])` generates the constraint
+Thus, `DependsOn(a, [b, c, z])` generates the constraint.
 
 
 ```

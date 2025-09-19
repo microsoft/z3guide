@@ -45,7 +45,7 @@ is equal to <tt>n2.hash()</tt>.
 x = Int('x')
 print (x + 1).hash()
 print (1 + x).hash()
-print x.sort().hash()
+print (x.sort().hash())
 ```
 
 Z3 expressions can be divided in three basic groups: **applications**,

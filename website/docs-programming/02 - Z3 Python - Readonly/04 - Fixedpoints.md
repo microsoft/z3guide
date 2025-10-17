@@ -123,7 +123,8 @@ fp.register_relation(a.decl(), b.decl(), c.decl())
 fp.rule(a,b)
 fp.rule(b,c)
 fp.fact(c)
-fp.set(generate_explanations=True, engine='datalog')
+fp.set("datalog.generate_explanations", True)
+fp.set(engine='datalog')
 print (fp.query(a))
 print (fp.get_answer())
 
@@ -194,13 +195,12 @@ Nested calls to procedures within a body can be encoded as a conjunction
 of relations.
 
 ```z3-python
-
 mc = Function('mc', IntSort(), IntSort(), BoolSort())
 n, m, p = Ints('n m p')
 
 fp = Fixedpoint()
 
-fp.declare_var(n,m)
+fp.declare_var(n,m, p)
 fp.register_relation(mc)
 
 fp.rule(mc(m, m-10), m > 100)

@@ -1,0 +1,2 @@
+mistletoe==1.4.0
+z3-solver  # use the latest packaged version on PyPA. Not ideal.

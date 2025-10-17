@@ -1,0 +1,32 @@
+name: Execute z3py snippets in the documentation
+
+on:
+  push:
+  pull_request:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  execute-z3py-snippets:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+        - "3.14"
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: install dependencies
+        run: |
+          pip install -r scripts/requirements-check-z3py-docs.txt
+      - name: execute the pyz3 snippets found in the documentation
+        run: |
+          # Generate a summary for the job.
+          # reference: https://github.blog/news-insights/product-news/supercharging-github-actions-with-job-summaries/
+          scripts/check-z3py-docs.py \
+            "website/docs-programming/02 - Z3 Python - Readonly" \
+            --recursive \
+            >> $GITHUB_STEP_SUMMARY

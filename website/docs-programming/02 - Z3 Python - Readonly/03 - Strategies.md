@@ -246,7 +246,7 @@ print (s.check())
 # Model for the subgoal
 print (s.model())
 # Model for the original goal
-print (r.convert_model(s.model()))
+print (r[0].convert_model(s.model()))
 ```
 
 ### Using tactics to simplify benchmarks

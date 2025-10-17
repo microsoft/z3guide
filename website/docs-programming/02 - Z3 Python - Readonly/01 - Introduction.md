@@ -857,7 +857,7 @@ package. This variable is true if the package must be in the system. If package 
 packages `b`, `c` and `z`, we write:
 
 
-```z3-python
+```z3-py
 DependsOn(a, [b, c, z])
 ```
 
@@ -874,7 +874,7 @@ def DependsOn(pack, deps):
 Thus, `DependsOn(a, [b, c, z])` generates the constraint
 
 
-```
+```z3-py
 And(Implies(a, b), Implies(a, c), Implies(a, z))
 ```
 

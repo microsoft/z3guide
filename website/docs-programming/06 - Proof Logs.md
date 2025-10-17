@@ -49,7 +49,7 @@ def monitor_plain():
     print("Monitor all inferred clauses")
     s = Solver()
     s.from_string(example1)
-    onc = OnClause(s, lambda pr, clause : print(pr, clause))
+    onc = OnClause(s,  lambda pr, dependencies, clause : print(pr, dependencies, clause))
     print(s.check())
 ```
 
@@ -59,7 +59,7 @@ Applications that only need to monitor quantifier instantiations can filter the 
 based on the name of the proof hint.
 
 ```z3-python
-def log_instance(pr, clause):
+def log_instance(pr, dependencies, clause):
     if pr.decl().name() == "inst":
         q = pr.arg(0)
         for ch in pr.children():
@@ -87,7 +87,7 @@ def monitor_with_proofs():
     set_param(proof=True)
     s = Solver()
     s.from_string(example1)
-    onc = OnClause(s, lambda pr, clause : print(pr, clause))
+    onc = OnClause(s, lambda pr, dependencies, clause : print(pr, dependencies, clause))
     print(s.check())
 ```    
 
@@ -103,7 +103,7 @@ def monitor_new_core():
     set_param("tactic.default_tactic", "sat")
     s = Solver()
     s.from_string(example1)
-    onc = OnClause(s, lambda pr, clause : print(pr, clause))
+    onc = OnClause(s, lambda pr, dependencies, clause : print(pr, dependencies, clause))
     print(s.check())
 ```
 
@@ -131,7 +131,7 @@ You can also replay inferences when parsing a previously saved inferences.
     # Turn off proof checking. It is on by default when parsing proof logs.
     set_param("solver.proof.check", False)      
     s = Solver()
-    onc = OnClause(s, lambda pr, clause : print(pr, clause))
+    onc = OnClause(s, lambda pr, dep, clause : print(pr, dep, clause))
     s.from_file("proof_log.smt2")
 ```
 

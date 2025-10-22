@@ -43,8 +43,8 @@ is equal to <tt>n2.hash()</tt>.
 
 ```z3-python
 x = Int('x')
-print (x + 1).hash()
-print (1 + x).hash()
+print ((x + 1).hash())
+print ((1 + x).hash())
 print (x.sort().hash())
 ```
 

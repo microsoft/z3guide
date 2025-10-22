@@ -35,7 +35,7 @@ import logging
 import sys
 from pathlib import Path
 
-from execute_z3py_docs import main
+from execute_z3py_docs import OutputMode, main
 
 logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).parent.resolve()
@@ -56,11 +56,15 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="if given and ARG is a directory, recursively descend in its subdirectories",
     )
-    parser.add_argument(
-        "-q",
+    output_group = parser.add_argument_group(
+        "Output options",
+        "None of these options are necessary for usage in the CI pipeline. They are, however, useful for local usage.",
+    )
+    output_options = output_group.add_mutually_exclusive_group(required=False)
+    output_options.add_argument(
         "--quiet",
         action="store_true",
-        help="if given, do not print the markdown report on stdout. Just show logs on stderr",
+        help="do not print anything on stdout. Just show logs on stderr (for local usage)",
     )
     parser.add_argument(
         "file_or_dir",
@@ -83,7 +87,11 @@ if __name__ == "__main__":
         # A Path is returned only when the user did not specify anything.
         logger.info('No path given, using "%s" as default', base_path)
     try:
-        sys.exit(main(base_path, recursive=args.recursive, quiet=args.quiet))
+        if args.quiet:
+            output_mode = OutputMode.QUIET
+        else:
+            output_mode = OutputMode.MARKDOWN
+        sys.exit(main(base_path, recursive=args.recursive, output_mode=output_mode))
     except KeyboardInterrupt:
         logger.warning("CTRL+C hit. Exiting...")
         sys.exit(154)

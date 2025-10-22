@@ -1,4 +1,5 @@
 import dataclasses
+import enum
 import logging
 import sys
 from pathlib import Path
@@ -14,6 +15,11 @@ from concurrent import interpreters  # this requires python >= 3.14
 from . import executor, md_parser
 
 logger = logging.getLogger(__name__)
+
+
+class OutputMode(enum.Enum):
+    MARKDOWN = enum.auto()
+    QUIET = enum.auto()
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -150,7 +156,7 @@ def execute_file(md_file: Path) -> list[SnippetExecutionSummary]:
     return stats_list
 
 
-def main(target: Path, *, recursive: bool, quiet: bool) -> int:
+def main(target: Path, *, recursive: bool, output_mode=OutputMode.MARKDOWN) -> int:
     target = target.resolve()
     if not (target.is_dir() or target.is_file()):
         logger.error('"%s" is not an existing file or directory', target)
@@ -180,8 +186,10 @@ def main(target: Path, *, recursive: bool, quiet: bool) -> int:
         final_summary.snippet_count,
         final_summary.file_count,
     )
-    if quiet:
-        logger.debug("quiet mode: the markdown summary will not be printed")
-    else:
-        print(final_summary.markdown)
+    match output_mode:
+        case OutputMode.QUIET:
+            logger.debug("quiet mode: the markdown summary will not be printed")
+        case OutputMode.MARKDOWN:
+            logger.debug("printing the execution report on stdout in markdown format (for integration in the CI)")
+            print(final_summary.markdown)
     return 0 if final_summary.error_count == 0 else 1

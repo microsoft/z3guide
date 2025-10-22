@@ -22,6 +22,9 @@
 # flavoured Markdown report on stdout that is supposed to the shown in the
 # workflow window of the CI screen.
 #
+# If the "--html" option is given, no markdown is printed to stdout. The report
+# is rendered to html and opened in a web browser window instead.
+#
 # In the current version, a test on a z3 snippet is considered successful if its
 # execution merely terminates without exceptions or syntax errors. No check is
 # performed on the expected output yet.
@@ -35,11 +38,12 @@ import logging
 import sys
 from pathlib import Path
 
-from execute_z3py_docs import main
+from execute_z3py_docs import OutputMode, main
 
 logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).parent.resolve()
 DEFAULT_BASE_PATH = (SCRIPT_DIR / ".." / "website" / "docs-programming" / "02 - Z3 Python - Readonly").resolve()
+
 
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     """If passing sys.argv here, do not include argv[0]!
@@ -55,11 +59,20 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="if given and ARG is a directory, recursively descend in its subdirectories",
     )
-    parser.add_argument(
-        "-q",
+    output_group = parser.add_argument_group(
+        "Output options",
+        "None of these options are necessary for usage in the CI pipeline. They are, however, useful for local usage.",
+    )
+    output_options = output_group.add_mutually_exclusive_group(required=False)
+    output_options.add_argument(
         "--quiet",
         action="store_true",
-        help="if given, do not print the markdown report on stdout. Just show logs on stderr",
+        help="do not print anything on stdout. Just show logs on stderr (for local usage)",
+    )
+    output_options.add_argument(
+        "--html",
+        action="store_true",
+        help="do not print on stdout the markdown report. Instead, render it in html and open it in a web browser window (for local usage)",
     )
     parser.add_argument(
         "file_or_dir",
@@ -82,7 +95,16 @@ if __name__ == "__main__":
         # A Path is returned only when the user did not specify anything.
         logger.info('No path given, using "%s" as default', base_path)
     try:
-        sys.exit(main(base_path, recursive=args.recursive, quiet=args.quiet))
+        if args.quiet and args.html:
+            msg = "Both quiet and html are True. This should never happen."
+            raise argparse.ArgumentTypeError(msg)
+        if args.quiet:
+            output_mode = OutputMode.QUIET
+        elif args.html:
+            output_mode = OutputMode.HTML
+        else:
+            output_mode = OutputMode.MARKDOWN
+        sys.exit(main(base_path, recursive=args.recursive, output_mode=output_mode))
     except KeyboardInterrupt:
         logger.warning("CTRL+C hit. Exiting...")
         sys.exit(154)

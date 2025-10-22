@@ -1,4 +1,13 @@
+import dataclasses
+import enum
+import logging
 import sys
+import tempfile
+import webbrowser
+from pathlib import Path
+from urllib.request import pathname2url
+
+import mistletoe
 
 _MINIMUM_PYTHON_VERSION = (3, 14, 0)
 if sys.version_info < _MINIMUM_PYTHON_VERSION:
@@ -6,15 +15,17 @@ if sys.version_info < _MINIMUM_PYTHON_VERSION:
     raise RuntimeError(msg)
 
 
-import dataclasses
-import logging
-import sys
-from concurrent import interpreters
-from pathlib import Path
+from concurrent import interpreters  # this requires python >= 3.14
 
 from . import executor, md_parser
 
 logger = logging.getLogger(__name__)
+
+
+class OutputMode(enum.Enum):
+    MARKDOWN = enum.auto()
+    HTML = enum.auto()
+    QUIET = enum.auto()
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -151,7 +162,7 @@ def execute_file(md_file: Path) -> list[SnippetExecutionSummary]:
     return stats_list
 
 
-def main(target: Path, *, recursive: bool, quiet: bool) -> int:
+def main(target: Path, *, recursive: bool, output_mode=OutputMode.MARKDOWN) -> int:
     target = target.resolve()
     if not (target.is_dir() or target.is_file()):
         logger.error('"%s" is not an existing file or directory', target)
@@ -181,8 +192,21 @@ def main(target: Path, *, recursive: bool, quiet: bool) -> int:
         final_summary.snippet_count,
         final_summary.file_count,
     )
-    if quiet:
-        logger.debug("quiet mode: the markdown summary will not be printed")
-    else:
-        print(final_summary.markdown)
+    match output_mode:
+        case OutputMode.QUIET:
+            logger.debug("quiet mode: the markdown summary will not be printed")
+        case OutputMode.MARKDOWN:
+            logger.debug("printing the execution report on stdout in markdown format (for integration in the CI)")
+            print(final_summary.markdown)
+        case OutputMode.HTML:
+            with tempfile.NamedTemporaryFile(
+                mode="w+",
+                prefix="z3py-docs-check-",
+                suffix=".html",
+                delete=False,
+                delete_on_close=False,
+            ) as out_file:
+                logger.info("writing report in HTML format on %s", out_file.name)
+                print(mistletoe.markdown(final_summary.markdown), file=out_file)
+                webbrowser.open(pathname2url(out_file.name, add_scheme=True))
     return 0 if final_summary.error_count == 0 else 1

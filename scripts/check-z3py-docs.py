@@ -22,6 +22,9 @@
 # flavoured Markdown report on stdout that is supposed to the shown in the
 # workflow window of the CI screen.
 #
+# If the "--html" option is given, no markdown is printed to stdout. The report
+# is rendered to html and opened in a web browser window instead.
+#
 # In the current version, a test on a z3 snippet is considered successful if its
 # execution merely terminates without exceptions or syntax errors. No check is
 # performed on the expected output yet.
@@ -66,6 +69,11 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="do not print anything on stdout. Just show logs on stderr (for local usage)",
     )
+    output_options.add_argument(
+        "--html",
+        action="store_true",
+        help="do not print on stdout the markdown report. Instead, render it in html and open it in a web browser window (for local usage)",
+    )
     parser.add_argument(
         "file_or_dir",
         nargs="?",
@@ -87,8 +95,13 @@ if __name__ == "__main__":
         # A Path is returned only when the user did not specify anything.
         logger.info('No path given, using "%s" as default', base_path)
     try:
+        if args.quiet and args.html:
+            msg = "Both quiet and html are True. This should never happen."
+            raise argparse.ArgumentTypeError(msg)
         if args.quiet:
             output_mode = OutputMode.QUIET
+        elif args.html:
+            output_mode = OutputMode.HTML
         else:
             output_mode = OutputMode.MARKDOWN
         sys.exit(main(base_path, recursive=args.recursive, output_mode=output_mode))

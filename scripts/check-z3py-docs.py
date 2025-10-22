@@ -41,6 +41,7 @@ logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).parent.resolve()
 DEFAULT_BASE_PATH = (SCRIPT_DIR / ".." / "website" / "docs-programming" / "02 - Z3 Python - Readonly").resolve()
 
+
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     """If passing sys.argv here, do not include argv[0]!
     Call like this:

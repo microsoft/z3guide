@@ -1,4 +1,7 @@
+import dataclasses
+import logging
 import sys
+from pathlib import Path
 
 _MINIMUM_PYTHON_VERSION = (3, 14, 0)
 if sys.version_info < _MINIMUM_PYTHON_VERSION:
@@ -6,11 +9,7 @@ if sys.version_info < _MINIMUM_PYTHON_VERSION:
     raise RuntimeError(msg)
 
 
-import dataclasses
-import logging
-import sys
-from concurrent import interpreters
-from pathlib import Path
+from concurrent import interpreters  # this requires python >= 3.14
 
 from . import executor, md_parser
 

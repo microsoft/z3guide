@@ -38,6 +38,7 @@ When the `check-sat` command returns `sat`, the `get-model` command can be used 
 (declare-fun f (Int Bool) Int)
 (assert (< a 10))
 (assert (> (f a true) 100))
+(assert (> (f a false) 150))
 (check-sat)
 (get-model)
 ```
@@ -48,16 +49,16 @@ The interpretation is provided using definitions. For example, the definition
 
 states that the value of a in the model is [val]. The definition
 
-> (define-fun f ((x!1 Int) (x!2 Bool)) Int
+> (define-fun f ((x!0 Int) (x!1 Bool)) Int
 >    ...
 > )
 
-is very similar to a function definition used in programming languages. In this example, x!1 and x!2 are the arguments of the function interpretation created by Z3. For this simple example, the definition of f is based on ite's (aka if-then-elses or conditional expressions). For example, the expression
+is very similar to a function definition used in programming languages. In this example, x!0 and x!1 are the arguments of the function interpretation created by Z3. For this simple example, the definition of f is based on ite's (aka if-then-elses or conditional expressions). For example, the expression
 
-> (ite (and (= x!1 11) (= x!2 false)) 21 0)
+> (ite (and (= x!0 0) (= x!1 false)) 151 101))
 
 
-evaluates to (returns) 21 when x!1 is equal to 11, and x!2 is equal to false. Otherwise, it returns 0.
+evaluates to (returns) 151 when x!0 is equal to 0, and x!1 is equal to false. Otherwise, it returns 101.
 
 ## Using Scopes
 In some applications, we want to explore several similar problems that share several definitions and assertions.

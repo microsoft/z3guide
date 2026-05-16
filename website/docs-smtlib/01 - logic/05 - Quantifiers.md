@@ -102,7 +102,7 @@ search for the question.
 
 ### Patterns
 
-The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneered the use of pattern-based quantifier instantiation. The basic idea behind pattern-based quantifier instantiation is to annotate a quantified formula using a _pattern_ that contains all the bound variables. So a pattern is an expression (that does not contain binding operations, such as quantifiers) that contains variables bound by a quantifier. Then instantiate the quantifier whenever a term that matches the pattern is created during search. This is a conceptually easy starting point, but there are several subtleties that are important.
+The Stanford Pascal verifier and the subsequent Simplify theorem prover pioneered the use of pattern-based quantifier instantiation. The basic idea behind pattern-based quantifier instantiation is based on annotating quantified formulas using _patterns_ that contains all the bound variables. A pattern is an expression (that does not contain binding operations, such as quantifiers) that contains variables bound by a quantifier. The quantifier is instantiated whenever a term that matches the pattern is created during search. This is a conceptually easy starting point, but there are several subtleties that are important.
 
 In the following example, the first two options make sure that Model-based quantifier instantiation and saturation engines are disabled. We also annotate the quantified formula with the pattern (f (g x)). Since there is no ground instance of this pattern, the quantifier is not instantiated, and Z3 fails to show that the formula is unsatisfiable.
 

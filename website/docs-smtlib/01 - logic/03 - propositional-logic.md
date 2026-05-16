@@ -120,7 +120,7 @@ the number of variables that are true and false.
 
 ## Unsatisfiable cores
 
-You can created _named_ assertions that are tracked when unsatisfiable core extraction is enabled. The unsatisfiable core is returned as a subset of named assertions that cannot be satisfied.
+You can create _named_ assertions that are tracked when unsatisfiable core extraction is enabled. The unsatisfiable core is returned as a subset of named assertions that cannot be satisfied.
 
 ```z3
 (set-option :produce-unsat-cores true)

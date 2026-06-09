@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import clsx from "clsx";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
-import CopyButton from '@theme/CodeBlock/CopyButton';
+import CopyButton from "./CopyButton";
 import { useEffect } from "react";
 
 

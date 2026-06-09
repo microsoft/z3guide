@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback, } from "react";
 import clsx from "clsx";
 import { useEditable } from "use-editable";
 import codeBlockContentStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css";
-import CopyButton from "@theme/CodeBlock/CopyButton";
+import CopyButton from "./CopyButton";
 import { Highlight, Prism } from "prism-react-renderer";
 import styles from "./styles.module.css";
 export function GithubDiscussionBtn(props) {

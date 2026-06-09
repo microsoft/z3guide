@@ -1,0 +1,96 @@
+import loadZ3 from './loadZ3';
+import { Z3_error_code } from 'z3-solver';
+export default async function runZ3DuoWeb(user_input, secret_input) {
+    // init z3
+    const z3p = loadZ3();
+    const { Context, Z3: Z3Core } = await z3p;
+    const timeout = 10000;
+    Z3Core.global_param_set('timeout', String(timeout));
+    let Z3 = Context('main');
+    let output = '';
+    let error = '';
+    let outputObj;
+    const throwIfError = (ctxPtr) => {
+        if (Z3Core.get_error_code(ctxPtr) !== Z3_error_code.Z3_OK) {
+            throw new Error(Z3Core.get_error_msg(ctxPtr, Z3Core.get_error_code(ctxPtr)));
+        }
+    };
+    const startTime = (new Date()).getTime();
+    try {
+        const s1 = new Z3.Solver();
+        const s2 = new Z3.Solver();
+        s1.fromString(user_input);
+        s2.fromString(secret_input);
+        throwIfError(s1.ctx.ptr);
+        throwIfError(s2.ctx.ptr);
+        const not_user = Z3.Not(Z3.And(s1.assertions()));
+        const not_secret = Z3.Not(Z3.And(s2.assertions()));
+        s2.add(not_user);
+        s1.add(not_secret);
+        const user_not_secret = await s1.check();
+        const secret_not_user = await s2.check();
+        const sat = (s) => s === 'sat';
+        const unsat = (s) => s === 'unsat';
+        if (sat(secret_not_user) && sat(user_not_secret)) {
+            outputObj = {
+                model1: s2.model().sexpr(),
+                res1: {
+                    secret: true,
+                    user: false,
+                },
+                model2: s1.model().sexpr(),
+                res2: {
+                    user: true,
+                    secret: false
+                }
+            };
+        }
+        else if (sat(secret_not_user)) {
+            outputObj = {
+                model1: s2.model().sexpr(),
+                res1: {
+                    secret: true,
+                    user: false,
+                }
+            };
+        }
+        else if (sat(user_not_secret)) {
+            outputObj = {
+                model1: s1.model().sexpr(),
+                res1: {
+                    user: true,
+                    secret: false
+                }
+            };
+        }
+        else if (unsat(user_not_secret) && unsat(secret_not_user)) { // both unsat
+            output = `You got the right formula! Congratulations!`;
+        }
+        else {
+            output = 'unknown';
+        }
+    }
+    catch (e) {
+        // error with running z3
+        error = e.message ?? 'Error message is empty';
+        console.log({ error });
+    }
+    const timeEnd = (new Date()).getTime();
+    const unknownOutput = (/unknown/).test(output); // both unknown
+    const hasError = error !== '';
+    const timeoutError = (toAppend) => {
+        if (timeEnd - startTime >= timeout) {
+            return toAppend + '\nZ3 timeout\n';
+        }
+        return toAppend;
+    };
+    if (unknownOutput) {
+        output = timeoutError(output);
+    }
+    else if (hasError) {
+        error = timeoutError(error);
+    }
+    const finalOutput = outputObj ? JSON.stringify(outputObj) : output;
+    // we are guaranteed to have non-undefined output and error
+    return JSON.stringify({ output: finalOutput, error: error });
+}

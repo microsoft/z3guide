@@ -114,9 +114,9 @@ Use instead
 (define-fun R ((x A) (y A)) Bool ((_ piecewise-linear-order 0) x y))
 ```
 
-## Transitive Closures
+## Reflexive-Transitive Closures
 
-The transitive closure of a relation is not first-order axiomatizable. However, the decision problem for ground formulas is decidable
+The reflexive-transitive closure of a relation is not first-order axiomatizable. However, the decision problem for ground formulas is decidable
 because for every binary relation `R` over a finite domain, the transitive closure of it is defined over the finite graph of `R`.
 The small model property contrasts non-ground first-order formulas using transitive closure that are not first-order axiomatizable.
 

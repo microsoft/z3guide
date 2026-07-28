@@ -12,11 +12,10 @@
 # - since each z3 snippet implicitly assumes that the user has imported the
 #   whole z3 namespace, it prepends a `from z3 import *` statement to each
 #   snippet;
-# - the snippet is then executed in a Python 3.14 subinterpreter (see
-#   https://docs.python.org/3/library/concurrent.interpreters.htm), so that no
-#   new process needs to be spawned, and the global namespace is kept pristine.
-#   `stdout` and `stderr`, and eventual unexpected terminations caused by
-#   unhandled exceptions are captured.
+# - the snippet is then executed in a dedicated subprocess, so that each
+#   snippet starts with a clean process state and crashes (such as segfaults
+#   from C extensions with global state) do not terminate the whole check.
+#   `stdout`, `stderr`, and non-zero exit codes are captured.
 #
 # The program produces a log (on stderr), while its main result is a Github
 # flavoured Markdown report on stdout that is supposed to the shown in the
@@ -31,7 +30,7 @@
 #
 # Preliminary discussion at: https://github.com/microsoft/z3guide/pull/206#issuecomment-3311465758
 #
-# Requires python >= 3.14
+# Requires python >= 3.10
 
 import argparse
 import logging

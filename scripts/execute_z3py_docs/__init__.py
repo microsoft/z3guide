@@ -9,13 +9,11 @@ from urllib.request import pathname2url
 
 import mistletoe
 
-_MINIMUM_PYTHON_VERSION = (3, 14, 0)
+_MINIMUM_PYTHON_VERSION = (3, 10, 0)
 if sys.version_info < _MINIMUM_PYTHON_VERSION:
     msg = f"Minimum required python version is: {_MINIMUM_PYTHON_VERSION}. You appear to be using {sys.version_info}"
     raise RuntimeError(msg)
 
-
-from concurrent import interpreters  # this requires python >= 3.14
 
 from . import executor, md_parser
 
@@ -40,7 +38,7 @@ class SnippetExecutionSummary:
     stderr: str
     # We also need to catch SyntaxError because of a peculiar behaviour of
     # subinterpreters. See https://github.com/python/cpython/issues/139324
-    error: interpreters.ExecutionFailed | SyntaxError | None
+    error: Exception | None
 
     @property
     def was_successful(self) -> bool:

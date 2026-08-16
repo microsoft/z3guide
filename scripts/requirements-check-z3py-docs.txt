@@ -1,2 +1,2 @@
 mistletoe==1.6.0
-z3-solver  # use the latest packaged version on PyPA. Not ideal.
+z3-solver==5.1.0.0

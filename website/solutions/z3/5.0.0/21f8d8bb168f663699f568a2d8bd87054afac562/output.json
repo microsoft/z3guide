@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (forall ((y Int)) (p (f y) y))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"21f8d8bb168f663699f568a2d8bd87054afac562"}

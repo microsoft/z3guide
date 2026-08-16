@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n(declare-const z Int)\r\n(declare-const u Int)\r\n(declare-const v Int)\r\n(declare-const w Int)\r\n(assert (>= x 3))\r\n(assert (<= y 0))\r\n(assert (>= (- x y) 3))\r\n(assert (>= (* u v w) 2))\r\n(assert (<= (* v u w) 2))\r\n(apply (and-then simplify propagate-ineqs))"}

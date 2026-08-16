@@ -1,0 +1,1 @@
+{"input":"(set-option :timeout 2000)\r\n(declare-datatypes () ((Nat zero (succ (pred Nat)))))\r\n(declare-fun p (Nat) Bool)\r\n(assert (p zero))\r\n(assert (forall ((x Nat)) (implies (p (pred x)) (p x))))\r\n(assert (not (forall ((x Nat)) (p x))))\r\n(check-sat)\r\n(get-info :all-statistics)"}

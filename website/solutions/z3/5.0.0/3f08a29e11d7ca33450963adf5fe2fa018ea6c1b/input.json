@@ -1,0 +1,1 @@
+{"input":"(declare-const xR Real)\r\n(declare-const yR Real)\r\n(declare-const x Int)\r\n(declare-const y Int)\r\n(declare-const a Int)\r\n\r\n(assert (< (+ xR yR) a))\r\n(assert (> (+ x y) a))\r\n(assert (or (= x xR) (< x xR (+ x 1)) (< (- x 1) xR x)))\r\n(assert (or (= y yR) (< y yR (+ y 1)) (< (- y 1) yR y)))\r\n(check-sat)\r\n(get-model)"}

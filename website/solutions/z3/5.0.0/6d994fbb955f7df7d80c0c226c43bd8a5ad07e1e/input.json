@@ -1,0 +1,1 @@
+{"input":"(simplify (bvor #x6 #x3))   ; bitwise or\r\n(simplify (bvand #x6 #x3))  ; bitwise and\r\n(simplify (bvnot #x6)) ; bitwise not\r\n(simplify (bvnand #x6 #x3)) ; bitwise nand\r\n(simplify (bvnor #x6 #x3)) ; bitwise nor\r\n(simplify (bvxnor #x6 #x3)) ; bitwise xnor"}

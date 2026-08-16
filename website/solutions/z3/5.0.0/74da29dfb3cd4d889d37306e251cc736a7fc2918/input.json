@@ -1,0 +1,1 @@
+{"input":"(declare-const a (_ BitVec 4))\r\n(declare-const b (_ BitVec 4))\r\n(assert (not (= (bvule a b) (bvsle a b))))\r\n(check-sat)\r\n(get-model)"}

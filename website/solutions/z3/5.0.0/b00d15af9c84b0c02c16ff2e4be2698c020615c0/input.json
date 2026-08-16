@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\r\n(declare-const y Real)\r\n(declare-const z Real)\r\n\r\n(assert (>= (- (^ x 2.0) (^ y 2.0)) 0.0))\r\n\r\n(apply (if (> num-consts 2) simplify factor))\r\n\r\n(assert (>= (+ x x y z) 0.0))\r\n\r\n(apply (if (> num-consts 2) simplify factor))"}

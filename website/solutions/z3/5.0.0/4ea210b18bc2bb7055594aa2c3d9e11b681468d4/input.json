@@ -1,0 +1,1 @@
+{"input":"  (declare-const x Int)\r\n  (declare-fun p (Int) Bool)\r\n  (declare-fun q (Int) Bool)\r\n  (assert (forall ((x Int)) (and (p x) (q x))))\r\n  (apply distribute-forall)"}

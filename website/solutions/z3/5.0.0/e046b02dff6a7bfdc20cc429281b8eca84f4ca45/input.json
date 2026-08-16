@@ -1,0 +1,1 @@
+{"input":"(declare-const a (Array (_ BitVec 32) (_ BitVec 32)))\r\n(declare-const b (_ BitVec 32))\r\n(declare-const c (_ BitVec 32))\r\n(assert (= (select a b) c))\r\n(apply bvarray2uf)"}

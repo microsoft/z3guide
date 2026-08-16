@@ -1,0 +1,1 @@
+{"input":"(define-sort IList () (List Int))\r\n(define-sort List-Set (T) (Array (List T) Bool))\r\n(define-sort I () Int)\r\n\r\n(declare-const s1 (Set I))\r\n(declare-const s2 (List-Set Int))\r\n(declare-const a I)\r\n(declare-const l IList)\r\n\r\n(assert (= (select s1 a) true))\r\n(assert (= (select s2 l) false))\r\n(check-sat)\r\n(get-model)"}

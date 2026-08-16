@@ -1,0 +1,1 @@
+{"input":"const n4 = Z3.Real.val('-1/3');\r\nconst n5 = Z3.Real.val('-0.3333333333333333333333333333333333');\r\n\r\nZ3.solve(n4.eq(n5));"}

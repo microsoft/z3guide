@@ -1,0 +1,1 @@
+{"input":"(display #b0100)\r\n(display (_ bv20 8))\r\n(display (_ bv20 7))\r\n(display #x0a) \r\n(set-option :pp.bv-literals false)\r\n(display #b0100)\r\n(display (_ bv20 8))\r\n(display (_ bv20 7))\r\n(display #x0a) "}

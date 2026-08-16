@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n\r\n(assert (or (= x y) (> x (- y))))\r\n(assert (or (= x y) (< x (- y))))\r\n(apply occf)"}

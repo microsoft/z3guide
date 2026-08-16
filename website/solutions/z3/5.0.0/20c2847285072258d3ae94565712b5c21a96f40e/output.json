@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (not (= (* 16 a) (f!0 0 a (+ 8 a))))\n  (not (= (* 16 a) (f!0 2 a (+ 8 a))))\n  (let ((a!1 (= (* 16 a) (ite (= 1 b) (* 2 a) (f!0 1 a (+ a b))))))\n    (not a!1))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"20c2847285072258d3ae94565712b5c21a96f40e"}

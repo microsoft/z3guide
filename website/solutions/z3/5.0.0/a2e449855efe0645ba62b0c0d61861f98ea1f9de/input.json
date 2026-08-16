@@ -1,0 +1,1 @@
+{"input":"(declare-datatypes () ((S A B C)))\r\n(declare-const x S)\r\n(declare-const y S)\r\n(declare-const z S)\r\n(declare-const u S)\r\n(assert (distinct x y z))\r\n(check-sat)\r\n(assert (distinct x y z u))\r\n(check-sat)"}

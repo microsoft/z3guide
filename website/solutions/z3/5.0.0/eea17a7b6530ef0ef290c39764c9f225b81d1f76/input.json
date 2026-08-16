@@ -1,0 +1,1 @@
+{"input":"(declare-const a Bool)\r\n(declare-const b Bool)\r\n(declare-const c Bool)\r\n(declare-const d Bool)\r\n(declare-const e Bool)\r\n(declare-const f Bool)\r\n(declare-fun p (Bool) Bool)\r\n(assert (=> a b))\r\n(assert (=> b c))\r\n(assert a)\r\n(assert (not c))\r\n(apply sat-preprocess)"}

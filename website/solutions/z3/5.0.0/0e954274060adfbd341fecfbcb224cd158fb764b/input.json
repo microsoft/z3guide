@@ -1,0 +1,1 @@
+{"input":"(declare-const a Bool)\r\n(declare-const b Bool)\r\n(assert-soft false :id y)\r\n(assert-soft a :id x)\r\n(assert-soft a :id x)\r\n(assert-soft b :id x)\r\n(assert (not a))\r\n\r\n(check-sat)\r\n(get-objectives)"}

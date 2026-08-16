@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (> (* x (+ (* (- 1.0) y) x)) 0.0)\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"47a2f5a9a1bc4fc2386d8b244517f0e0fba485fc"}

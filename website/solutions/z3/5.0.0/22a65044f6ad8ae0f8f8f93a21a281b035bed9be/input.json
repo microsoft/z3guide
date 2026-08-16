@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\r\n(declare-const y Real)\r\n(declare-const z Real)\r\n(assert (<= (+ x (* -1.0 y)) 3.0))\r\n(assert (<= (+ x (* -1.0 z)) 5.0))\r\n(apply fix-dl-var)"}

@@ -1,0 +1,1 @@
+{"input":"(set-option :produce-unsat-cores true)\r\n(declare-const p Bool)\r\n(declare-const q Bool)\r\n(declare-const r Bool)\r\n(declare-const s Bool)\r\n(declare-const t Bool)\r\n(assert (! p :named +p))\r\n(assert (! q :named +q))\r\n(assert (! r :named +r))\r\n(assert (! (not (or p q)) :named -p-or-q))\r\n(check-sat)\r\n(get-unsat-core)"}

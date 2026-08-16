@@ -1,0 +1,1 @@
+{"input":"(declare-const a Int)\r\n(declare-const b Int)\r\n(declare-const c Int)\r\n(simplify (select (lambda ((x Int) (y Int) (z Int)) (+ x (* z y))) a b c))"}

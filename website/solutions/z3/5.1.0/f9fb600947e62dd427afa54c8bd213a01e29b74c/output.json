@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (>= x 3)\n  (<= y 0)\n  (= (* u v w) 2)\n  :precision precise :depth 2)\n)\n","error":"","status":"z3-ran","hash":"f9fb600947e62dd427afa54c8bd213a01e29b74c"}

@@ -1,0 +1,1 @@
+{"output":"sat\nunsat\nsat\n(or (= (:var 0) #b010) (= (:var 0) #b100) (= (:var 0) #b011))\n","error":"","status":"z3-ran","hash":"51beb6b70da2330c48c495f3370f9a189253be6b"}

@@ -1,0 +1,1 @@
+{"input":"(simplify (str.substr \"xxabcyy\" 2 3))\r\n(simplify (str.substr \"xxabcyy\" 2 10))  ; there are only 5 characters left to return\r\n(simplify (str.substr \"xxabcyy\" 10 2))  ; offset is out of bounds, so return the empty string"}

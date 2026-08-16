@@ -1,0 +1,1 @@
+{"input":"  (declare-fun f (Int) Int)\n  (declare-fun p (Int Int) Bool)\n  (assert (forall ((x Int) (y Int)) (or (not (= x (f y))) (p x y))))\n  (apply der)"}

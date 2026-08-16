@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 32))\n(declare-const y (_ BitVec 32))\n        (assert (= ((_ extract 31 16) x) (_ bv123 16)))\n(assert (= ((_ extract 15 0) x) ((_ extract 16 1) y)))\n(assert (= (bvadd x x) y))\n(apply bv-slice)"}

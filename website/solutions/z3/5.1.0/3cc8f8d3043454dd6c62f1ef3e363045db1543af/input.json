@@ -1,0 +1,1 @@
+{"input":"(declare-const a Int)\n(declare-const b Int)\n(declare-const c Int)\n(assert (< a b c))\n(check-sat)\n(get-model)"}

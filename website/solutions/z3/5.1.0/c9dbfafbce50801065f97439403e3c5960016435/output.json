@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (not (= x!0 y!1))\n  (not (= x!0 #b000))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"c9dbfafbce50801065f97439403e3c5960016435"}

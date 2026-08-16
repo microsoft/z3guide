@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(assert (= (* x x y) (*  2 z y y)))\n(apply nla2bv)"}

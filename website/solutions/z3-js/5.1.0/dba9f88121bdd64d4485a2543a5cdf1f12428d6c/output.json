@@ -1,0 +1,1 @@
+{"output":"(define-fun y () Real\n  (- 1.0))\n(define-fun z () Real\n  0.0)\n(define-fun x () Real\n  0.0)","error":"","status":"z3-ran","hash":"dba9f88121bdd64d4485a2543a5cdf1f12428d6c"}

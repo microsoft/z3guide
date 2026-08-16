@@ -1,0 +1,1 @@
+{"input":"(define-const a String \"\\u{a}\")\r\n(define-const b String \"\r\n\")\r\n(define-const c String \"\\n\")   ; this is not a newline character but \\ followed by n\r\n(simplify (= a b))\r\n(simplify (= a c))\r\n(simplify (str.++ a b c))"}

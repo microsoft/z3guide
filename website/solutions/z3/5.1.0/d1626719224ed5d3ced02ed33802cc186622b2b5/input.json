@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(assert (<= 3 x))\n(assert (<= (+ x y) z))\n(apply normalize-bounds)"}

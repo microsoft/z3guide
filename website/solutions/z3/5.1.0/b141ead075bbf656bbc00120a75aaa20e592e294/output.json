@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun p () Bool\n    false)\n  (define-fun q () Bool\n    false)\n  (define-fun r () Bool\n    true)\n)\n","error":"","status":"z3-ran","hash":"b141ead075bbf656bbc00120a75aaa20e592e294"}

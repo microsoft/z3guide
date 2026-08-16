@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 64))\n(declare-const y (_ BitVec 64))\n(assert (not (= (bvand (bvnot x) (bvnot y)) (bvnot (bvor x y)))))\n(check-sat)"}

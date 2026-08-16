@@ -8,7 +8,9 @@ import React, {
 import clsx from "clsx";
 import { useEditable } from "use-editable";
 import codeBlockContentStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css";
-import CopyButton from "@theme/CodeBlock/CopyButton";
+import codeBlockLayoutStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Layout/styles.module.css";
+import codeBlockButtonStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Buttons/styles.module.css";
+import CopyButton from "./CopyButton";
 import { Highlight, Prism, Language, PrismTheme } from "prism-react-renderer";
 import styles from "./styles.module.css";
 
@@ -23,7 +25,7 @@ export function GithubDiscussionBtn(props: { repo: string }) {
             type="button"
             aria-label="Go to GitHub discussion"
             title="Go to GitHub discussion"
-            className={clsx("clean-btn", codeBlockContentStyles.codeButton)}
+            className="clean-btn"
             onClick={openInNewTab}
         >
             <svg
@@ -47,7 +49,7 @@ export function ResetBtn(props: { resetCode: () => void }) {
             type="button"
             aria-label="Reset code"
             title="Reset code"
-            className={clsx("clean-btn", codeBlockContentStyles.codeButton)}
+            className="clean-btn"
             onClick={resetCode}
         >
             <svg
@@ -75,7 +77,7 @@ export function UndoBtn(props: { undoCode: () => void }) {
             type="button"
             aria-label="Undo the reset"
             title="Undo the reset"
-            className={clsx("clean-btn", codeBlockContentStyles.codeButton)}
+            className="clean-btn"
             style={{ borderColor: "var(--custom-editor-reset-color)" }}
             onClick={undoCode}
         >
@@ -210,7 +212,7 @@ function CodeEditor(props: {
     return (
         <div className={props.className} style={props.style}>
             <Highlight
-                Prism={props.prism || Prism}
+                prism={props.prism || Prism}
                 code={code}
                 theme={props.theme}
                 language={props.language as Language}
@@ -225,7 +227,7 @@ function CodeEditor(props: {
                     <div
                         className={clsx(
                             styles.CustomCodeEditorContent,
-                            codeBlockContentStyles.codeBlockContent
+                            codeBlockLayoutStyles.codeBlockContent
                         )}
                     >
                         {props.showLineNumbers && (
@@ -294,11 +296,8 @@ function CodeEditor(props: {
                     </div>
                 )}
             </Highlight>
-            <div className={codeBlockContentStyles.buttonGroup}>
-                <CopyButton
-                    className={codeBlockContentStyles.codeButton}
-                    code={code}
-                />
+            <div className={codeBlockButtonStyles.buttonGroup}>
+                <CopyButton className="clean-btn" code={code} />
                 {!props.readonly && !allowUndo && (
                     <ResetBtn resetCode={onClickReset} />
                 )}

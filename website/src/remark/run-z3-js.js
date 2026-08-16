@@ -27,4 +27,7 @@ if (!inputFile) {
     throw new Error('Usage: node run-z3-js.js <input_file>');
 }
 
-(async () => await runZ3File(inputFile))();
+runZ3File(inputFile).then(
+    () => stdout.write("", () => process.exit(0)),
+    error => stderr.write(String(error), () => process.exit(1))
+);

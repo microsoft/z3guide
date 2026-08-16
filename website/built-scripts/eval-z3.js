@@ -7893,9 +7893,7 @@ function compile(source, fixupErrorLocations) {
     getCanonicalFileName: (fileName) => fileName,
     getNewLine: () => "\n",
     useCaseSensitiveFileNames: () => true,
-    fileExists: (fileName) => {
-      return false;
-    },
+    fileExists: (fileName) => fileName in libs,
     resolveModuleNames
   };
   function resolveModuleNames(moduleNames, containingFile) {
@@ -7903,6 +7901,7 @@ function compile(source, fixupErrorLocations) {
       if (name === "z3-solver") {
         return {
           resolvedFileName: "/node_modules/z3-solver/build/browser.d.ts",
+          extension: ts.Extension.Dts,
           isExternalLibraryImport: true
         };
       } else if (containingFile.startsWith("/node_modules/z3-solver/build/")) {
@@ -7914,6 +7913,7 @@ function compile(source, fixupErrorLocations) {
           if (candidate in libs) {
             return {
               resolvedFileName: candidate,
+              extension: ts.Extension.Dts,
               isExternalLibraryImport: false
             };
           }

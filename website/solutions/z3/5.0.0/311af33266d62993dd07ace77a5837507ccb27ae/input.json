@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(declare-const u Int)\n(declare-const v Int)\n(declare-const w Int)\n(assert (= (div x 3) y))\n(assert (= (mod z 4) u))\n(assert (> (mod v w) u))\n(apply purify-arith)"}

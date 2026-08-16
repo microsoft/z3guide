@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(assert (>= 5 x))\n(assert (>= x 0))\n(assert (>= 4 y))\n(assert (>= y 0))\n(minimize x)\n(maximize (+ x y))\n(minimize y)\n(set-option :opt.priority pareto)\n(check-sat)\n(get-objectives)\n(check-sat)\n(get-objectives)\n(check-sat)\n(get-objectives)\n(check-sat)\n(get-objectives)"}

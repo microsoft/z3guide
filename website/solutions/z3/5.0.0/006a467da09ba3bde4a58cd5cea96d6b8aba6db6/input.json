@@ -1,0 +1,1 @@
+{"input":"(declare-const a Int)\n(declare-const b Int)\n(declare-const c Int)\n(declare-const d Real)\n(declare-const e Real)\n(assert (< e (+ (to_real (+ a b)) 2.0)))\n(assert (= d (+ (to_real c) 0.5)))\n(assert (< a b))\n(check-sat)\n(get-model)"}

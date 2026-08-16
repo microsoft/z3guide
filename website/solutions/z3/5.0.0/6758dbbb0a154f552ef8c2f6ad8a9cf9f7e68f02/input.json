@@ -1,0 +1,1 @@
+{"input":"(declare-const a (_ BitVec 4))\n(simplify (concat a #x0 #x1 #x2))\n(simplify ((_ zero_extend 4) #xF))\n(simplify ((_ sign_extend 4) #xF))\n(simplify ((_ extract 15 8) #xABCD1234))\n(simplify ((_ rotate_left 4) #xABCD))\n(simplify ((_ rotate_right 4) #xABCD))\n(simplify ((_ repeat 3) #xABC))"}

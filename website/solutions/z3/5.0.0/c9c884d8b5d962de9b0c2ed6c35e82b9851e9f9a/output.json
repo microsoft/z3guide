@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (bvsle #xfffffffe ((_ sign_extend 29) k!0))\n  (bvsle ((_ sign_extend 29) k!0) #x00000002)\n  (= (bvmul ((_ sign_extend 29) k!0) ((_ sign_extend 29) k!0)) #x00000009)\n  :precision precise :depth 2)\n)\n","error":"","status":"z3-ran","hash":"c9c884d8b5d962de9b0c2ed6c35e82b9851e9f9a"}

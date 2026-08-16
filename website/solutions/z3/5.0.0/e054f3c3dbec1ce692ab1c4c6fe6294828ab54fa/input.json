@@ -1,0 +1,1 @@
+{"input":"(declare-datatypes (T1 T2) ((Pair (mk-pair (first T1) (second T2)))))\n(declare-const p1 (Pair Int Int))\n(declare-const p2 (Pair Int Int))\n(assert (= p1 p2))\n(assert (< (second p1) 20))\n(check-sat)\n(get-model)\n(assert (not (= (first p1) (first p2))))\n(check-sat)"}

@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\n(declare-const y Real)\n(declare-const z Real)\n(declare-const u Real)\n(declare-const v Real)\n(declare-const w Real)\n(declare-fun P (Real) Bool)\n(assert (<= x (+ y (* 2.0 z))))\n(assert (>= x (- y z)))\n(assert (>= x (- y 3 (* 3 z))))\n(assert (>= x 5))\n(assert (<= x u))\n(assert (>= x v))\n(assert (P u))\n(assert (P v))\n(apply fm)"}

@@ -1,0 +1,1 @@
+{"input":"(declare-sort A)\n(declare-const x A)\n(declare-const y A)\n(declare-fun f (A) A)\n(assert (= (f (f x)) x))\n(assert (= (f x) y))\n(assert (not (= x y)))\n(check-sat)\n(get-model)"}

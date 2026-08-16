@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int Int Int) Int)\n(declare-fun p (Int) Bool)\n(declare-const a Int)\n(declare-const b Int)\n\n(assert (forall ((x Int) (y Int)) (= (f x y (+ x y)) (* 2 x y))))\n(assert (p (f 8 a (+ a 8))))\n(assert (not (p (f 0 a (+ a 8)))))\n(assert (not (p (f 2 a (+ a 8)))))\n(assert (not (p (f 1 a (+ a b)))))\n(apply elim-predicates)"}

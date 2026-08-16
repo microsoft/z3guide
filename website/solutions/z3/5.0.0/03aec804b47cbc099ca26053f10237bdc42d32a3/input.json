@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int) Int)\n(declare-fun p (Int) Bool)\n\n(assert (forall ((x Int)) (= (+ (f x) x) 3)))\n(assert (p (f 8)))\n(apply macro-finder)"}

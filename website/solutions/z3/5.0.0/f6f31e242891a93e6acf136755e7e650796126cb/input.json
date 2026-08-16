@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int) Int)\n(push)\n(assert (not (=  (select (_ as-array f) 0) (f 0))))\n(check-sat)\n(pop)\n(push)\n(declare-const a (Array Int Int))\n(define-fun-rec f2 ((x Int)) Int (select a x))\n(assert (not (= (select a 0) (select (_ as-array f2) 0))))\n(check-sat)\n(pop)"}

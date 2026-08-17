@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n(declare-const z Int)\r\n(assert (<= 0 x))\r\n(assert (<= 0 y))\r\n(assert (<= 0 z))\r\n(assert (>= 1 x))\r\n(assert (>= 1 y))\r\n(assert (>= 1 z))\r\n(assert (>= (+ (* 5 x) (* -2 z) (* 3 y) 1) 4))\r\n(apply lia2card)"}

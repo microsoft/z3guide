@@ -1,0 +1,1 @@
+{"input":"\r\n(declare-sort A 0)\r\n(define-fun R ((x A) (y A)) Bool ((_ tree-order 0) x y))\r\n\r\n(declare-const a A)\r\n(declare-const b A)\r\n(declare-const c A)\r\n(declare-const d A)\r\n(assert (R a b))\r\n(assert (R b d))\r\n(assert (R a c))\r\n(assert (R c d))\r\n(check-sat)\r\n(get-model)\r\n(assert (not (R b c)))\r\n(assert (not (R c b)))\r\n(check-sat)"}

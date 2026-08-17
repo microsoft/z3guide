@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\r\n(declare-const y Real)\r\n(assert (> (* x x) (* y x)))\r\n(assert (> x 0))\r\n(assert (< y 1))\r\n(apply (then simplify purify-arith nlsat))"}

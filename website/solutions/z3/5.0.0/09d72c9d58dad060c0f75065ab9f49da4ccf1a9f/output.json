@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun mc ((x!0 Int) (x!1 Int)) Bool\n    (let ((a!1 (not (<= (+ x!0 (* (- 1) x!1)) 9))))\n      (and (or (not (>= x!1 92)) a!1) (not (<= x!1 90)))))\n)\n","error":"","status":"z3-ran","hash":"09d72c9d58dad060c0f75065ab9f49da4ccf1a9f"}

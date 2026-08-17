@@ -1,0 +1,1 @@
+{"input":"  (set-option :opt.maxsat_engine rc2)\r\n  (set-option :opt.maxsat_engine maxresbin)\r\n  (set-option :opt.maxsat_engine wmax)"}

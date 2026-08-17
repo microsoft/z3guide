@@ -1,0 +1,1 @@
+{"input":"(declare-const x (_ BitVec 8))\n(declare-const y (_ BitVec 4))\n(declare-const z (_ BitVec 4))\n(assert (= (concat y z) x))\n    (apply bv1-blast)"}

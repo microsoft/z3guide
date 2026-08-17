@@ -1,0 +1,1 @@
+{"input":"(declare-rel a ())\n(declare-rel b ())\n(declare-rel c ())\n(rule (=> b a))\n(rule (=> c b))\n\n;(set-option :fixedpoint.engine datalog)\n(query a)\n\n(rule c)\n(query a\n :print-answer true)"}

@@ -1,0 +1,1 @@
+{"output":"(define-fun tie () Bool\n  false)\n(define-fun shirt () Bool\n  true)","error":"","status":"z3-ran","hash":"3ed019817bfee506bc4f7706153732f1d56d6aaa"}

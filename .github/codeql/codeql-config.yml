@@ -1,0 +1,5 @@
+name: z3guide CodeQL configuration
+
+paths-ignore:
+  - website/static/z3-built.js
+  - website/static/z3-built.worker.js

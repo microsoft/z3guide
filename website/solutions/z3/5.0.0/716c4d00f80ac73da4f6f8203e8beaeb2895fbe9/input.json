@@ -1,0 +1,1 @@
+{"input":"(declare-const p Bool)\r\n(declare-const q Bool)\r\n(declare-const r Bool)\r\n(assert ((_ at-least 2) p q r))\r\n(check-sat)\r\n(get-model)"}

@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun a () Int\n    0)\n  (define-fun f ((x!0 Int) (x!1 Bool)) Int\n    (ite (and (= x!0 0) (= x!1 false)) 151\n      101))\n)\n","error":"","status":"z3-ran","hash":"4c7e9caa32756c953cf66e14f1620fefdc5f14fd"}

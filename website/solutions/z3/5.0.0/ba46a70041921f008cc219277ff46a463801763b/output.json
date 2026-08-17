@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (<= 0 k!0)\n  (<= (+ k!0 y) (+ (- 3) z))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"ba46a70041921f008cc219277ff46a463801763b"}

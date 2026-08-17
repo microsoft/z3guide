@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n(assert (forall ((q (Array Int Bool))) (= (q x) (q y))))\r\n(assert (not (= x y)))\r\n(check-sat)"}

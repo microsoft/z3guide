@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (p (ite (= a (- 7)) (* 16 a) (f!else!0 8 a (+ 8 a))))\n  :precision precise :depth 1)\n)\n","error":"","status":"z3-ran","hash":"4b6d0f316620e2cacce343ff9c8152a11ef98aca"}

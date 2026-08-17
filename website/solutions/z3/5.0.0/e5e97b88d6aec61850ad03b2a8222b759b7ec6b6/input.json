@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\r\n(declare-const y Real)\r\n(declare-const z Real)\r\n\r\n(push)\r\n(assert (> (+ x y z) 0.0))\r\n\r\n(apply (echo \"num consts: \" num-consts))\r\n\r\n(apply (fail-if (> num-consts 2)))\r\n(pop)\r\n\r\n(echo \"trying again...\")\r\n(assert (> (+ x y) 0.0))\r\n(apply (fail-if (> num-consts 2)))"}

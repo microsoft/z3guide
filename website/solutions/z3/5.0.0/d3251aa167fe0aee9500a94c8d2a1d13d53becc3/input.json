@@ -1,0 +1,1 @@
+{"input":"(declare-fun X () (_ FloatingPoint 11 53))\r\n\r\n(assert (fp.isNormal X))\r\n(assert (not (fp.isSubnormal X)))\r\n(assert (not (fp.isZero X)))\r\n(assert (not (fp.isInfinite X)))\r\n(assert (not (fp.isNaN X)))\r\n(assert (not (fp.isNegative X)))\r\n(assert (fp.isPositive X))\r\n\r\n(check-sat)\r\n(get-model)"}

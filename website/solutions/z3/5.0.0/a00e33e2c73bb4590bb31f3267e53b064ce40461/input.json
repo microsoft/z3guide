@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\r\n(declare-const y Real)\r\n(assert (>= 5 (- x y)))\r\n(assert (>= x 0))\r\n(assert (>= 4 y))\r\n(assert (> y 0))\r\n(minimize x)\r\n(maximize (+ x y))\r\n(minimize y)\r\n(maximize y)\r\n(set-option :opt.priority box)\r\n(check-sat)\r\n(get-objectives)"}

@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(assert (or (= x 5) (> y 3)))\n(assert (or (= x 4) (= y 2)))\n(apply eq2bv)"}

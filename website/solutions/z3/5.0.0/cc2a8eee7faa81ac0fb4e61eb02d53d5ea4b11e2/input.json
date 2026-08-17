@@ -1,0 +1,1 @@
+{"input":"(declare-const a1 Bool)\r\n(declare-const a2 Bool)\r\n(declare-const a3 Bool)\r\n(assert-soft a1 :weight 0.1)\r\n(assert-soft a2 :weight 1.0)\r\n(assert-soft a3 :weight  1)\r\n(assert-soft (or (not a1) (not a2)) :weight 3.2)\r\n(check-sat)\r\n(get-objectives)\r\n(get-model)"}

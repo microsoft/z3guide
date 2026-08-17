@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun yR () Real\n    (/ 1.0 6.0))\n  (define-fun y () Int\n    1)\n  (define-fun a () Int\n    0)\n  (define-fun xR () Real\n    (- (/ 1.0 3.0)))\n  (define-fun x () Int\n    0)\n)\n","error":"","status":"z3-ran","hash":"3f08a29e11d7ca33450963adf5fe2fa018ea6c1b"}

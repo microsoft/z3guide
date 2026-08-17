@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\n(declare-const y Real)\n(assert (> (* x x) (* x y)))\n(apply factor)"}

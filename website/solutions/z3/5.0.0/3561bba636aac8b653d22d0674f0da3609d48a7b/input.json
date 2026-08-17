@@ -1,0 +1,1 @@
+{"input":"(declare-const a Bool)\n(declare-const b Bool)\n(declare-const c Bool)\n(assert (or (and a b) (and b a c)))\n(apply aig)"}

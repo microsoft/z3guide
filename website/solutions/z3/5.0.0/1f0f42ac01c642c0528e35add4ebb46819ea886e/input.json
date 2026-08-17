@@ -1,0 +1,1 @@
+{"input":"  (declare-fun f (Int) Int)\n  (declare-fun g (Int) Int)\n  (declare-const x Int)\n  (declare-const y Int)\n  (assert (forall ((x Int)) (= (g (f x)) x)))\n  (assert (not (= (f x) (f (f y)))))\n  (apply injectivity)"}

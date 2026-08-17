@@ -1,0 +1,1 @@
+{"input":"(declare-const all1 (Array Int Int))\r\n(declare-const a Int)\r\n(declare-const i Int)\r\n(assert (= all1 ((as const (Array Int Int)) 1)))\r\n(assert (= a (select all1 i)))\r\n(check-sat)\r\n(get-model)\r\n(assert (not (= a 1)))\r\n(check-sat)"}

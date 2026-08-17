@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n(assert (> (+ x y) 10))\r\n(apply add-bounds)"}

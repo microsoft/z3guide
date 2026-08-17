@@ -1,0 +1,1 @@
+{"input":"const [tie, shirt] = [Z3.Bool.const('tie'), Z3.Bool.const('shirt')];\nZ3.solve(Z3.Or(tie, shirt), Z3.Implies(tie, shirt), Z3.Or(Z3.Not(tie), Z3.Not(shirt)))"}

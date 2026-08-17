@@ -1,0 +1,1 @@
+{"input":"(simplify (str.< \"alex\" \"andra\"))\r\n(simplify (str.<= \"nate\" \"anthony\"))"}

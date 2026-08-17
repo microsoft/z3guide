@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (> (+ x y) 10)\n  (<= x 2)\n  (>= x (- 2))\n  (<= y 2)\n  (>= y (- 2))\n  :precision under :depth 1)\n)\n","error":"","status":"z3-ran","hash":"eff60b177696e2f82bb8ce88d04dc2e8029772f8"}

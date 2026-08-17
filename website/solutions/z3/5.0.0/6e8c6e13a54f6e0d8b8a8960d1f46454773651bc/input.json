@@ -1,0 +1,1 @@
+{"input":"(define-funs-rec \r\n   ((ping ((x Int) (y Bool)) Int)\r\n    (pong ((a Int) (b Bool)) Int))\r\n\r\n   ((if y (pong (+ x 1) (not y)) (- x 1))\r\n    (if b (ping (- a 1) (not b)) a)))\r\n\r\n(declare-const x Int)\r\n(assert (> x 0))\r\n(assert (> (ping x true) x))\r\n(check-sat)\r\n(get-model)"}

@@ -6,7 +6,7 @@ import Container from "@theme/CodeBlock/Container";
 import CodeEditor from "./CodeBlock";
 import { CodeEditor as MonacoEditor } from "./CodeEditor";
 import codeBlockContainerStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Container/styles.module.css";
-import codeBlockContentStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css";
+import codeBlockLayoutStyles from "@docusaurus/theme-classic/src/theme/CodeBlock/Layout/styles.module.css";
 import styles from "./styles.module.css";
 
 import { Prism } from "prism-react-renderer";
@@ -244,7 +244,7 @@ function CustomCodeEditor(props: {
                     onChange={onChange}
                     readonly={readonly}
                     githubRepo={githubRepo}
-                    className={codeBlockContentStyles.codeBlockContent}
+                    className={codeBlockLayoutStyles.codeBlockContent}
                 />
             ) : (
                 <CodeEditor
@@ -252,7 +252,7 @@ function CustomCodeEditor(props: {
                     theme={prismTheme}
                     disabled={!editable}
                     key={String(isBrowser)}
-                    className={codeBlockContentStyles.codeBlockContent}
+                    className={codeBlockLayoutStyles.codeBlockContent}
                     onChange={onChange}
                     language={language}
                     prism={Prism}

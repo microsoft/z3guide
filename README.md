@@ -187,6 +187,21 @@ After done, make sure the field `dependencies.z3-solver` in `website/package.jso
 ```
 So that we make sure that `yarn install` always picks up the _exact_ version of `z3-solver` that you mean for the website to run on.
 
+## Updating Parameter Documentation
+
+The `Update Z3 parameter documentation` workflow checks the latest published
+Z3 release daily and opens a pull request when the generated parameter,
+tactic, or simplifier reference pages change. It can also be run manually
+with a specific Z3 release tag; use the `force` input to regenerate pages that
+already reference that release.
+
+These pages are generated from the matching Z3 release source and executable.
+Do not edit them manually:
+
+- `website/docs-programming/04 - Parameters.md`
+- `website/docs-smtlib/03 - strategies/06 - summary.md`
+- `website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md`
+
 ## Microsoft Open Source Code of Conduct
 
 This project is hosted at https://github.com/microsoft/z3guide/.

@@ -130,14 +130,12 @@ The instances are hosted under `website/docs-smtlib` and `website/docs-programmi
   and 
 
   ~~~
-  ```z3-python
-  # some z3-python code
+  ```z3-py
+  # some interactive z3-py code
   ```
   ~~~
 
-  and the flags of `no-build` and `ignore-errors` remain applicable to these code blocks.
-
-  Note that we currently support output rendering and code editing for Z3-SMTLIB and Z3-JavaScript code snippets, with similar support for Z3-Python coming soon.
+  Z3-Python snippets marked `z3-py` support output rendering and code editing. Use `z3-python` for read-only snippets that rely on surrounding snippets or browser-unsupported features.
 
 - Programming Z3 in other language bindings is not supported at the moment.
 

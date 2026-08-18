@@ -17,12 +17,7 @@ The source code of Z3Py is available in the Z3 distribution, feel free to modify
 [The following guide on _Programming Z3_ is available as a reference](https://z3prover.github.io/papers/programmingz3.html)
 :::
 
-In the present form this tutorial is static. You can run the examples locally by copying the text into a python interpreter where you have imported z3.
-
-<!---
-Be sure to follow along with the examples by clicking the **load in editor** link in the
-corner. See what Z3Py says, try your own scripts, and experiment!
---->
+You can run and modify the examples locally in your browser. See what Z3Py says, try your own scripts, and experiment!
 
 ### Using Z3Py Locally
 
@@ -658,7 +653,7 @@ solve(equations + problem)
 Ben Rushin is waiting at a stoplight. When it finally turns green, Ben accelerated from rest at a rate of
 a `6.00` m/s<sup>2</sup> for a time of `4.10` seconds. Determine the displacement of Ben's car during this time period.
 
-```z3-python
+```z3-py
 d, a, t, v_i, v_f = Reals('d a t v__i v__f')
 
 equations = [
@@ -733,7 +728,7 @@ Dogs cost 15 dollars, cats cost 1 dollar, and mice cost 25 cents each.
 You have to buy at least one of each.
 How many of each should you buy?
 
-```z3-python
+```z3-py
 # Create 3 integer variables
 dog, cat, mouse = Ints('dog cat mouse')
 solve(dog >= 1,   # at least one dog
@@ -761,7 +756,7 @@ by modifying the matrix `instance`. This example makes heavy use of
 [list comprehensions](http://docs.python.org/tutorial/datastructures.html#list-comprehensions)
 available in the Python programming language.
 
-```z3-python
+```z3-py
 # 9x9 matrix of integer variables
 X = [ [ Int("x_%s_%s" % (i+1, j+1)) for j in range(9) ] 
       for i in range(9) ]
@@ -817,7 +812,7 @@ The eight queens puzzle is the problem of placing eight chess queens on an 8x8 c
 Thus, a solution requires that no two queens share the same row, column, or diagonal.
 
 
-```z3-python
+```z3-py
 # We know each queen must be in a different row.
 # So, we represent each queen by a single integer: the column position
 Q = [ Int('Q_%i' % (i + 1)) for i in range(8) ]
@@ -857,7 +852,7 @@ package. This variable is true if the package must be in the system. If package 
 packages `b`, `c` and `z`, we write:
 
 
-```z3-py
+```python
 DependsOn(a, [b, c, z])
 ```
 
@@ -874,7 +869,7 @@ def DependsOn(pack, deps):
 Thus, `DependsOn(a, [b, c, z])` generates the constraint
 
 
-```z3-py
+```python
 And(Implies(a, b), Implies(a, c), Implies(a, z))
 ```
 
@@ -930,7 +925,7 @@ write a function `install_check` that returns a list of packages that must be in
 in the system. The function `Conflict` is also modified. It can now receive multiple
 arguments.
 
-```z3-python
+```z3-py
 def DependsOn(pack, deps):
     if is_expr(deps):
         return Implies(pack, deps)
@@ -974,5 +969,3 @@ install_check(DependsOn(a, [b, c, z]),
               Conflict(d, g),
               a, z, g)
 ```
-
-

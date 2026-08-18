@@ -30,6 +30,9 @@ jobs:
           # Generate a summary for the job.
           # reference: https://github.blog/news-insights/product-news/supercharging-github-actions-with-job-summaries/
           scripts/check-z3py-docs.py \
-            "website/docs-programming/02 - Z3 Python - Readonly" \
+            "website/docs-programming/02 - Z3 Python" \
             --recursive \
+            >> $GITHUB_STEP_SUMMARY
+          scripts/check-z3py-docs.py \
+            "website/docs-programming/03 - Example Programs/01 - Cores and Satisfying Subsets.md" \
             >> $GITHUB_STEP_SUMMARY

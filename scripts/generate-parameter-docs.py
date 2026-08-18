@@ -36,7 +36,8 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="\n") as output:
         output.write("Z3 Options\n\n")
-        output.write("".join(sections))
+        output.write(sections[0].lstrip("\n"))
+        output.write("".join(sections[1:]))
 
 
 if __name__ == "__main__":

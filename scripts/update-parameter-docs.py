@@ -65,6 +65,7 @@ def main() -> None:
         content = source.read_text(encoding="utf-8").replace("\r\n", "\n")
         if not content.strip():
             raise ValueError(f"Generated document is empty: {source}")
+        content = "\n".join(line.rstrip() for line in content.splitlines()) + "\n"
 
         destination = args.repository_root / relative_destination
         destination.parent.mkdir(parents=True, exist_ok=True)

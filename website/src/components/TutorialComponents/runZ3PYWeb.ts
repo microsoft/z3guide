@@ -1,6 +1,6 @@
 let _loadPyodideScriptPromise: Promise<any> | null = null;
 const PYODIDE_VERSION = "314.0.4";
-const Z3_SOLVER_VERSION = "5.1.0.0";
+const Z3_SOLVER_VERSION = "5.0.0.0";
 
 async function loadPyodideScript(): Promise<any> {
   return new Promise((resolve, reject) => {

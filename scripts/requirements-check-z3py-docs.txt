@@ -1,2 +1,2 @@
 mistletoe==1.6.0
-z3-solver==5.1.0.0
+z3-solver==5.0.0.0

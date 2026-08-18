@@ -40,7 +40,7 @@ as hash tables as the default way to represent finite relations.
 The first example illustrates how to declare relations, rules and
 how to pose queries.
 
-```z3-python
+```z3-py
 fp = Fixedpoint()
 
 a, b, c = Bools('a b c')
@@ -113,7 +113,7 @@ provides information of how a fact was derived. The explanation
 is an expression whose function symbols are Horn rules and facts used
 in the derivation.
 
-```z3-python
+```z3-py
 
 fp = Fixedpoint()
 
@@ -135,7 +135,7 @@ print (fp.get_answer())
 Relations can take arguments. We illustrate relations with arguments
 using edges and paths in a graph.
 
-```z3-python
+```z3-py
 fp = Fixedpoint()
 fp.set(engine='datalog')
 
@@ -194,7 +194,7 @@ for each procedure and adding an additional output variable to the predicate.
 Nested calls to procedures within a body can be encoded as a conjunction
 of relations.
 
-```z3-python
+```z3-py
 mc = Function('mc', IntSort(), IntSort(), BoolSort())
 n, m, p = Ints('n m p')
 
@@ -229,7 +229,7 @@ guarded transitions as recursive Horn clauses. But it is fairly easy to write a 
 from guarded transition systems to recursive Horn clauses. We illustrate a translator
 and Lamport's two process Bakery algorithm in the next example.
 
-```z3-python
+```z3-py
 set_option(relevancy=0,verbose=1)
 
 def flatten(l):
@@ -362,7 +362,7 @@ evaluator, you should partial evaluate it to help verification).
 We use algebraic data-types to encode the current closure that is
 being evaluated.
 
-```z3-python
+```z3-py
 
 # let max max2 x y z = max2 (max2 x y) z
 # let f x y = if x > y then x else y
@@ -411,4 +411,3 @@ print(fp.query(And(
 )))
 print (fp.get_answer())
 ```
-

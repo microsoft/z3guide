@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(assert (exists ((z Int)) (and (<= x (* 2 z)) (<= (* 3 z) y))))\n(apply qe)"}

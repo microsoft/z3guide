@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\n(declare-const y Real)\n(assert (> (* x x) (* y x)))\n(assert (> x 0))\n(assert (< y 1))\n(apply qfnra-nlsat)"}

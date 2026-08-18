@@ -1,10 +1,12 @@
 let _loadPyodideScriptPromise: Promise<any> | null = null;
+const PYODIDE_VERSION = "314.0.4";
+const Z3_SOLVER_VERSION = "5.1.0.0";
 
 async function loadPyodideScript(): Promise<any> {
   return new Promise((resolve, reject) => {
     console.log(`loading pyodide`);
     const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
+    script.src = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`;
     script.onload = () => resolve(globalThis.loadPyodide);
     script.onerror = (e) => {
       console.error(e);
@@ -24,9 +26,7 @@ async function loadZ3Pyodide() {
     await pyodide.loadPackage("micropip");
     const micropip = pyodide.pyimport("micropip");
     console.log(`loading z3`);
-    await micropip.install(
-      "https://microsoft.github.io/z3guide/z3_solver-4.13.4.0-py3-none-pyodide_2024_0_wasm32.whl"
-    );
+    await micropip.install(`z3-solver==${Z3_SOLVER_VERSION}`);
     console.log(`pyodide ready`);
     resolve(pyodide);
   }));

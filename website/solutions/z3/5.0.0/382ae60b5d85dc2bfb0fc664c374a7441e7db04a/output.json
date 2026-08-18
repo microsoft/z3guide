@@ -1,0 +1,1 @@
+{"output":"sat\n(objectives\n ((+ x y) 2)\n)\n","error":"","status":"z3-ran","hash":"382ae60b5d85dc2bfb0fc664c374a7441e7db04a"}

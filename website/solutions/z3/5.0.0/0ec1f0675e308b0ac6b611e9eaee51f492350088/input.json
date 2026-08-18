@@ -1,0 +1,1 @@
+{"input":"(declare-const x Bool)\r\n(assert-soft (not x))\r\n(check-sat)"}

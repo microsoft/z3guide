@@ -1,0 +1,1 @@
+{"input":"(set-option :smt.string_solver z3str3) ; set the string solver to be the z3str3 solver\r\n(set-option :smt.string_solver seq)    ; set the string solver to be the seq solver (default)"}

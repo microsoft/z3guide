@@ -1,0 +1,1 @@
+{"input":"(set-option :smt.mbqi true)\r\n(declare-fun f (Int Int) Int)\r\n(declare-const a Int)\r\n(declare-const b Int)\r\n\r\n(assert (forall ((x Int)) (= (f x x) (+ x a))))\r\n\r\n(assert (< (f a b) a))\r\n(assert (< a 0))\r\n(check-sat)\r\n(get-model)\r\n\r\n(echo \"evaluating (f (+ a 10) 20)...\")\r\n(eval (f (+ a 10) 20))"}

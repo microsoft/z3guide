@@ -1,0 +1,1 @@
+{"input":"(declare-fun p ((_ BitVec 2)) Bool)\r\n(assert (forall ((x (_ BitVec 2))) (p x)))\r\n(apply elim-small-bv)"}

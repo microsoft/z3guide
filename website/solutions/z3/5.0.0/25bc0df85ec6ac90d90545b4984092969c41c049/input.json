@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int Int) Bool)\r\n(declare-const x Int)\r\n(assert (f 1 2))\r\n(assert (f 1 3))\r\n(assert (f 2 4))\r\n(assert (f 2 5))\r\n(assert (f 1 6))\r\n(assert (f 1 7))\r\n(assert (f 1 x))\r\n(apply reduce-args)"}

@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(assert (<= 0 x))\n(assert (<= x 5))\n(assert (<= 0 y))\n(assert (<= y 5))\n(assert (>= (+ (* 2 x) y) 5))\n(apply lia2pb)"}

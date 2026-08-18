@@ -1,0 +1,1 @@
+{"input":"  (declare-const x Int)\r\n  (assert (not (or (> x 0) (< x 0))))\r\n  (apply nnf)"}

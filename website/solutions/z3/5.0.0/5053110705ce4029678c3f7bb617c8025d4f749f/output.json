@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun b () String\n    \"\")\n  (define-fun a () String\n    \"b\")\n  (define-fun c () String\n    \"b\")\n)\n","error":"","status":"z3-ran","hash":"5053110705ce4029678c3f7bb617c8025d4f749f"}

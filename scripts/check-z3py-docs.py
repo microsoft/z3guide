@@ -5,9 +5,9 @@
 #
 # The script works as follows:
 # - it enumerates all the `.md` files in a directory taken from command line, or
-#   in `website/docs-programming/02 - Z3 Python - Readonly` if none is given;
+#   in `website/docs-programming/02 - Z3 Python` if none is given;
 # - for each of them, it looks for code sections, selecting those whose syntax
-#   highlighting is set as `z3-python` (let's call them "z3 snippets"), and
+#   highlighting is set as `z3-py` (let's call them "z3 snippets"), and
 #   ignoring the others;
 # - since each z3 snippet implicitly assumes that the user has imported the
 #   whole z3 namespace, it prepends a `from z3 import *` statement to each
@@ -41,7 +41,7 @@ from execute_z3py_docs import OutputMode, main
 
 logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).parent.resolve()
-DEFAULT_BASE_PATH = (SCRIPT_DIR / ".." / "website" / "docs-programming" / "02 - Z3 Python - Readonly").resolve()
+DEFAULT_BASE_PATH = (SCRIPT_DIR / ".." / "website" / "docs-programming" / "02 - Z3 Python").resolve()
 
 
 def _parse_args(argv: list[str]) -> argparse.Namespace:
@@ -50,7 +50,7 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     _parse_args(sys.argv[1:])
     """
     parser = argparse.ArgumentParser(
-        description="Parses a single Markdown file, or a directory of files, extracts z3-python snippets and executes them",
+        description="Parses a single Markdown file, or a directory of files, extracts z3-py snippets and executes them",
     )
     parser.add_argument(
         "-r",

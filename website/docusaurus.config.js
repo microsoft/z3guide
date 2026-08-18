@@ -56,7 +56,11 @@ export default async function createConfig() {
         staticDirectories: ["static"],
         favicon: "/img/favicon.ico",
         onBrokenLinks: "ignore",
-        onBrokenMarkdownLinks: "warn",
+        markdown: {
+            hooks: {
+                onBrokenMarkdownLinks: "warn",
+            },
+        },
 
         // GitHub pages deployment config.
         // If you aren't using GitHub pages, you don't need these.

@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
-import clsx from "clsx";
 import Editor, { useMonaco } from "@monaco-editor/react";
-import codeBlockContentStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Content/styles.module.css';
-import CopyButton from '@theme/CodeBlock/CopyButton';
+import codeBlockButtonStyles from '@docusaurus/theme-classic/src/theme/CodeBlock/Buttons/styles.module.css';
+import CopyButton from './CopyButton';
 import { useEffect } from "react";
 
 
@@ -17,10 +16,7 @@ export function GithubDiscussionBtn(props: { repo: string }) {
             type="button"
             aria-label="Go to GitHub discussion"
             title="Go to GitHub discussion"
-            className={clsx(
-                'clean-btn',
-                codeBlockContentStyles.codeButton
-            )}
+            className="clean-btn"
             onClick={openInNewTab}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-left" viewBox="0 0 16 16">
                 <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
@@ -36,10 +32,7 @@ export function ResetBtn(props: { resetCode: () => void }) {
             type="button"
             aria-label="Reset code"
             title="Reset code"
-            className={clsx(
-                'clean-btn',
-                codeBlockContentStyles.codeButton
-            )}
+            className="clean-btn"
             onClick={resetCode}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
@@ -56,10 +49,7 @@ export function UndoBtn(props: { undoCode: () => void }) {
             type="button"
             aria-label="Undo the reset"
             title="Undo the reset"
-            className={clsx(
-                'clean-btn',
-                codeBlockContentStyles.codeButton,
-            )}
+            className="clean-btn"
             style={{ borderColor: "var(--custom-editor-reset-color)" }}
             onClick={undoCode}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--custom-editor-reset-color)" strokeWidth="3" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
@@ -138,8 +128,8 @@ export function CodeEditor(props: {
                 onChange={handleEditorChange}
                 options={options}
             />
-            <div className={codeBlockContentStyles.buttonGroup}>
-                <CopyButton className={codeBlockContentStyles.codeButton} code={code} />
+            <div className={codeBlockButtonStyles.buttonGroup}>
+                <CopyButton className="clean-btn" code={code} />
                 {!props.readonly && !allowUndo && <ResetBtn resetCode={onClickReset} />}
                 {!props.readonly && allowUndo && <UndoBtn undoCode={onClickUndo} />}
                 {props.githubRepo && <GithubDiscussionBtn repo={props.githubRepo} />}

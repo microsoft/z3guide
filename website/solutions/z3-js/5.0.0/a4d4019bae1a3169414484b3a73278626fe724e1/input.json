@@ -1,0 +1,1 @@
+{"input":"const sort = Z3.Int.sort();\r\nconst x = Z3.Int.const('x');\r\nconst y = Z3.Int.const('y');\r\nconst g = Z3.Function.declare('g', sort, sort);\r\nconst conjecture = Z3.Implies(x.eq(y), g.call(x).eq(g.call(y)));\r\nZ3.solve(Z3.Not(conjecture));"}

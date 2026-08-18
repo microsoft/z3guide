@@ -30,7 +30,7 @@ let z3Path = path.join(__dirname, '../..', z3Name);
 (function addZ3(dirPath, dirName) {
   for (let ent of fs.readdirSync(dirPath, { withFileTypes: true })) {
     let entPath = path.join(dirPath, ent.name);
-    let entName = path.join(dirName, ent.name);
+    let entName = path.posix.join(dirName, ent.name);
     if (ent.isFile() && ent.name.endsWith('.d.ts')) {
       let contents = fs.readFileSync(entPath, 'utf8');
       files[entName] = dtsMinfier.minify(contents);

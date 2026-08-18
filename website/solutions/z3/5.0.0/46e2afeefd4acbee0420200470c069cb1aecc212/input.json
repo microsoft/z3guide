@@ -1,0 +1,1 @@
+{"input":"(declare-fun f (Int) Int)\r\n(declare-fun a () Int) ; a is a constant\r\n(declare-const b Int) ; syntax sugar for (declare-fun b () Int)\r\n(assert (< a 20))\r\n(assert (< b a))\r\n(assert (= (f 10) 1))\r\n(check-sat)\r\n(get-model)"}

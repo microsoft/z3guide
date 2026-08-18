@@ -1,0 +1,1 @@
+{"output":"sat\n(\n  (define-fun X () (_ FloatingPoint 11 53)\n    (fp #b0 #b00000000001 #x0000000000000))\n)\n","error":"","status":"z3-ran","hash":"d3251aa167fe0aee9500a94c8d2a1d13d53becc3"}

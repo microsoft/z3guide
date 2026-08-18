@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(declare-const u Int)\n(assert (<= 0 x))\n(assert (<= 0 y))\n(assert (<= 0 z))\n(assert (<= 0 u))\n(assert (<= x 1))\n(assert (<= y 1))\n(assert (<= z 1))\n(assert (<= u 1))\n(assert (>= (+ (* 3 x) (* 2 y) (* 2 z) (* 2 u)) 4))\n(apply pb2bv)"}

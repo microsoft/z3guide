@@ -1,0 +1,1 @@
+{"input":"(echo \"starting Z3...\")\n(declare-const a Int)\n(declare-fun f (Int Bool) Int)"}

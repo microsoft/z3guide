@@ -1,0 +1,1 @@
+{"input":"(declare-const p Bool)\n(declare-const q Bool)\n(declare-const x Int)\n(assert (or p q (= x 0)))\n(assert (or (not p) q (= x 3)))\n(assert (or p (not q) (= x 6)))\n(assert (or (not p) (not q) (= x 9)))\n(apply recover-01)"}

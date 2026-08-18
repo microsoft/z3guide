@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\n(declare-const y Int)\n\n(assert (> x (+ y 1)))\n\n(check-sat-using smt)\n(get-model)"}

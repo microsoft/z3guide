@@ -1,0 +1,1 @@
+{"input":"  (declare-const x Int)\n  (declare-const y Int)\n  (assert (> x (+ x y)))\n  (apply simplify)"}

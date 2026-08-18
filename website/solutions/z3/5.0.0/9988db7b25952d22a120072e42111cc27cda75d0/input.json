@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n(declare-fun p (Int) Bool)    \r\n(assert (>= (+ y (+ x y)) y))\r\n(assert (p y))\r\n(apply elim-uncnstr)\r\n(assert (p (+ x y)))\r\n(apply elim-uncnstr)"}

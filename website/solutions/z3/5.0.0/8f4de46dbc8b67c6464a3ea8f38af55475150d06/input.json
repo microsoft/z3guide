@@ -1,0 +1,1 @@
+{"input":"(declare-const x Int)\r\n(declare-const y Int)\r\n(declare-const a1 (Array Int Int))\r\n(declare-const a2 (Array Int Int))\r\n(assert (= (select a1 x) x))\r\n(assert (= (store a1 x y) a1))\r\n(check-sat)\r\n(get-model)"}

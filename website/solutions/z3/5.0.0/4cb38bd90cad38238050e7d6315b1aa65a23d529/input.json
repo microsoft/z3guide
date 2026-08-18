@@ -1,0 +1,1 @@
+{"input":"(declare-fun x () Int)\r\n(assert (<= x 1))\r\n(assert (>= x 0))\r\n(minimize x)\r\n(check-sat)"}

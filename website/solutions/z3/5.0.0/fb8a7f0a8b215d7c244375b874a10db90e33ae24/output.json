@@ -1,0 +1,1 @@
+{"output":"(goals\n(goal\n  (P u)\n  (P v)\n  (<= (* (- 1.0) u) (- 5.0))\n  (<= (+ v (* (- 1.0) u)) 0.0)\n  :precision precise :depth 2)\n)\n","error":"","status":"z3-ran","hash":"fb8a7f0a8b215d7c244375b874a10db90e33ae24"}

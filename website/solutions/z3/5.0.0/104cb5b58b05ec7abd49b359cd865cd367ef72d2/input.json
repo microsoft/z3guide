@@ -1,0 +1,1 @@
+{"input":"  (declare-const p Bool)\r\n  (declare-const q Bool)\r\n  (declare-const r Bool)\r\n  (declare-fun f (Bool) Bool)\r\n  (assert p)\r\n  (assert (or (f p) (and r (or (not r) q))))\r\n  (apply ctx-simplify)"}

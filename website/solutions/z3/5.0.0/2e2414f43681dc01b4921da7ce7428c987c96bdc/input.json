@@ -1,0 +1,1 @@
+{"input":"(declare-const x Real)\n(declare-const y Real)\n\n(assert (> x 0.0))\n(assert (> y 0.0))\n(assert (= x (+ y 2.0)))\n\n(apply (then simplify solve-eqs))"}

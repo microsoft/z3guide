@@ -1,0 +1,1 @@
+{"input":"(declare-const a Int)\r\n(declare-fun f (Int Bool) Int)\r\n(assert (< a 10))\r\n(assert (> (f a true) 100))\r\n(assert (> (f a false) 150))\r\n(check-sat)\r\n(get-model)"}

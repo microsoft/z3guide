@@ -1,0 +1,1 @@
+{"input":"; defining my own division operator where x0.0 == 0.0 for every x.\r\n(define-fun mydiv ((x Real) (y Real)) Real\r\n  (if (not (= y 0.0))\r\n      (/ x y)\r\n      0.0))\r\n(declare-const a Real)\r\n(declare-const b Real)\r\n(assert (= (mydiv a b) 1.0))\r\n(assert (= b 0.0))\r\n(check-sat)"}

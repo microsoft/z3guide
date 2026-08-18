@@ -1,0 +1,1 @@
+{"input":"(declare-const a Bool)\r\n(declare-const b Bool)\r\n(declare-const c Bool)\r\n\r\n(assert (= a (= b c)))\r\n(apply tseitin-cnf)"}

@@ -23,7 +23,7 @@ def _z3_snippets_from_ast(mistletoe_ast: dict) -> Generator[tuple[int, str]]:
     for child in mistletoe_ast["children"]:
         if child["type"] != "CodeFence":
             continue
-        if child["language"] != "z3-python":
+        if child["language"] != "z3-py":
             continue
         if len(child["children"]) != 1:
             msg = f"The list of children of the node should contain a single element instead of {len(child['children'])}: {child['children']}"

@@ -202,6 +202,11 @@ Do not edit them manually:
 - `website/docs-smtlib/03 - strategies/06 - summary.md`
 - `website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md`
 
+The workflow requires a `PARAMETER_DOCS_TOKEN` repository secret because the
+organization policy prevents `GITHUB_TOKEN` from creating pull requests. Use a
+fine-grained token with Contents and Pull requests read/write access to this
+repository.
+
 ## Microsoft Open Source Code of Conduct
 
 This project is hosted at https://github.com/microsoft/z3guide/.

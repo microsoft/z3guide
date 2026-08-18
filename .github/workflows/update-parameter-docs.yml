@@ -16,8 +16,7 @@ on:
         type: boolean
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
   group: update-z3-parameter-documentation
@@ -112,6 +111,7 @@ jobs:
         if: steps.current.outputs.update_required == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.PARAMETER_DOCS_TOKEN }}
           add-paths: |
             website/docs-programming/04 - Parameters.md
             website/docs-smtlib/03 - strategies/06 - summary.md

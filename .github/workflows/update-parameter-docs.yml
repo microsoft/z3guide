@@ -107,11 +107,23 @@ jobs:
             z3-source/doc/api/md \
             --release-tag "$RELEASE_TAG"
 
+      - name: Mint z3guide documentation bot token
+        if: steps.current.outputs.update_required == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.Z3GUIDE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.Z3GUIDE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: z3guide
+          permission-contents: write
+          permission-pull-requests: write
+
       - name: Create parameter update pull request
         if: steps.current.outputs.update_required == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.PARAMETER_DOCS_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           add-paths: |
             website/docs-programming/04 - Parameters.md
             website/docs-smtlib/03 - strategies/06 - summary.md

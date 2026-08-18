@@ -202,10 +202,12 @@ Do not edit them manually:
 - `website/docs-smtlib/03 - strategies/06 - summary.md`
 - `website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md`
 
-The workflow requires a `PARAMETER_DOCS_TOKEN` repository secret because the
-organization policy prevents `GITHUB_TOKEN` from creating pull requests. Use a
-fine-grained token with Contents and Pull requests read/write access to this
-repository.
+The workflow uses a GitHub App because the organization policy prevents
+`GITHUB_TOKEN` from creating pull requests. Install the App on this repository
+with Contents and Pull requests read/write permissions, then configure:
+
+- repository variable `Z3GUIDE_APP_CLIENT_ID`
+- repository secret `Z3GUIDE_APP_PRIVATE_KEY`
 
 ## Microsoft Open Source Code of Conduct
 

@@ -1,0 +1,140 @@
+name: Update Z3 parameter documentation
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Z3 release tag to import, or leave empty for the latest release
+        required: false
+        type: string
+      force:
+        description: Regenerate pages even if they already reference this release
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-z3-parameter-documentation
+  cancel-in-progress: false
+
+jobs:
+  update-parameters:
+    name: Update parameter documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout z3guide
+        uses: actions/checkout@v4
+
+      - name: Resolve Z3 release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_TAG: ${{ inputs.release_tag }}
+        run: |
+          if [[ -n "$REQUESTED_TAG" ]]; then
+            release_tag="$REQUESTED_TAG"
+          else
+            release_tag="$(gh release view --repo Z3Prover/z3 --json tagName --jq .tagName)"
+          fi
+          echo "release_tag=$release_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether the release is current
+        id: current
+        env:
+          FORCE_UPDATE: ${{ inputs.force }}
+          RELEASE_TAG: ${{ steps.release.outputs.release_tag }}
+        run: |
+          notice="Generated from Z3Prover/z3 release $RELEASE_TAG."
+          if [[ "$FORCE_UPDATE" == "true" ]] ||
+             ! grep -Fq "$notice" "website/docs-programming/04 - Parameters.md" ||
+             ! grep -Fq "$notice" "website/docs-smtlib/03 - strategies/06 - summary.md" ||
+             ! grep -Fq "$notice" "website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md"; then
+            echo "update_required=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "update_required=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout Z3 release sources
+        if: steps.current.outputs.update_required == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: Z3Prover/z3
+          ref: ${{ steps.release.outputs.release_tag }}
+          path: z3-source
+
+      - name: Download released Z3 executable
+        if: steps.current.outputs.update_required == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.release_tag }}
+        run: |
+          gh release download "$RELEASE_TAG" \
+            --repo Z3Prover/z3 \
+            --pattern "z3-*-x64-glibc-*.zip" \
+            --dir "$RUNNER_TEMP"
+
+      - name: Generate parameter documentation
+        if: steps.current.outputs.update_required == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/z3-binary" z3-source/build
+          unzip -q "$RUNNER_TEMP"/z3-*-x64-glibc-*.zip \
+            -d "$RUNNER_TEMP/z3-binary"
+          z3_executable="$(find "$RUNNER_TEMP/z3-binary" -type f -path "*/bin/z3" -print -quit)"
+          test -n "$z3_executable"
+          z3_directory="$(dirname "$z3_executable")"
+          install -m 755 "$z3_executable" z3-source/build/z3
+          install -m 755 "$z3_directory/libz3.so" z3-source/build/libz3.so
+
+          python3 scripts/generate-parameter-docs.py \
+            z3-source/build/z3 \
+            z3-source/doc/api/md/Parameters.md
+          pushd z3-source/doc
+          python3 mk_tactic_doc.py
+          popd
+
+      - name: Update generated pages
+        if: steps.current.outputs.update_required == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.release_tag }}
+        run: |
+          python scripts/update-parameter-docs.py \
+            z3-source/doc/api/md \
+            --release-tag "$RELEASE_TAG"
+
+      - name: Mint z3guide documentation bot token
+        if: steps.current.outputs.update_required == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.Z3GUIDE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.Z3GUIDE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: z3guide
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Create parameter update pull request
+        if: steps.current.outputs.update_required == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          add-paths: |
+            website/docs-programming/04 - Parameters.md
+            website/docs-smtlib/03 - strategies/06 - summary.md
+            website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md
+          branch: automation/update-z3-parameters
+          commit-message: Update Z3 parameters for ${{ steps.release.outputs.release_tag }}
+          delete-branch: true
+          title: Update Z3 parameters for ${{ steps.release.outputs.release_tag }}
+          body: |
+            Updates the parameter reference from
+            [`${{ steps.release.outputs.release_tag }}`](https://github.com/Z3Prover/z3/releases/tag/${{ steps.release.outputs.release_tag }}).
+
+            The pages were generated from the matching release source and executable.
+            Tactic and simplifier content comes from `doc/mk_tactic_doc.py`.

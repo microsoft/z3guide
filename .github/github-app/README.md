@@ -337,12 +337,29 @@ Verified end to end by minting an installation access token and listing the
 repositories it grants — `total_count: 1`, `microsoft/z3guide` — which is the
 same path `actions/create-github-app-token` takes in the workflow.
 
+**Live and verified end to end.** [#258](https://github.com/microsoft/z3guide/pull/258)
+is merged, so the nightly run is active. A `workflow_dispatch` run on
+2026-08-20 ([32411177729](https://github.com/microsoft/z3guide/actions/runs/32411177729))
+passed both jobs and opened
+[#259](https://github.com/microsoft/z3guide/pull/259) as `app/z3-guide-app`,
+which is the whole chain working: App token minted, branch pushed, pull request
+authored by the App.
+
+The currency check named exactly the two stale pages and left the current one
+alone, as intended:
+
+```
+Regenerating because 'website/docs-smtlib/03 - strategies/06 - summary.md' does not reference z3-5.1.0.
+Regenerating because 'website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md' does not reference z3-5.1.0.
+```
+
 Outstanding:
 
-1. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
-   reaches `main`; scheduled workflows only run from the default branch. After
-   that the nightly run is live, and the first one will open a pull request
-   adding the `Generated from` markers to all three pages.
+1. Merge [#259](https://github.com/microsoft/z3guide/pull/259). It adds the
+   `Generated from` marker to `06` and `07` and picks up an upstream wording
+   fix. Once it lands, all three pages carry the marker and the check reports
+   *"All generated pages already reference z3-5.1.0; nothing to do."* — so the
+   job stops regenerating daily and only acts on a genuinely new Z3 release.
 
 > Merging the config-as-code request does **not** install the App by itself.
 > The in-repo installer workflow (`.github/workflows/enterprise-apps.yaml_ignore`)

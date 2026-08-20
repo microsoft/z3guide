@@ -142,6 +142,10 @@ changes**. A successful call also proves the private key matches the App.
 
 ### 2. Ask OSPO to move the App to the org
 
+> **Filed** as [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726).
+> Outstanding from this step: initiate the transfer at
+> <https://github.com/settings/apps/z3-guide-app/advanced>.
+
 Open a
 [**Transfer and configure a first-party GitHub App**](https://github.com/microsoft/github-operations/issues/new?template=transfer-and-configure-a-first-party-github-app.yml)
 issue on [`microsoft/github-operations`](https://github.com/microsoft/github-operations).
@@ -270,10 +274,13 @@ change.
 - **App ID:** `4662589`
 - **Client ID:** `Iv23li6lyE3PHafpr9qb`
 - **Private key:** generated; held outside the repository
+- **Permissions:** verified as `contents=write, metadata=read, pull_requests=write`
+- **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726)
 
-Outstanding: the registration currently reports **no permissions** (`GET /app`
-returns `{}`) — set Contents and Pull requests to *Read and write* at
-<https://github.com/settings/apps/z3-guide-app/permissions>. Then transfer the
-App to the org (step 2), request the installation (step 3), and set the
-repository variable and secret (step 4). Until step 4 the workflow stays green
-by skipping itself.
+Outstanding:
+
+1. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
+2. Open the install pull request (step 3) once the App is owned by the org.
+3. Set the repository variable and secret (step 4) **after** the install lands.
+
+Until step 4 the workflow stays green by skipping itself.

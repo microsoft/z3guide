@@ -1,5 +1,11 @@
 # OSPO request: move z3-guide-app to the organization
 
+> **Filed:** https://github.com/microsoft/github-operations/issues/1726
+> (2026-08-20). Kept here as the record of what was requested and why. The next
+> action is initiating the transfer from
+> <https://github.com/settings/apps/z3-guide-app/advanced>, as the ticket
+> instructs.
+
 Ready-to-submit answers for the
 [**Transfer and configure a first-party GitHub App**](https://github.com/microsoft/github-operations/issues/new?template=transfer-and-configure-a-first-party-github-app.yml)
 form on [`microsoft/github-operations`](https://github.com/microsoft/github-operations).

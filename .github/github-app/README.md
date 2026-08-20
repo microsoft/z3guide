@@ -191,10 +191,21 @@ effect.
 | Symptom | Cause |
 | --- | --- |
 | Workflow skipped with a "not configured" warning | `vars.Z3GUIDE_APP_CLIENT_ID` or `secrets.Z3GUIDE_APP_PRIVATE_KEY` is missing (step 4) |
+| `The 'client-id' … input must be set to a non-empty string` | the same missing variable/secret, on an older workflow without the preflight guard |
 | `Invalid GitHub App configuration — "url" wasn't supplied` when creating the App | you are signed out of github.com in that browser; GitHub drops the manifest on anonymous requests (step 1) |
-| `The 'client-id' … input must be set to a non-empty string` | same as above, on an older workflow without the preflight guard |
 | `401` / `Repository not found` | private key mismatch (rotate and re-set the secret), or the repository is not part of the installation (step 3) |
 | `GitHub Actions is not permitted to create or approve pull requests` | the PR step is using `GITHUB_TOKEN` instead of the App token |
+
+To tell a genuinely malformed manifest apart from a signed-out browser, inspect
+what the form would send instead of trusting the error text: open
+`create-app.html` and run this in the browser console.
+
+```js
+JSON.parse(new FormData(document.getElementById('f')).get('manifest'))
+```
+
+If it returns an object with a `url` field, the manifest is fine and the error
+is the missing session.
 
 ### Source of truth
 

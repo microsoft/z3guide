@@ -313,38 +313,40 @@ change.
 
 ## Current status
 
-**Created** on 2026-08-20 as `z3-guide-app`, owned by `@levnach`:
+**Live.** Created on 2026-08-20 as `z3-guide-app`, now owned by the `microsoft`
+org and installed on `microsoft/z3guide`.
 
 - **App ID:** `4662589`
 - **Client ID:** `Iv23li6lyE3PHafpr9qb`
 - **Private key:** generated; held outside the repository
-- **Permissions:** verified as `contents=write, metadata=read, pull_requests=write`
-- **Webhook:** none — verified with `GET /app/hook/config` and
-  `GET /app/hook/deliveries` both returning `404`
+- **Permissions:** `contents=write, metadata=read, pull_requests=write`
+- **Webhook:** none — `GET /app/hook/config` and `GET /app/hook/deliveries`
+  both return `404`
 - **Visibility:** public ("Any account") — required so OSPO's review bot can
-  resolve the App; verified with `GET /apps/z3-guide-app` returning `200`
-- **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726) — accepted; `GET /app` reports `owner: microsoft (Organization)`
-- **Install request:** [microsoft/github-operations#1727](https://github.com/microsoft/github-operations/pull/1727) — open; the review bot reports `Valid: 1 | Warnings: 0 | Invalid: 0`
+  resolve the App via `GET /apps/z3-guide-app`
+- **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726)
+  — accepted; `GET /app` reports `owner: microsoft (Organization)`
+- **Install request:** [microsoft/github-operations#1727](https://github.com/microsoft/github-operations/pull/1727)
+  — merged; review bot reported `Valid: 1 | Warnings: 0 | Invalid: 0`
+- **Installation:** id `155278905`, `repository_selection: selected`, covering
+  exactly one repository, `microsoft/z3guide`
+- **Credentials:** `Z3GUIDE_APP_CLIENT_ID` (variable) and
+  `Z3GUIDE_APP_PRIVATE_KEY` (secret) are set on `microsoft/z3guide`
+
+Verified end to end by minting an installation access token and listing the
+repositories it grants — `total_count: 1`, `microsoft/z3guide` — which is the
+same path `actions/create-github-app-token` takes in the workflow.
 
 Outstanding:
 
-1. OSPO's automation applies [#1727](https://github.com/microsoft/github-operations/pull/1727)
-   and installs the App on `microsoft/z3guide`. **Merging the pull request does
-   not install it immediately**: the in-repo installer workflow
-   (`.github/workflows/enterprise-apps.yaml_ignore`) is archived — *"FUNCTIONALITY
-   MOVED ELSEWHERE"* — so the install is applied asynchronously by OSPO's own
-   system and there is no public workflow run to watch. Poll for it with:
+1. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
+   reaches `main`; scheduled workflows only run from the default branch. After
+   that the nightly run is live, and the first one will open a pull request
+   adding the `Generated from` markers to all three pages.
 
-   ```bash
-   curl -s -o /dev/null -w '%{http_code}\n' \
-     -H "Authorization: Bearer $JWT" \
-     https://api.github.com/repos/microsoft/z3guide/installation
-   ```
-
-   `404` means not yet; `200` means installed. Prefer this over
-   `installations_count` from `GET /app`.
-2. Set the repository variable and secret (step 4) **after** that install lands.
-3. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
-   reaches `main`; scheduled workflows only run from the default branch.
-
-Until step 2 the workflow stays green by skipping itself.
+> Merging the config-as-code request does **not** install the App by itself.
+> The in-repo installer workflow (`.github/workflows/enterprise-apps.yaml_ignore`)
+> is archived — *"FUNCTIONALITY MOVED ELSEWHERE"* — so OSPO applies installs
+> asynchronously and there is no public workflow run to watch. Poll
+> `GET /repos/microsoft/z3guide/installation` (`404` not yet, `200` installed)
+> rather than `installations_count` from `GET /app`.

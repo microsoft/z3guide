@@ -179,9 +179,9 @@ live. Treat the pair as the test: both `404` means no webhook.
 
 ### 2. Ask OSPO to move the App to the org
 
-> **Filed** as [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726).
-> Outstanding from this step: initiate the transfer at
-> <https://github.com/settings/apps/z3-guide-app/advanced>.
+> **Done** — filed as
+> [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726)
+> and accepted; the App is now owned by the `microsoft` org.
 
 Open a
 [**Transfer and configure a first-party GitHub App**](https://github.com/microsoft/github-operations/issues/new?template=transfer-and-configure-a-first-party-github-app.yml)
@@ -206,6 +206,10 @@ After the ticket is filed,
 from App settings → **Advanced** → **Transfer ownership**.
 
 ### 3. Request the installation via config-as-code
+
+> **Opened** as [microsoft/github-operations#1727](https://github.com/microsoft/github-operations/pull/1727),
+> awaiting an OSPO merge. Their review bot reported
+> `Valid: 1 | Warnings: 0 | Invalid: 0`.
 
 `z3-guide-app.install.yml` already carries the real Client ID and App ID. Open a
 pull request on `microsoft/github-operations` adding it as
@@ -318,15 +322,16 @@ change.
   `GET /app/hook/deliveries` both returning `404`
 - **Visibility:** public ("Any account") — required so OSPO's review bot can
   resolve the App; verified with `GET /apps/z3-guide-app` returning `200`
-- **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726)
+- **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726) — accepted; `GET /app` reports `owner: microsoft (Organization)`
+- **Install request:** [microsoft/github-operations#1727](https://github.com/microsoft/github-operations/pull/1727) — open; the review bot reports `Valid: 1 | Warnings: 0 | Invalid: 0`
 
 Outstanding:
 
-1. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
-2. Open the install pull request (step 3) once the App is owned by the org.
-3. Set the repository variable and secret (step 4) **after** the install lands,
-   i.e. once `GET /app` reports `installations_count: 1`.
-4. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
+1. OSPO merges [#1727](https://github.com/microsoft/github-operations/pull/1727),
+   which installs the App on `microsoft/z3guide`. Confirm with `GET /app`
+   reporting `installations_count: 1`.
+2. Set the repository variable and secret (step 4) **after** that install lands.
+3. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
    reaches `main`; scheduled workflows only run from the default branch.
 
-Until step 3 the workflow stays green by skipping itself.
+Until step 2 the workflow stays green by skipping itself.

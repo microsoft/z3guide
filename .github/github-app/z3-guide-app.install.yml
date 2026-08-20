@@ -7,11 +7,10 @@
 # `repository_selection`, `repositories` and `expected_permissions` from it and
 # installs the App on the listed repos of the microsoft org.
 #
-# Prereqs before this PR is actionable:
-#   1. App created (done — App ID 4662589, owned by @levnach).
-#   2. App transferred to the target org via the microsoft/github-operations
-#      "Transfer and configure a first-party GitHub App" issue, and an App
-#      Manager team assigned.
+# Prereqs (both satisfied):
+#   1. App created (done — App ID 4662589).
+#   2. App transferred to the microsoft org (done — see
+#      microsoft/github-operations#1726).
 #
 # Why an App at all: the microsoft org forbids GITHUB_TOKEN from creating pull
 # requests, so the "Update Z3 parameter documentation" workflow cannot open its

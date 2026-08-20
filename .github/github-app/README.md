@@ -37,7 +37,17 @@ This mirrors `z3prover-ci-bot`, the App already doing the same job for
 | Pull requests | Read & write | open / update the parameter-update pull request |
 
 No Issues permission (the workflow has no issue fallback), no account or
-organization permissions, no webhook, private (single-account) visibility.
+organization permissions, no webhook.
+
+**Visibility must be public** ("Any account"). This is counter-intuitive for a
+single-repo automation identity, but OSPO's config-as-code review bot validates
+the App through `GET /apps/{slug}`
+([`src/review-pr.ts`](https://github.com/microsoft/github-operations/blob/main/src/review-pr.ts)),
+and that endpoint returns `404` for a private App — even to its own owner. A
+private App is rejected with *"The app slug could not be validated as a public
+GitHub App."* The already-approved `z3prover-ci-bot` is public for the same
+reason. Public only means other accounts *may* install it; every installation
+still requires that account's admin to approve, and the App carries no secrets.
 
 Installed on **one** repository: `microsoft/z3guide`.
 
@@ -90,7 +100,8 @@ Go to <https://github.com/settings/apps/new> and fill in:
   - **Pull requests** → Read and write
   - (Metadata → Read-only is added automatically)
 - **Subscribe to events:** none
-- **Where can this GitHub App be installed?** → **Only on this account**
+- **Where can this GitHub App be installed?** → **Any account** (see the
+  visibility note above; OSPO's review bot cannot see a private App)
 - Click **Create GitHub App**
 
 #### Option B — one-click manifest
@@ -263,6 +274,7 @@ effect.
 | `401` / `Repository not found` | private key mismatch (rotate and re-set the secret), or the repository is not part of the installation (step 3) |
 | `Resource not accessible by integration` | the App registration has no permissions; `GET /app` returns `{}` — set Contents and Pull requests to write and save (step 1) |
 | Failed `ping` deliveries under *Advanced → Recent Deliveries* | a webhook is active, usually with the Homepage URL pasted in as the Webhook URL; untick **Active** and clear the URL (step 1) |
+| OSPO PR bot: *"The app slug could not be validated as a public GitHub App"* | the App is private; `GET /apps/z3-guide-app` returns `404`. Use **Make public** under *Advanced* (step 1) |
 | `GitHub Actions is not permitted to create or approve pull requests` | the PR step is using `GITHUB_TOKEN` instead of the App token |
 
 To tell a genuinely malformed manifest apart from a signed-out browser, inspect
@@ -294,10 +306,14 @@ change.
 
 Outstanding:
 
-1. **Disable the webhook.** `GET /app/hook/config` currently returns
-   `https://github.com/microsoft/z3guide`, so the hook is active and every
-   delivery fails (403). Untick **Active** and clear the URL at
-   <https://github.com/settings/apps/z3-guide-app>, before the transfer.
+1. **Disable the webhook** and **make the App public**, both before the
+   transfer while you still control the settings:
+   - `GET /app/hook/config` currently returns `https://github.com/microsoft/z3guide`,
+     so the hook is active and every delivery fails (403). Untick **Active** and
+     clear the URL at <https://github.com/settings/apps/z3-guide-app>.
+   - `GET /apps/z3-guide-app` currently returns `404`, so OSPO's review bot
+     cannot see it. Use **Make public** under
+     <https://github.com/settings/apps/z3-guide-app/advanced>.
 2. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
 3. Open the install pull request (step 3) once the App is owned by the org.
 4. Set the repository variable and secret (step 4) **after** the install lands.

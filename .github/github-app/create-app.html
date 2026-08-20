@@ -27,7 +27,7 @@
       <li>Contents: <strong>Read &amp; write</strong> &mdash; push the <code>automation/update-z3-parameters</code> branch</li>
       <li>Pull requests: <strong>Read &amp; write</strong> &mdash; open/update the parameter-update pull request</li>
     </ul>
-    Account/org permissions: none. Issues: none. Webhook: disabled. Visibility: private (only on your account).
+    Account/org permissions: none. Issues: none. Webhook: disabled. Visibility: <strong>public</strong> ("Any account") &mdash; required by Microsoft OSPO's install automation, which validates the App through the public <code>GET /apps/{slug}</code> endpoint. Public only means other accounts <em>may</em> install it; each installation still needs that account's admin to approve.
   </div>
   <div class="warn">
     <strong>Sign in to github.com in <em>this browser</em> first.</strong>
@@ -51,7 +51,7 @@
         <strong>Client ID</strong> and the numeric <strong>App ID</strong>. You need both later.</li>
   </ol>
   <form id="f" action="https://github.com/settings/apps/new" method="post">
-    <input type="hidden" name="manifest" value='{"name":"z3-guide-app","url":"https://github.com/microsoft/z3guide","redirect_url":"https://github.com/settings/apps","description":"Least-privilege automation identity for microsoft/z3guide. Mints short-lived, per-run installation tokens so the Update Z3 parameter documentation workflow can push a branch and open a pull request with the regenerated parameter, tactic and simplifier reference pages. Needed because org policy prevents GITHUB_TOKEN from creating pull requests.","public":false,"default_events":[],"hook_attributes":{"active":false},"default_permissions":{"metadata":"read","contents":"write","pull_requests":"write"}}'>
+    <input type="hidden" name="manifest" value='{"name":"z3-guide-app","url":"https://github.com/microsoft/z3guide","redirect_url":"https://github.com/settings/apps","description":"Least-privilege automation identity for microsoft/z3guide. Mints short-lived, per-run installation tokens so the Update Z3 parameter documentation workflow can push a branch and open a pull request with the regenerated parameter, tactic and simplifier reference pages. Needed because org policy prevents GITHUB_TOKEN from creating pull requests.","public":true,"default_events":[],"hook_attributes":{"active":false},"default_permissions":{"metadata":"read","contents":"write","pull_requests":"write"}}'>
     <button type="submit">Create z3-guide-app on my account</button>
   </form>
 

@@ -3,7 +3,7 @@
   "url": "https://github.com/microsoft/z3guide",
   "redirect_url": "https://github.com/settings/apps",
   "description": "Least-privilege automation identity for microsoft/z3guide. Mints short-lived, per-run installation tokens so the 'Update Z3 parameter documentation' workflow can push a branch and open a pull request with the regenerated parameter, tactic and simplifier reference pages. Needed because org policy prevents GITHUB_TOKEN from creating pull requests.",
-  "public": false,
+  "public": true,
   "default_events": [],
   "hook_attributes": {
     "active": false

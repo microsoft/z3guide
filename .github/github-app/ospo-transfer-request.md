@@ -34,14 +34,14 @@ z3-guide-app
 microsoft
 ```
 
-> `microsoft` is the org that owns `z3guide`, so the App can stay private
-> ("Only on this account") after the transfer, exactly like `z3prover-ci-bot` in
-> the `Z3Prover` org. If OSPO instead routes this to `microsoftengineering` —
-> the destination they mandate for Apps created to work around reduced PAT
-> lifetimes — the App must first be switched to **Any account** under
-> *Advanced* in its settings, otherwise it cannot be installed on
-> `microsoft/z3guide` from a different owning org. The App Managers would also
-> need to join `microsoftengineering`.
+> `microsoft` is the org that owns `z3guide`, which keeps the App and the
+> repository it serves under one owner. The App is **public** ("Any account"),
+> not because it is meant for outside use but because OSPO's config-as-code
+> review bot resolves the App through `GET /apps/{slug}`, which returns `404`
+> for a private App — the already-approved `z3prover-ci-bot` is public for the
+> same reason. If OSPO would rather route this to `microsoftengineering` — the
+> destination the form calls out for Apps addressing reduced PAT lifetimes —
+> that also works; the App Managers would then need to join that org.
 
 **What type of app is this?**
 

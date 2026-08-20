@@ -23,13 +23,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # The secrets context cannot be read from a job-level `if`, so the App
+  # credentials are checked in a separate job and exposed as an output. Without
+  # the App the run can only fail at the token step (org policy blocks
+  # GITHUB_TOKEN from opening pull requests), so skip the expensive build
+  # instead of failing every night. See .github/github-app/README.md.
+  preflight:
+    name: Check GitHub App configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      app_configured: ${{ steps.check.outputs.app_configured }}
+    steps:
+      - name: Check that the z3-guide-app credentials are present
+        id: check
+        env:
+          APP_CLIENT_ID: ${{ vars.Z3GUIDE_APP_CLIENT_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.Z3GUIDE_APP_PRIVATE_KEY }}
+        run: |
+          if [[ -n "$APP_CLIENT_ID" && -n "$APP_PRIVATE_KEY" ]]; then
+            echo "app_configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "app_configured=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=z3-guide-app is not configured::Set the repository variable Z3GUIDE_APP_CLIENT_ID and the secret Z3GUIDE_APP_PRIVATE_KEY once the App is installed on this repository. See .github/github-app/README.md. Skipping the parameter documentation update."
+          fi
+
   update-parameters:
     name: Update parameter documentation
+    needs: preflight
+    if: needs.preflight.outputs.app_configured == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout z3guide
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Resolve Z3 release
         id: release
@@ -50,19 +77,36 @@ jobs:
           FORCE_UPDATE: ${{ inputs.force }}
           RELEASE_TAG: ${{ steps.release.outputs.release_tag }}
         run: |
+          set -euo pipefail
           notice="Generated from Z3Prover/z3 release $RELEASE_TAG."
-          if [[ "$FORCE_UPDATE" == "true" ]] ||
-             ! grep -Fq "$notice" "website/docs-programming/04 - Parameters.md" ||
-             ! grep -Fq "$notice" "website/docs-smtlib/03 - strategies/06 - summary.md" ||
-             ! grep -Fq "$notice" "website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md"; then
-            echo "update_required=true" >> "$GITHUB_OUTPUT"
+          # Every page written by scripts/update-parameter-docs.py carries the
+          # marker, so all of them are checked: a page that is missing it has
+          # not been regenerated for this release yet.
+          pages=(
+            "website/docs-programming/04 - Parameters.md"
+            "website/docs-smtlib/03 - strategies/06 - summary.md"
+            "website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md"
+          )
+          update_required=false
+          if [[ "$FORCE_UPDATE" == "true" ]]; then
+            echo "Regenerating because the force input was set."
+            update_required=true
           else
-            echo "update_required=false" >> "$GITHUB_OUTPUT"
+            for page in "${pages[@]}"; do
+              if ! grep -Fq "$notice" "$page"; then
+                echo "Regenerating because '$page' does not reference $RELEASE_TAG."
+                update_required=true
+              fi
+            done
           fi
+          if [[ "$update_required" == "false" ]]; then
+            echo "All generated pages already reference $RELEASE_TAG; nothing to do."
+          fi
+          echo "update_required=$update_required" >> "$GITHUB_OUTPUT"
 
       - name: Checkout Z3 release sources
         if: steps.current.outputs.update_required == 'true'
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Z3Prover/z3
           ref: ${{ steps.release.outputs.release_tag }}
@@ -107,10 +151,13 @@ jobs:
             z3-source/doc/api/md \
             --release-tag "$RELEASE_TAG"
 
-      - name: Mint z3guide documentation bot token
+      # Org policy prevents GITHUB_TOKEN from creating pull requests, so the PR
+      # is opened as the z3-guide-app App. The token is minted per run, is
+      # scoped to this repository only and expires after ~1 hour.
+      - name: Mint z3-guide-app token
         if: steps.current.outputs.update_required == 'true'
         id: app-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ vars.Z3GUIDE_APP_CLIENT_ID }}
           private-key: ${{ secrets.Z3GUIDE_APP_PRIVATE_KEY }}
@@ -121,7 +168,7 @@ jobs:
 
       - name: Create parameter update pull request
         if: steps.current.outputs.update_required == 'true'
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ steps.app-token.outputs.token }}
           add-paths: |

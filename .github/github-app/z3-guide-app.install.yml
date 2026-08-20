@@ -1,0 +1,28 @@
+# z3-guide-app — install request for the microsoft org.
+#
+# Submit this as a config-as-code pull request to microsoft/github-operations at path:
+#     apps/microsoft/z3-guide-app.yml
+#
+# The file name must match the App slug; OSPO's automation (src/index.ts) reads
+# `repository_selection`, `repositories` and `expected_permissions` from it and
+# installs the App on the listed repos of the microsoft org.
+#
+# Prereqs (both satisfied):
+#   1. App created (done — App ID 4662589).
+#   2. App transferred to the microsoft org (done — see
+#      microsoft/github-operations#1726).
+#
+# Why an App at all: the microsoft org forbids GITHUB_TOKEN from creating pull
+# requests, so the "Update Z3 parameter documentation" workflow cannot open its
+# regeneration PR with the built-in token. The App mints a short-lived,
+# per-run installation token instead of relying on a contributor-owned PAT
+# (fine-grained PATs expire after ~7 days and cannot be renewed via API).
+
+client_id: "Iv23li6lyE3PHafpr9qb" # z3-guide-app (App ID: 4662589)
+repository_selection: "selected"
+expected_permissions: >-
+  contents=write,
+  metadata=read,
+  pull_requests=write
+repositories:
+  - z3guide # microsoft/z3guide — pushes automation/update-z3-parameters and opens the PR

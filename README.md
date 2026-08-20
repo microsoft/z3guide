@@ -200,12 +200,18 @@ Do not edit them manually:
 - `website/docs-smtlib/03 - strategies/06 - summary.md`
 - `website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md`
 
-The workflow uses a GitHub App because the organization policy prevents
-`GITHUB_TOKEN` from creating pull requests. Install the App on this repository
-with Contents and Pull requests read/write permissions, then configure:
+The workflow opens that pull request as the `z3-guide-app` GitHub App,
+because organization policy prevents `GITHUB_TOKEN` from creating pull
+requests. The App needs Contents and Pull requests read/write permissions on
+this repository, and the workflow reads its credentials from:
 
 - repository variable `Z3GUIDE_APP_CLIENT_ID`
 - repository secret `Z3GUIDE_APP_PRIVATE_KEY`
+
+Until both are set the workflow skips itself with a warning instead of failing.
+[`.github/github-app/README.md`](.github/github-app/README.md) documents how to
+create the App, have Microsoft OSPO move it to the organization, install it on
+this repository, and rotate its key.
 
 ## Microsoft Open Source Code of Conduct
 

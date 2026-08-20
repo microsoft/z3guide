@@ -165,6 +165,11 @@ clear the URL, and save. Do this **before** the transfer in step 2 — once the
 App belongs to the org you may not be able to edit its settings until an org
 owner grants App-Manager rights.
 
+`GET /app/hook/config` reports only the stored configuration; it has no
+`active` field. `GET /app/hook/deliveries` is the complementary check — it
+returns `404` once the webhook is disabled, and lists deliveries while it is
+live. Treat the pair as the test: both `404` means no webhook.
+
 ### 2. Ask OSPO to move the App to the org
 
 > **Filed** as [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726).
@@ -302,22 +307,19 @@ change.
 - **Client ID:** `Iv23li6lyE3PHafpr9qb`
 - **Private key:** generated; held outside the repository
 - **Permissions:** verified as `contents=write, metadata=read, pull_requests=write`
+- **Webhook:** none — verified with `GET /app/hook/config` and
+  `GET /app/hook/deliveries` both returning `404`
 - **Visibility:** public ("Any account") — required so OSPO's review bot can
   resolve the App; verified with `GET /apps/z3-guide-app` returning `200`
 - **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726)
 
 Outstanding:
 
-1. **Disable the webhook**, before the transfer while you still control the
-   settings. `GET /app/hook/config` still returns
-   `https://github.com/microsoft/z3guide`, so the hook is active and every
-   delivery fails (403). Untick **Active** — clearing the URL alone is not
-   enough — at <https://github.com/settings/apps/z3-guide-app>.
-2. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
-3. Open the install pull request (step 3) once the App is owned by the org.
-4. Set the repository variable and secret (step 4) **after** the install lands,
+1. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
+2. Open the install pull request (step 3) once the App is owned by the org.
+3. Set the repository variable and secret (step 4) **after** the install lands,
    i.e. once `GET /app` reports `installations_count: 1`.
-5. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
+4. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
    reaches `main`; scheduled workflows only run from the default branch.
 
-Until step 4 the workflow stays green by skipping itself.
+Until step 3 the workflow stays green by skipping itself.

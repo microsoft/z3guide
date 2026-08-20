@@ -1,5 +1,12 @@
 # z3-guide-app — the GitHub App that publishes the generated docs
 
+> **OSPO**, used throughout this file, is Microsoft's **Open Source Programs
+> Office** — the team that, with 1ES, runs the `microsoftopensource` GitHub
+> enterprise and the official Microsoft organizations. They own the `microsoft`
+> org, so they are the only ones who can accept an App transfer into it,
+> install an App on its repositories, and approve later permission changes.
+> Their queue is [`microsoft/github-operations`](https://github.com/microsoft/github-operations).
+
 ## Why an App is needed
 
 `.github/workflows/update-parameter-docs.yml` regenerates three pages from every

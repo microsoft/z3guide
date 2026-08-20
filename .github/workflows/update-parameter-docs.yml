@@ -35,7 +35,7 @@ jobs:
     outputs:
       app_configured: ${{ steps.check.outputs.app_configured }}
     steps:
-      - name: Check that the z3guide-docs-bot credentials are present
+      - name: Check that the z3-guide-app credentials are present
         id: check
         env:
           APP_CLIENT_ID: ${{ vars.Z3GUIDE_APP_CLIENT_ID }}
@@ -45,7 +45,7 @@ jobs:
             echo "app_configured=true" >> "$GITHUB_OUTPUT"
           else
             echo "app_configured=false" >> "$GITHUB_OUTPUT"
-            echo "::warning title=z3guide-docs-bot is not configured::Set the repository variable Z3GUIDE_APP_CLIENT_ID and the secret Z3GUIDE_APP_PRIVATE_KEY once the App is installed on this repository. See .github/github-app/README.md. Skipping the parameter documentation update."
+            echo "::warning title=z3-guide-app is not configured::Set the repository variable Z3GUIDE_APP_CLIENT_ID and the secret Z3GUIDE_APP_PRIVATE_KEY once the App is installed on this repository. See .github/github-app/README.md. Skipping the parameter documentation update."
           fi
 
   update-parameters:
@@ -152,9 +152,9 @@ jobs:
             --release-tag "$RELEASE_TAG"
 
       # Org policy prevents GITHUB_TOKEN from creating pull requests, so the PR
-      # is opened as the z3guide-docs-bot App. The token is minted per run, is
+      # is opened as the z3-guide-app App. The token is minted per run, is
       # scoped to this repository only and expires after ~1 hour.
-      - name: Mint z3guide-docs-bot token
+      - name: Mint z3-guide-app token
         if: steps.current.outputs.update_required == 'true'
         id: app-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0

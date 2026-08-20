@@ -200,7 +200,7 @@ Do not edit them manually:
 - `website/docs-smtlib/03 - strategies/06 - summary.md`
 - `website/docs-smtlib/03 - strategies/07 - simplifiers-summary.md`
 
-The workflow opens that pull request as the `z3guide-docs-bot` GitHub App,
+The workflow opens that pull request as the `z3-guide-app` GitHub App,
 because organization policy prevents `GITHUB_TOKEN` from creating pull
 requests. The App needs Contents and Pull requests read/write permissions on
 this repository, and the workflow reads its credentials from:

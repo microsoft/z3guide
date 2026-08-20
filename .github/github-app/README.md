@@ -1,4 +1,4 @@
-# z3guide-docs-bot — the GitHub App that publishes the generated docs
+# z3-guide-app — the GitHub App that publishes the generated docs
 
 ## Why an App is needed
 
@@ -51,12 +51,16 @@ The workflow narrows the minted token even further with
 | --- | --- |
 | `manifest.json` | the App manifest — name, permissions, no webhook |
 | `create-app.html` | open in a browser to create the App from the manifest in one click; keep in sync with `manifest.json` |
-| `z3guide-docs-bot.install.yml` | the config-as-code install file to PR into `microsoft/github-operations` at `apps/microsoft/z3guide-docs-bot.yml` |
+| `z3-guide-app.install.yml` | the config-as-code install file to PR into `microsoft/github-operations` at `apps/microsoft/z3-guide-app.yml` |
 | `ospo-transfer-request.md` | ready-to-submit answers for the OSPO transfer ticket (step 2 below) |
 
 ## Step-by-step setup
 
 ### 1. Create the App on your personal account
+
+> **Done** — `z3-guide-app`, App ID `4662589`, owned by `@levnach`. Kept here as
+> the record of how it was created and what it must look like if it is ever
+> recreated. Still outstanding from this step: **Generate a private key**.
 
 Microsoft OSPO asks you to create the App on a personal account first and then
 request the transfer to the org.
@@ -73,7 +77,7 @@ App* form you are signed in; if it shows a sign-in page, sign in first.
 
 Go to <https://github.com/settings/apps/new> and fill in:
 
-- **GitHub App name:** `z3guide-docs-bot` (if taken, append `-2`)
+- **GitHub App name:** `z3-guide-app` (if taken, append `-2`)
 - **Homepage URL:** `https://github.com/microsoft/z3guide` — this is the field the
   manifest calls `url`
 - **Identifying and authorizing users:** leave **Redirect URI** blank and leave
@@ -94,10 +98,10 @@ Go to <https://github.com/settings/apps/new> and fill in:
 Open `create-app.html` in the browser **while signed in**, click the button,
 review the pre-filled confirmation, and click **Create GitHub App**.
 
-> App names are globally unique. If `z3guide-docs-bot` is taken, edit the `name`
-> in both `manifest.json` and `create-app.html` (e.g. `z3guide-docs-bot-2`), and
-> rename `z3guide-docs-bot.install.yml` to match — OSPO's automation derives the
-> App slug from that file name.
+> App names are globally unique. If `z3-guide-app` had been taken, the `name` in
+> both `manifest.json` and `create-app.html` would need to change, and
+> `z3-guide-app.install.yml` would need renaming to match — OSPO's automation
+> derives the App slug from that file name.
 
 Then click **Generate a private key** (saves a `.pem`) and copy the
 **Client ID** (`Iv23li…`) and the numeric **App ID**.
@@ -110,7 +114,7 @@ issue on [`microsoft/github-operations`](https://github.com/microsoft/github-ope
 [`ospo-transfer-request.md`](ospo-transfer-request.md) holds the exact answers to
 paste into that form; the short version is:
 
-- **GitHub app name:** `z3guide-docs-bot`
+- **GitHub app name:** `z3-guide-app`
 - **Transfer to:** `microsoft` (the org that owns `z3guide`). OSPO routes Apps
   created purely to work around reduced PAT lifetimes to `microsoftengineering`
   instead — if they ask for that, first flip the App to
@@ -128,16 +132,16 @@ from App settings → **Advanced** → **Transfer ownership**.
 
 ### 3. Request the installation via config-as-code
 
-Fill the real **Client ID** and **App ID** into `z3guide-docs-bot.install.yml`,
-then open a pull request on `microsoft/github-operations` adding it as
-`apps/microsoft/z3guide-docs-bot.yml`. OSPO's automation installs the App on the
+`z3-guide-app.install.yml` already carries the real Client ID and App ID. Open a
+pull request on `microsoft/github-operations` adding it as
+`apps/microsoft/z3-guide-app.yml`. OSPO's automation installs the App on the
 listed repositories.
 
 ### 4. Store the App credentials on this repository
 
 ```bash
 gh variable set Z3GUIDE_APP_CLIENT_ID  --repo microsoft/z3guide --body "<Client ID>"
-gh secret   set Z3GUIDE_APP_PRIVATE_KEY --repo microsoft/z3guide < z3guide-docs-bot.*.private-key.pem
+gh secret   set Z3GUIDE_APP_PRIVATE_KEY --repo microsoft/z3guide < z3-guide-app.*.private-key.pem
 ```
 
 Until both exist the workflow's `preflight` job emits a warning and skips the
@@ -152,7 +156,7 @@ Run the workflow manually with **force** enabled:
 gh workflow run "Update Z3 parameter documentation" --repo microsoft/z3guide -f force=true
 ```
 
-The resulting pull request must be authored by `app/z3guide-docs-bot`.
+The resulting pull request must be authored by `app/z3-guide-app`.
 
 ## Maintenance
 
@@ -179,8 +183,8 @@ logs. It is the only long-lived secret behind the docs automation.
 
 ### Add or remove a target repository
 
-1. Edit `apps/microsoft/z3guide-docs-bot.yml` in `microsoft/github-operations`
-   (source copy: `z3guide-docs-bot.install.yml` here) and open a pull request.
+1. Edit `apps/microsoft/z3-guide-app.yml` in `microsoft/github-operations`
+   (source copy: `z3-guide-app.install.yml` here) and open a pull request.
 2. After it merges, update the `repositories:` list of the
    `create-github-app-token` step in every workflow that needs the new repo.
 
@@ -221,5 +225,11 @@ change.
 
 ## Current status
 
-Not yet created. Steps 1–4 above are outstanding; the workflow ships with a
-preflight guard so it stays green (skipped) until they are done.
+**Created** on 2026-08-20 as `z3-guide-app`, owned by `@levnach`:
+
+- **App ID:** `4662589`
+- **Client ID:** `Iv23li6lyE3PHafpr9qb`
+
+Remaining: generate the private key, transfer the App to the org (step 2),
+request the installation (step 3), and set the repository variable and secret
+(step 4). Until step 4 is done the workflow stays green by skipping itself.

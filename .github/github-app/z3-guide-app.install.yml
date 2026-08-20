@@ -1,19 +1,17 @@
-# z3guide-docs-bot — install request for the microsoft org.
+# z3-guide-app — install request for the microsoft org.
 #
 # Submit this as a config-as-code pull request to microsoft/github-operations at path:
-#     apps/microsoft/z3guide-docs-bot.yml
+#     apps/microsoft/z3-guide-app.yml
 #
 # The file name must match the App slug; OSPO's automation (src/index.ts) reads
 # `repository_selection`, `repositories` and `expected_permissions` from it and
 # installs the App on the listed repos of the microsoft org.
 #
 # Prereqs before this PR is actionable:
-#   1. App created from ../manifest.json (see ../create-app.html and README.md).
+#   1. App created (done — App ID 4662589, owned by @levnach).
 #   2. App transferred to the target org via the microsoft/github-operations
 #      "Transfer and configure a first-party GitHub App" issue, and an App
 #      Manager team assigned.
-#   3. Replace the client_id placeholder below with the real Client ID shown on
-#      the App settings page.
 #
 # Why an App at all: the microsoft org forbids GITHUB_TOKEN from creating pull
 # requests, so the "Update Z3 parameter documentation" workflow cannot open its
@@ -21,7 +19,7 @@
 # per-run installation token instead of relying on a contributor-owned PAT
 # (fine-grained PATs expire after ~7 days and cannot be renewed via API).
 
-client_id: "REPLACE_WITH_CLIENT_ID" # z3guide-docs-bot (App ID: REPLACE_WITH_APP_ID)
+client_id: "Iv23li6lyE3PHafpr9qb" # z3-guide-app (App ID: 4662589)
 repository_selection: "selected"
 expected_permissions: >-
   contents=write,

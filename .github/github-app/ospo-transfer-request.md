@@ -1,23 +1,26 @@
-# OSPO request: move z3guide-docs-bot to the organization
+# OSPO request: move z3-guide-app to the organization
 
 Ready-to-submit answers for the
 [**Transfer and configure a first-party GitHub App**](https://github.com/microsoft/github-operations/issues/new?template=transfer-and-configure-a-first-party-github-app.yml)
 form on [`microsoft/github-operations`](https://github.com/microsoft/github-operations).
 
-Submit it **after** the App exists (step 1 in `README.md`) — the ticket asks you
-to initiate the transfer as soon as it is filed, which is only possible once the
-App has been created. The form fields carry no `id:` attributes, so GitHub
-cannot pre-fill them from a URL; copy the answers below into the form.
+The App now **exists**: `z3-guide-app`, App ID `4662589`, Client ID
+`Iv23li6lyE3PHafpr9qb`, currently owned by `@levnach`. The ticket asks you to
+initiate the transfer as soon as it is filed, so it is ready to submit. The form
+fields carry no `id:` attributes, so GitHub cannot pre-fill them from a URL;
+copy the answers below into the form.
 
-Suggested issue title: `[App] Accept a GitHub App transfer — z3guide-docs-bot to microsoft`
+Suggested issue title: `[App] Accept a GitHub App transfer — z3-guide-app to microsoft`
 
 ---
 
 **GitHub app name**
 
 ```
-z3guide-docs-bot
+z3-guide-app
 ```
+
+(App ID `4662589`, currently owned by `@levnach`.)
 
 **Which GitHub organization do you want to transfer the app to?**
 
@@ -94,8 +97,8 @@ No Issues permission, no account or organization permissions, no webhook.
 
 Installation scope: selected repositories, microsoft/z3guide only. The install
 request will follow as a config-as-code pull request adding
-apps/microsoft/z3guide-docs-bot.yml (the file is prepared in this repo at
-.github/github-app/z3guide-docs-bot.install.yml).
+apps/microsoft/z3-guide-app.yml (the file is prepared in this repo at
+.github/github-app/z3-guide-app.install.yml).
 
 Prior art: the same pattern is already approved and running as z3prover-ci-bot
 (App ID 4310239) in the Z3Prover org, installed on Z3Prover/z3, Z3Prover/bench
@@ -110,8 +113,8 @@ Tracking pull request: https://github.com/microsoft/z3guide/pull/258
 
 1. App settings → **Advanced** → **Transfer ownership** → target org.
 2. Open the install pull request on `microsoft/github-operations` adding
-   `.github/github-app/z3guide-docs-bot.install.yml` as
-   `apps/microsoft/z3guide-docs-bot.yml`, with the real Client ID and App ID
-   substituted for the placeholders.
+   `.github/github-app/z3-guide-app.install.yml` as
+   `apps/microsoft/z3-guide-app.yml`. It already carries the real Client ID and
+   App ID.
 3. Set `Z3GUIDE_APP_CLIENT_ID` and `Z3GUIDE_APP_PRIVATE_KEY` on
    `microsoft/z3guide` (see `README.md`, step 4).

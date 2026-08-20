@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Create the z3guide-docs-bot GitHub App</title>
+  <title>Create the z3-guide-app GitHub App</title>
   <style>
     body { font-family: -apple-system, system-ui, sans-serif; max-width: 720px; margin: 40px auto; line-height: 1.5; }
     code { background: #f3f3f3; padding: 1px 4px; border-radius: 3px; }
@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <h1>Create the <code>z3guide-docs-bot</code> GitHub App</h1>
+  <h1>Create the <code>z3-guide-app</code> GitHub App</h1>
   <p>
     This page uses GitHub's
     <a href="https://docs.github.com/apps/sharing-github-apps/registering-a-github-app-from-a-manifest" target="_blank" rel="noopener">
@@ -46,13 +46,13 @@
     <li>Confirm you are signed in, using the link above.</li>
     <li>Click the button below. GitHub shows a confirmation page pre-filled from the manifest &mdash;
         review it and click <em>Create GitHub App</em>.</li>
-    <li>GitHub redirects to your Apps list. Open <code>z3guide-docs-bot</code> &rarr; click
+    <li>GitHub redirects to your Apps list. Open <code>z3-guide-app</code> &rarr; click
         <em>Generate a private key</em> (downloads a <code>.pem</code>), and copy the
         <strong>Client ID</strong> and the numeric <strong>App ID</strong>. You need both later.</li>
   </ol>
   <form id="f" action="https://github.com/settings/apps/new" method="post">
-    <input type="hidden" name="manifest" value='{"name":"z3guide-docs-bot","url":"https://github.com/microsoft/z3guide","redirect_url":"https://github.com/settings/apps","description":"Least-privilege automation identity for microsoft/z3guide. Mints short-lived, per-run installation tokens so the Update Z3 parameter documentation workflow can push a branch and open a pull request with the regenerated parameter, tactic and simplifier reference pages. Needed because org policy prevents GITHUB_TOKEN from creating pull requests.","public":false,"default_events":[],"hook_attributes":{"active":false},"default_permissions":{"metadata":"read","contents":"write","pull_requests":"write"}}'>
-    <button type="submit">Create z3guide-docs-bot on my account</button>
+    <input type="hidden" name="manifest" value='{"name":"z3-guide-app","url":"https://github.com/microsoft/z3guide","redirect_url":"https://github.com/settings/apps","description":"Least-privilege automation identity for microsoft/z3guide. Mints short-lived, per-run installation tokens so the Update Z3 parameter documentation workflow can push a branch and open a pull request with the regenerated parameter, tactic and simplifier reference pages. Needed because org policy prevents GITHUB_TOKEN from creating pull requests.","public":false,"default_events":[],"hook_attributes":{"active":false},"default_permissions":{"metadata":"read","contents":"write","pull_requests":"write"}}'>
+    <button type="submit">Create z3-guide-app on my account</button>
   </form>
 
   <p style="margin-top:24px;color:#666">

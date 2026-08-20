@@ -106,6 +106,40 @@ review the pre-filled confirmation, and click **Create GitHub App**.
 Then click **Generate a private key** (saves a `.pem`) and copy the
 **Client ID** (`Iv23li…`) and the numeric **App ID**.
 
+#### Verify the registration before going further
+
+The permission checkboxes are easy to miss on the create form, and an App with
+no permissions fails only much later, at the first real run. Check what GitHub
+actually recorded — this needs nothing but `openssl` and the `.pem`:
+
+```bash
+cat > /tmp/appjwt.sh <<'SH'
+set -euo pipefail
+PEM="$1"; APP_ID="$2"
+b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
+now=$(date +%s)
+header=$(printf '{"alg":"RS256","typ":"JWT"}' | b64url)
+payload=$(printf '{"iat":%d,"exp":%d,"iss":"%s"}' $((now-60)) $((now+540)) "$APP_ID" | b64url)
+signing_input="${header}.${payload}"
+sig=$(printf '%s' "$signing_input" | openssl dgst -sha256 -sign "$PEM" -binary | b64url)
+printf '%s.%s' "$signing_input" "$sig"
+SH
+
+JWT=$(bash /tmp/appjwt.sh /path/to/z3-guide-app.*.private-key.pem 4662589)
+curl -s -H "Authorization: Bearer $JWT" https://api.github.com/app \
+  | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['slug'], d['client_id'], d['permissions'])"
+```
+
+A correct registration prints:
+
+```
+z3-guide-app Iv23li6lyE3PHafpr9qb {'contents': 'write', 'metadata': 'read', 'pull_requests': 'write'}
+```
+
+`{}` means no permissions were saved — fix them at
+<https://github.com/settings/apps/z3-guide-app/permissions> and press **Save
+changes**. A successful call also proves the private key matches the App.
+
 ### 2. Ask OSPO to move the App to the org
 
 Open a
@@ -139,8 +173,13 @@ listed repositories.
 
 ### 4. Store the App credentials on this repository
 
+> Do this **after** step 3. Setting the variable and secret before the App is
+> actually installed satisfies the preflight guard, so the workflow stops
+> skipping and starts failing at the token step instead — the exact failure mode
+> the guard exists to prevent.
+
 ```bash
-gh variable set Z3GUIDE_APP_CLIENT_ID  --repo microsoft/z3guide --body "<Client ID>"
+gh variable set Z3GUIDE_APP_CLIENT_ID  --repo microsoft/z3guide --body "Iv23li6lyE3PHafpr9qb"
 gh secret   set Z3GUIDE_APP_PRIVATE_KEY --repo microsoft/z3guide < z3-guide-app.*.private-key.pem
 ```
 
@@ -204,6 +243,7 @@ effect.
 | `The 'client-id' … input must be set to a non-empty string` | the same missing variable/secret, on an older workflow without the preflight guard |
 | `Invalid GitHub App configuration — "url" wasn't supplied` when creating the App | you are signed out of github.com in that browser; GitHub drops the manifest on anonymous requests (step 1) |
 | `401` / `Repository not found` | private key mismatch (rotate and re-set the secret), or the repository is not part of the installation (step 3) |
+| `Resource not accessible by integration` | the App registration has no permissions; `GET /app` returns `{}` — set Contents and Pull requests to write and save (step 1) |
 | `GitHub Actions is not permitted to create or approve pull requests` | the PR step is using `GITHUB_TOKEN` instead of the App token |
 
 To tell a genuinely malformed manifest apart from a signed-out browser, inspect
@@ -229,7 +269,11 @@ change.
 
 - **App ID:** `4662589`
 - **Client ID:** `Iv23li6lyE3PHafpr9qb`
+- **Private key:** generated; held outside the repository
 
-Remaining: generate the private key, transfer the App to the org (step 2),
-request the installation (step 3), and set the repository variable and secret
-(step 4). Until step 4 is done the workflow stays green by skipping itself.
+Outstanding: the registration currently reports **no permissions** (`GET /app`
+returns `{}`) — set Contents and Pull requests to *Read and write* at
+<https://github.com/settings/apps/z3-guide-app/permissions>. Then transfer the
+App to the org (step 2), request the installation (step 3), and set the
+repository variable and secret (step 4). Until step 4 the workflow stays green
+by skipping itself.

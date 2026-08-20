@@ -74,12 +74,18 @@ App* form you are signed in; if it shows a sign-in page, sign in first.
 Go to <https://github.com/settings/apps/new> and fill in:
 
 - **GitHub App name:** `z3guide-docs-bot` (if taken, append `-2`)
-- **Homepage URL:** `https://github.com/microsoft/z3guide`
+- **Homepage URL:** `https://github.com/microsoft/z3guide` — this is the field the
+  manifest calls `url`
+- **Identifying and authorizing users:** leave **Redirect URI** blank and leave
+  *Request user authorization (OAuth) during installation* unchecked; the App
+  never acts on behalf of a user
+- **Post installation → Setup URL:** blank
 - **Webhook:** untick **Active** (leave Webhook URL blank)
 - **Repository permissions:**
   - **Contents** → Read and write
   - **Pull requests** → Read and write
   - (Metadata → Read-only is added automatically)
+- **Subscribe to events:** none
 - **Where can this GitHub App be installed?** → **Only on this account**
 - Click **Create GitHub App**
 

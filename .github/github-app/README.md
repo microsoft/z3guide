@@ -140,6 +140,20 @@ z3-guide-app Iv23li6lyE3PHafpr9qb {'contents': 'write', 'metadata': 'read', 'pul
 <https://github.com/settings/apps/z3-guide-app/permissions> and press **Save
 changes**. A successful call also proves the private key matches the App.
 
+Check the webhook too. The create form happily accepts the Homepage URL as the
+Webhook URL and leaves the hook **active**, which produces a perpetual stream of
+failed deliveries and contradicts the no-webhook posture OSPO reviews:
+
+```bash
+curl -s -H "Authorization: Bearer $JWT" https://api.github.com/app/hook/config
+```
+
+This must return `404` (`Not found`). If it returns a `url`, untick **Active**
+in the *Webhook* section of <https://github.com/settings/apps/z3-guide-app>,
+clear the URL, and save. Do this **before** the transfer in step 2 — once the
+App belongs to the org you may not be able to edit its settings until an org
+owner grants App-Manager rights.
+
 ### 2. Ask OSPO to move the App to the org
 
 > **Filed** as [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726).
@@ -248,6 +262,7 @@ effect.
 | `Invalid GitHub App configuration — "url" wasn't supplied` when creating the App | you are signed out of github.com in that browser; GitHub drops the manifest on anonymous requests (step 1) |
 | `401` / `Repository not found` | private key mismatch (rotate and re-set the secret), or the repository is not part of the installation (step 3) |
 | `Resource not accessible by integration` | the App registration has no permissions; `GET /app` returns `{}` — set Contents and Pull requests to write and save (step 1) |
+| Failed `ping` deliveries under *Advanced → Recent Deliveries* | a webhook is active, usually with the Homepage URL pasted in as the Webhook URL; untick **Active** and clear the URL (step 1) |
 | `GitHub Actions is not permitted to create or approve pull requests` | the PR step is using `GITHUB_TOKEN` instead of the App token |
 
 To tell a genuinely malformed manifest apart from a signed-out browser, inspect
@@ -279,8 +294,12 @@ change.
 
 Outstanding:
 
-1. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
-2. Open the install pull request (step 3) once the App is owned by the org.
-3. Set the repository variable and secret (step 4) **after** the install lands.
+1. **Disable the webhook.** `GET /app/hook/config` currently returns
+   `https://github.com/microsoft/z3guide`, so the hook is active and every
+   delivery fails (403). Untick **Active** and clear the URL at
+   <https://github.com/settings/apps/z3-guide-app>, before the transfer.
+2. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
+3. Open the install pull request (step 3) once the App is owned by the org.
+4. Set the repository variable and secret (step 4) **after** the install lands.
 
-Until step 4 the workflow stays green by skipping itself.
+Until the last step the workflow stays green by skipping itself.

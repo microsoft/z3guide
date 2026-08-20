@@ -1,0 +1,1 @@
+{"input":"(declare-const a (_ BitVec 8))\n(declare-const b (_ BitVec 8))\n(declare-const c (_ BitVec 8))\n(assert (= (bvsrem a (bvadd b c)) #x05))\n(apply bv-divrem-bounds)"}

@@ -2,27 +2,45 @@
 title: Simplifiers Summary
 sidebar_position: 7
 ---
+
+<!-- Generated from Z3Prover/z3 release z3-5.1.0. Do not edit manually. -->
+
 ## Simplifier [bit-blast](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bit-blast)
 ### Description
 reduce bit-vector expressions into SAT.
 ## Simplifier [bit2int](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bit2int)
 ### Description
 simplify bit2int expressions.
-## Simplifier [bound-simplifier](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bound-simplifier)
+## Simplifier [blast-term-ite](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-blast-term-ite)
 ### Description
-Simplify arithmetical expressions modulo bounds.
+blast term if-then-else by hoisting them.
+## Simplifier [bv-divrem-bounds](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bv-divrem-bounds)
+### Description
+add range lemmas for bit-vector division/remainder terms with a symbolic divisor.
 ## Simplifier [bv-slice](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bv-slice)
 ### Description
 simplify using bit-vector slices.
+## Simplifier [bv1-blast](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bv1-blast)
+### Description
+reduce bit-vector expressions into bit-vectors of size 1 (notes: only equality, extract and concat are supported).
+## Simplifier [bvarray2uf](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-bvarray2uf)
+### Description
+Rewrite bit-vector arrays into bit-vector (uninterpreted) functions.
 ## Simplifier [card2bv](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-card2bv)
 ### Description
 convert pseudo-boolean constraints to bit-vectors.
 ## Simplifier [cheap-fourier-motzkin](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-cheap-fourier-motzkin)
 ### Description
 eliminate variables from quantifiers using partial Fourier-Motzkin elimination.
+## Simplifier [cofactor-term-ite](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-cofactor-term-ite)
+### Description
+eliminate term if-then-else using cofactors.
 ## Simplifier [demodulator](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-demodulator)
 ### Description
 extracts equalities from quantifiers and applies them to simplify.
+## Simplifier [der](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-der)
+### Description
+destructive equality resolution.
 ## Simplifier [distribute-forall](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-distribute-forall)
 ### Description
 distribute forall over conjunctions.
@@ -41,6 +59,18 @@ eliminate unconstrained variables.
 ## Simplifier [euf-completion](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-euf-completion)
 ### Description
 simplify modulo congruence closure.
+## Simplifier [factor](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-factor)
+### Description
+polynomial factorization.
+## Simplifier [fold-unfold](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-fold-unfold)
+### Description
+solve for variables.
+## Simplifier [injectivity](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-injectivity)
+### Description
+Identifies and applies injectivity axioms.
+## Simplifier [max-bv-sharing](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-max-bv-sharing)
+### Description
+use heuristics to maximize the sharing of bit-vector expressions such as adders and multipliers.
 ## Simplifier [propagate-bv-bounds](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-propagate-bv-bounds)
 ### Description
 propagate bit-vector bounds by simplifying implied or contradictory bounds.
@@ -68,6 +98,9 @@ Push functions over if-then-else within non-ground terms only.
 ## Simplifier [qe-light](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-qe-light)
 ### Description
 apply light-weight quantifier elimination.
+## Simplifier [randomizer](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-randomizer)
+### Description
+shuffle assertions and rename uninterpreted functions.
 ## Simplifier [reduce-args](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-reduce-args)
 ### Description
 reduce the number of arguments of function applications, when for all occurrences of a function f the i-th is a value.
@@ -80,3 +113,6 @@ apply simplification rules.
 ## Simplifier [solve-eqs](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-solve-eqs)
 ### Description
 solve for variables.
+## Simplifier [special-relations](https://microsoft.github.io/z3guide/docs/strategies/summary/#tactic-special-relations)
+### Description
+detect and replace by special relations.

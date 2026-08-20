@@ -52,6 +52,7 @@ The workflow narrows the minted token even further with
 | `manifest.json` | the App manifest — name, permissions, no webhook |
 | `create-app.html` | open in a browser to create the App from the manifest in one click; keep in sync with `manifest.json` |
 | `z3guide-docs-bot.install.yml` | the config-as-code install file to PR into `microsoft/github-operations` at `apps/microsoft/z3guide-docs-bot.yml` |
+| `ospo-transfer-request.md` | ready-to-submit answers for the OSPO transfer ticket (step 2 below) |
 
 ## Step-by-step setup
 
@@ -60,9 +61,13 @@ The workflow narrows the minted token even further with
 Microsoft OSPO asks you to create the App on a personal account first and then
 request the transfer to the org.
 
-**Sign in to github.com first.** If the page shows "Sign in / Sign up" in the
-top-right you are signed out and creation fails (the manifest error
-`"url" wasn't supplied` is a symptom of the signed-out state).
+**Sign in to github.com in the browser you use for this.** If you are signed out,
+GitHub discards the manifest and the App form reports
+`Invalid GitHub App configuration — "url" wasn't supplied.` That message means
+*signed out*, not *bad manifest*: posting the manifest in `manifest.json`
+without a session reproduces it exactly. Open
+<https://github.com/settings/apps/new> — if it shows the *Register new GitHub
+App* form you are signed in; if it shows a sign-in page, sign in first.
 
 #### Option A — manual form (recommended; no manifest quirks)
 
@@ -95,7 +100,9 @@ Then click **Generate a private key** (saves a `.pem`) and copy the
 
 Open a
 [**Transfer and configure a first-party GitHub App**](https://github.com/microsoft/github-operations/issues/new?template=transfer-and-configure-a-first-party-github-app.yml)
-issue on [`microsoft/github-operations`](https://github.com/microsoft/github-operations):
+issue on [`microsoft/github-operations`](https://github.com/microsoft/github-operations).
+[`ospo-transfer-request.md`](ospo-transfer-request.md) holds the exact answers to
+paste into that form; the short version is:
 
 - **GitHub app name:** `z3guide-docs-bot`
 - **Transfer to:** `microsoft` (the org that owns `z3guide`). OSPO routes Apps
@@ -184,6 +191,7 @@ effect.
 | Symptom | Cause |
 | --- | --- |
 | Workflow skipped with a "not configured" warning | `vars.Z3GUIDE_APP_CLIENT_ID` or `secrets.Z3GUIDE_APP_PRIVATE_KEY` is missing (step 4) |
+| `Invalid GitHub App configuration — "url" wasn't supplied` when creating the App | you are signed out of github.com in that browser; GitHub drops the manifest on anonymous requests (step 1) |
 | `The 'client-id' … input must be set to a non-empty string` | same as above, on an older workflow without the preflight guard |
 | `401` / `Repository not found` | private key mismatch (rotate and re-set the secret), or the repository is not part of the installation (step 3) |
 | `GitHub Actions is not permitted to create or approve pull requests` | the PR step is using `GITHUB_TOKEN` instead of the App token |

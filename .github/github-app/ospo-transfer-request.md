@@ -1,0 +1,117 @@
+# OSPO request: move z3guide-docs-bot to the organization
+
+Ready-to-submit answers for the
+[**Transfer and configure a first-party GitHub App**](https://github.com/microsoft/github-operations/issues/new?template=transfer-and-configure-a-first-party-github-app.yml)
+form on [`microsoft/github-operations`](https://github.com/microsoft/github-operations).
+
+Submit it **after** the App exists (step 1 in `README.md`) — the ticket asks you
+to initiate the transfer as soon as it is filed, which is only possible once the
+App has been created. The form fields carry no `id:` attributes, so GitHub
+cannot pre-fill them from a URL; copy the answers below into the form.
+
+Suggested issue title: `[App] Accept a GitHub App transfer — z3guide-docs-bot to microsoft`
+
+---
+
+**GitHub app name**
+
+```
+z3guide-docs-bot
+```
+
+**Which GitHub organization do you want to transfer the app to?**
+
+```
+microsoft
+```
+
+> `microsoft` is the org that owns `z3guide`, so the App can stay private
+> ("Only on this account") after the transfer, exactly like `z3prover-ci-bot` in
+> the `Z3Prover` org. If OSPO instead routes this to `microsoftengineering` —
+> the destination they mandate for Apps created to work around reduced PAT
+> lifetimes — the App must first be switched to **Any account** under
+> *Advanced* in its settings, otherwise it cannot be installed on
+> `microsoft/z3guide` from a different owning org. The App Managers would also
+> need to join `microsoftengineering`.
+
+**What type of app is this?**
+
+- [x] First-party app used for internal scenarios, engineering, development
+
+> It is not a "reduced PAT lifetime" App in the strict sense: it exists because
+> organization policy blocks `GITHUB_TOKEN` from creating pull requests. Using a
+> PAT instead would also hit the ~7-day fine-grained PAT expiry with no renewal
+> API, which is a secondary reason to prefer an App.
+
+**Initial App Managers**
+
+```
+levnach
+NikolajBjorner
+```
+
+**Does this app have any side-effects if it is installed into all repos in an organization?**
+
+```
+Yes, it has side effects and you should be careful if installing to all repos in an org
+```
+
+> The App pushes a branch and opens a pull request on the repositories it is
+> installed on. It must be installed on **selected repositories only** —
+> currently just `microsoft/z3guide`. Please do not install it org-wide.
+
+**Is this app hosted securely at Microsoft?**
+
+```
+There is no hosted service. The App is a credential-only automation identity: it
+has no webhook (webhooks are disabled in the manifest), no callback URL and no
+backend. It is used exclusively from GitHub Actions in microsoft/z3guide, where
+actions/create-github-app-token exchanges the App private key for a short-lived
+installation token scoped to that single repository. The private key is stored
+as the repository secret Z3GUIDE_APP_PRIVATE_KEY on microsoft/z3guide. Because
+nothing is deployed, there is no Service Tree node or SDL review to reference.
+```
+
+**If someone asks to have this app installed on all repos in an official Microsoft organization**
+
+```
+include the app managers in the approval discussion
+```
+
+**Additional notes**
+
+```
+Purpose: the "Update Z3 parameter documentation" workflow in microsoft/z3guide
+regenerates three reference pages from each new Z3Prover/z3 release and opens a
+pull request with the result. Organization policy prevents GITHUB_TOKEN from
+creating pull requests, so the workflow needs a separate identity.
+
+Requested permissions (least privilege, derived from the workflow):
+  Contents = write        push the automation/update-z3-parameters branch
+  Pull requests = write   open/update the regeneration pull request
+  Metadata = read         mandatory
+No Issues permission, no account or organization permissions, no webhook.
+
+Installation scope: selected repositories, microsoft/z3guide only. The install
+request will follow as a config-as-code pull request adding
+apps/microsoft/z3guide-docs-bot.yml (the file is prepared in this repo at
+.github/github-app/z3guide-docs-bot.install.yml).
+
+Prior art: the same pattern is already approved and running as z3prover-ci-bot
+(App ID 4310239) in the Z3Prover org, installed on Z3Prover/z3, Z3Prover/bench
+and Z3Prover/coz3.
+
+Tracking pull request: https://github.com/microsoft/z3guide/pull/258
+```
+
+---
+
+## After filing
+
+1. App settings → **Advanced** → **Transfer ownership** → target org.
+2. Open the install pull request on `microsoft/github-operations` adding
+   `.github/github-app/z3guide-docs-bot.install.yml` as
+   `apps/microsoft/z3guide-docs-bot.yml`, with the real Client ID and App ID
+   substituted for the placeholders.
+3. Set `Z3GUIDE_APP_CLIENT_ID` and `Z3GUIDE_APP_PRIVATE_KEY` on
+   `microsoft/z3guide` (see `README.md`, step 4).

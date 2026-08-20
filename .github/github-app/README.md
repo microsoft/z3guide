@@ -207,9 +207,10 @@ from App settings → **Advanced** → **Transfer ownership**.
 
 ### 3. Request the installation via config-as-code
 
-> **Opened** as [microsoft/github-operations#1727](https://github.com/microsoft/github-operations/pull/1727),
-> awaiting an OSPO merge. Their review bot reported
-> `Valid: 1 | Warnings: 0 | Invalid: 0`.
+> **Merged** as [microsoft/github-operations#1727](https://github.com/microsoft/github-operations/pull/1727);
+> their review bot reported `Valid: 1 | Warnings: 0 | Invalid: 0`. The
+> installation itself is applied asynchronously by OSPO — see the status block
+> at the end of this file for how to poll for it.
 
 `z3-guide-app.install.yml` already carries the real Client ID and App ID. Open a
 pull request on `microsoft/github-operations` adding it as
@@ -327,9 +328,21 @@ change.
 
 Outstanding:
 
-1. OSPO merges [#1727](https://github.com/microsoft/github-operations/pull/1727),
-   which installs the App on `microsoft/z3guide`. Confirm with `GET /app`
-   reporting `installations_count: 1`.
+1. OSPO's automation applies [#1727](https://github.com/microsoft/github-operations/pull/1727)
+   and installs the App on `microsoft/z3guide`. **Merging the pull request does
+   not install it immediately**: the in-repo installer workflow
+   (`.github/workflows/enterprise-apps.yaml_ignore`) is archived — *"FUNCTIONALITY
+   MOVED ELSEWHERE"* — so the install is applied asynchronously by OSPO's own
+   system and there is no public workflow run to watch. Poll for it with:
+
+   ```bash
+   curl -s -o /dev/null -w '%{http_code}\n' \
+     -H "Authorization: Bearer $JWT" \
+     https://api.github.com/repos/microsoft/z3guide/installation
+   ```
+
+   `404` means not yet; `200` means installed. Prefer this over
+   `installations_count` from `GET /app`.
 2. Set the repository variable and secret (step 4) **after** that install lands.
 3. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
    reaches `main`; scheduled workflows only run from the default branch.

@@ -302,20 +302,22 @@ change.
 - **Client ID:** `Iv23li6lyE3PHafpr9qb`
 - **Private key:** generated; held outside the repository
 - **Permissions:** verified as `contents=write, metadata=read, pull_requests=write`
+- **Visibility:** public ("Any account") — required so OSPO's review bot can
+  resolve the App; verified with `GET /apps/z3-guide-app` returning `200`
 - **Transfer ticket:** [microsoft/github-operations#1726](https://github.com/microsoft/github-operations/issues/1726)
 
 Outstanding:
 
-1. **Disable the webhook** and **make the App public**, both before the
-   transfer while you still control the settings:
-   - `GET /app/hook/config` currently returns `https://github.com/microsoft/z3guide`,
-     so the hook is active and every delivery fails (403). Untick **Active** and
-     clear the URL at <https://github.com/settings/apps/z3-guide-app>.
-   - `GET /apps/z3-guide-app` currently returns `404`, so OSPO's review bot
-     cannot see it. Use **Make public** under
-     <https://github.com/settings/apps/z3-guide-app/advanced>.
+1. **Disable the webhook**, before the transfer while you still control the
+   settings. `GET /app/hook/config` still returns
+   `https://github.com/microsoft/z3guide`, so the hook is active and every
+   delivery fails (403). Untick **Active** — clearing the URL alone is not
+   enough — at <https://github.com/settings/apps/z3-guide-app>.
 2. Initiate the transfer at <https://github.com/settings/apps/z3-guide-app/advanced>.
 3. Open the install pull request (step 3) once the App is owned by the org.
-4. Set the repository variable and secret (step 4) **after** the install lands.
+4. Set the repository variable and secret (step 4) **after** the install lands,
+   i.e. once `GET /app` reports `installations_count: 1`.
+5. Merge [#258](https://github.com/microsoft/z3guide/pull/258) so the workflow
+   reaches `main`; scheduled workflows only run from the default branch.
 
-Until the last step the workflow stays green by skipping itself.
+Until step 4 the workflow stays green by skipping itself.

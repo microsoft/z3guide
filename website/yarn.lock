@@ -8388,9 +8388,9 @@ ignore@^7.0.5:
   integrity sha1-aleq70yQ3yesNZCHXSno8RmIyI4=
 
 image-size@^2.0.2:
-  version "2.0.2"
-  resolved "https://ms-feed-2.pkgs.visualstudio.com/1es-public/_packaging/npm-public/npm/registry/image-size/-/image-size-2.0.2.tgz#84a7b43704db5736f364bf0d1b029821299b4bdc"
-  integrity sha1-hKe0NwTbVzbzZL8NGwKYISmbS9w=
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/image-size/-/image-size-2.0.4.tgz#bbc1933173e4ee1adbbdf9d4958ded15fdb710e3"
+  integrity sha512-QRUkFFsRV/6fuESxb9Vkq+a0LkSrgKXuc2NEqfikiXxxN/G3tjWt5EVUlMaImRBZRZK/jRBEbYvpPYZL8t08Zw==
 
 import-fresh@^3.2.1, import-fresh@^3.3.0:
   version "3.3.0"
@@ -10556,12 +10556,7 @@ mz@^2.4.0, mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-nanoid@^3.3.16:
-  version "3.3.18"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.18.tgz#f66a2de1199ffde0fcf21c8a5f13106b1c081913"
-  integrity sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==
-
-nanoid@^3.3.17:
+nanoid@^3.3.16, nanoid@^3.3.17:
   version "3.3.18"
   resolved "https://ms-feed-17.pkgs.visualstudio.com/1es-public/_packaging/npm-public/npm/registry/nanoid/-/nanoid-3.3.18.tgz#f66a2de1199ffde0fcf21c8a5f13106b1c081913"
   integrity sha1-9mot4Rmf/eD88hyKXxMQaxwIGRM=

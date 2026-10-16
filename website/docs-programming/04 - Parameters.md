@@ -1,4 +1,4 @@
-<!-- Generated from Z3Prover/z3 release z3-5.1.0. Do not edit manually. -->
+<!-- Generated from Z3Prover/z3 release z3-5.3.1. Do not edit manually. -->
 
 Z3 Options
 
@@ -266,28 +266,39 @@ TPTP frontend parameters
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
 dump_smt2 | symbol  |  if non-empty, file path to dump the parsed TPTP goal as an SMT-LIB2 benchmark (replaces the Z3_TPTP_DUMP_SMT2 environment variable) |
+leibniz_instantiation | bool  |  pre-process the goal by synthesizing and adding Leibniz-equality style instantiations of universally quantified predicate variables applied to distinct argument terms | false
 root | symbol  |  root directory for resolving TPTP include() axiom paths (replaces the TPTP environment variable) |
+unfold_lambda_macros | bool  |  pre-process the goal by unfolding constants that are defined as lambda terms (shallow embeddings of higher-order/modal operators), inlining and beta-reducing their occurrences | true
 
-## lp
+## factor
 
-linear programming parameters
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-dio | bool  |  use Diophantine equalities | true
-dio_branching_period | unsigned int  |  Period of calling branching on undef in Diophantine handler | 100
-dio_calls_period | unsigned int  |  Period of calling the Diophantine handler in the final_check() | 1
-dio_calls_period_decrease | unsigned int  |  Amount by which dio_calls_period is decreased on each final_check() call where the Diophantine handler is not triggered, until it returns to its initial value | 2
-dio_cuts_enable_gomory | bool  |  enable Gomory cuts together with Diophantine cuts, only relevant when dioph_eq is true | false
-dio_cuts_enable_hnf | bool  |  enable hnf cuts together with Diophantine cuts, only relevant when dioph_eq is true | true
-dio_gomory_enable_period | unsigned int  |  number of consecutive unproductive (undef) Diophantine-handler calls after which the controller starts running Gomory cuts and the gcd test alongside dio; a dio conflict resets the count and stops them; set very large to never start them this way so Gomory follows dio_cuts_enable_gomory only | 16
-dio_ignore_big_nums | bool  |  Ignore the terms with big numbers in the Diophantine handler, only relevant when dioph_eq is true | true
-dio_run_gcd | bool  |  Run the GCD heuristic if dio is on, if dio is disabled the option is not used | false
-dio_undo_max_work | unsigned int  |  work budget, in machine words, for eliminating the columns of the retired terms from the certificate matrix of the Diophantine handler; when a scope pop exceeds it the Diophantine state is discarded and rebuilt lazily on the next check instead of being updated incrementally; 0 means no budget | 1000000
-int_hammer_period | unsigned int  |  period (in final_check calls) for the integer cut/cube heuristics (find_cube, hnf, gomory); a smaller value calls them more often | 4
-lcube | bool  |  use the largest cube test for integer feasibility | true
-lcube_flips | unsigned int  |  maximal number of coordinate flips when repairing the rounded largest cube center, only relevant when lcube is true | 16
-random_hammers | bool  |  draw the periodic integer heuristic gates (find_cube, lcube, hnf, gomory, dio) at random with the same 1/period rate instead of a deterministic every-k-th-call modulus | true
+max_prime | unsigned int  |  (default: infty) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter limits the maximum prime number p to be used in the first step. |
+max_search_size | unsigned int  |  (default: infty) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter can be used to limit the search space. |
+num_primes | unsigned int  |  (default: 4) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. The search space may be reduced by factoring the polynomial in different GF(p)'s. This parameter specifies the maximum number of finite factorizations to be considered, before lifting and searching. |
+
+## parallel
+
+parameters for parallel solver
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+ablate_backtracking | bool  |  ablation: pass entire cube as core instead of unsat core during backtracking | false
+conquer.backtrack_frequency | unsigned int  |  frequency to apply core minimization during conquer | 10
+conquer.batch_size | unsigned int  |  number of cubes to batch together for fast conquer | 100
+conquer.delay | unsigned int  |  delay of cubes until applying conquer | 10
+conquer.restart.max | unsigned int  |  maximal number of restarts during conquer phase | 5
+core_minimize | bool  |  minimize unsat cores used for parallel cube backtracking | true
+cube.lookahead | bool  |  use lookahead cubing in the parallel solver; when false, use VSIDS activity to select one split literal | false
+enable | bool  |  enable parallel solver by default on selected tactics (for QF_BV) | false
+num_bb_threads | unsigned int  |  run Janota-style chunking backbone worker threads; default is 2 (negative and positive mode), supported values are 0 (off), 1 (negative mode only) or 2 (negative and positive mode) | 2
+simplify.exp | double  |  restart and inprocess max is multiplied by simplify.exp ^ depth | 1
+simplify.inprocess.max | unsigned int  |  maximal number of inprocessing steps during simplification | 2
+simplify.max_conflicts | unsigned int  |  maximal number of conflicts during simplification phase | 4294967295
+simplify.restart.max | unsigned int  |  maximal number of restarts during simplification phase | 5000
+threads.max | unsigned int  |  caps maximal number of threads below the number of processors | 10000
 
 ## opt
 
@@ -314,7 +325,16 @@ maxres.maximize_assignment | bool  |  find an MSS/MCS to improve current assignm
 maxres.pivot_on_correction_set | bool  |  reduce soft constraints if the current correction set is smaller than current core | true
 maxres.wmax | bool  |  use weighted theory solver to constrain upper bounds | false
 maxsat_engine | symbol  |  select engine for maxsat: 'core_maxsat', 'wmax', 'maxres', 'maxresw', 'pd-maxres', 'maxres-bin', 'rc2' | maxres
+optsmt_bisect_rounds | unsigned int  |  maximal number of solver calls spent bisecting the interval between the best model value and the refuted arithmetic bound of a real-valued objective (e.g. under nonlinear constraints); when exhausted the objective is reported as unknown with that interval | 64
+optsmt_dual_bound_rlimit | unsigned int  |  resource limit for a cross-branch nonlinear bound probe while no finite upper bound is known (0 disables the extra check) | 100
+optsmt_dual_bounds | bool  |  retain exact rational nonlinear relaxation upper bounds, independently of hint attainability | true
 optsmt_engine | symbol  |  select optimization engine: 'basic', 'symba' | basic
+optsmt_lex_after_unbounded | bool  |  after an unbounded lexicographic objective, determine later arithmetic objectives as the limits of their optima; false leaves them as unrestricted intervals | true
+optsmt_nlsat | bool  |  optimize real objectives under nonlinear constraints exactly over nlsat cells (algebraic optima print as root-obj; unboundedness proven by native nlsat projection under an escalating rlimit budget) | true
+optsmt_nlsat_supremum_rlimit | unsigned int  |  resource limit for certifying finite open suprema with native nlsat projection (0 disables the extra check) | 100000
+pareto_nlsat | bool  |  enumerate Pareto fronts of pure NRA problems over an nlsat-backed solver, comparing objectives against exact algebraic model values instead of rounded isolating-interval endpoints | true
+pareto_nlsat_max_lemmas | unsigned int  |  maximum number of independent learned clauses retained between Pareto climbs; shorter clauses are preferred | 128
+pareto_nlsat_reuse | bool  |  reuse nlsat clauses across Pareto checks on polynomial real problems; false keeps the exact solver that starts each check from scratch | true
 pb.compile_equality | bool  |  compile arithmetical equalities into pseudo-Boolean equality (instead of two inequalites) | false
 pp.neat | bool  |  use neat (as opposed to less readable, but faster) pretty printer when displaying context | true
 pp.wcnf | bool  |  print maxsat benchmark into wcnf format | false
@@ -324,26 +344,26 @@ rlimit | unsigned int  |  resource limit (0 means no limit) | 0
 solution_prefix | symbol  |  path prefix to dump intermediary, but non-optimal, solutions |
 timeout | unsigned int  |  timeout (in milliseconds) (UINT_MAX and 0 mean no timeout) | 4294967295
 
-## parallel
+## lp
 
-parameters for parallel solver
+linear programming parameters
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-ablate_backtracking | bool  |  ablation: pass entire cube as core instead of unsat core during backtracking | false
-conquer.backtrack_frequency | unsigned int  |  frequency to apply core minimization during conquer | 10
-conquer.batch_size | unsigned int  |  number of cubes to batch together for fast conquer | 100
-conquer.delay | unsigned int  |  delay of cubes until applying conquer | 10
-conquer.restart.max | unsigned int  |  maximal number of restarts during conquer phase | 5
-core_minimize | bool  |  minimize unsat cores used for parallel cube backtracking | true
-cube.lookahead | bool  |  use lookahead cubing in the parallel solver; when false, use VSIDS activity to select one split literal | false
-enable | bool  |  enable parallel solver by default on selected tactics (for QF_BV) | false
-num_bb_threads | unsigned int  |  run Janota-style chunking backbone worker threads; default is 2 (negative and positive mode), supported values are 0 (off), 1 (negative mode only) or 2 (negative and positive mode) | 2
-simplify.exp | double  |  restart and inprocess max is multiplied by simplify.exp ^ depth | 1
-simplify.inprocess.max | unsigned int  |  maximal number of inprocessing steps during simplification | 2
-simplify.max_conflicts | unsigned int  |  maximal number of conflicts during simplification phase | 4294967295
-simplify.restart.max | unsigned int  |  maximal number of restarts during simplification phase | 5000
-threads.max | unsigned int  |  caps maximal number of threads below the number of processors | 10000
+dio | bool  |  use Diophantine equalities | true
+dio_branching_period | unsigned int  |  Period of calling branching on undef in Diophantine handler | 100
+dio_calls_period | unsigned int  |  Period of calling the Diophantine handler in the final_check() | 1
+dio_calls_period_decrease | unsigned int  |  Amount by which dio_calls_period is decreased on each final_check() call where the Diophantine handler is not triggered, until it returns to its initial value | 2
+dio_cuts_enable_gomory | bool  |  enable Gomory cuts together with Diophantine cuts, only relevant when dioph_eq is true | false
+dio_cuts_enable_hnf | bool  |  enable hnf cuts together with Diophantine cuts, only relevant when dioph_eq is true | true
+dio_gomory_enable_period | unsigned int  |  number of consecutive unproductive (undef) Diophantine-handler calls after which the controller starts running Gomory cuts and the gcd test alongside dio; a dio conflict resets the count and stops them; set very large to never start them this way so Gomory follows dio_cuts_enable_gomory only | 16
+dio_ignore_big_nums | bool  |  Ignore the terms with big numbers in the Diophantine handler, only relevant when dioph_eq is true | true
+dio_run_gcd | bool  |  Run the GCD heuristic if dio is on, if dio is disabled the option is not used | false
+dio_undo_max_work | unsigned int  |  work budget, in machine words, for eliminating the columns of the retired terms from the certificate matrix of the Diophantine handler; when a scope pop exceeds it the Diophantine state is discarded and rebuilt lazily on the next check instead of being updated incrementally; 0 means no budget | 1000000
+int_hammer_period | unsigned int  |  period (in final_check calls) for the integer cut/cube heuristics (find_cube, hnf, gomory); a smaller value calls them more often | 4
+lcube | bool  |  use the largest cube test for integer feasibility | true
+lcube_flips | unsigned int  |  maximal number of coordinate flips when repairing the rounded largest cube center, only relevant when lcube is true | 16
+random_hammers | bool  |  draw the periodic integer heuristic gates (find_cube, lcube, hnf, gomory, dio) at random with the same 1/period rate instead of a deterministic every-k-th-call modulus | true
 
 ## nnf
 
@@ -355,6 +375,16 @@ ignore_labels | bool  |  remove/ignore labels in the input formula, this option 
 max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
 mode | symbol  |  NNF translation mode: skolem (skolem normal form), quantifiers (skolem normal form + quantifiers in NNF), full | skolem
 sk_hack | bool  |  hack for VCC | false
+
+## combined_solver
+
+combines two solvers: non-incremental (solver1) and incremental (solver2)
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+ignore_solver1 | bool  |  if true, solver 2 is always used | false
+solver2_timeout | unsigned int  |  fallback to solver 1 after timeout even when in incremental model | 4294967295
+solver2_unknown | unsigned int  |  what should be done when solver 2 returns unknown: 0 - just return unknown, 1 - execute solver 1 if quantifier free problem, 2 - execute solver 1 | 1
 
 ## algebraic
 
@@ -368,16 +398,6 @@ factor_num_primes | unsigned int  |  parameter for the polynomial factorization 
 factor_search_size | unsigned int  |  parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter can be used to limit the search space | 5000
 min_mag | unsigned int  |  Z3 represents algebraic numbers using a (square-free) polynomial p and an isolating interval (which contains one and only one root of p). This interval may be refined during the computations. This parameter specifies whether to cache the value of a refined interval or not. It says the minimal size of an interval for caching purposes is 1/2^16 | 16
 zero_accuracy | unsigned int  |  one of the most time-consuming operations in the real algebraic number module is determining the sign of a polynomial evaluated at a sample point with non-rational algebraic number values. Let k be the value of this option. If k is 0, Z3 uses precise computation. Otherwise, the result of a polynomial evaluation is considered to be 0 if Z3 can show it is inside the interval (-1/2^k, 1/2^k) | 0
-
-## combined_solver
-
-combines two solvers: non-incremental (solver1) and incremental (solver2)
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
-ignore_solver1 | bool  |  if true, solver 2 is always used | false
-solver2_timeout | unsigned int  |  fallback to solver 1 after timeout even when in incremental model | 4294967295
-solver2_unknown | unsigned int  |  what should be done when solver 2 returns unknown: 0 - just return unknown, 1 - execute solver 1 if quantifier free problem, 2 - execute solver 1 | 1
 
 ## rcf
 
@@ -412,38 +432,6 @@ solving UF via ackermannization
 eager | bool  |  eagerly instantiate all congruence rules | true
 inc_sat_backend | bool  |  use incremental SAT | false
 sat_backend | bool  |  use SAT rather than SMT in qfufbv_ackr_tactic | false
-
-## nlsat
-
-nonlinear solver
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
-add_all_coeffs | bool  |  add all polynomial coefficients during projection. | false
-canonicalize | bool  |  canonicalize polynomials. | true
-check_lemmas | bool  |  check lemmas on the fly using an independent nlsat solver | false
-dump_mathematica | bool  |  display lemmas as matematica | false
-factor | bool  |  factor polynomials produced during conflict resolution. | true
-inline_vars | bool  |  inline variables that can be isolated from equations (not supported in incremental mode) | false
-known_sat_assignment_file_name | string  |  the file name of a known solution: used for debugging only |
-lazy | unsigned int  |  how lazy the solver is. | 0
-log_lemma_smtrat | bool  |  log lemmas to be readable by smtrat | false
-log_lemmas | bool  |  display lemmas as self-contained SMT formulas | false
-lws | bool  |  apply levelwise. | true
-lws_spt_threshold | unsigned int  |  minimum both-side polynomial count to apply spanning tree optimization; &lt; 2 disables spanning tree | 4
-lws_witness_subs_disc | bool  |  try substitute the non-nullified witness by the discriminant | true
-lws_witness_subs_lc | bool  |  try substitute the non-nullified witness by the lc | true
-max_conflicts | unsigned int  |  maximum number of conflicts. | 4294967295
-max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
-minimize_conflicts | bool  |  minimize conflicts | false
-randomize | bool  |  randomize selection of a witness in nlsat. | true
-reorder | bool  |  reorder variables. | true
-seed | unsigned int  |  random seed. | 0
-shuffle_vars | bool  |  use a random variable order. | false
-simple_check | bool  |  precheck polynomials using variables sign | false
-simplify_conflicts | bool  |  simplify conflicts using equalities before resolving them in nlsat solver. | true
-variable_ordering_strategy | unsigned int  |  Variable Ordering Strategy, 0 for none, 1 for BROWN, 2 for TRIANGULAR, 3 for ONLYPOLY | 0
-zero_disc | bool  |  add_zero_assumption to the vanishing discriminant. | false
 
 ## sls
 
@@ -483,71 +471,37 @@ walksat_ucb_init | bool  |  initialize total ucb touched to formula size | false
 walksat_ucb_noise | double  |  add noise 0 &lt;= 256 * ucb_noise to ucb score for assertion selection | 0.0002
 wp | unsigned int  |  random walk with probability wp / 1024 | 100
 
-## rewriter
+## nlsat
 
-new formula simplification module used in the tactic framework, and new solvers
+nonlinear solver
 
  Parameter | Type | Description | Default
  ----------|------|-------------|--------
-algebraic_number_evaluator | bool  |  simplify/evaluate expressions containing (algebraic) irrational numbers. | true
-arith_ineq_lhs | bool  |  rewrite inequalities so that right-hand-side is a constant. | false
-arith_lhs | bool  |  all monomials are moved to the left-hand-side, and the right-hand-side is just a constant. | false
-bit2bool | bool  |  try to convert bit-vector terms of size 1 into Boolean terms | true
-blast_distinct | bool  |  expand a distinct predicate into a quadratic number of disequalities | false
-blast_distinct_threshold | unsigned int  |  when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted | 4294967295
-blast_eq_value | bool  |  blast (some) Bit-vector equalities into bits | false
-blast_select_store | bool  |  eagerly replace all (select (store ..) ..) term by an if-then-else term | false
-bv_extract_prop | bool  |  attempt to partially propagate extraction inwards | false
-bv_ineq_consistency_test_max | unsigned int  |  max size of conjunctions on which to perform consistency test based on inequalities on bitvectors. | 0
-bv_ite2id | bool  |  rewrite ite that can be simplified to identity | false
-bv_le2extract | bool  |  disassemble bvule to extract | true
-bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
-bv_not_simpl | bool  |  apply simplifications for bvnot | false
-bv_sort_ac | bool  |  sort the arguments of all AC operators | true
-cache_all | bool  |  cache all intermediate results. | false
-coalesce_chars | bool  |  coalesce characters into strings | true
-div0_ackermann_limit | unsigned int  |  a bound for number of congruence Ackermann lemmas for div0 modelling | 1000
-elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
-elim_ite | bool  |  eliminate ite in favor of and/or | true
-elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x y))). | false
-elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
-elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
-enable_der | bool  |  enable destructive equality resolution to quantifiers. | true
-eq2ineq | bool  |  expand equalities into two inequalities | false
-expand_nested_stores | bool  |  replace nested stores by a lambda expression | false
-expand_power | bool  |  expand (^ t k) into (* t ... t) if  1 &lt; k &lt;= max_degree. | false
-expand_select_ite | bool  |  expand select over ite expressions | false
-expand_select_store | bool  |  conservatively replace a (select (store ...) ...) term by an if-then-else term | false
-expand_store_eq | bool  |  reduce (store ...) = (store ...) with a common base into selects | false
-expand_tan | bool  |  replace (tan x) with (/ (sin x) (cos x)). | false
-flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
-flat_and_or | bool  |  create nary applications for and,or | true
-gcd_rounding | bool  |  use gcd rounding on integer arithmetic atoms. | false
-hi_div0 | bool  |  use the 'hardware interpretation' for division by zero (for bit-vector terms) | true
-hi_fp_unspecified | bool  |  use the 'hardware interpretation' for unspecified values in fp.min, fp.max, fp.to_ubv, fp.to_sbv, and fp.to_real | false
-hoist_ite | bool  |  hoist shared summands under ite expressions | false
-hoist_mul | bool  |  hoist multiplication over summation to minimize number of multiplications | false
-ignore_patterns_on_ground_qbody | bool  |  ignores patterns on quantifiers that don't mention their bound variables. | true
-ite_extra_rules | bool  |  extra ite simplifications, these additional simplifications may reduce size locally but increase globally | true
-local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
-local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
-max_degree | unsigned int  |  max degree of algebraic numbers (and power operators) processed by simplifier. | 64
+add_all_coeffs | bool  |  add all polynomial coefficients during projection. | false
+canonicalize | bool  |  canonicalize polynomials. | true
+check_lemmas | bool  |  check lemmas on the fly using an independent nlsat solver | false
+dump_mathematica | bool  |  display lemmas as matematica | false
+factor | bool  |  factor polynomials produced during conflict resolution. | true
+inline_vars | bool  |  inline variables that can be isolated from equations (not supported in incremental mode) | false
+known_sat_assignment_file_name | string  |  the file name of a known solution: used for debugging only |
+lazy | unsigned int  |  how lazy the solver is. | 0
+log_lemma_smtrat | bool  |  log lemmas to be readable by smtrat | false
+log_lemmas | bool  |  display lemmas as self-contained SMT formulas | false
+lws | bool  |  apply levelwise. | true
+lws_spt_threshold | unsigned int  |  minimum both-side polynomial count to apply spanning tree optimization; &lt; 2 disables spanning tree | 4
+lws_witness_subs_disc | bool  |  try substitute the non-nullified witness by the discriminant | true
+lws_witness_subs_lc | bool  |  try substitute the non-nullified witness by the lc | true
+max_conflicts | unsigned int  |  maximum number of conflicts. | 4294967295
 max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
-max_steps | unsigned int  |  maximum number of steps | 4294967295
-mul2concat | bool  |  replace multiplication by a power of two into a concatenation | false
-mul_to_power | bool  |  collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. | false
-pull_cheap_ite | bool  |  pull if-then-else terms when cheap. | false
-push_ite_arith | bool  |  push if-then-else over arithmetic terms. | false
-push_ite_bv | bool  |  push if-then-else over bit-vector terms. | false
-push_to_real | bool  |  distribute to_real over * and +. | true
-rewrite_patterns | bool  |  rewrite patterns. | false
-som | bool  |  put polynomials in sum-of-monomials form | false
-som_blowup | unsigned int  |  maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form | 10
-sort_disjunctions | bool  |  sort subterms in disjunctions | true
-sort_store | bool  |  sort nested stores when the indices are known to be different | false
-sort_sums | bool  |  sort the arguments of + application. | false
-split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
-unfold_recursive_functions | bool  |  apply simplification recursively on recursive functions. | false
+minimize_conflicts | bool  |  minimize conflicts | false
+randomize | bool  |  randomize selection of a witness in nlsat. | true
+reorder | bool  |  reorder variables. | true
+seed | unsigned int  |  random seed. | 0
+shuffle_vars | bool  |  use a random variable order. | false
+simple_check | bool  |  precheck polynomials using variables sign | false
+simplify_conflicts | bool  |  simplify conflicts using equalities before resolving them in nlsat solver. | true
+variable_ordering_strategy | unsigned int  |  Variable Ordering Strategy, 0 for none, 1 for BROWN, 2 for TRIANGULAR, 3 for ONLYPOLY | 0
+zero_disc | bool  |  add_zero_assumption to the vanishing discriminant. | false
 
 ## fp
 
@@ -674,6 +628,82 @@ xform.tail_simplifier_pve | bool  |  propagate_variable_equivalences | true
 xform.transform_arrays | bool  |  Rewrites arrays equalities and applies select over store | false
 xform.unfold_rules | unsigned int  |  unfold rules statically using iterative squaring | 0
 
+## rewriter
+
+new formula simplification module used in the tactic framework, and new solvers
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+algebraic_number_evaluator | bool  |  simplify/evaluate expressions containing (algebraic) irrational numbers. | true
+arith_ineq_lhs | bool  |  rewrite inequalities so that right-hand-side is a constant. | false
+arith_lhs | bool  |  all monomials are moved to the left-hand-side, and the right-hand-side is just a constant. | false
+bit2bool | bool  |  try to convert bit-vector terms of size 1 into Boolean terms | true
+blast_distinct | bool  |  expand a distinct predicate into a quadratic number of disequalities | false
+blast_distinct_threshold | unsigned int  |  when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted | 4294967295
+blast_eq_value | bool  |  blast (some) Bit-vector equalities into bits | false
+blast_select_store | bool  |  eagerly replace all (select (store ..) ..) term by an if-then-else term | false
+bv_extract_prop | bool  |  attempt to partially propagate extraction inwards | false
+bv_ineq_consistency_test_max | unsigned int  |  max size of conjunctions on which to perform consistency test based on inequalities on bitvectors. | 0
+bv_ite2id | bool  |  rewrite ite that can be simplified to identity | false
+bv_le2extract | bool  |  disassemble bvule to extract | true
+bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
+bv_not_simpl | bool  |  apply simplifications for bvnot | false
+bv_sort_ac | bool  |  sort the arguments of all AC operators | true
+cache_all | bool  |  cache all intermediate results. | false
+coalesce_chars | bool  |  coalesce characters into strings | true
+div0_ackermann_limit | unsigned int  |  a bound for number of congruence Ackermann lemmas for div0 modelling | 1000
+elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
+elim_ite | bool  |  eliminate ite in favor of and/or | true
+elim_rem | bool  |  replace (rem x y) with (ite (&gt;= y 0) (mod x y) (- (mod x y))). | false
+elim_sign_ext | bool  |  expand sign-ext operator using concat and extract | true
+elim_to_real | bool  |  eliminate to_real from arithmetic predicates that contain only integers. | false
+enable_der | bool  |  enable destructive equality resolution to quantifiers. | true
+eq2ineq | bool  |  expand equalities into two inequalities | false
+expand_nested_stores | bool  |  replace nested stores by a lambda expression | false
+expand_power | bool  |  expand (^ t k) into (* t ... t) if  1 &lt; k &lt;= max_degree. | false
+expand_select_ite | bool  |  expand select over ite expressions | false
+expand_select_store | bool  |  conservatively replace a (select (store ...) ...) term by an if-then-else term | false
+expand_store_eq | bool  |  reduce (store ...) = (store ...) with a common base into selects | false
+expand_tan | bool  |  replace (tan x) with (/ (sin x) (cos x)). | false
+flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
+flat_and_or | bool  |  create nary applications for and,or | true
+gcd_rounding | bool  |  use gcd rounding on integer arithmetic atoms. | false
+hi_div0 | bool  |  use the 'hardware interpretation' for division by zero (for bit-vector terms) | true
+hi_fp_unspecified | bool  |  use the 'hardware interpretation' for unspecified values in fp.min, fp.max, fp.to_ubv, fp.to_sbv, and fp.to_real | false
+hoist_ite | bool  |  hoist shared summands under ite expressions | false
+hoist_mul | bool  |  hoist multiplication over summation to minimize number of multiplications | false
+ignore_patterns_on_ground_qbody | bool  |  ignores patterns on quantifiers that don't mention their bound variables. | true
+ite_extra_rules | bool  |  extra ite simplifications, these additional simplifications may reduce size locally but increase globally | true
+local_ctx | bool  |  perform local (i.e., cheap) context simplifications | false
+local_ctx_limit | unsigned int  |  limit for applying local context simplifier | 4294967295
+max_degree | unsigned int  |  max degree of algebraic numbers (and power operators) processed by simplifier. | 64
+max_memory | unsigned int  |  maximum amount of memory in megabytes | 4294967295
+max_power_expansion | unsigned int  |  maximal exponent of a sequence power that is expanded into a concatenation | 2
+max_steps | unsigned int  |  maximum number of steps | 4294967295
+mul2concat | bool  |  replace multiplication by a power of two into a concatenation | false
+mul_to_power | bool  |  collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. | false
+pull_cheap_ite | bool  |  pull if-then-else terms when cheap. | false
+push_ite_arith | bool  |  push if-then-else over arithmetic terms. | false
+push_ite_bv | bool  |  push if-then-else over bit-vector terms. | false
+push_to_real | bool  |  distribute to_real over * and +. | true
+rewrite_patterns | bool  |  rewrite patterns. | false
+som | bool  |  put polynomials in sum-of-monomials form | false
+som_blowup | unsigned int  |  maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form | 10
+sort_disjunctions | bool  |  sort subterms in disjunctions | true
+sort_store | bool  |  sort nested stores when the indices are known to be different | false
+sort_sums | bool  |  sort the arguments of + application. | false
+split_concat_eq | bool  |  split equalities of the form (= (concat t1 t2) t3) | false
+unfold_recursive_functions | bool  |  apply simplification recursively on recursive functions. | false
+
+## parser
+
+
+ Parameter | Type | Description | Default
+ ----------|------|-------------|--------
+error_for_visual_studio | bool  |  display error messages in Visual Studio format | false
+ignore_bad_patterns | bool  |  ignore malformed patterns | true
+ignore_user_patterns | bool  |  ignore patterns provided by the user | false
+
 ## smt
 
 smt solver based on lazy smt
@@ -730,12 +760,13 @@ arith.nl.optimize_bounds | bool  |  enable bounds optimization | true
 arith.nl.optimize_bounds_lp_max_vars | unsigned int  |  skip LP-based nonlinear bounds optimization when the number of candidate monomial variables exceeds this threshold (0 = unlimited) | 120
 arith.nl.order | bool  |  run order lemmas | true
 arith.nl.order.binomial_sign | bool  |  run order_lemma_on_binomial_sign; disabling it keeps the structural order-lemma splitting | true
-arith.nl.propagate_fixed_rows | bool  |  scan LP rows for fixed variables | false
 arith.nl.propagate_linear_monomials | bool  |  propagate linear monomials | true
 arith.nl.reduce_pseudo_linear | bool  |  create incremental linearization axioms for pseudo-linear monomials | true
 arith.nl.rounds | unsigned int  |  threshold for number of (nested) final checks for non linear arithmetic, relevant only if smt.arith.solver=2 | 1024
 arith.nl.tangents | bool  |  run tangent lemmas | true
 arith.nl.tangents.box_corners | bool  |  choose tangent-plane points at the bound-box corners instead of the model-centered val(x) +/- delta; produces the McCormick under/over envelope and is deterministic and snapshot-independent | false
+arith.nl.transcendental | bool  |  delta-check transcendental function applications (sin/cos/tan/asin/acos/atan/sinh/cosh/tanh/asinh/acosh/atanh) registered by theory_lra against the current assignment using floating point evaluation | true
+arith.nl.transcendental_tolerance | double  |  delta tolerance used when delta-checking transcendental function applications against the current assignment | 0.0000001
 arith.print_ext_var_names | bool  |  print external variable names | false
 arith.print_stats | bool  |  print statistic | false
 arith.propagate_eqs | bool  |  propagate (cheap) equalities | true
@@ -772,11 +803,59 @@ dack.gc_inv_decay | double  |  Dynamic ackermannization garbage collection decay
 dack.threshold | unsigned int  |   number of times the congruence rule must be used before Leibniz's axiom is expanded | 10
 delay_units | bool  |  if true then z3 will not restart when a unit clause is learned | false
 delay_units_threshold | unsigned int  |  maximum number of learned unit clauses before restarting, ignored if delay_units is false | 32
+distribute_forall | bool  |  distribute unpatterned universal conjunctions | false
 dt_lazy_splits | unsigned int  |  How lazy datatype splits are performed: 0- eager, 1- lazy for infinite types, 2- lazy | 1
 elim_unconstrained | bool  |  pre-processing: eliminate unconstrained subterms | true
 ematching | bool  |  E-Matching based quantifier instantiation | true
+ff.adaptive_basis | bool  |  admit larger bases within storage bounds and compact retired pair records | false
+ff.adaptive_matrix | bool  |  allow more symbolic matrix reducers within a bounded storage allowance | false
+ff.adaptive_reduction | bool  |  fall back to scalar basis reduction when a matrix exceeds its storage budget | false
+ff.basis_bits | bool  |  recover Boolean domains and digit equalities from basis consequences | false
+ff.basis_cache | bool  |  reuse exact bounded finite-field bases across native checks | true
+ff.basis_max_bytes | unsigned int  |  estimated retained basis storage with adaptive_basis (capped at 1 GiB) | 16777216
+ff.batch | bool  |  batch small-field critical pairs using sparse modular elimination | true
+ff.bit_bounds | bool  |  propagate Boolean digits using no-wrap signed interval bounds | true
+ff.bit_propagation | bool  |  repeat no-wrap bit-sum propagation after algebraic elimination | true
+ff.boolean_split | bool  |  expose Boolean field domains to SAT (may change branching substantially) | false
+ff.bounded_elimination | bool  |  retain nonlinear definitions when substitution predicts polynomial growth | false
+ff.compact_encoding | bool  |  retain compact definitions when polynomial expansion would grow | true
+ff.compact_matrix | bool  |  use packed sparse matrix rows and smaller critical-pair batches | false
+ff.compact_retry | bool  |  retry the algebra tactic with compact definitions after an encoding size limit | true
+ff.disjunctive_bits | bool  |  rewrite disjunctive Boolean field domains as polynomial equations | true
+ff.div_masks | bool  |  filter reducer divisibility tests using support masks | false
+ff.f4 | bool  |  use the fixed-width F4 backend with zero-dimensional model construction | true
+ff.f4_budget | unsigned int  |  F4 work units allowed per unit of ff.max_steps | 40
+ff.f4_max_quotient | unsigned int  |  largest quotient-ring dimension explored by F4 model construction | 1024
+ff.f4_short_budget | unsigned int  |  F4 work units per unit of ff.max_steps on circuit-like systems (many Boolean variables) | 1
+ff.f4_slice | unsigned int  |  random x = r slices tried per level on positive-dimensional ideals in F4 model construction (SAT only) | 4
+ff.f4_value_split | bool  |  in F4 model construction over small fields, enumerate the values of a free variable | false
+ff.factor_split | bool  |  case-split equations whose monomials share a common symbolic factor, generalizing the literal top-level product-is-zero rule (may change branching substantially) | true
+ff.fused_reduction | bool  |  add scalar reducer multiples directly without temporary polynomials | false
+ff.geobucket | bool  |  accumulate scalar polynomial reductions in geometric buckets | false
+ff.gm_pairs | bool  |  install critical pairs using minimal lcm and strict chain criteria | true
+ff.lazy_matrix | bool  |  retain matrix reducers as basis references and monomial multipliers | false
+ff.linear_split | bool  |  exchange bounded linear and nonlinear basis consequences before elimination | false
+ff.max_factor_splits | unsigned int  |  maximum factor-split clauses emitted in one SMT search (0 disables factor splitting) | 4
+ff.max_steps | unsigned int  |  maximum native finite-field algebra operations before exact BV fallback | 2000000
+ff.max_terms | unsigned int  |  maximum terms in an expanded finite-field polynomial | 4096
+ff.model_search | bool  |  derive bounded quotient minimal polynomials and diversify witness probes | true
+ff.quotient_field | bool  |  adjoin bounded quotient reductions of finite-field Frobenius axioms | false
+ff.root_completion | bool  |  derive bounded quotient minimal polynomials without extra witness probes | false
+ff.root_split | bool  |  emit bounded finite-field factor and square-root case splits | true
+ff.small_coefficients | bool  |  use exact machine arithmetic for small-field polynomial coefficients | false
+ff.sparse_matrix_reducers | bool  |  prefer fewer-term basis rows during matrix symbolic preprocessing | false
+ff.sparse_witness | bool  |  try bounded univariate slices for underdetermined systems | true
+ff.sugar_pairs | bool  |  rank critical pairs by propagated sugar degree in all field sizes | true
+ff.tiny | bool  |  complete finite-domain search with forward checking over fields with p &lt; 64 | true
+ff.tiny_budget | unsigned int  |  tiny-field search work units per unit of ff.max_steps | 200
+ff.unique | bool  |  bounded uniqueness propagation before field solving | true
+ff.unique_depth | unsigned int  |  maximum Boolean split depth in uniqueness search (capped at 64) | 16
+ff.unique_equalities | bool  |  add derived root equalities after uniqueness propagation | false
+ff.unique_nodes | unsigned int  |  maximum nodes in uniqueness search | 50000
+ff.unique_work | unsigned int  |  local work allowance for the entire uniqueness attempt | 1000000
 ho_matching | bool  |  higher-order matching for quantifier instantiation | false
 ho_matching_bound | unsigned int  |  per-problem expansion-step budget of the higher-order matching search; bounds the (undecidable) HO unification to guarantee termination | 10000
+ho_qmatcher | bool  |  higher-order matching and term-enumeration quantifier engine | false
 induction | bool  |  enable generation of induction lemmas | false
 lemma_gc_strategy | unsigned int  |  lemma garbage collection strategy: 0 - fixed, 1 - geometric, 2 - at restart, 3 - none | 0
 logic | symbol  |  logic used to setup the SMT solver |
@@ -803,12 +882,16 @@ qi.eager_threshold | double  |  threshold for eager quantifier instantiation | 1
 qi.lazy_threshold | double  |  threshold for lazy quantifier instantiation | 20.0
 qi.max_instances | unsigned int  |  maximum number of quantifier instantiations | 4294967295
 qi.max_multi_patterns | unsigned int  |  specify the number of extra multi patterns | 0
+qi.max_persistent_instances | unsigned int  |  maximal number of pattern-based quantifier instances re-asserted on a re-search when qi.persist_instances is set | 1000
+qi.persist_instances | bool  |  re-assert the quantifier instances produced by model-based instantiation (and up to qi.max_persistent_instances pattern-based ones) at base level when a theory requests a re-search, e.g. after a recursive function unfolding depth increase | false
 qi.profile | bool  |  profile quantifier instantiation | false
 qi.profile_freq | unsigned int  |  how frequent results are reported by qi.profile | 4294967295
 qi.quick_checker | unsigned int  |  specify quick checker mode, 0 - no quick checker, 1 - using unsat instances, 2 - using both unsat and no-sat instances | 0
+qi.update_generation | bool  |  lower the generation of an already-internalized term when it is re-internalized at a lower generation (e.g., by a quantifier instantiation). when false, a term keeps the generation assigned at its first internalization | true
 qsat_use_qel | bool  |  Use QEL for lite quantifier elimination and model-based projection in QSAT | true
 quasi_macros | bool  |  try to find universally quantified formulas that are quasi-macros | false
 random_seed | unsigned int  |  random seed for the smt solver | 0
+recfun_finder | bool  |  detect (mutually) recursive function definitions among universally quantified axioms of the form (forall X (= (f X) body)) and register them as recursive function definitions | false
 refine_inj_axioms | bool  |  pre-processing: refine injectivity axioms | true
 relevancy | unsigned int  |  relevancy propagation heuristic: 0 - disabled, 1 - relevancy is tracked by only affects quantifier instantiation, 2 - relevancy is tracked, and an atom is only asserted if it is relevant | 2
 restart.max | unsigned int  |  maximal number of restarts. | 4294967295
@@ -817,9 +900,13 @@ restart_strategy | unsigned int  |  0 - geometric, 1 - inner-outer-geometric, 2 
 restricted_quasi_macros | bool  |  try to find universally quantified formulas that are restricted quasi-macros | false
 seq.max_unfolding | unsigned int  |  maximal unfolding depth for checking string equations and regular expressions | 1000000000
 seq.min_unfolding | unsigned int  |  initial bound for strings whose lengths are bounded by iterative deepening. Set this to a higher value if there are only models with larger string lengths | 1
+seq.parikh_chars | unsigned int  |  how many distinct characters the Parikh abstraction keeps apart. The remaining characters share one class | 6
+seq.parikh_k | unsigned int  |  maximal factor length of the Parikh abstraction over word equations. 1 counts single characters, 2 also counts adjacent pairs. 0 disables the abstraction. Values above 2 are clamped to 2 | 0
+seq.parikh_n | unsigned int  |  maximal modulus the Parikh abstraction over word equations uses to separate positions by their residue. 1 ignores positions | 2
 seq.regex_budget | unsigned int  |  work budget (search nodes and product expansions) for a single decision of the monadic regular-expression solver, after which it gives up. A budget of 0 makes it give up immediately | 1000000
 seq.regex_monadic | bool  |  use the monadic regular-expression end-game solver | true
 seq.regex_orientation | symbol  |  direction the monadic regular-expression solver reads memberships in. options are: 'forward', 'reversed' (solve rev(t) in rev(R), which is equisatisfiable and can have a far smaller derivative automaton), 'retry' (read forwards and, if the search runs out of budget, read the same decision backwards) | retry
+seq.regex_split | unsigned int  |  maximum refinement rounds the monadic regular-expression solver spends decomposing a membership in an intersection of regexes, once reading the decision in both directions has run out of budget. Each round decides a relaxation that keeps only some of the intersected regexes: a relaxation that is unsatisfiable refutes the original, and a model accepted by every dropped regex satisfies it. 0 disables the decomposition | 10
 seq.regex_transition_mode | symbol  |  transition mode of the monadic regular-expression solver. options are: 'light-ant' (split derivative targets over top-level unions), 'brz' (keep derivative targets in Brzozowski normal form) | light-ant
 seq.split_w_len | bool  |  enable splitting guided by length constraints | true
 seq.validate | bool  |  enable self-validation of theory axioms created by seq theory | false
@@ -836,12 +923,3 @@ threads | unsigned int  |  maximal number of parallel threads. | 1
 threads.cube_frequency | unsigned int  |  frequency for using cubing | 2
 threads.max_conflicts | unsigned int  |  maximal number of conflicts between rounds of cubing for parallel SMT | 400
 up.persist_clauses | bool  |  replay propagated clauses below the levels they are asserted | false
-
-## parser
-
-
- Parameter | Type | Description | Default
- ----------|------|-------------|--------
-error_for_visual_studio | bool  |  display error messages in Visual Studio format | false
-ignore_bad_patterns | bool  |  ignore malformed patterns | true
-ignore_user_patterns | bool  |  ignore patterns provided by the user | false

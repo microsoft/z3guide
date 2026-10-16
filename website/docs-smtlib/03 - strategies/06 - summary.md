@@ -3,7 +3,7 @@ title: Tactics Summary
 sidebar_position: 6
 ---
 
-<!-- Generated from Z3Prover/z3 release z3-5.1.0. Do not edit manually. -->
+<!-- Generated from Z3Prover/z3 release z3-5.3.1. Do not edit manually. -->
 
 ## Tactic ackernannize_bv
 
@@ -432,12 +432,13 @@ arith.nl.optimize_bounds | bool  |  enable bounds optimization | true
 arith.nl.optimize_bounds_lp_max_vars | unsigned int  |  skip LP-based nonlinear bounds optimization when the number of candidate monomial variables exceeds this threshold (0 = unlimited) | 120
 arith.nl.order | bool  |  run order lemmas | true
 arith.nl.order.binomial_sign | bool  |  run order_lemma_on_binomial_sign; disabling it keeps the structural order-lemma splitting | true
-arith.nl.propagate_fixed_rows | bool  |  scan LP rows for fixed variables | false
 arith.nl.propagate_linear_monomials | bool  |  propagate linear monomials | true
 arith.nl.reduce_pseudo_linear | bool  |  create incremental linearization axioms for pseudo-linear monomials | true
 arith.nl.rounds | unsigned int  |  threshold for number of (nested) final checks for non linear arithmetic, relevant only if smt.arith.solver=2 | 1024
 arith.nl.tangents | bool  |  run tangent lemmas | true
 arith.nl.tangents.box_corners | bool  |  choose tangent-plane points at the bound-box corners instead of the model-centered val(x) +/- delta; produces the McCormick under/over envelope and is deterministic and snapshot-independent | false
+arith.nl.transcendental | bool  |  delta-check transcendental function applications (sin/cos/tan/asin/acos/atan/sinh/cosh/tanh/asinh/acosh/atanh) registered by theory_lra against the current assignment using floating point evaluation | true
+arith.nl.transcendental_tolerance | double  |  delta tolerance used when delta-checking transcendental function applications against the current assignment | 0.0000001
 arith.print_ext_var_names | bool  |  print external variable names | false
 arith.print_stats | bool  |  print statistic | false
 arith.propagate_eqs | bool  |  propagate (cheap) equalities | true
@@ -474,11 +475,59 @@ dack.gc_inv_decay | double  |  Dynamic ackermannization garbage collection decay
 dack.threshold | unsigned int  |   number of times the congruence rule must be used before Leibniz's axiom is expanded | 10
 delay_units | bool  |  if true then z3 will not restart when a unit clause is learned | false
 delay_units_threshold | unsigned int  |  maximum number of learned unit clauses before restarting, ignored if delay_units is false | 32
+distribute_forall | bool  |  distribute unpatterned universal conjunctions | false
 dt_lazy_splits | unsigned int  |  How lazy datatype splits are performed: 0- eager, 1- lazy for infinite types, 2- lazy | 1
 elim_unconstrained | bool  |  pre-processing: eliminate unconstrained subterms | true
 ematching | bool  |  E-Matching based quantifier instantiation | true
+ff.adaptive_basis | bool  |  admit larger bases within storage bounds and compact retired pair records | false
+ff.adaptive_matrix | bool  |  allow more symbolic matrix reducers within a bounded storage allowance | false
+ff.adaptive_reduction | bool  |  fall back to scalar basis reduction when a matrix exceeds its storage budget | false
+ff.basis_bits | bool  |  recover Boolean domains and digit equalities from basis consequences | false
+ff.basis_cache | bool  |  reuse exact bounded finite-field bases across native checks | true
+ff.basis_max_bytes | unsigned int  |  estimated retained basis storage with adaptive_basis (capped at 1 GiB) | 16777216
+ff.batch | bool  |  batch small-field critical pairs using sparse modular elimination | true
+ff.bit_bounds | bool  |  propagate Boolean digits using no-wrap signed interval bounds | true
+ff.bit_propagation | bool  |  repeat no-wrap bit-sum propagation after algebraic elimination | true
+ff.boolean_split | bool  |  expose Boolean field domains to SAT (may change branching substantially) | false
+ff.bounded_elimination | bool  |  retain nonlinear definitions when substitution predicts polynomial growth | false
+ff.compact_encoding | bool  |  retain compact definitions when polynomial expansion would grow | true
+ff.compact_matrix | bool  |  use packed sparse matrix rows and smaller critical-pair batches | false
+ff.compact_retry | bool  |  retry the algebra tactic with compact definitions after an encoding size limit | true
+ff.disjunctive_bits | bool  |  rewrite disjunctive Boolean field domains as polynomial equations | true
+ff.div_masks | bool  |  filter reducer divisibility tests using support masks | false
+ff.f4 | bool  |  use the fixed-width F4 backend with zero-dimensional model construction | true
+ff.f4_budget | unsigned int  |  F4 work units allowed per unit of ff.max_steps | 40
+ff.f4_max_quotient | unsigned int  |  largest quotient-ring dimension explored by F4 model construction | 1024
+ff.f4_short_budget | unsigned int  |  F4 work units per unit of ff.max_steps on circuit-like systems (many Boolean variables) | 1
+ff.f4_slice | unsigned int  |  random x = r slices tried per level on positive-dimensional ideals in F4 model construction (SAT only) | 4
+ff.f4_value_split | bool  |  in F4 model construction over small fields, enumerate the values of a free variable | false
+ff.factor_split | bool  |  case-split equations whose monomials share a common symbolic factor, generalizing the literal top-level product-is-zero rule (may change branching substantially) | true
+ff.fused_reduction | bool  |  add scalar reducer multiples directly without temporary polynomials | false
+ff.geobucket | bool  |  accumulate scalar polynomial reductions in geometric buckets | false
+ff.gm_pairs | bool  |  install critical pairs using minimal lcm and strict chain criteria | true
+ff.lazy_matrix | bool  |  retain matrix reducers as basis references and monomial multipliers | false
+ff.linear_split | bool  |  exchange bounded linear and nonlinear basis consequences before elimination | false
+ff.max_factor_splits | unsigned int  |  maximum factor-split clauses emitted in one SMT search (0 disables factor splitting) | 4
+ff.max_steps | unsigned int  |  maximum native finite-field algebra operations before exact BV fallback | 2000000
+ff.max_terms | unsigned int  |  maximum terms in an expanded finite-field polynomial | 4096
+ff.model_search | bool  |  derive bounded quotient minimal polynomials and diversify witness probes | true
+ff.quotient_field | bool  |  adjoin bounded quotient reductions of finite-field Frobenius axioms | false
+ff.root_completion | bool  |  derive bounded quotient minimal polynomials without extra witness probes | false
+ff.root_split | bool  |  emit bounded finite-field factor and square-root case splits | true
+ff.small_coefficients | bool  |  use exact machine arithmetic for small-field polynomial coefficients | false
+ff.sparse_matrix_reducers | bool  |  prefer fewer-term basis rows during matrix symbolic preprocessing | false
+ff.sparse_witness | bool  |  try bounded univariate slices for underdetermined systems | true
+ff.sugar_pairs | bool  |  rank critical pairs by propagated sugar degree in all field sizes | true
+ff.tiny | bool  |  complete finite-domain search with forward checking over fields with p &lt; 64 | true
+ff.tiny_budget | unsigned int  |  tiny-field search work units per unit of ff.max_steps | 200
+ff.unique | bool  |  bounded uniqueness propagation before field solving | true
+ff.unique_depth | unsigned int  |  maximum Boolean split depth in uniqueness search (capped at 64) | 16
+ff.unique_equalities | bool  |  add derived root equalities after uniqueness propagation | false
+ff.unique_nodes | unsigned int  |  maximum nodes in uniqueness search | 50000
+ff.unique_work | unsigned int  |  local work allowance for the entire uniqueness attempt | 1000000
 ho_matching | bool  |  higher-order matching for quantifier instantiation | false
 ho_matching_bound | unsigned int  |  per-problem expansion-step budget of the higher-order matching search; bounds the (undecidable) HO unification to guarantee termination | 10000
+ho_qmatcher | bool  |  higher-order matching and term-enumeration quantifier engine | false
 induction | bool  |  enable generation of induction lemmas | false
 lemma_gc_strategy | unsigned int  |  lemma garbage collection strategy: 0 - fixed, 1 - geometric, 2 - at restart, 3 - none | 0
 logic | symbol  |  logic used to setup the SMT solver |
@@ -505,12 +554,16 @@ qi.eager_threshold | double  |  threshold for eager quantifier instantiation | 1
 qi.lazy_threshold | double  |  threshold for lazy quantifier instantiation | 20.0
 qi.max_instances | unsigned int  |  maximum number of quantifier instantiations | 4294967295
 qi.max_multi_patterns | unsigned int  |  specify the number of extra multi patterns | 0
+qi.max_persistent_instances | unsigned int  |  maximal number of pattern-based quantifier instances re-asserted on a re-search when qi.persist_instances is set | 1000
+qi.persist_instances | bool  |  re-assert the quantifier instances produced by model-based instantiation (and up to qi.max_persistent_instances pattern-based ones) at base level when a theory requests a re-search, e.g. after a recursive function unfolding depth increase | false
 qi.profile | bool  |  profile quantifier instantiation | false
 qi.profile_freq | unsigned int  |  how frequent results are reported by qi.profile | 4294967295
 qi.quick_checker | unsigned int  |  specify quick checker mode, 0 - no quick checker, 1 - using unsat instances, 2 - using both unsat and no-sat instances | 0
+qi.update_generation | bool  |  lower the generation of an already-internalized term when it is re-internalized at a lower generation (e.g., by a quantifier instantiation). when false, a term keeps the generation assigned at its first internalization | true
 qsat_use_qel | bool  |  Use QEL for lite quantifier elimination and model-based projection in QSAT | true
 quasi_macros | bool  |  try to find universally quantified formulas that are quasi-macros | false
 random_seed | unsigned int  |  random seed for the smt solver | 0
+recfun_finder | bool  |  detect (mutually) recursive function definitions among universally quantified axioms of the form (forall X (= (f X) body)) and register them as recursive function definitions | false
 refine_inj_axioms | bool  |  pre-processing: refine injectivity axioms | true
 relevancy | unsigned int  |  relevancy propagation heuristic: 0 - disabled, 1 - relevancy is tracked by only affects quantifier instantiation, 2 - relevancy is tracked, and an atom is only asserted if it is relevant | 2
 restart.max | unsigned int  |  maximal number of restarts. | 4294967295
@@ -519,9 +572,13 @@ restart_strategy | unsigned int  |  0 - geometric, 1 - inner-outer-geometric, 2 
 restricted_quasi_macros | bool  |  try to find universally quantified formulas that are restricted quasi-macros | false
 seq.max_unfolding | unsigned int  |  maximal unfolding depth for checking string equations and regular expressions | 1000000000
 seq.min_unfolding | unsigned int  |  initial bound for strings whose lengths are bounded by iterative deepening. Set this to a higher value if there are only models with larger string lengths | 1
+seq.parikh_chars | unsigned int  |  how many distinct characters the Parikh abstraction keeps apart. The remaining characters share one class | 6
+seq.parikh_k | unsigned int  |  maximal factor length of the Parikh abstraction over word equations. 1 counts single characters, 2 also counts adjacent pairs. 0 disables the abstraction. Values above 2 are clamped to 2 | 0
+seq.parikh_n | unsigned int  |  maximal modulus the Parikh abstraction over word equations uses to separate positions by their residue. 1 ignores positions | 2
 seq.regex_budget | unsigned int  |  work budget (search nodes and product expansions) for a single decision of the monadic regular-expression solver, after which it gives up. A budget of 0 makes it give up immediately | 1000000
 seq.regex_monadic | bool  |  use the monadic regular-expression end-game solver | true
 seq.regex_orientation | symbol  |  direction the monadic regular-expression solver reads memberships in. options are: 'forward', 'reversed' (solve rev(t) in rev(R), which is equisatisfiable and can have a far smaller derivative automaton), 'retry' (read forwards and, if the search runs out of budget, read the same decision backwards) | retry
+seq.regex_split | unsigned int  |  maximum refinement rounds the monadic regular-expression solver spends decomposing a membership in an intersection of regexes, once reading the decision in both directions has run out of budget. Each round decides a relaxation that keeps only some of the intersected regexes: a relaxation that is unsatisfiable refutes the original, and a model accepted by every dropped regex satisfies it. 0 disables the decomposition | 10
 seq.regex_transition_mode | symbol  |  transition mode of the monadic regular-expression solver. options are: 'light-ant' (split derivative targets over top-level unions), 'brz' (keep derivative targets in Brzozowski normal form) | light-ant
 seq.split_w_len | bool  |  enable splitting guided by length constraints | true
 seq.validate | bool  |  enable self-validation of theory axioms created by seq theory | false
@@ -2188,12 +2245,13 @@ arith.nl.optimize_bounds | bool  |  enable bounds optimization | true
 arith.nl.optimize_bounds_lp_max_vars | unsigned int  |  skip LP-based nonlinear bounds optimization when the number of candidate monomial variables exceeds this threshold (0 = unlimited) | 120
 arith.nl.order | bool  |  run order lemmas | true
 arith.nl.order.binomial_sign | bool  |  run order_lemma_on_binomial_sign; disabling it keeps the structural order-lemma splitting | true
-arith.nl.propagate_fixed_rows | bool  |  scan LP rows for fixed variables | false
 arith.nl.propagate_linear_monomials | bool  |  propagate linear monomials | true
 arith.nl.reduce_pseudo_linear | bool  |  create incremental linearization axioms for pseudo-linear monomials | true
 arith.nl.rounds | unsigned int  |  threshold for number of (nested) final checks for non linear arithmetic, relevant only if smt.arith.solver=2 | 1024
 arith.nl.tangents | bool  |  run tangent lemmas | true
 arith.nl.tangents.box_corners | bool  |  choose tangent-plane points at the bound-box corners instead of the model-centered val(x) +/- delta; produces the McCormick under/over envelope and is deterministic and snapshot-independent | false
+arith.nl.transcendental | bool  |  delta-check transcendental function applications (sin/cos/tan/asin/acos/atan/sinh/cosh/tanh/asinh/acosh/atanh) registered by theory_lra against the current assignment using floating point evaluation | true
+arith.nl.transcendental_tolerance | double  |  delta tolerance used when delta-checking transcendental function applications against the current assignment | 0.0000001
 arith.print_ext_var_names | bool  |  print external variable names | false
 arith.print_stats | bool  |  print statistic | false
 arith.propagate_eqs | bool  |  propagate (cheap) equalities | true
@@ -2277,6 +2335,7 @@ ddfw_search | bool  |  use ddfw local search instead of CDCL | false
 delay_units | bool  |  if true then z3 will not restart when a unit clause is learned | false
 delay_units_threshold | unsigned int  |  maximum number of learned unit clauses before restarting, ignored if delay_units is false | 32
 dimacs.core | bool  |  extract core from DIMACS benchmarks | false
+distribute_forall | bool  |  distribute unpatterned universal conjunctions | false
 div0_ackermann_limit | unsigned int  |  a bound for number of congruence Ackermann lemmas for div0 modelling | 1000
 drat.activity | bool  |  dump variable activities | false
 drat.binary | bool  |  use Binary DRAT output format | false
@@ -2305,6 +2364,52 @@ expand_select_store | bool  |  conservatively replace a (select (store ...) ...)
 expand_store_eq | bool  |  reduce (store ...) = (store ...) with a common base into selects | false
 expand_tan | bool  |  replace (tan x) with (/ (sin x) (cos x)). | false
 fail_if_inconclusive | bool  |  (default: true) fail if found unsat (sat) for under (over) approximated goal. |
+ff.adaptive_basis | bool  |  admit larger bases within storage bounds and compact retired pair records | false
+ff.adaptive_matrix | bool  |  allow more symbolic matrix reducers within a bounded storage allowance | false
+ff.adaptive_reduction | bool  |  fall back to scalar basis reduction when a matrix exceeds its storage budget | false
+ff.basis_bits | bool  |  recover Boolean domains and digit equalities from basis consequences | false
+ff.basis_cache | bool  |  reuse exact bounded finite-field bases across native checks | true
+ff.basis_max_bytes | unsigned int  |  estimated retained basis storage with adaptive_basis (capped at 1 GiB) | 16777216
+ff.batch | bool  |  batch small-field critical pairs using sparse modular elimination | true
+ff.bit_bounds | bool  |  propagate Boolean digits using no-wrap signed interval bounds | true
+ff.bit_propagation | bool  |  repeat no-wrap bit-sum propagation after algebraic elimination | true
+ff.boolean_split | bool  |  expose Boolean field domains to SAT (may change branching substantially) | false
+ff.bounded_elimination | bool  |  retain nonlinear definitions when substitution predicts polynomial growth | false
+ff.compact_encoding | bool  |  retain compact definitions when polynomial expansion would grow | true
+ff.compact_matrix | bool  |  use packed sparse matrix rows and smaller critical-pair batches | false
+ff.compact_retry | bool  |  retry the algebra tactic with compact definitions after an encoding size limit | true
+ff.disjunctive_bits | bool  |  rewrite disjunctive Boolean field domains as polynomial equations | true
+ff.div_masks | bool  |  filter reducer divisibility tests using support masks | false
+ff.f4 | bool  |  use the fixed-width F4 backend with zero-dimensional model construction | true
+ff.f4_budget | unsigned int  |  F4 work units allowed per unit of ff.max_steps | 40
+ff.f4_max_quotient | unsigned int  |  largest quotient-ring dimension explored by F4 model construction | 1024
+ff.f4_short_budget | unsigned int  |  F4 work units per unit of ff.max_steps on circuit-like systems (many Boolean variables) | 1
+ff.f4_slice | unsigned int  |  random x = r slices tried per level on positive-dimensional ideals in F4 model construction (SAT only) | 4
+ff.f4_value_split | bool  |  in F4 model construction over small fields, enumerate the values of a free variable | false
+ff.factor_split | bool  |  case-split equations whose monomials share a common symbolic factor, generalizing the literal top-level product-is-zero rule (may change branching substantially) | true
+ff.fused_reduction | bool  |  add scalar reducer multiples directly without temporary polynomials | false
+ff.geobucket | bool  |  accumulate scalar polynomial reductions in geometric buckets | false
+ff.gm_pairs | bool  |  install critical pairs using minimal lcm and strict chain criteria | true
+ff.lazy_matrix | bool  |  retain matrix reducers as basis references and monomial multipliers | false
+ff.linear_split | bool  |  exchange bounded linear and nonlinear basis consequences before elimination | false
+ff.max_factor_splits | unsigned int  |  maximum factor-split clauses emitted in one SMT search (0 disables factor splitting) | 4
+ff.max_steps | unsigned int  |  maximum native finite-field algebra operations before exact BV fallback | 2000000
+ff.max_terms | unsigned int  |  maximum terms in an expanded finite-field polynomial | 4096
+ff.model_search | bool  |  derive bounded quotient minimal polynomials and diversify witness probes | true
+ff.quotient_field | bool  |  adjoin bounded quotient reductions of finite-field Frobenius axioms | false
+ff.root_completion | bool  |  derive bounded quotient minimal polynomials without extra witness probes | false
+ff.root_split | bool  |  emit bounded finite-field factor and square-root case splits | true
+ff.small_coefficients | bool  |  use exact machine arithmetic for small-field polynomial coefficients | false
+ff.sparse_matrix_reducers | bool  |  prefer fewer-term basis rows during matrix symbolic preprocessing | false
+ff.sparse_witness | bool  |  try bounded univariate slices for underdetermined systems | true
+ff.sugar_pairs | bool  |  rank critical pairs by propagated sugar degree in all field sizes | true
+ff.tiny | bool  |  complete finite-domain search with forward checking over fields with p &lt; 64 | true
+ff.tiny_budget | unsigned int  |  tiny-field search work units per unit of ff.max_steps | 200
+ff.unique | bool  |  bounded uniqueness propagation before field solving | true
+ff.unique_depth | unsigned int  |  maximum Boolean split depth in uniqueness search (capped at 64) | 16
+ff.unique_equalities | bool  |  add derived root equalities after uniqueness propagation | false
+ff.unique_nodes | unsigned int  |  maximum nodes in uniqueness search | 50000
+ff.unique_work | unsigned int  |  local work allowance for the entire uniqueness attempt | 1000000
 flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
 flat_and_or | bool  |  create nary applications for and,or | true
 force_cleanup | bool  |  force cleanup to remove tautologies and simplify clauses | false
@@ -2319,6 +2424,7 @@ gcd_rounding | bool  |  use gcd rounding on integer arithmetic atoms. | false
 hi_div0 | bool  |  use the 'hardware interpretation' for division by zero (for bit-vector terms) | true
 ho_matching | bool  |  higher-order matching for quantifier instantiation | false
 ho_matching_bound | unsigned int  |  per-problem expansion-step budget of the higher-order matching search; bounds the (undecidable) HO unification to guarantee termination | 10000
+ho_qmatcher | bool  |  higher-order matching and term-enumeration quantifier engine | false
 hoist_ite | bool  |  hoist shared summands under ite expressions | false
 hoist_mul | bool  |  hoist multiplication over summation to minimize number of multiplications | false
 ignore_patterns_on_ground_qbody | bool  |  ignores patterns on quantifiers that don't mention their bound variables. | true
@@ -2400,13 +2506,17 @@ qi.eager_threshold | double  |  threshold for eager quantifier instantiation | 1
 qi.lazy_threshold | double  |  threshold for lazy quantifier instantiation | 20.0
 qi.max_instances | unsigned int  |  maximum number of quantifier instantiations | 4294967295
 qi.max_multi_patterns | unsigned int  |  specify the number of extra multi patterns | 0
+qi.max_persistent_instances | unsigned int  |  maximal number of pattern-based quantifier instances re-asserted on a re-search when qi.persist_instances is set | 1000
+qi.persist_instances | bool  |  re-assert the quantifier instances produced by model-based instantiation (and up to qi.max_persistent_instances pattern-based ones) at base level when a theory requests a re-search, e.g. after a recursive function unfolding depth increase | false
 qi.profile | bool  |  profile quantifier instantiation | false
 qi.profile_freq | unsigned int  |  how frequent results are reported by qi.profile | 4294967295
 qi.quick_checker | unsigned int  |  specify quick checker mode, 0 - no quick checker, 1 - using unsat instances, 2 - using both unsat and no-sat instances | 0
+qi.update_generation | bool  |  lower the generation of an already-internalized term when it is re-internalized at a lower generation (e.g., by a quantifier instantiation). when false, a term keeps the generation assigned at its first internalization | true
 qsat_use_qel | bool  |  Use QEL for lite quantifier elimination and model-based projection in QSAT | true
 quasi_macros | bool  |  try to find universally quantified formulas that are quasi-macros | false
 random_freq | double  |  frequency of random case splits | 0.01
 random_seed | unsigned int  |  random seed for the smt solver | 0
+recfun_finder | bool  |  detect (mutually) recursive function definitions among universally quantified axioms of the form (forall X (= (f X) body)) and register them as recursive function definitions | false
 refine_inj_axioms | bool  |  pre-processing: refine injectivity axioms | true
 relevancy | unsigned int  |  relevancy propagation heuristic: 0 - disabled, 1 - relevancy is tracked by only affects quantifier instantiation, 2 - relevancy is tracked, and an atom is only asserted if it is relevant | 2
 reorder.activity_scale | unsigned int  |  scaling factor for activity update | 100
@@ -2442,9 +2552,13 @@ search.sat.conflicts | unsigned int  |  period for solving for sat (in number of
 search.unsat.conflicts | unsigned int  |  period for solving for unsat (in number of conflicts) | 400
 seq.max_unfolding | unsigned int  |  maximal unfolding depth for checking string equations and regular expressions | 1000000000
 seq.min_unfolding | unsigned int  |  initial bound for strings whose lengths are bounded by iterative deepening. Set this to a higher value if there are only models with larger string lengths | 1
+seq.parikh_chars | unsigned int  |  how many distinct characters the Parikh abstraction keeps apart. The remaining characters share one class | 6
+seq.parikh_k | unsigned int  |  maximal factor length of the Parikh abstraction over word equations. 1 counts single characters, 2 also counts adjacent pairs. 0 disables the abstraction. Values above 2 are clamped to 2 | 0
+seq.parikh_n | unsigned int  |  maximal modulus the Parikh abstraction over word equations uses to separate positions by their residue. 1 ignores positions | 2
 seq.regex_budget | unsigned int  |  work budget (search nodes and product expansions) for a single decision of the monadic regular-expression solver, after which it gives up. A budget of 0 makes it give up immediately | 1000000
 seq.regex_monadic | bool  |  use the monadic regular-expression end-game solver | true
 seq.regex_orientation | symbol  |  direction the monadic regular-expression solver reads memberships in. options are: 'forward', 'reversed' (solve rev(t) in rev(R), which is equisatisfiable and can have a far smaller derivative automaton), 'retry' (read forwards and, if the search runs out of budget, read the same decision backwards) | retry
+seq.regex_split | unsigned int  |  maximum refinement rounds the monadic regular-expression solver spends decomposing a membership in an intersection of regexes, once reading the decision in both directions has run out of budget. Each round decides a relaxation that keeps only some of the intersected regexes: a relaxation that is unsatisfiable refutes the original, and a model accepted by every dropped regex satisfies it. 0 disables the decomposition | 10
 seq.regex_transition_mode | symbol  |  transition mode of the monadic regular-expression solver. options are: 'light-ant' (split derivative targets over top-level unions), 'brz' (keep derivative targets in Brzozowski normal form) | light-ant
 seq.split_w_len | bool  |  enable splitting guided by length constraints | true
 seq.validate | bool  |  enable self-validation of theory axioms created by seq theory | false
@@ -3143,7 +3257,8 @@ where `x` was solved as `(+ 5 y)`.
 ### Notes
 
 * supports unsat cores
-* does not support fine-grained proofs
+* supports fine-grained proofs for direct variable equalities and Boolean units
+* theory-specific, conditional, and nested-equation extraction are skipped when producing proofs
 
 ### Parameters
 

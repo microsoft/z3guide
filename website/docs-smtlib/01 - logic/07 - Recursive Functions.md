@@ -35,6 +35,21 @@ involve reasoning by induction that is often required to prove deeper properties
 This scheme allows to decide satisfiability and unsatisfiability for a limited, but often useful,
 class of formulas.
 
+## Recognizing Quantified Definitions
+
+Z3 5.3 adds the `recfun-finder` simplifier for inputs that encode recursive
+definitions as universally quantified equations, rather than using
+`define-fun-rec`. For example, it can recognize a definition whose left side is
+`(f x)` and whose right side contains a recursive call to `f`.
+Enable it explicitly in a `set-simplifier` pipeline, or with
+`(set-option :smt.recfun_finder true)` in the default solver pipeline.
+
+This transformation uses the existing recursive-function machinery; it does not
+add induction or guarantee termination of recursive definitions. Prefer
+`define-fun-rec` when writing a definition directly.
+See [Simplifiers](../03%20-%20strategies/05%20-%20simplifiers.md#recursive-function-definitions)
+for a quantified-definition example.
+
 ## Mutually Recursive Functions
 
 You can also define functions that are mutually recursive.

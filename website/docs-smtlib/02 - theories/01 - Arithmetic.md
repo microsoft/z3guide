@@ -161,6 +161,63 @@ We say a formula is nonlinear if it contains expressions of the form (* t s) whe
 (get-model)
 ```
 
+## Transcendental Arithmetic
+
+:::warning Experimental support in Z3 5.3
+
+Transcendental reasoning is incomplete and is not covered by the complete
+polynomial real-arithmetic procedure described above. Solver selection matters:
+in Z3 5.3.1 the default `QF_NTA` route can return `sat` for an assertion
+`(<= (exp x) 0.0)`, although the assertion is mathematically false.
+The `smt` tactic refutes this example, but that is not a guarantee that it
+decides other transcendental problems correctly or completely.
+
+The examples in this section are non-interactive because the guide's embedded
+solver uses Z3 5.0. Run them with Z3 5.3 or later, taking the version-specific
+limitations into account.
+
+:::
+
+Z3 5.3 adds the following real-valued operators and extends reasoning for
+transcendental functions.
+
+| Operation | Mathematical meaning |
+|-----------|----------------------|
+| `(exp x)` | Natural exponential of the real argument `x` |
+| `(log x)` or `(ln x)` | Natural logarithm; use a positive argument |
+| `(atan2 y x)` or `(arctan2 y x)` | Two-argument arctangent, with the vertical argument `y` first |
+
+These are Z3 extensions, not operators of the SMT-LIB polynomial real-arithmetic
+theory. They complement the existing trigonometric, inverse-trigonometric,
+hyperbolic, and inverse-hyperbolic operators. The logic name `QF_NTA` selects
+quantifier-free nonlinear transcendental arithmetic in Z3; the operators are
+also available with logic `ALL` or without a `set-logic` command.
+Constrain arguments to the mathematical domains needed by your application,
+such as `x > 0` for `log`, and do not rely on out-of-domain values.
+
+The exponential is always positive. The following query explicitly uses the
+`smt` tactic to refute its negation:
+
+```lisp
+(set-logic QF_NTA)
+(declare-const x Real)
+(assert (<= (exp x) 0.0))
+(check-sat-using smt)
+```
+
+The result is `unsat` in Z3 5.3.1. Replacing the final command by ordinary
+`check-sat` takes a different solver route and exhibits the issue noted above.
+Do not treat a result from one route as validation of another.
+
+The nonlinear solver combines theory lemmas and bounds with numerical checking
+of candidate assignments. `:smt.arith.nl.transcendental` controls these
+transcendental checks, and `:smt.arith.nl.transcendental_tolerance` controls their
+numerical tolerance (default `0.0000001`). These controls do not provide an
+exact, complete decision procedure, and changing the tolerance is not a way to
+obtain a proof of exact satisfiability. A query may return `unknown` or exhaust
+its resource budget. Keep this support separate from exact polynomial NRA
+solving and from floating-point arithmetic.
+
 ## Division
 
 

@@ -66,6 +66,51 @@ To override lexicographic priorities, set the option opt.priority to [Pareto](ht
 (get-objectives)
 ```
 
+### Nonlinear Pareto Fronts
+
+:::info Z3 5.3 and later
+
+Z3 5.3 adds nlsat-backed Pareto enumeration for pure nonlinear real-arithmetic
+problems. This example is non-interactive because the guide's embedded solver
+uses Z3 5.0; run it with Z3 5.3 or later.
+
+:::
+
+The following problem restricts `x` and `y` to the nonnegative axes of the
+circle `x*x + y*y = 2`. Its two feasible points are also its two Pareto-optimal
+points: improving one coordinate requires decreasing the other.
+
+```lisp
+(set-option :opt.priority pareto)
+(set-option :opt.pareto_nlsat true)
+(declare-const x Real)
+(declare-const y Real)
+(assert (>= x 0.0))
+(assert (>= y 0.0))
+(assert (= (+ (* x x) (* y y)) 2.0))
+(assert (or (= x 0.0) (= y 0.0)))
+(maximize x)
+(maximize y)
+(check-sat)
+(get-objectives)
+(check-sat)
+(get-objectives)
+(check-sat)
+```
+
+The first two checks return `sat`, discovering `(0, sqrt(2))` and
+`(sqrt(2), 0)` in an unspecified order. The third returns `unsat`: there are
+no further Pareto points. Objective output may display rational isolating
+intervals for algebraic values; the nlsat-backed search compares the exact
+algebraic model values rather than rounded interval endpoints.
+
+Without the assertion restricting the points to the axes, the quarter-circle
+has infinitely many Pareto points, so repeated checks need not exhaust the
+front. The new backend does not make every nonlinear Pareto front finite.
+Its `:opt.pareto_nlsat` control is enabled by default; see
+[Advanced Topics](07%20-%20advancedtopics.md#nonlinear-real-optimization-controls)
+for related controls.
+
 ## Independent Objectives
 If we just want to find the optimal value for each objective, set the option opt.priority to box.
 

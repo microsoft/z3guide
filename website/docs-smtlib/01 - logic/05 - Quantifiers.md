@@ -220,6 +220,27 @@ The quantified formula is instantiated for every pair of occurrences of f. A sim
 
 The annotation no-pattern can be used to instrument Z3 not to use a certain sub-expression as a pattern. The pattern inference engine may otherwise choose arbitrary sub-expressions as patterns to direct quantifier instantiation.
 
+### Higher-Order Instantiation
+
+Starting with Z3 5.3, quantifiers over array-sorted functions and predicates can
+also use higher-order matching and term enumeration. These mechanisms can
+construct lambda terms that do not already occur in the input, rather than
+only matching first-order patterns against existing ground terms.
+
+| Option | Default | Purpose |
+|--------|---------|---------|
+| `:smt.ho_matching` | `false` | Enable higher-order matching for quantifier instantiation |
+| `:smt.ho_qmatcher` | `false` | Enable the higher-order quantifier engine |
+| `:smt.term_enumeration` | `false` | Enumerate additional candidate terms for instantiation |
+| `:smt.ho_matching_bound` | `10000` | Bound expansion work in higher-order matching |
+
+These options complement E-matching and MBQI; enabling them does not turn
+quantified or higher-order reasoning into a complete decision procedure.
+Higher-order instantiation can require unification search that is undecidable
+in general, so bounding its work is important.
+The [Lambdas](06%20-%20Lambdas.md#higher-order-matching-and-term-enumeration)
+chapter gives a complete example using predicates represented by arrays.
+
 ### Model-based Quantifier Instantiation
 
 The model-based quantifier instantiation (MBQI) is essentially a counter-example based refinement loop, where candidate models are built and checked. When the model checking step fails, it creates new quantifier instantiations. The models are returned as simple functional programs. In the following example, the model provides an interpretation for function f and constants a and b. One can easily check that the returned model does indeed satisfy the quantifier.

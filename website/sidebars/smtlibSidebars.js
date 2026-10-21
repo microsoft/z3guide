@@ -51,7 +51,8 @@ const sidebars = {
         'theories/Sequences',
         'theories/Regular Expressions',
         'theories/Characters',
-        'theories/Special Relations'
+        'theories/Special Relations',
+        'theories/Finite Fields'
       ]
     },
 

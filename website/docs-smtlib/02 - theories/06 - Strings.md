@@ -246,6 +246,7 @@ Note that after `(_ char 54)` is the same as `(simplify (str.from_code 54))`.
   Operation                 | Brief description          
 |---------------------------|----------------------------|
 | `(str.++ a b c)`          | String concatenation of one or more strings |
+| `(str.power s n)`         | Repeat `s` an integer `n` times; empty for `n <= 0` (Z3 5.3 and later) |
 | `(str.len s)`             | String length. Returns an integer |
 | `(str.substr s offset length)` | Retrieves substring of `s` at `offset` |
 | `(str.indexof s sub)`          | Retrieves first position of `sub` in `s`, -1 if there are no occurrences |
@@ -274,4 +275,39 @@ Also, note that  `(str.at s i)` is the empty string or sequence for indices that
 when the offset is outside the range of positions in `s` or `length` is negative or 
 `offset+length` exceeds the length of `s`. 
 
+## Repetition with an Integer Exponent
 
+:::info Z3 5.3 and later
+
+`str.power` was added in Z3 5.3. This example is non-interactive because the
+guide's embedded solver uses Z3 5.0; run it with Z3 5.3 or later.
+
+:::
+
+`(str.power s n)` concatenates `n` copies of the string `s` when `n` is positive.
+For example, `(str.power "ab" 3)` is `"ababab"`. If `n` is zero or negative,
+the result is the empty string. Repeating the empty string always gives the
+empty string.
+
+The exponent has sort `Int` and need not be a numeral. Z3 can solve for an
+unknown repetition count:
+
+```lisp
+(declare-const n Int)
+(assert (>= n 0))
+(assert (= (str.power "ab" n) "ababab"))
+(check-sat)
+(get-value (n))
+```
+
+The result is `sat` with `n = 3`. For nonnegative `n`, the length of the result
+is `n * (str.len s)`. Add `n >= 0` explicitly if negative repetition counts
+should be excluded.
+
+String powers produce strings, unlike `re.*` or `re.loop`, which produce
+regular languages. Repeating a symbolic string also requires every copy to be
+the same string; it does not choose each copy independently from a language.
+The corresponding operation for arbitrary element sorts is
+[`seq.power`](07%20-%20Sequences.md#repetition).
+Reasoning about symbolic words and exponents is incomplete, so general problems
+may return `unknown` or exhaust the available resources.

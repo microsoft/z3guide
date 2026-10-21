@@ -17,6 +17,7 @@ to create a unit sequence and the empty sequence over any base sort.
 | `(seq.unit elem)`               | Sequence with a single element `elem` |
 | `(as seq.empty (Seq Int))`      | The empty sequence of integers |
 | `(seq.++ a b c)`                | Concatenation of one or more sequences |
+| `(seq.power s n)`               | Repeat `s` an integer `n` times; empty for `n <= 0` (Z3 5.3 and later) |
 | `(seq.len s)`                   | Sequence length. Returns an integer |
 | `(seq.extract s offset length)` | Retrieves sub-sequence of `s` at `offset` |
 | `(seq.indexof s sub [offset])`  | Retrieves first position of `sub` in `s`, -1 if there are no occurrences |
@@ -87,3 +88,30 @@ there is a finite satisfying model or the proof of unsatisfiability does not req
 (get-model)
 ```
 
+## Repetition
+
+:::info Z3 5.3 and later
+
+`seq.power` was added in Z3 5.3. This example is non-interactive because the
+guide's embedded solver uses Z3 5.0; run it with Z3 5.3 or later.
+
+:::
+
+`(seq.power s n)` has the same sequence sort as `s`. Its exponent has sort
+`Int`. Positive exponents concatenate copies of the sequence; zero and negative
+exponents give the empty sequence of that sort.
+
+```lisp
+(assert
+  (not (= (seq.power (seq.unit 4) 3)
+          (seq.++ (seq.unit 4) (seq.unit 4) (seq.unit 4)))))
+(check-sat)
+```
+
+The result is `unsat`: both sequences contain three copies of the integer 4.
+The sequence and exponent can also be symbolic. For nonnegative `n`,
+`(seq.len (seq.power s n))` is `n * (seq.len s)`, but reasoning about powers
+does not provide a complete decision procedure for arbitrary sequence equations.
+For strings, use the equivalent
+[`str.power`](06%20-%20Strings.md#repetition-with-an-integer-exponent)
+spelling.

@@ -79,3 +79,64 @@ Not all finite bounds can be expressed as real numbers. Bounds obtained around s
 (get-objectives)
 ```
 
+## Nonlinear Real Objectives
+
+:::info Z3 5.3 and later
+
+Z3 5.3 extends nonlinear real optimization using nlsat cells. The examples in
+this section are non-interactive because the guide's embedded solver uses
+Z3 5.0; run them with Z3 5.3 or later.
+
+:::
+
+The existing `maximize` and `minimize` commands can optimize real objectives
+subject to polynomial nonlinear constraints. An optimum need not be rational.
+For example, the largest nonnegative `x` satisfying `x*x <= 2` is the positive
+square root of 2.
+
+```lisp
+(declare-const x Real)
+(assert (>= x 0.0))
+(assert (<= (* x x) 2.0))
+(maximize x)
+(check-sat)
+(get-objectives)
+(get-value (x))
+```
+
+The result is `sat`. Both the objective and `x` can be printed as
+`(root-obj (+ (^ x 2) (- 2)) 2)`. This denotes the second real root, in increasing
+order, of the displayed polynomial: the positive square root of 2. The `x`
+inside a `root-obj` expression is the polynomial variable, not a further
+constraint on the declared constant. This representation is exact, unlike a
+rounded decimal approximation.
+
+### Open Algebraic Bounds
+
+A finite supremum need not be attained. Replacing the non-strict inequality
+above by a strict one leaves the supremum at the square root of 2, but no
+feasible model attains it.
+
+```lisp
+(declare-const x Real)
+(assert (>= x 0.0))
+(assert (< (* x x) 2.0))
+(maximize x)
+(check-sat)
+(get-objectives)
+(get-value (x))
+```
+
+The result is `sat`, with an objective bound expressed using the algebraic
+root and a negative infinitesimal `epsilon`. The value returned for `x` is a
+feasible value below that bound, not a model attaining the supremum.
+
+These improvements do not give a complete procedure for arbitrary nonlinear
+integer, quantified, or transcendental optimization. Resource limits can also
+prevent certification of an optimum in a polynomial real problem. Distinguish
+a feasible model from a certified bound, and inspect `get-objectives` and any
+`unknown` result rather than assuming a displayed model proves optimality.
+See [Advanced Topics](07%20-%20advancedtopics.md#nonlinear-real-optimization-controls)
+for controls and
+[Combining Objectives](05%20-%20combiningobjectives.md#nonlinear-pareto-fronts)
+for nonlinear Pareto search.

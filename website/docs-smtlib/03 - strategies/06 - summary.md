@@ -3,7 +3,7 @@ title: Tactics Summary
 sidebar_position: 6
 ---
 
-<!-- Generated from Z3Prover/z3 release z3-5.3.1. Do not edit manually. -->
+<!-- Generated from Z3Prover/z3 release z3-5.3.3. Do not edit manually. -->
 
 ## Tactic ackernannize_bv
 
@@ -460,7 +460,7 @@ bv.solver | unsigned int  |  bit-vector solver engine: 0 - bit-blasting, 1 - pol
 bv.watch_diseq | bool  |  use watch lists instead of eager axioms for bit-vectors | false
 candidate_models | bool  |  create candidate models even when quantifier or theory reasoning is incomplete | false
 case_split | unsigned int  |  0 - case split based on variable activity, 1 - similar to 0, but delay case splits created during the search, 2 - similar to 0, but cache the relevancy, 3 - case split based on relevancy (structural splitting), 4 - case split on relevancy and activity, 5 - case split on relevancy and current goal, 6 - activity-based case split with theory-aware branching activity | 1
-clause_proof | bool  |  record a clausal proof | false
+clause_proof | bool  |  record a clausal proof; with proof=true, replace learned-clause proof DAGs by a clause trail | false
 core.extend_nonlocal_patterns | bool  |  extend unsat cores with literals that have quantifiers with patterns that contain symbols which are not in the quantifier's body | false
 core.extend_patterns | bool  |  extend unsat core with literals that trigger (potential) quantifier instances | false
 core.extend_patterns.max_distance | unsigned int  |  limits the distance of a pattern-extended unsat core | 4294967295
@@ -490,6 +490,7 @@ ff.bit_bounds | bool  |  propagate Boolean digits using no-wrap signed interval 
 ff.bit_propagation | bool  |  repeat no-wrap bit-sum propagation after algebraic elimination | true
 ff.boolean_split | bool  |  expose Boolean field domains to SAT (may change branching substantially) | false
 ff.bounded_elimination | bool  |  retain nonlinear definitions when substitution predicts polynomial growth | false
+ff.bv_fallback_limit | unsigned int  |  give up (unknown) instead of bit-blasting a field when the estimated size of the exact BV fallback (bits, plus width^2 per nonlinear product) exceeds this (0 = no limit) | 0
 ff.compact_encoding | bool  |  retain compact definitions when polynomial expansion would grow | true
 ff.compact_matrix | bool  |  use packed sparse matrix rows and smaller critical-pair batches | false
 ff.compact_retry | bool  |  retry the algebra tactic with compact definitions after an encoding size limit | true
@@ -2312,7 +2313,7 @@ cardinality.encoding | symbol  |  encoding used for at-most-k constraints: group
 cardinality.solver | bool  |  use cardinality solver | true
 case_split | unsigned int  |  0 - case split based on variable activity, 1 - similar to 0, but delay case splits created during the search, 2 - similar to 0, but cache the relevancy, 3 - case split based on relevancy (structural splitting), 4 - case split on relevancy and activity, 5 - case split on relevancy and current goal, 6 - activity-based case split with theory-aware branching activity | 1
 cce | bool  |  eliminate covered clauses | false
-clause_proof | bool  |  record a clausal proof | false
+clause_proof | bool  |  record a clausal proof; with proof=true, replace learned-clause proof DAGs by a clause trail | false
 core.extend_nonlocal_patterns | bool  |  extend unsat cores with literals that have quantifiers with patterns that contain symbols which are not in the quantifier's body | false
 core.extend_patterns | bool  |  extend unsat core with literals that trigger (potential) quantifier instances | false
 core.extend_patterns.max_distance | unsigned int  |  limits the distance of a pattern-extended unsat core | 4294967295
@@ -2375,6 +2376,7 @@ ff.bit_bounds | bool  |  propagate Boolean digits using no-wrap signed interval 
 ff.bit_propagation | bool  |  repeat no-wrap bit-sum propagation after algebraic elimination | true
 ff.boolean_split | bool  |  expose Boolean field domains to SAT (may change branching substantially) | false
 ff.bounded_elimination | bool  |  retain nonlinear definitions when substitution predicts polynomial growth | false
+ff.bv_fallback_limit | unsigned int  |  give up (unknown) instead of bit-blasting a field when the estimated size of the exact BV fallback (bits, plus width^2 per nonlinear product) exceeds this (0 = no limit) | 0
 ff.compact_encoding | bool  |  retain compact definitions when polynomial expansion would grow | true
 ff.compact_matrix | bool  |  use packed sparse matrix rows and smaller critical-pair batches | false
 ff.compact_retry | bool  |  retry the algebra tactic with compact definitions after an encoding size limit | true

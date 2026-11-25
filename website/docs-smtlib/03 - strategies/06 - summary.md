@@ -3,7 +3,7 @@ title: Tactics Summary
 sidebar_position: 6
 ---
 
-<!-- Generated from Z3Prover/z3 release z3-5.3.3. Do not edit manually. -->
+<!-- Generated from Z3Prover/z3 release z3-5.4.1. Do not edit manually. -->
 
 ## Tactic ackernannize_bv
 
@@ -460,6 +460,7 @@ bv.solver | unsigned int  |  bit-vector solver engine: 0 - bit-blasting, 1 - pol
 bv.watch_diseq | bool  |  use watch lists instead of eager axioms for bit-vectors | false
 candidate_models | bool  |  create candidate models even when quantifier or theory reasoning is incomplete | false
 case_split | unsigned int  |  0 - case split based on variable activity, 1 - similar to 0, but delay case splits created during the search, 2 - similar to 0, but cache the relevancy, 3 - case split based on relevancy (structural splitting), 4 - case split on relevancy and activity, 5 - case split on relevancy and current goal, 6 - activity-based case split with theory-aware branching activity | 1
+case_split_relevant_first | bool  |  prefer relevant variables in activity-based case splits (case_split=0,1,2) when relevancy is enabled | false
 clause_proof | bool  |  record a clausal proof; with proof=true, replace learned-clause proof DAGs by a clause trail | false
 core.extend_nonlocal_patterns | bool  |  extend unsat cores with literals that have quantifiers with patterns that contain symbols which are not in the quantifier's body | false
 core.extend_patterns | bool  |  extend unsat core with literals that trigger (potential) quantifier instances | false
@@ -526,6 +527,7 @@ ff.unique_depth | unsigned int  |  maximum Boolean split depth in uniqueness sea
 ff.unique_equalities | bool  |  add derived root equalities after uniqueness propagation | false
 ff.unique_nodes | unsigned int  |  maximum nodes in uniqueness search | 50000
 ff.unique_work | unsigned int  |  local work allowance for the entire uniqueness attempt | 1000000
+finite_set.reuse_witness | bool  |  reuse known distinguishing members instead of introducing finite-set extensionality witnesses (may change branching) | false
 ho_matching | bool  |  higher-order matching for quantifier instantiation | false
 ho_matching_bound | unsigned int  |  per-problem expansion-step budget of the higher-order matching search; bounds the (undecidable) HO unification to guarantee termination | 10000
 ho_qmatcher | bool  |  higher-order matching and term-enumeration quantifier engine | false
@@ -2097,7 +2099,7 @@ bv_le_extra | bool  |  additional bu_(u/s)le simplifications | false
 bv_not_simpl | bool  |  apply simplifications for bvnot | false
 bv_sort_ac | bool  |  sort the arguments of all AC operators | true
 cache_all | bool  |  cache all intermediate results. | false
-complete | bool  |  add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, 0^0, neg-root | true
+complete | bool  |  add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, neg-root | true
 elim_and | bool  |  conjunctions are rewritten using negation and disjunctions | false
 elim_inverses | bool  |  eliminate inverse trigonometric functions (asin, acos, atan). | true
 elim_ite | bool  |  eliminate ite in favor of and/or | true
@@ -2312,6 +2314,7 @@ candidate_models | bool  |  create candidate models even when quantifier or theo
 cardinality.encoding | symbol  |  encoding used for at-most-k constraints: grouped, bimander, ordered, unate, circuit | grouped
 cardinality.solver | bool  |  use cardinality solver | true
 case_split | unsigned int  |  0 - case split based on variable activity, 1 - similar to 0, but delay case splits created during the search, 2 - similar to 0, but cache the relevancy, 3 - case split based on relevancy (structural splitting), 4 - case split on relevancy and activity, 5 - case split on relevancy and current goal, 6 - activity-based case split with theory-aware branching activity | 1
+case_split_relevant_first | bool  |  prefer relevant variables in activity-based case splits (case_split=0,1,2) when relevancy is enabled | false
 cce | bool  |  eliminate covered clauses | false
 clause_proof | bool  |  record a clausal proof; with proof=true, replace learned-clause proof DAGs by a clause trail | false
 core.extend_nonlocal_patterns | bool  |  extend unsat cores with literals that have quantifiers with patterns that contain symbols which are not in the quantifier's body | false
@@ -2412,6 +2415,7 @@ ff.unique_depth | unsigned int  |  maximum Boolean split depth in uniqueness sea
 ff.unique_equalities | bool  |  add derived root equalities after uniqueness propagation | false
 ff.unique_nodes | unsigned int  |  maximum nodes in uniqueness search | 50000
 ff.unique_work | unsigned int  |  local work allowance for the entire uniqueness attempt | 1000000
+finite_set.reuse_witness | bool  |  reuse known distinguishing members instead of introducing finite-set extensionality witnesses (may change branching) | false
 flat | bool  |  create nary applications for +,*,bvadd,bvmul,bvand,bvor,bvxor | true
 flat_and_or | bool  |  create nary applications for and,or | true
 force_cleanup | bool  |  force cleanup to remove tautologies and simplify clauses | false
@@ -2635,7 +2639,7 @@ cache_all | bool  |  cache all intermediate results. | false
 canonicalize | bool  |  canonicalize polynomials. | true
 check_lemmas | bool  |  check lemmas on the fly using an independent nlsat solver | false
 common_patterns | bool  |  minimize the number of auxiliary variables during CNF encoding by identifying commonly used patterns | true
-complete | bool  |  add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, 0^0, neg-root | true
+complete | bool  |  add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, neg-root | true
 context_solve | bool  |  solve equalities under disjunctions. | false
 distributivity | bool  |  minimize the number of auxiliary variables during CNF encoding by applying distributivity over unshared subformulas | true
 distributivity_blowup | unsigned int  |  maximum overhead for applying distributivity during CNF encoding | 32
